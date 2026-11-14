@@ -1,0 +1,105 @@
+{
+  "schema_version": "tenger.composites/1",
+  "contract_version": 10,
+  "target_key": "pluto",
+  "note": "display colours, not for measurement",
+  "visits": [
+    {
+      "visit": 0,
+      "path": "pluto/composites/v0.webp",
+      "content_type": "processed",
+      "display_only": true,
+      "label_key": "composite.display-colours",
+      "groups": {
+        "r": [
+          5,
+          6
+        ],
+        "g": [
+          3,
+          4
+        ],
+        "b": [
+          1,
+          2
+        ]
+      },
+      "frame": "body_centred",
+      "epoch_ids": [
+        "v0-d2",
+        "v0-d3",
+        "v0-d5",
+        "v0-d6"
+      ],
+      "t_start_mjd": 60790.130274,
+      "t_end_mjd": 60796.386688,
+      "n_exposures": 10
+    },
+    {
+      "visit": 1,
+      "path": "pluto/composites/v1.webp",
+      "content_type": "processed",
+      "display_only": true,
+      "label_key": "composite.display-colours",
+      "groups": {
+        "r": [
+          5,
+          6
+        ],
+        "g": [
+          3,
+          4
+        ],
+        "b": [
+          1,
+          2
+        ]
+      },
+      "frame": "body_centred",
+      "epoch_ids": [
+        "v1-d1",
+        "v1-d2",
+        "v1-d3",
+        "v1-d4",
+        "v1-d5",
+        "v1-d6"
+      ],
+      "t_start_mjd": 60943.015676,
+      "t_end_mjd": 60960.405739,
+      "n_exposures": 109
+    },
+    {
+      "visit": 2,
+      "path": "pluto/composites/v2.webp",
+      "content_type": "processed",
+      "display_only": true,
+      "label_key": "composite.display-colours",
+      "groups": {
+        "r": [
+          5,
+          6
+        ],
+        "g": [
+          3,
+          4
+        ],
+        "b": [
+          1,
+          2
+        ]
+      },
+      "frame": "body_centred",
+      "epoch_ids": [
+        "v2-d1",
+        "v2-d2",
+        "v2-d3",
+        "v2-d4",
+        "v2-d5",
+        "v2-d6"
+      ],
+      "t_start_mjd": 61155.233611,
+      "t_end_mjd": 61172.956712,
+      "n_exposures": 99
+    }
+  ]
+}

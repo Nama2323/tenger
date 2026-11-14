@@ -16,6 +16,8 @@
     "compare.response-matched": "Same detector and the same wavelength at the star.",
     "compare.response-shifted": "Same detector, but the wavelengths differ too much for a brightness comparison.",
     "compare.response-unknown": "The wavelength of one picture is unknown.",
+    "composite.display-colours": "Display colours, not for measurement: red = arrays 5-6, green = 3-4, blue = 1-2.",
+    "composite.missing-array-group": "No colour picture for this date: one of the three array groups has no pictures.",
     "context.allwise-w2": "AllWISE W2 (4.6 µm) single exposures, with their dates",
     "context.no-source-on-track": "Not detected: no source within 3 arcsec of where the target was on that date.",
     "context.not-like-for-like": "Other telescopes use other filters: compare positions and dates, not brightness.",

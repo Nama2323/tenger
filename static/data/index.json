@@ -2,7 +2,7 @@
   "schema_version": "tenger.site_index/1",
   "contract_version": 3,
   "dataset_version": "a3-2026-11-14",
-  "generated_utc": "2026-11-14T15:25:02Z",
+  "generated_utc": "2026-11-14T16:20:00Z",
   "targets": [
     {
       "key": "barnard",
@@ -36,12 +36,13 @@
         }
       ],
       "prediction": {
-        "status": "waiting",
+        "status": "hit",
         "trial_ids": [
           "barnard-position-2026b"
         ],
         "open_forecast_ids": []
       },
+      "composites_path": null,
       "map": {
         "distance": {
           "value": 1.8282,
@@ -91,6 +92,7 @@
         ],
         "open_forecast_ids": []
       },
+      "composites_path": null,
       "map": {
         "distance": {
           "value": 2.2779,
@@ -134,12 +136,13 @@
         }
       ],
       "prediction": {
-        "status": "waiting",
+        "status": "hit",
         "trial_ids": [
           "epsindib-position-2026b"
         ],
         "open_forecast_ids": []
       },
+      "composites_path": null,
       "map": {
         "distance": {
           "value": 3.6947,
@@ -189,6 +192,7 @@
         ],
         "open_forecast_ids": []
       },
+      "composites_path": null,
       "map": {
         "distance": {
           "value": 183.3483,
@@ -238,6 +242,7 @@
         ],
         "open_forecast_ids": []
       },
+      "composites_path": null,
       "map": {
         "distance": {
           "value": 799.4244,
@@ -289,6 +294,7 @@
           "makemake-position-open-2027a"
         ]
       },
+      "composites_path": "makemake/composites.json",
       "map": {
         "distance": {
           "value": 52.743,
@@ -332,7 +338,7 @@
         }
       ],
       "prediction": {
-        "status": "waiting",
+        "status": "miss",
         "trial_ids": [
           "pluto-position-2026b"
         ],
@@ -340,6 +346,7 @@
           "pluto-position-open-2027a"
         ]
       },
+      "composites_path": "pluto/composites.json",
       "map": {
         "distance": {
           "value": 36.328,
@@ -387,6 +394,7 @@
         "trial_ids": [],
         "open_forecast_ids": []
       },
+      "composites_path": "3i-atlas/composites.json",
       "map": {
         "distance": null,
         "angle_deg": 335.0,

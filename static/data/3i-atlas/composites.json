@@ -1,0 +1,74 @@
+{
+  "schema_version": "tenger.composites/1",
+  "contract_version": 10,
+  "target_key": "3i-atlas",
+  "note": "display colours, not for measurement",
+  "visits": [
+    {
+      "visit": 0,
+      "path": "3i-atlas/composites/v0.webp",
+      "content_type": "processed",
+      "display_only": true,
+      "label_key": "composite.display-colours",
+      "groups": {
+        "r": [
+          5,
+          6
+        ],
+        "g": [
+          3,
+          4
+        ],
+        "b": [
+          1,
+          2
+        ]
+      },
+      "frame": "body_centred",
+      "epoch_ids": [
+        "v0-d1",
+        "v0-d2",
+        "v0-d3",
+        "v0-d4",
+        "v0-d5",
+        "v0-d6"
+      ],
+      "t_start_mjd": 60888.33344,
+      "t_end_mjd": 60902.531071,
+      "n_exposures": 160
+    },
+    {
+      "visit": 1,
+      "path": "3i-atlas/composites/v1.webp",
+      "content_type": "processed",
+      "display_only": true,
+      "label_key": "composite.display-colours",
+      "groups": {
+        "r": [
+          5,
+          6
+        ],
+        "g": [
+          3,
+          4
+        ],
+        "b": [
+          1,
+          2
+        ]
+      },
+      "frame": "body_centred",
+      "epoch_ids": [
+        "v1-d1",
+        "v1-d2",
+        "v1-d3",
+        "v1-d4",
+        "v1-d5",
+        "v1-d6"
+      ],
+      "t_start_mjd": 61017.004498,
+      "t_end_mjd": 61024.000739,
+      "n_exposures": 98
+    }
+  ]
+}

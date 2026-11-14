@@ -78,11 +78,18 @@ def prediction_summary(key: str, out: Path) -> dict:
             forecasts.append(trial["trial_id"])
             continue
         trials.append(trial["trial_id"])
-        prediction_path = folder / "prediction.json"
+        prediction_path, verification_path = folder / "prediction.json", folder / "verification.json"
         if prediction_path.exists():
             prediction = json.loads(prediction_path.read_text())
-            statuses.append("insufficient_data" if prediction.get("prediction_status") == "insufficient_data" else "waiting")
-    status = "waiting" if "waiting" in statuses else ("insufficient_data" if statuses else None)
+            if prediction.get("prediction_status") == "insufficient_data":
+                statuses.append("insufficient_data")
+            elif verification_path.exists():
+                statuses.append(json.loads(verification_path.read_text())["status"])
+            else:
+                statuses.append("waiting")
+    # One trial per target today; with several, the first in this order wins.
+    order = ("waiting", "miss", "hit", "ambiguous", "invalid_comparison", "insufficient_data")
+    status = next((name for name in order if name in statuses), None)
     return {"status": status, "trial_ids": trials, "open_forecast_ids": forecasts}
 
 
@@ -114,6 +121,7 @@ def target_entry(key: str, name: str, kind: str, role: str, out: Path, distance:
                       "investigation_path": None, "thumbnails": [],
                       "status_reason_key": "unavailable.no-validated-product"})
     entry["prediction"] = prediction_summary(key, out)
+    entry["composites_path"] = f"{key}/composites.json" if (out / key / "composites.json").exists() else None
     entry["map"] = {"distance": distance, "angle_deg": ANGLES.get(key, 0.0), "angle_is_arbitrary": True}
     return entry
 

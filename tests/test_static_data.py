@@ -43,7 +43,7 @@ def test_every_data_key_has_english_text():
     strings = load("strings.en.json")["strings"]
     found = set()
     extra = [*DATA.glob("trials/*/*.json"), *DATA.glob("game/*.json"), *DATA.glob("lessons/*.json"), DATA / "scoreboard.json",
-             DATA / "scene3d.json"]
+             DATA / "scene3d.json", *DATA.glob("*/composites.json")]
     for path in [*investigations(), DATA / "index.json", DATA / "reserved.json", *extra]:
         if path.exists():
             collect_keys(json.loads(path.read_text()), found)
@@ -149,3 +149,24 @@ def test_the_pluto_postmortem_is_exploratory_and_matches_the_frozen_verdict():
     assert not (DATA / "trials" / "pluto" / "trial.json").exists()  # never a scored trial
     scoreboard = json.loads((DATA / "scoreboard.json").read_text())
     assert "pluto" not in {row["trial_id"] for row in scoreboard["rows"]}
+
+
+def test_colour_previews_are_display_only_and_match_the_epochs():
+    for path in DATA.glob("*/composites.json"):
+        document = json.loads(path.read_text())
+        epochs = {epoch["id"] for epoch in json.loads((path.parent / "investigation.json").read_text())["epochs"]}
+        for row in document["visits"]:
+            if row["path"] is None:
+                continue
+            assert row["display_only"] is True and row["content_type"] == "processed"
+            assert (DATA / row["path"]).exists()
+            assert set(row["epoch_ids"]) <= epochs
+
+
+def test_index_status_follows_the_verification():
+    index = load("index.json")
+    for target in index["targets"]:
+        for trial_id in target["prediction"]["trial_ids"]:
+            path = DATA / "trials" / trial_id / "verification.json"
+            if path.exists():
+                assert target["prediction"]["status"] == json.loads(path.read_text())["status"]

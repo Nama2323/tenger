@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 10 | 2026-11-15 | Additive. Per-visit colour previews for moving targets; index `composites_path`; index `prediction.status` now reflects verification. |
 | 9 | 2026-11-14 | Additive (Task A6). `scene3d.json` for the 3D views. |
 | 8 | 2026-11-14 | Additive (Task A5b). Exploratory post-mortem file `trials/pluto/postmortem.json`. |
 | 7 | 2026-11-14 | Additive (Task A5). Verification extras, reserved.json status, scoreboard and game additions. |
@@ -717,3 +718,18 @@ key: none (fixed path).
 | `pluto_loop.training[]`, `.evaluation[]` | Per exposure: role, `obs_key`, `t_mjd`, `spherex_au` (Earth + header spacecraft vector), `fitted_pluto_au` (frozen orbit at light emission), and `measured` RA/Dec where Pluto was detected |
 | `pluto_loop.frozen_forecast`, `.observed` | The A4 forecast (RA/Dec, `cov_arcsec2`, 3D position) and the A5 observation (RA/Dec, `cov_arcsec2`, Earth position, verdict, D²) |
 | `pluto_loop.open_forecast_2027` | The frozen 2027 track with covariances, Earth and fitted Pluto positions, and its "open forecast" label |
+
+---
+
+# Version 10 (additive, 15 Nov 2026): colour previews and verified status in the index
+
+- `index.json` → `targets[].composites_path`: `"<key>/composites.json"` or `null`.
+- `index.json` → `targets[].prediction.status` now gives the verified outcome when a
+  `verification.json` exists (`hit`, `miss`, `ambiguous`, `invalid_comparison`). A prediction frozen as
+  `insufficient_data` stays `insufficient_data`; an unverified prediction stays `waiting`.
+- `<key>/composites.json`, kind `tenger.composites/1` (Pluto, Makemake, 3I/ATLAS): `note`
+  ("display colours, not for measurement") and `visits[]`, each with `visit`, `path` (240 px WebP,
+  body-centred, north up, east left) or `null` with `reason_key`, `content_type: "processed"`,
+  `display_only: true`, `label_key`, `groups` (`r`: arrays 5–6, `g`: 3–4, `b`: 1–2), `epoch_ids` (the
+  investigation's epochs of that visit), `t_start_mjd`, `t_end_mjd`, `n_exposures`. Each channel is a
+  per-visit median with its own stretch, so colours are not comparable between visits or targets.
