@@ -225,6 +225,32 @@ and pushed.
 - **Nothing else.** No other object's MOST or Horizons data had been requested. The JPL SBDB pool query
   returns names, H and orbit class only.
 
+## Task A9 (15 Nov 2026, from 02:55 UB): the asteroid batch (team statement pending)
+
+**Selection:** applied at 02:55 UB by `python -m scripts.asteroids select`, under the rules committed
+and pushed first (`b9ef625`, `docs/asteroid-batch.md`). Record: `docs/exposure/asteroids/selection.json`.
+- 32 candidates were examined in H order, and the first 8 that passed were taken.
+- Evaluation-visit rows hold identifiers and times only; the star check kept pass/fail only.
+
+**Exposure status: nobody on the team has opened these objects' images.** Narmandakh's earlier viewing
+covered only Makemake and Pluto. `team_statement_pending: true` stays until the user confirms the team
+statement in chat.
+
+| Object | H | Training visits (MOST rows) | Evaluation visit (MJD, times only) | Evaluation exposures chosen | team_statement_pending |
+|---|---|---|---|---|---|
+| 491 Carina | 9.0 | 3 (342 exposures) | 61274.13–61275.56 | 4 | true |
+| 1021 Flammario | 9.01 | 2 (269 exposures) | 61229.37–61229.50 | 4 | true |
+| 363 Padua | 9.03 | 2 (217 exposures) | 61233.00–61286.02 | 10 | true |
+| 714 Ulula | 9.03 | 2 (291 exposures) | 61278.65–61300.10 | 10 | true |
+| 345 Tercidina | 9.04 | 2 (259 exposures) | 61296.80–61317.71 | 6 | true |
+| 286 Iclea | 9.07 | 2 (121 exposures) | 61166.51–61214.97 | 10 | true |
+| 162 Laurentia | 9.09 | 2 (275 exposures) | 61269.90–61280.75 | 10 | true |
+| 379 Huenna | 9.1 | 2 (267 exposures) | 61299.62–61310.75 | 10 | true |
+
+**Opened so far:** none.
+- Training pixels are opened next, from MOST training rows only.
+- Evaluation pixels are opened only after the batch is frozen and pushed.
+
 ## Who has seen what
 
 - **Teammates** have viewed the bundled frames, thumbnails and results of the five challenge targets

@@ -150,3 +150,17 @@ Category: `prospective_unexposed` (pending), plus `catalogue_assisted` for the t
   share the method, the two-body model-error estimate and SPHEREx's systematic errors, so their
   outcomes may be correlated. The binomial interval assumes independence and is therefore optimistic.
 - Every outcome is published. Nothing is dropped after the reveal.
+
+## Clarifications, 15 Nov 2026 02:52 UB (before any training pixel or forecast; no outcome known)
+
+1. **Category.** Section 2 also mentioned a `catalogue_assisted` label for the training
+   identification. As for Pluto (A4), the ephemeris-guided identification of training detections is
+   recorded as a limitation (`limit.ephemeris-guided-training`), not as a label. The forecast itself
+   uses no catalogue or ephemeris value, and the user asked for `prospective_unexposed` with
+   `team_statement_pending`. The trials therefore carry `labels: ["prospective_unexposed"]`,
+   `team_statement_pending: true` and `confirmation_pending: true`.
+2. **Synthetic model error, implementation detail.** Each synthetic orbit is fitted at 30 of the
+   object's real training-exposure times, evenly spaced (the error is set by the time coverage, not
+   the count). The model error uses the mean evaluation time. Synthetic orbits keep e ≤ 0.6.
+3. **Batch trials are not mixed into the scoreboard's per-category counts.** They form a separate
+   `asteroid_batch` block (contract V13).

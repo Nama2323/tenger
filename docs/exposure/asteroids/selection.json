@@ -1,0 +1,1221 @@
+{
+ "rule": "docs/asteroid-batch.md (selection)",
+ "pool_size": 737,
+ "examined": [
+  {
+   "number": "328",
+   "name": "328 Gudrun (A892 FF)",
+   "H": 9.0,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "491",
+   "name": "491 Carina (A902 RG)",
+   "H": 9.0,
+   "class": "MBA",
+   "passes": true,
+   "reason": null,
+   "n_visits": 4,
+   "training_visits": [
+    {
+     "first_mjd": 60805.38217,
+     "last_mjd": 60833.30456,
+     "exposures": 104,
+     "median_v": 14.92
+    },
+    {
+     "first_mjd": 61088.02771,
+     "last_mjd": 61140.91186,
+     "exposures": 127,
+     "median_v": 15.35
+    },
+    {
+     "first_mjd": 61232.38017,
+     "last_mjd": 61243.10691,
+     "exposures": 111,
+     "median_v": 14.96
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61274.13197,
+    "last_mjd": 61275.55775,
+    "exposures": 8,
+    "window_exposures": 4,
+    "window_star_free": 4,
+    "chosen": [
+     {
+      "observationid": "2026W34_2A_0340_1",
+      "productid": "D5",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/5/level2_2026W34_2A_0340_1D5_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61274.131973669",
+      "mjd_end": "61274.133306047",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0340_1",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0340_1D2_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61274.131973681",
+      "mjd_end": "61274.133306059",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0341_1",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0341_1D2_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61274.133696863",
+      "mjd_end": "61274.135029242",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0341_1",
+      "productid": "D5",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/5/level2_2026W34_2A_0341_1D5_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61274.133696863",
+      "mjd_end": "61274.135029242",
+      "match": "1",
+      "star_check": "pass"
+     }
+    ],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "138",
+   "name": "138 Tolosa (A874 KA)",
+   "H": 9.01,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "1021",
+   "name": "1021 Flammario (A924 EW)",
+   "H": 9.01,
+   "class": "MBA",
+   "passes": true,
+   "reason": null,
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60873.58941,
+     "last_mjd": 60921.68921,
+     "exposures": 152,
+     "median_v": 14.83
+    },
+    {
+     "first_mjd": 61173.43265,
+     "last_mjd": 61189.79146,
+     "exposures": 117,
+     "median_v": 14.28
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61229.36537,
+    "last_mjd": 61229.50113,
+    "exposures": 4,
+    "window_exposures": 4,
+    "window_star_free": 4,
+    "chosen": [
+     {
+      "observationid": "2026W28_1A_0564_1",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W28_1A/l2b-v27-2026-275/6/level2_2026W28_1A_0564_1D6_spx_l2b-v27-2026-275.fits",
+      "mjd_start": "61229.365372801",
+      "mjd_end": "61229.366705179",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W28_1A_0564_1",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W28_1A/l2b-v27-2026-275/3/level2_2026W28_1A_0564_1D3_spx_l2b-v27-2026-275.fits",
+      "mjd_start": "61229.365372801",
+      "mjd_end": "61229.366705179",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W28_1A_0601_1",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W28_1A/l2b-v27-2026-275/6/level2_2026W28_1A_0601_1D6_spx_l2b-v27-2026-275.fits",
+      "mjd_start": "61229.501132465",
+      "mjd_end": "61229.502464844",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W28_1A_0601_1",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W28_1A/l2b-v27-2026-275/3/level2_2026W28_1A_0601_1D3_spx_l2b-v27-2026-275.fits",
+      "mjd_start": "61229.501132465",
+      "mjd_end": "61229.502464844",
+      "match": "1",
+      "star_check": "pass"
+     }
+    ],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "58",
+   "name": "58 Concordia (A860 FA)",
+   "H": 9.03,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "275",
+   "name": "275 Sapientia (A888 GB)",
+   "H": 9.03,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "363",
+   "name": "363 Padua (A893 FD)",
+   "H": 9.03,
+   "class": "MBA",
+   "passes": true,
+   "reason": null,
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60789.822,
+     "last_mjd": 60815.98685,
+     "exposures": 70,
+     "median_v": 14.51
+    },
+    {
+     "first_mjd": 61091.28453,
+     "last_mjd": 61141.6566,
+     "exposures": 147,
+     "median_v": 14.65
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61232.99734,
+    "last_mjd": 61286.01761,
+    "exposures": 144,
+    "window_exposures": 24,
+    "window_star_free": 16,
+    "chosen": [
+     {
+      "observationid": "2026W31_1B_0385_1",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/2/level2_2026W31_1B_0385_1D2_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.034774213",
+      "mjd_end": "61250.036106591",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W31_1B_0385_2",
+      "productid": "D5",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/5/level2_2026W31_1B_0385_2D5_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.036266481",
+      "mjd_end": "61250.03759886",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W31_1B_0385_2",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/2/level2_2026W31_1B_0385_2D2_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.036266481",
+      "mjd_end": "61250.03759886",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W31_1B_0385_3",
+      "productid": "D5",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/5/level2_2026W31_1B_0385_3D5_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.037758738",
+      "mjd_end": "61250.039091117",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W31_1B_0385_4",
+      "productid": "D5",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/5/level2_2026W31_1B_0385_4D5_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.039250995",
+      "mjd_end": "61250.040583374",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W31_1B_0463_1",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/4/level2_2026W31_1B_0463_1D4_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.444220567",
+      "mjd_end": "61250.445552946",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W31_1B_0463_2",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/1/level2_2026W31_1B_0463_2D1_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.445712836",
+      "mjd_end": "61250.447045214",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W31_1B_0463_3",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/4/level2_2026W31_1B_0463_3D4_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.447205081",
+      "mjd_end": "61250.448537459",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W31_1B_0463_3",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/1/level2_2026W31_1B_0463_3D1_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.447205081",
+      "mjd_end": "61250.448537459",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W31_1B_0463_4",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/4/level2_2026W31_1B_0463_4D4_spx_l2b-v27-2026-224.fits",
+      "mjd_start": "61250.448697361",
+      "mjd_end": "61250.45002974",
+      "match": "1",
+      "star_check": "pass"
+     }
+    ],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "403",
+   "name": "403 Cyane (A895 KA)",
+   "H": 9.03,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "558",
+   "name": "558 Carmen (A905 CK)",
+   "H": 9.03,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "714",
+   "name": "714 Ulula (A911 KG)",
+   "H": 9.03,
+   "class": "MBA",
+   "passes": true,
+   "reason": null,
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60790.40593,
+     "last_mjd": 60833.00376,
+     "exposures": 144,
+     "median_v": 14.46
+    },
+    {
+     "first_mjd": 60947.69649,
+     "last_mjd": 60991.23812,
+     "exposures": 147,
+     "median_v": 14.08
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61278.64917,
+    "last_mjd": 61300.09652,
+    "exposures": 149,
+    "window_exposures": 19,
+    "window_star_free": 15,
+    "chosen": [
+     {
+      "observationid": "2026W35_2A_0073_4",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/4/level2_2026W35_2A_0073_4D4_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61279.872376088",
+      "mjd_end": "61279.873708466",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W35_2A_0121_1",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/1/level2_2026W35_2A_0121_1D1_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61280.13865478",
+      "mjd_end": "61280.139987159",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W35_2A_0121_2",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/4/level2_2026W35_2A_0121_2D4_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61280.140147037",
+      "mjd_end": "61280.141479416",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W35_2A_0121_3",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/1/level2_2026W35_2A_0121_3D1_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61280.141639282",
+      "mjd_end": "61280.142971661",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W35_2A_0121_3",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/4/level2_2026W35_2A_0121_3D4_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61280.141639282",
+      "mjd_end": "61280.142971661",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W35_2A_0143_1",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/4/level2_2026W35_2A_0143_1D4_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61280.276208715",
+      "mjd_end": "61280.277541094",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W35_2A_0143_2",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/4/level2_2026W35_2A_0143_2D4_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61280.277700961",
+      "mjd_end": "61280.279033339",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W35_2A_0143_3",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/1/level2_2026W35_2A_0143_3D1_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61280.279193206",
+      "mjd_end": "61280.280525584",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W35_2A_0143_3",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/4/level2_2026W35_2A_0143_3D4_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61280.279193206",
+      "mjd_end": "61280.280525584",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W35_2A_0143_4",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W35_2A/l2b-v27-2026-246/1/level2_2026W35_2A_0143_4D1_spx_l2b-v27-2026-246.fits",
+      "mjd_start": "61280.280685475",
+      "mjd_end": "61280.282017853",
+      "match": "1",
+      "star_check": "pass"
+     }
+    ],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "73",
+   "name": "73 Klytia (A862 GA)",
+   "H": 9.04,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "345",
+   "name": "345 Tercidina (A892 WB)",
+   "H": 9.04,
+   "class": "MBA",
+   "passes": true,
+   "reason": null,
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60796.28001,
+     "last_mjd": 60833.78101,
+     "exposures": 115,
+     "median_v": 13.41
+    },
+    {
+     "first_mjd": 61148.78746,
+     "last_mjd": 61171.12621,
+     "exposures": 144,
+     "median_v": 14.07
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61296.7976,
+    "last_mjd": 61317.70694,
+    "exposures": 122,
+    "window_exposures": 24,
+    "window_star_free": 6,
+    "chosen": [
+     {
+      "observationid": "2026W39_2A_0167_1",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W39_2A/l2b-v27-2026-271/3/level2_2026W39_2A_0167_1D3_spx_l2b-v27-2026-271.fits",
+      "mjd_start": "61308.269453935",
+      "mjd_end": "61308.270786314",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W39_2A_0167_1",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W39_2A/l2b-v27-2026-271/6/level2_2026W39_2A_0167_1D6_spx_l2b-v27-2026-271.fits",
+      "mjd_start": "61308.269453935",
+      "mjd_end": "61308.270786314",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W39_2A_0167_2",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W39_2A/l2b-v27-2026-271/3/level2_2026W39_2A_0167_2D3_spx_l2b-v27-2026-271.fits",
+      "mjd_start": "61308.270946192",
+      "mjd_end": "61308.272278571",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W39_2A_0167_2",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W39_2A/l2b-v27-2026-271/6/level2_2026W39_2A_0167_2D6_spx_l2b-v27-2026-271.fits",
+      "mjd_start": "61308.270946192",
+      "mjd_end": "61308.272278571",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W39_2A_0167_3",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W39_2A/l2b-v27-2026-271/6/level2_2026W39_2A_0167_3D6_spx_l2b-v27-2026-271.fits",
+      "mjd_start": "61308.272438449",
+      "mjd_end": "61308.273770828",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W39_2A_0167_3",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W39_2A/l2b-v27-2026-271/3/level2_2026W39_2A_0167_3D3_spx_l2b-v27-2026-271.fits",
+      "mjd_start": "61308.272438461",
+      "mjd_end": "61308.273770839",
+      "match": "1",
+      "star_check": "pass"
+     }
+    ],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "774",
+   "name": "774 Armor (A913 YE)",
+   "H": 9.04,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "1093",
+   "name": "1093 Freda (1925 LA)",
+   "H": 9.04,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "447",
+   "name": "447 Valentine (A899 UD)",
+   "H": 9.05,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "186",
+   "name": "186 Celuta (A878 GA)",
+   "H": 9.07,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "286",
+   "name": "286 Iclea (A889 PB)",
+   "H": 9.07,
+   "class": "MBA",
+   "passes": true,
+   "reason": null,
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60871.82198,
+     "last_mjd": 60884.39394,
+     "exposures": 117,
+     "median_v": 14.73
+    },
+    {
+     "first_mjd": 60920.53619,
+     "last_mjd": 60921.55307,
+     "exposures": 4,
+     "median_v": 15.23
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61166.5101,
+    "last_mjd": 61214.97481,
+    "exposures": 92,
+    "window_exposures": 37,
+    "window_star_free": 23,
+    "chosen": [
+     {
+      "observationid": "2026W20_2A_0272_1",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/2/level2_2026W20_2A_0272_1D2_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61176.212297708",
+      "mjd_end": "61176.213630087",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W20_2A_0292_3",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/1/level2_2026W20_2A_0292_3D1_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61176.35148603",
+      "mjd_end": "61176.352818409",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W20_2A_0292_4",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/1/level2_2026W20_2A_0292_4D1_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61176.352978299",
+      "mjd_end": "61176.354310677",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W20_2A_0389_1",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/3/level2_2026W20_2A_0389_1D3_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61176.958069954",
+      "mjd_end": "61176.959402332",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W20_2A_0389_3",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/3/level2_2026W20_2A_0389_3D3_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61176.961054468",
+      "mjd_end": "61176.962386846",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W20_2A_0400_2",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/3/level2_2026W20_2A_0400_2D3_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61177.02953831",
+      "mjd_end": "61177.030870689",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W20_2A_0420_1",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/6/level2_2026W20_2A_0420_1D6_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61177.163752442",
+      "mjd_end": "61177.165084821",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W20_2A_0420_2",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/6/level2_2026W20_2A_0420_2D6_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61177.165244688",
+      "mjd_end": "61177.166577066",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W20_2A_0420_3",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/3/level2_2026W20_2A_0420_3D3_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61177.166736956",
+      "mjd_end": "61177.168069334",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W20_2A_0420_4",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W20_2A/l2b-v27-2026-267/3/level2_2026W20_2A_0420_4D3_spx_l2b-v27-2026-267.fits",
+      "mjd_start": "61177.168229201",
+      "mjd_end": "61177.16956158",
+      "match": "1",
+      "star_check": "pass"
+     }
+    ],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "432",
+   "name": "432 Pythia (A897 YC)",
+   "H": 9.07,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "914",
+   "name": "914 Palisana (A919 NC)",
+   "H": 9.07,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "72",
+   "name": "72 Feronia (A861 KA)",
+   "H": 9.08,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "182",
+   "name": "182 Elsa (A878 CC)",
+   "H": 9.08,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 4 star-free evaluation exposures",
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60827.53185,
+     "last_mjd": 60875.63289,
+     "exposures": 126,
+     "median_v": 14.24
+    },
+    {
+     "first_mjd": 61144.30692,
+     "last_mjd": 61173.63512,
+     "exposures": 150,
+     "median_v": 14.45
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61287.57497,
+    "last_mjd": 61310.64848,
+    "exposures": 115,
+    "window_exposures": 23,
+    "window_star_free": 0,
+    "chosen": [],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "303",
+   "name": "303 Josephina (A891 CA)",
+   "H": 9.08,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "335",
+   "name": "335 Roberta (A892 RB)",
+   "H": 9.08,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "431",
+   "name": "431 Nephele (A897 YB)",
+   "H": 9.08,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "162",
+   "name": "162 Laurentia (A876 HB)",
+   "H": 9.09,
+   "class": "MBA",
+   "passes": true,
+   "reason": null,
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60834.70097,
+     "last_mjd": 60874.58066,
+     "exposures": 141,
+     "median_v": 15.59
+    },
+    {
+     "first_mjd": 60995.51402,
+     "last_mjd": 61018.66625,
+     "exposures": 134,
+     "median_v": 15.33
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61269.8963,
+    "last_mjd": 61280.7548,
+    "exposures": 136,
+    "window_exposures": 26,
+    "window_star_free": 18,
+    "chosen": [
+     {
+      "observationid": "2026W34_2A_0215_1",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0215_1D2_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61273.554115799",
+      "mjd_end": "61273.555448177",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0215_2",
+      "productid": "D5",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/5/level2_2026W34_2A_0215_2D5_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61273.555608056",
+      "mjd_end": "61273.556940434",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0215_3",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0215_3D2_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61273.557100312",
+      "mjd_end": "61273.558432691",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0229_1",
+      "productid": "D5",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/5/level2_2026W34_2A_0229_1D5_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61273.622155509",
+      "mjd_end": "61273.623487888",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0229_2",
+      "productid": "D5",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/5/level2_2026W34_2A_0229_2D5_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61273.623647755",
+      "mjd_end": "61273.624980133",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0229_2",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0229_2D2_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61273.623647755",
+      "mjd_end": "61273.624980133",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0229_3",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0229_3D2_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61273.625140023",
+      "mjd_end": "61273.626472402",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0229_4",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0229_4D2_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61273.62663228",
+      "mjd_end": "61273.627964659",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0347_1",
+      "productid": "D2",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0347_1D2_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61274.16528294",
+      "mjd_end": "61274.166615318",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W34_2A_0347_2",
+      "productid": "D5",
+      "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/5/level2_2026W34_2A_0347_2D5_spx_l2b-v27-2026-243.fits",
+      "mjd_start": "61274.166775197",
+      "mjd_end": "61274.168107575",
+      "match": "1",
+      "star_check": "pass"
+     }
+    ],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "191",
+   "name": "191 Kolga (A878 SB)",
+   "H": 9.09,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "213",
+   "name": "213 Lilaea (A880 DA)",
+   "H": 9.09,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "160",
+   "name": "160 Una (A876 DA)",
+   "H": 9.1,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 4 star-free evaluation exposures",
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60807.48985,
+     "last_mjd": 60833.50905,
+     "exposures": 109,
+     "median_v": 14.23
+    },
+    {
+     "first_mjd": 61122.78351,
+     "last_mjd": 61172.13716,
+     "exposures": 163,
+     "median_v": 14.73
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61268.16274,
+    "last_mjd": 61317.78094,
+    "exposures": 136,
+    "window_exposures": 23,
+    "window_star_free": 0,
+    "chosen": [],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "362",
+   "name": "362 Havnia (A893 EG)",
+   "H": 9.1,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "379",
+   "name": "379 Huenna (A894 AA)",
+   "H": 9.1,
+   "class": "MBA",
+   "passes": true,
+   "reason": null,
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60818.0565,
+     "last_mjd": 60837.89281,
+     "exposures": 125,
+     "median_v": 14.48
+    },
+    {
+     "first_mjd": 60989.67129,
+     "last_mjd": 61019.34791,
+     "exposures": 142,
+     "median_v": 14.16
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61299.62354,
+    "last_mjd": 61310.75429,
+    "exposures": 140,
+    "window_exposures": 30,
+    "window_star_free": 12,
+    "chosen": [
+     {
+      "observationid": "2026W38_2A_0568_1",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W38_2A/l2b-v27-2026-264/4/level2_2026W38_2A_0568_1D4_spx_l2b-v27-2026-264.fits",
+      "mjd_start": "61303.218615475",
+      "mjd_end": "61303.219947853",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W38_2A_0568_1",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W38_2A/l2b-v27-2026-264/1/level2_2026W38_2A_0568_1D1_spx_l2b-v27-2026-264.fits",
+      "mjd_start": "61303.218615475",
+      "mjd_end": "61303.219947853",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W38_2A_0568_2",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W38_2A/l2b-v27-2026-264/4/level2_2026W38_2A_0568_2D4_spx_l2b-v27-2026-264.fits",
+      "mjd_start": "61303.22010772",
+      "mjd_end": "61303.221440098",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W38_2A_0568_3",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W38_2A/l2b-v27-2026-264/1/level2_2026W38_2A_0568_3D1_spx_l2b-v27-2026-264.fits",
+      "mjd_start": "61303.221599977",
+      "mjd_end": "61303.222932355",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W38_2A_0568_3",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W38_2A/l2b-v27-2026-264/4/level2_2026W38_2A_0568_3D4_spx_l2b-v27-2026-264.fits",
+      "mjd_start": "61303.221599988",
+      "mjd_end": "61303.222932367",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W38_2A_0568_4",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W38_2A/l2b-v27-2026-264/4/level2_2026W38_2A_0568_4D4_spx_l2b-v27-2026-264.fits",
+      "mjd_start": "61303.223092222",
+      "mjd_end": "61303.224424601",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W38_2A_0568_4",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W38_2A/l2b-v27-2026-264/1/level2_2026W38_2A_0568_4D1_spx_l2b-v27-2026-264.fits",
+      "mjd_start": "61303.223092234",
+      "mjd_end": "61303.224424612",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W39_1A_0010_1",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W39_1A/l2b-v27-2026-268/4/level2_2026W39_1A_0010_1D4_spx_l2b-v27-2026-268.fits",
+      "mjd_start": "61304.034754479",
+      "mjd_end": "61304.036086858",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W39_1A_0010_2",
+      "productid": "D1",
+      "uri": "ibe/data/spherex/qr3/level2/2026W39_1A/l2b-v27-2026-268/1/level2_2026W39_1A_0010_2D1_spx_l2b-v27-2026-268.fits",
+      "mjd_start": "61304.036246748",
+      "mjd_end": "61304.037579126",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W39_1A_0010_2",
+      "productid": "D4",
+      "uri": "ibe/data/spherex/qr3/level2/2026W39_1A/l2b-v27-2026-268/4/level2_2026W39_1A_0010_2D4_spx_l2b-v27-2026-268.fits",
+      "mjd_start": "61304.036246748",
+      "mjd_end": "61304.037579126",
+      "match": "1",
+      "star_check": "pass"
+     }
+    ],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  },
+  {
+   "number": "402",
+   "name": "402 Chloe (A895 FB)",
+   "H": 9.1,
+   "class": "MBA",
+   "passes": false,
+   "reason": "fewer than 3 visits",
+   "n_visits": 2
+  },
+  {
+   "number": "456",
+   "name": "456 Abnoba (A900 LA)",
+   "H": 9.1,
+   "class": "MBA",
+   "passes": true,
+   "reason": null,
+   "n_visits": 3,
+   "training_visits": [
+    {
+     "first_mjd": 60790.3707,
+     "last_mjd": 60833.44279,
+     "exposures": 95,
+     "median_v": 13.91
+    },
+    {
+     "first_mjd": 61152.7933,
+     "last_mjd": 61162.57172,
+     "exposures": 100,
+     "median_v": 14.11
+    }
+   ],
+   "evaluation_visit": {
+    "first_mjd": 61309.28707,
+    "last_mjd": 61316.5512,
+    "exposures": 31,
+    "window_exposures": 16,
+    "window_star_free": 8,
+    "chosen": [
+     {
+      "observationid": "2026W40_2A_0279_1",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/6/level2_2026W40_2A_0279_1D6_spx_l2b-v27-2026-285.fits",
+      "mjd_start": "61315.733375498",
+      "mjd_end": "61315.734707876",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W40_2A_0279_1",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/3/level2_2026W40_2A_0279_1D3_spx_l2b-v27-2026-285.fits",
+      "mjd_start": "61315.733375498",
+      "mjd_end": "61315.734707876",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W40_2A_0279_2",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/6/level2_2026W40_2A_0279_2D6_spx_l2b-v27-2026-285.fits",
+      "mjd_start": "61315.734867755",
+      "mjd_end": "61315.736200133",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W40_2A_0279_2",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/3/level2_2026W40_2A_0279_2D3_spx_l2b-v27-2026-285.fits",
+      "mjd_start": "61315.734867755",
+      "mjd_end": "61315.736200133",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W40_2A_0279_3",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/6/level2_2026W40_2A_0279_3D6_spx_l2b-v27-2026-285.fits",
+      "mjd_start": "61315.736377766",
+      "mjd_end": "61315.737710145",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W40_2A_0279_3",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/3/level2_2026W40_2A_0279_3D3_spx_l2b-v27-2026-285.fits",
+      "mjd_start": "61315.736377766",
+      "mjd_end": "61315.737710145",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W40_2A_0279_4",
+      "productid": "D6",
+      "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/6/level2_2026W40_2A_0279_4D6_spx_l2b-v27-2026-285.fits",
+      "mjd_start": "61315.737870023",
+      "mjd_end": "61315.739202402",
+      "match": "1",
+      "star_check": "pass"
+     },
+     {
+      "observationid": "2026W40_2A_0279_4",
+      "productid": "D3",
+      "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/3/level2_2026W40_2A_0279_4D3_spx_l2b-v27-2026-285.fits",
+      "mjd_start": "61315.737870023",
+      "mjd_end": "61315.739202402",
+      "match": "1",
+      "star_check": "pass"
+     }
+    ],
+    "star_check_note": "computed blind: positions were used only in memory; only pass/fail is kept"
+   }
+  }
+ ],
+ "selected": [
+  "491",
+  "1021",
+  "363",
+  "714",
+  "345",
+  "286",
+  "162",
+  "379"
+ ],
+ "generated_utc": "2026-11-14T18:55:18Z"
+}
