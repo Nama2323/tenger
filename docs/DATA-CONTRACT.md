@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 4 | 2026-11-14 | Additive (Task A3). Brightness game round shape (`quantity: "brightness"`), confirmed with Session B. |
 | 3 | 2026-11-14 | Additive (Task A3). Real investigation fields (provenance, quality gate, epochs mapped to viewer frames and previews, graded comparisons, astrometry and photometry blocks), `reserved.json`, `strings.en.json`, index additions. `schema_version` majors unchanged. |
 | 2 | 2026-11-14 | Additive (Task A2). Live/bake frame metadata fields, flag mask policy, comparison and measurement reason keys, the comparison rule for the viewer. Version 1 file kinds and their `schema_version` values are unchanged. |
 
@@ -551,3 +552,21 @@ Same binary format as before. A3 rebuilt it for the challenge targets from the i
 usable exposures (DR1/QR3, `tenger-mask-v1` masks, frames at least 92% covered, at most 240). Frame
 objects carry the V2.1 fields. `meta.json` gains `dataset_version`. `wise` and `thumbs` are carried
 over from the previous bundle (AllWISE context, unchanged).
+
+---
+
+# Version 4 (additive, 14 Nov 2026): brightness game rounds
+
+A game round (V1 §11) may have `"quantity": "brightness"`. Then:
+
+| Field | Shape |
+|---|---|
+| `units` | `"mag_ab"`, `"ujy"` or `"ratio"` (a brightness ratio to a stated reference date) |
+| `training_points[]` | `{"t_mjd", "value", "sigma" (or null), "content_type": "measured"}` |
+| `baseline`, `model` | `{"value"}`; `model` may add `"sigma"` |
+| `actual` | `{"value", "sigma" (or null), "image"}`; `image` is `null`, a path string, or `{"path", "content_type"}` |
+| `scoring` | `exp_decay_v1` as in V1 §11, with `error = |guess - actual.value|` in `units` |
+
+Smaller magnitudes mean brighter; a reader must not assume larger is brighter when `units` is
+`mag_ab`. Values come from a trial's frozen prediction and its verification, with `derived_from`
+hashes, exactly as for position rounds.
