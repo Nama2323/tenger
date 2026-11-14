@@ -2,7 +2,7 @@
   "schema_version": "tenger.site_index/1",
   "contract_version": 3,
   "dataset_version": "a3-2026-11-14",
-  "generated_utc": "2026-11-14T13:39:44Z",
+  "generated_utc": "2026-11-14T13:51:22Z",
   "targets": [
     {
       "key": "barnard",
@@ -56,23 +56,41 @@
       "name_key": "target.wise0855.name",
       "role": "challenge",
       "kind": "browndwarf",
-      "reference": null,
-      "footprint": null,
-      "data_status": "unavailable",
-      "measurement_status": null,
-      "investigation_path": null,
-      "thumbnails": [],
-      "status_reason_key": "unavailable.no-validated-product",
+      "reference": {
+        "ra_deg": 133.78251216473433,
+        "dec_deg": -7.244056000000001,
+        "epoch_jyear": 2016.0,
+        "pmra_mas_yr": -8123.7,
+        "pmdec_mas_yr": 673.2,
+        "source": "SIMBAD via simbad.cfa.harvard.edu: position 2021ApJS..253....7K, motion 2021ApJS..253....7K, parallax 2021ApJS..253....7K; moved to 2016.0"
+      },
+      "footprint": {
+        "centre_ra_deg": 133.759529,
+        "centre_dec_deg": -7.242222,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "measurement_status": "insufficient_data",
+      "investigation_path": "wise0855/investigation.json",
+      "thumbnails": [
+        {
+          "path": "wise0855/epochs/v2-d6.webp",
+          "content_type": "processed",
+          "label_key": "thumb.spherex",
+          "epoch_id": "v2-d6",
+          "time_utc": null
+        }
+      ],
       "prediction": {
         "status": null,
         "trial_ids": []
       },
       "map": {
         "distance": {
-          "value": 2.278,
+          "value": 2.2779,
           "unit": "pc",
           "kind": "parallax_distance",
-          "source": "SIMBAD parallax 439.0 mas (2021ApJS..253....7K) via simbad.cfa.harvard.edu"
+          "source": "SIMBAD via simbad.cfa.harvard.edu: position 2021ApJS..253....7K, motion 2021ApJS..253....7K, parallax 2021ApJS..253....7K; moved to 2016.0 parallax 439.0 mas"
         },
         "angle_deg": 65.0,
         "angle_is_arbitrary": true

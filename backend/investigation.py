@@ -29,6 +29,13 @@ CONTROL_TARGET_CLEARANCE_ARCSEC = 60.0
 CONTROL_MAX_STARS = 30
 CONTROL_MIN_EPOCH_POINTS = 4
 CONTROL_PASS_Z = 3.0
+# A fitted position counts as the catalogue source only within this distance of its
+# catalogue track (catalogue-assisted identification, documented as such).
+IDENTIFICATION_GATE_ARCSEC = 3.0
+# Another catalogued source this close (but not a blended companion) contaminates the fit.
+CONTAMINATION_RADIUS_ARCSEC = 12.0
+COMPANION_RADIUS_ARCSEC = 2.0
+CONTAMINANT_DELTA_MAG = 5.0
 CODE_FILES = (
     "backend/processing.py", "backend/flags.py", "backend/spectral.py", "backend/astrometry.py",
     "backend/investigation.py", "scripts/build_investigation.py",
@@ -236,12 +243,13 @@ def _field_grade(source: dict, records: dict, gradients: dict, detector: int) ->
 # ---------------------------------------------------------------- astrometry and photometry
 
 
-def isolated_control_stars(stars: list[dict], target: dict | None) -> list[dict]:
+def isolated_control_stars(stars: list[dict], target: dict | None, min_g: float = CONTROL_MIN_G,
+                           max_g: float = CONTROL_MAX_G, limit: int = CONTROL_MAX_STARS) -> list[dict]:
     """Gaia stars for the control: moderate brightness, isolated, away from the target."""
     chosen = []
     for star in sorted(stars, key=lambda item: item["phot_g_mean_mag"] or 99):
         g = star.get("phot_g_mean_mag")
-        if g is None or not (CONTROL_MIN_G <= g <= CONTROL_MAX_G) or star.get("pmra") is None:
+        if g is None or not (min_g <= g <= max_g) or star.get("pmra") is None:
             continue
         if target and _sep_arcsec(star, target) < CONTROL_TARGET_CLEARANCE_ARCSEC:
             continue
@@ -252,7 +260,7 @@ def isolated_control_stars(stars: list[dict], target: dict | None) -> list[dict]
         )
         if not crowded:
             chosen.append(star)
-        if len(chosen) >= CONTROL_MAX_STARS:
+        if len(chosen) >= limit:
             break
     return chosen
 
@@ -267,15 +275,51 @@ def catalogue_position(star: dict, mjd: float) -> tuple[float, float]:
     return propagate(star["ra"], star["dec"], star.get("pmra") or 0.0, star.get("pmdec") or 0.0, 2016.0, mjd)
 
 
-def track(exposures: list[Exposure], star: dict) -> list[dict]:
-    """Measure one catalogue star in every exposure; returns per-exposure results."""
+def nearest_contaminant(star: dict, field: list[dict] | None, mjd: float) -> dict | None:
+    """The closest other catalogued source that could spoil a fit or an aperture at this time."""
+    if not field:
+        return None
+    ra, dec = catalogue_position(star, mjd)
+    here = {"ra": ra, "dec": dec}
+    limit = (star.get("phot_g_mean_mag") or 99.0) + CONTAMINANT_DELTA_MAG
+    best = None
+    for other in field:
+        if other.get("source_id") and other.get("source_id") == star.get("source_id"):
+            continue
+        if (other.get("phot_g_mean_mag") or 99.0) > limit:
+            continue
+        other_ra, other_dec = catalogue_position(other, mjd)
+        separation = _sep_arcsec({"ra": other_ra, "dec": other_dec}, here)
+        if COMPANION_RADIUS_ARCSEC < separation <= CONTAMINATION_RADIUS_ARCSEC and (best is None or separation < best["arcsec"]):
+            best = {"arcsec": round(separation, 2), "g_mag": other.get("phot_g_mean_mag"), "source_id": other.get("source_id")}
+    return best
+
+
+def track(exposures: list[Exposure], star: dict, field: list[dict] | None = None) -> list[dict]:
+    """Measure one catalogue star in every exposure; returns per-exposure results.
+
+    A fit counts as this source ("identified") only within IDENTIFICATION_GATE_ARCSEC of
+    its catalogue track and with no other catalogued source within CONTAMINATION_RADIUS_ARCSEC.
+    """
     results = []
     for exposure in exposures:
         mjd = exposure_mid_mjd(exposure)
         guess = catalogue_position(star, mjd)
         position, wing = measure_position(exposure.product, *guess)
+        contaminant = nearest_contaminant(star, field, mjd)
+        offset = None
+        if position.status == "measured":
+            east, north = astrometry.tangent_offsets_arcsec(guess[0], guess[1], position.ra_deg, position.dec_deg)
+            offset = math.hypot(east, north)
+        identified = position.status == "measured" and offset <= IDENTIFICATION_GATE_ARCSEC and contaminant is None
+        reason = None
+        if position.status == "measured" and not identified:
+            reason = "measure.contaminated" if contaminant else "measure.not-target"
         results.append({"obs_key": exposure.meta["obsKey"], "mjd": mjd, "detector": exposure.meta["detector"],
                         "visit": exposure.meta["visit"], "position": position, "wing_fit": wing,
+                        "identified": identified, "identification_reason_key": reason,
+                        "offset_from_catalogue_arcsec": round(offset, 3) if offset is not None else None,
+                        "contaminant": contaminant,
                         "observer_au": astrometry.observer_barycentric_au(mjd, spacecraft_km(exposure.product))})
     return results
 
@@ -284,7 +328,7 @@ def motion_points(results: list[dict], ra0: float, dec0: float) -> list[astromet
     points = []
     for item in results:
         position = item["position"]
-        if position.status != "measured":
+        if position.status != "measured" or not item.get("identified", True):
             continue
         east, north = astrometry.tangent_offsets_arcsec(ra0, dec0, position.ra_deg, position.dec_deg)
         points.append(astrometry.Point(item["mjd"], east, north, np.array(position.cov_arcsec2), item["observer_au"]))
@@ -308,7 +352,7 @@ def residual_floor(control_results: dict[str, list[dict]], stars: dict[str, dict
         star = stars[source_id]
         for item in results:
             position = item["position"]
-            if position.status != "measured":
+            if position.status != "measured" or not item.get("identified", True):
                 continue
             ra_c, dec_c = catalogue_position(star, item["mjd"])
             plx = (star.get("parallax") or 0.0) / 1000

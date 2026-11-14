@@ -47,7 +47,12 @@ PLATE_SCALE_ARCSEC = 3.0
 MAX_PLATE_PIXELS = 160
 MJY_SR_TO_UJY_PER_SR = 1e12
 MJY_TO_UJY = 1e12
-APERTURE_RADIUS_ARCSEC = 7.0
+APERTURE_RADIUS_ARCSEC = 7.0  # display-plate quick look (aperture_flux)
+# Native photometry: a 12 arcsec radius holds about 99% of a 9 arcsec FWHM Gaussian, and
+# pixels are weighted by the fraction of their area inside the circle (7 x 7 sub-samples),
+# so the result does not jump with the star's position inside a 6.15 arcsec pixel.
+NATIVE_APERTURE_ARCSEC = 12.0
+SUBSAMPLES = 7
 ANNULUS_ARCSEC = (24.0, 42.0)
 NATIVE_PIXEL_ARCSEC = 6.15
 MIN_ANNULUS_PIXELS = 5
@@ -247,14 +252,14 @@ def native_aperture_photometry(
     product: NativeProduct,
     ra: float,
     dec: float,
-    radius_arcsec: float = APERTURE_RADIUS_ARCSEC,
+    radius_arcsec: float = NATIVE_APERTURE_ARCSEC,
     annulus_arcsec: tuple[float, float] = ANNULUS_ARCSEC,
 ) -> dict:
     """Aperture flux (uJy) on the original pixels, with VARIANCE-propagated uncertainty.
 
-    Whole pixels whose centres fall inside the circle are summed after removing the
-    ZODI model and the median of the unflagged annulus. Any rejected pixel inside the
-    aperture makes the result ``insufficient_data``; it is never silently filled.
+    Each pixel counts with the fraction of its area inside the circle, after removing
+    the ZODI model and the median of the unflagged annulus. Any rejected pixel touching
+    the aperture makes the result ``insufficient_data``; it is never silently filled.
     """
     x0, y0 = product.wcs.all_world2pix(ra, dec, 0)
     height, width = product.image.shape
@@ -270,7 +275,8 @@ def native_aperture_photometry(
     rows, cols = np.mgrid[:height, :width]
     ra_px, dec_px = product.wcs.all_pix2world(cols, rows, 0)
     separation = _separation_arcsec(ra, dec, ra_px, dec_px)
-    aperture = separation <= radius_arcsec
+    weight = _aperture_weights(product, float(x0), float(y0), radius_arcsec)
+    aperture = weight > 0
     annulus = (separation >= annulus_arcsec[0]) & (separation <= annulus_arcsec[1]) & ~product.reject
     result["n_aperture"] = int(aperture.sum())
     result["n_annulus"] = int(annulus.sum())
@@ -290,15 +296,34 @@ def native_aperture_photometry(
     background = float(np.median(corrected[annulus]))
     background_variance = MEDIAN_VARIANCE_FACTOR * float(variance[annulus].sum()) / annulus.sum() ** 2
     omega = proj_plane_pixel_area(product.wcs) * (math.pi / 180) ** 2  # sr per pixel
-    n_ap = int(aperture.sum())
-    flux = (float(corrected[aperture].sum()) - n_ap * background) * omega * MJY_TO_UJY
-    flux_variance = (float(variance[aperture].sum()) + n_ap**2 * background_variance) * omega**2
+    area = float(weight.sum())
+    flux = (float((weight * corrected)[aperture].sum()) - area * background) * omega * MJY_TO_UJY
+    flux_variance = (float((weight**2 * variance)[aperture].sum()) + area**2 * background_variance) * omega**2
     result.update(
         status="measured", reason_key=None, flux_ujy=flux,
         sigma_ujy=math.sqrt(flux_variance) * MJY_TO_UJY, background_mjy_sr=background,
-        pixel_sr=omega,
+        pixel_sr=omega, aperture_pixels=round(area, 3), radius_arcsec=radius_arcsec,
     )
     return result
+
+
+def _aperture_weights(product: NativeProduct, x0: float, y0: float, radius_arcsec: float) -> np.ndarray:
+    """Fraction of each pixel's area inside the circle (local pixel scale, sub-sampled)."""
+    corners = product.wcs.all_pix2world([[x0, y0], [x0 + 1, y0], [x0, y0 + 1]], 0)
+    cos_dec = math.cos(math.radians(corners[0][1]))
+    scale_x = math.hypot((corners[1][0] - corners[0][0]) * cos_dec, corners[1][1] - corners[0][1]) * 3600
+    scale_y = math.hypot((corners[2][0] - corners[0][0]) * cos_dec, corners[2][1] - corners[0][1]) * 3600
+    height, width = product.image.shape
+    offsets = (np.arange(SUBSAMPLES) + 0.5) / SUBSAMPLES - 0.5
+    sub_x, sub_y = np.meshgrid(offsets, offsets)
+    weight = np.zeros((height, width))
+    reach_x, reach_y = radius_arcsec / scale_x + 1, radius_arcsec / scale_y + 1
+    for row in range(max(0, int(y0 - reach_y)), min(height, int(y0 + reach_y) + 2)):
+        for col in range(max(0, int(x0 - reach_x)), min(width, int(x0 + reach_x) + 2)):
+            dx = (col + sub_x - x0) * scale_x
+            dy = (row + sub_y - y0) * scale_y
+            weight[row, col] = float(np.mean(dx**2 + dy**2 <= radius_arcsec**2))
+    return weight
 
 
 def _separation_arcsec(ra: float, dec: float, ra_px: np.ndarray, dec_px: np.ndarray) -> np.ndarray:

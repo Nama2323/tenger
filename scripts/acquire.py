@@ -16,6 +16,9 @@ from backend.jobs import Job
 from backend.presets import ALL_TARGETS
 
 ALLOWED = {"barnard", "wise0855", "epsindib", "rwaur", "rdra"}
+# R Draconis sits in a deep field with about 2,500 exposures; take an even sample in time per array.
+LIMITS = {"rdra": 300}
+DEFAULT_LIMIT = 100000
 
 
 def acquire(key: str, limit: int) -> dict:
@@ -34,7 +37,7 @@ def acquire(key: str, limit: int) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("key")
-    parser.add_argument("--limit", type=int, default=100000)
+    parser.add_argument("--limit", type=int, default=None)
     args = parser.parse_args()
-    result = acquire(args.key, args.limit)
+    result = acquire(args.key, args.limit or LIMITS.get(args.key, DEFAULT_LIMIT))
     sys.exit(0 if result["status"] == "done" else 1)

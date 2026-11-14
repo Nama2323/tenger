@@ -23,6 +23,7 @@ STRINGS = {
     # explanations
     "explain.motion-measured": "SPHEREx positions from {n_points} exposures over {days} days give a proper motion of {value} ± {sigma} arcsec per year. Gaia DR3 lists {catalogue} arcsec per year.",
     "explain.motion-insufficient": "The SPHEREx exposures here do not give enough clean positions to measure the motion.",
+    "explain.motion-contaminated": "The target's light overlaps a catalogued neighbour star (G {neighbour_g_mag}, about {neighbour_arcsec} arcsec away) in {n_contaminated} pictures, so no motion is reported.",
     "explain.control": "Check: {n_stars} ordinary field stars were measured the same way and compared with Gaia. Share that agree within the 95% region: {fraction}.",
     "explain.brightness-measured": "In matching wavelengths the star was {value} times as bright on date B as on date A (± {sigma}).",
     "explain.brightness-insufficient": "No pair of dates has the same wavelength and clean pixels at the star, so no brightness change is reported.",
@@ -45,6 +46,9 @@ STRINGS = {
     "limit.official-table-positions": "Pictures are centred on the comet positions given in the official SPHEREx exposure table.",
     "limit.see-only": "For looking only: no measurement or prediction is made for this target.",
     "limit.joint-fit-epochs": "The body is too faint for single pictures; each date's position comes from one fit to all its pictures together.",
+    "limit.identification-gate": "A position counts only within 3 arcsec of the catalogue track and with no other catalogued source within 12 arcsec.",
+    "limit.photometric-floor": "Brightness errors include the scatter seen between pictures taken on the same date.",
+    "limit.differential-photometry": "Brightness ratios are divided by the median ratio of ordinary field stars on the same dates.",
     "limit.aperture-whole-pixels": "Brightness is summed over whole pixels inside a circle.",
     "limit.wcs-wave-approximate": "Wavelengths come from the approximate lookup table in each file (about 1 nm).",
     "limit.ephemeris-guided": "Cutouts follow the JPL Horizons ephemeris (catalogue-assisted).",
@@ -74,6 +78,10 @@ STRINGS = {
     "measure.fit-at-bound": "The star model hit a limit; the position is not trusted.",
     "measure.too-few-epochs": "Too few positions for a motion fit.",
     "measure.baseline-too-short": "The dates span too short a time for a motion fit.",
+    "measure.not-target": "The fitted source is more than 3 arcsec from where the catalogue puts the target, so it is not counted.",
+    "measure.contaminated": "Another catalogued source lies within 12 arcsec and could spoil this measurement.",
+    "measure.repeatability-unknown": "Too few same-date picture pairs to check how repeatable the brightness is.",
+    "measure.no-photometric-control": "Too few comparison stars with matching wavelengths on both dates to check the brightness scale.",
     "measure.null-test-failed": "A check with shuffled times also found a signal (likely a star), so this is not counted.",
     "measure.no-measured-matched-pair": "No matching-wavelength pair with clean pixels at the star.",
     # quality gate

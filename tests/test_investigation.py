@@ -114,3 +114,26 @@ def test_control_stars_are_isolated_and_away_from_the_target():
     ]
     chosen = [star["source_id"] for star in inv.isolated_control_stars(stars, target)]
     assert chosen == ["ok"]
+
+
+def test_contamination_ignores_companions_and_faint_sources_but_flags_a_close_neighbour():
+    target = {"source_id": "t", "ra": 10.0, "dec": 0.0, "pmra": 0.0, "pmdec": 0.0, "phot_g_mean_mag": 12.0}
+    companion = {"source_id": "c", "ra": 10.0 + 1.2 / 3600, "dec": 0.0, "pmra": 0.0, "pmdec": 0.0, "phot_g_mean_mag": 12.5}
+    faint = {"source_id": "f", "ra": 10.0, "dec": 5 / 3600, "pmra": 0.0, "pmdec": 0.0, "phot_g_mean_mag": 18.0}
+    assert inv.nearest_contaminant(target, [target, companion, faint], 61000.0) is None
+    neighbour = {"source_id": "n", "ra": 10.0, "dec": 6 / 3600, "pmra": 0.0, "pmdec": 0.0, "phot_g_mean_mag": 15.0}
+    found = inv.nearest_contaminant(target, [target, companion, faint, neighbour], 61000.0)
+    assert found["source_id"] == "n" and abs(found["arcsec"] - 6.0) < 0.01
+
+
+def test_a_fit_far_from_the_catalogue_track_is_not_the_target():
+    from tests.test_astrometry import star_product
+
+    product = star_product(26.0, 20.0)  # source 6 px (~37 arcsec) east of the field centre... but fitted near the guess
+    ra_star, dec_star = product.wcs.all_pix2world(26.0, 20.0, 0)
+    exposure = inv.Exposure({"obsKey": "k", "detector": 6, "visit": 0, "mjd": 61000.0}, product)
+    # The catalogue track sits 4 arcsec from the real source: the fit finds the source, the gate refuses it.
+    track_star = {"source_id": "x", "ra": float(ra_star) + 4 / 3600, "dec": float(dec_star), "pmra": 0.0, "pmdec": 0.0}
+    [result] = inv.track([exposure], track_star, [])
+    assert result["position"].status == "measured"
+    assert result["identified"] is False and result["identification_reason_key"] == "measure.not-target"

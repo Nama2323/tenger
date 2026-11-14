@@ -77,7 +77,7 @@ def test_photometry_refuses_an_aperture_with_rejected_pixels(product):
     assert result["status"] == "insufficient_data"
     assert result["flux_ujy"] is None
     assert result["reason_key"] == "measure.flagged-pixels-in-aperture"
-    assert result["flagged_in_aperture"]["OVERFLOW"] == 1
+    assert result["flagged_in_aperture"]["OVERFLOW"] == 2  # both OVERFLOW pixels lie within 12 arcsec
     assert result["resolution"] == "native"
 
 
@@ -88,9 +88,20 @@ def test_photometry_on_clean_pixels_propagates_variance(product):
     result = native_aperture_photometry(product, float(ra), float(dec), radius_arcsec=3.0, annulus_arcsec=(12.0, 40.0))
     assert result["status"] == "measured", result
     assert result["n_aperture"] == 1
-    assert result["sigma_ujy"] > 0
-    expected_floor = np.sqrt(product.variance[row, col]) * result["pixel_sr"] * 1e12
+    assert 0.5 < result["aperture_pixels"] < 1.0  # a 3 arcsec circle covers part of one 6.15 arcsec pixel
+    expected_floor = np.sqrt(product.variance[row, col]) * result["aperture_pixels"] * result["pixel_sr"] * 1e12
     assert result["sigma_ujy"] >= expected_floor
+
+
+def test_fractional_aperture_does_not_jump_with_sub_pixel_position():
+    from tests.test_astrometry import star_product
+
+    fluxes = []
+    for shift in (0.0, 0.25, 0.5):
+        synthetic = star_product(20.0 + shift, 20.0 + shift, flux=500.0, noise=0.01)
+        ra, dec = synthetic.wcs.all_pix2world(20.0 + shift, 20.0 + shift, 0)
+        fluxes.append(native_aperture_photometry(synthetic, float(ra), float(dec))["flux_ujy"])
+    assert max(fluxes) / min(fluxes) < 1.01
 
 
 def test_trimmed_product_round_trips(product):
