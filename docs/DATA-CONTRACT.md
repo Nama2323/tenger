@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 3 | 2026-11-14 | Additive (Task A3). Real investigation fields (provenance, quality gate, epochs mapped to viewer frames and previews, graded comparisons, astrometry and photometry blocks), `reserved.json`, `strings.en.json`, index additions. `schema_version` majors unchanged. |
 | 2 | 2026-11-14 | Additive (Task A2). Live/bake frame metadata fields, flag mask policy, comparison and measurement reason keys, the comparison rule for the viewer. Version 1 file kinds and their `schema_version` values are unchanged. |
 
 ---
@@ -478,3 +479,75 @@ resource file:
   and not the other. If an epoch has no exposure with a matching response, show that instead.
   (`resolveBand` in `static/js/stack.js` currently does this substitution. That file belongs to
   Session B.)
+
+---
+
+# Version 3 (additive, Task A3, 14 Nov 2026)
+
+Version 1 and 2 stay valid. Every file kind keeps major version `/1`, so the V1 reader accepts the
+files. Files written under this version carry `"contract_version": 3`. Unknown extra fields must be
+ignored by readers.
+
+## V3.1 Investigation additions (`<key>/investigation.json`)
+
+| Path | Meaning |
+|---|---|
+| `contract_version` | `3` |
+| `pipeline.code_sha256`, `pipeline.settings` | SHA-256 of the processing code files, and the settings hashed into `config_sha256` |
+| `request.cutout_deg` | Cutout side actually requested (field × 1.45, so a rotated frame fills the plate) |
+| `coverage.observations_processed`, `observations_refused` (reason → count), `observations_failed`, `releases`, `viewer_frames` | How many archive rows became usable exposures, and why the rest did not |
+| `target_catalogue` | The catalogue entry used to find the target (`source`, `gaia_source_id`, position at `epoch_jyear`, motion, parallax). `content_type: "catalogue"` |
+| `observations[]` + `processing`, `exposure_s`, `source_bytes`, `software`, `mask_policy`, `quality {usable, reason_key, l2_dqa}` | Provenance per exposure. `url` is the exact cutout request, `source_sha256` the hash of the bytes received. `response` is the WCS-WAVE value at the target (null = unknown) |
+| `epochs[]` + `visit`, `detector` | An epoch is one array in one visit (`id` = `v<visit>-d<array>`) |
+| `epochs[].combine` | `single` or `median_stack` (a per-pixel median of the epoch's frames, used only for previews) |
+| `epochs[].assets.preview` | Path under `data/` of a 240 px WebP, north up, same stretch for every epoch of one array. `preview_kind`, `content_type: "processed"` |
+| `epochs[].viewer` | `{visit, frame_indices}`: the epoch's frames in `<key>/meta.json` (0-based). `visit` equals the frames' `visit` field, so the viewer's step for that visit is the epoch's step |
+| `comparisons[]` | Every pair of epochs **in the same array** (never across arrays). `grade` = brightness grade at the target. `brightness {grade, reason_key, pairs[]}` lists the matched exposure pairs; `position {grade, reason_key}`; `field` = whole-plate grade. `modes` includes `difference` only when brightness and field are both `quantitative`. `checks.field_response` added; `registration`, `psf`, `background` are `not_checked` |
+| `measurements[]` + `status_reason_key`, `n_points`, `chi2_red`, `span_days`, `n_stars`, `n_pairs`, `comparison` | Extra context. `content_type` separates SPHEREx measurements (`measured`) from catalogue values (`catalogue`) |
+| `astrometry` | For moving stars: `reference`, systematic `floor` from control stars, `fit_parallax_fixed` and `fit_linear` (parameters, covariance, chi-square), `catalogue_agreement` (z of measured vs catalogue), `control` (per-star rows) and `per_exposure` positions |
+| `photometry` | Native aperture photometry per usable exposure, with refusals by reason |
+| `viewer` | `{meta, frames, visits[{visit, frame_indices, mean_mjd, date_utc}]}`. `date_utc` is the UTC date of the mean frame time, which is how the viewer names a step |
+| `limitation_keys` | Union of the measurement limitations |
+| `legacy` | `null` when the viewer bundle was rebuilt from the same exposures |
+
+Quantities used: `proper_motion_total_arcsec_yr`, `proper_motion_east_arcsec_yr`,
+`proper_motion_north_arcsec_yr`, `proper_motion_total_linear_arcsec_yr`,
+`control_fraction_within_95pct`, `flux_ratio_b_over_a`. Moving bodies also use
+`position_offset_arcsec`.
+
+## V3.2 Index additions (`index.json`)
+
+`contract_version`, `reserved_path` (`"reserved.json"`), `strings_path` (`"strings.en.json"`).
+Per target: `measurement_status`, `status_reason_key` (when unavailable), and `thumbnails[].epoch_id`.
+`prediction` is `{"status": null, "trial_ids": []}` until a trial exists, and `see_only` for 3I/ATLAS.
+`map.distance` is `null` or `{value, unit ("pc" or "au"), kind, source}`.
+
+## V3.3 Reserved sky (`reserved.json`, kind `tenger.reserved/1`)
+
+```json
+{"schema_version": "tenger.reserved/1", "margin_deg": 2.0, "rule_key": "reserved.rule",
+ "regions": [{"key": "pluto", "kind": "holdout_path", "reason_key": "reserved.prediction-holdout",
+              "until_key": "reserved.until-predictions-frozen", "window_mjd": [61312.6847, 61315.6055],
+              "obs_ids": 10, "ra_deg": [306.0845, 306.1062], "dec_deg": [-23.7214, -23.7182],
+              "path": [{"mjd": 61312.6847, "ra_deg": 306.1062, "dec_deg": -23.7182}], "source": "…"}]}
+```
+
+`kind` is `holdout_path` (Makemake, Pluto: the newest visit, closed until Task A4) or
+`see_only_path` (3I/ATLAS). A live request is refused when its centre lies within `margin_deg`
+plus half the field diagonal of any `path` point. The `ra_deg`/`dec_deg` box is a summary. The five
+challenge targets are no longer listed: since A3 all their current observations are opened
+(`docs/EXPOSURE.md`).
+
+## V3.4 English strings (`strings.en.json`, kind `tenger.strings/1`)
+
+`{"schema_version": "tenger.strings/1", "language": "en", "strings": {key: text}}`. Every key that
+Session A writes (`*_key`, `reason_key`, `limitation_keys`, `quantity.<quantity>`, `credits_keys`,
+`label_key`, `explain.*`) has an entry. `{name}` placeholders refer to the record's `params`.
+`tests/test_static_data.py` enforces this. Session B may copy the strings into its resource file.
+
+## V3.5 Viewer bundle (`<key>/meta.json`, `frames.bin.gz`)
+
+Same binary format as before. A3 rebuilt it for the challenge targets from the investigation's own
+usable exposures (DR1/QR3, `tenger-mask-v1` masks, frames at least 92% covered, at most 240). Frame
+objects carry the V2.1 fields. `meta.json` gains `dataset_version`. `wise` and `thumbs` are carried
+over from the previous bundle (AllWISE context, unchanged).

@@ -50,6 +50,26 @@ Additional rules:
    `prospective_unexposed`, every teammate states in the team chat that they have not opened those
    observations by any route. The trial manifest records that statement.
 
+## Task A3 change (14 Nov 2026, from 21:10 UB): what is now opened
+
+Decided by the team for Task A3 (phases C–D). It changes the exposed set as follows.
+
+- **Five challenge targets: everything is opened.** A1 found that the newest observation of each is
+  already exposed, so they can only support `retrospective_holdout` trials anyway. Session A downloads
+  and processes **every DR1/QR3 exposure** listed at each target's field centre, including the
+  same-visit exposures that A1 listed as never opened (`scripts/acquire.py`, fixed 0.1° field,
+  cutout 0.145°). From now on every current DR1/QR3 observation of Barnard, WISE 0855, Epsilon Indi B,
+  RW Aurigae and R Draconis counts as exposed. The exact obs_keys opened are listed in each target's
+  `static/data/<key>/investigation.json` (`observations`).
+- **Makemake and Pluto: training visits only.** Opened: every visit in the table below except the
+  newest. **Still closed** until Task A4 has frozen and pushed the predictions: Makemake 2026-05-30 →
+  06-13 (QR3, 65 obs_ids) and Pluto 2026-09-29 → 10-02 (QR3, 10 obs_ids). The acquisition code
+  refuses any exposure with `t_min` inside a closed window. The visits actually opened are listed in
+  the "Opened in A3" table further down when they are processed.
+- **3I/ATLAS:** only the official exposure table (metadata) is used. No pixels.
+- Live jobs near the targets remain blocked in the web app (`static/js/reserved.js`, and
+  `static/data/reserved.json` from A3).
+
 ## Who has seen what
 
 - **Teammates** have viewed the bundled frames, thumbnails and results of the five challenge targets

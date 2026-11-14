@@ -13,7 +13,7 @@ import gzip
 import io
 import math
 import warnings
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import numpy as np
 from astropy import log as astropy_log
@@ -77,6 +77,14 @@ class NativeProduct:
     detector: int | None
     obs_id: str | None
     software_version: str | None
+    info: dict = field(default_factory=dict)  # selected IMAGE header values (see HEADER_INFO)
+
+
+# IMAGE header values kept with a native product (time, quality, PSF, spacecraft position).
+HEADER_INFO = (
+    "MJD-BEG", "MJD-AVG", "MJD-END", "TIMESYS", "XPOSURE", "PSF_FWHM", "L2DQAFLG", "L1DQAFLG",
+    "X_SC", "Y_SC", "Z_SC", "XYZ_SC_SYSTEM", "FINAST", "ASTRONETSOLVED", "MATCH_NSTARS",
+)
 
 
 @dataclass(frozen=True)
@@ -176,6 +184,7 @@ def load_product(fits_bytes: bytes) -> NativeProduct:
         detector = header.get("DETECTOR")
         version = hdus[0].header.get("VERSION")
         obs_id = header.get("OBSID")
+        info = {key: header[key] for key in HEADER_INFO if key in header}
     finite = np.isfinite(image) & np.isfinite(variance) & np.isfinite(zodi) & (variance >= 0)
     reject = flagdefs.reject_mask(flag_values, schema) | ~finite
     return NativeProduct(
@@ -183,6 +192,7 @@ def load_product(fits_bytes: bytes) -> NativeProduct:
         int(detector) if detector is not None else None,
         str(obs_id) if obs_id is not None else None,
         str(version) if version is not None else None,
+        info,
     )
 
 
