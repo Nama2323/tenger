@@ -408,3 +408,22 @@ and 1440 px, see its README).
 **Limits**: not checked on a real phone. The time bar shows evenly spaced epoch ticks (with dates) rather than a
 proportional time axis, so uneven gaps between visits are read from the labels. Preview mode shows previews
 only (no zoom, spectrum or motion quick look), as the evidence file provides no frames for Makemake.
+
+### Follow-up to Session A's `496d2af` (all five challenge targets rebuilt), 14 Nov 2026
+
+- Rebased; `strings.en.json` re-copied (88 keys). All five challenge targets are `available` with `legacy: null`
+  and rebuilt bundles, so the "legacy frames only" label no longer appears (it was derived from the index, no
+  code change needed). Their frames are labelled "Frames from the investigation (quality-gated DR1/QR3)".
+- **Difference images** are now possible where Session A allows them (Epsilon Indi B 6 pairs, WISE 0855 4,
+  RW Aur 1, Barnard 0). The page enables Difference only for the A/B dates of a comparison whose `modes`
+  include `difference`, and only with that comparison's single detector array selected (not a channel and not
+  the all-band composite). The caption and the difference status line list every check the comparison left
+  open, e.g. "Not checked: background." When a quantitative comparison covers the pair, the generic
+  "different wavelengths within this range" warning is no longer shown next to it.
+- **Brightness ratios** in What changed show the field-star-calibrated value ± sigma and, under it, the raw
+  ratio with its statistical error and the field-star control (number of stars, median ratio, scatter).
+- Checked in the browser: Epsilon Indi B, D1, A 2025-05-10 / B 2026-04-25 → Difference on, caption "Not
+  checked: background"; D5 (registration unverified) and all bands → Difference off.
+- `node --test tests/*.mjs`: **107 passed** (new test reads the real Epsilon Indi B file: D1 allows a
+  difference image with background `not_checked`, D5 does not, every allowed pair has PSF and registration
+  `pass`).

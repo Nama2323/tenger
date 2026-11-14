@@ -34,6 +34,7 @@ const PAGES = [
   { name: 'investigate-barnard-swipe', path: '/?target=barnard&mode=swipe', ready: '#caption-body .caption-col' },
   { name: 'investigate-rdra-side', path: '/?target=rdra&mode=side', ready: '#caption-body .caption-col' },
   { name: 'prediction-fixtures', path: '/?fixtures=1&target=barnard&panel=prediction', ready: '.trial' },
+  { name: 'investigate-epsindib-diff', path: '/?target=epsindib&band=d1&a=2025-05-10&b=2026-04-25&mode=diff', ready: '#caption-body .caption-col' },
   { name: 'investigate-wise0855', path: '/?target=wise0855&panel=changed', ready: '#caption-body .caption-col' },
   { name: 'investigate-makemake-preview', path: '/?target=makemake&mode=side', ready: '#caption-body .caption-col' },
   { name: 'investigate-pluto-preview', path: '/?target=pluto', ready: '#caption-body .caption-col' },

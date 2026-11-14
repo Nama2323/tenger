@@ -51,6 +51,21 @@ test('the viewer pair finds the same-array comparison in either order', () => {
   assert.equal(allowsDifference({ grade: 'quantitative', modes: ['blink'] }), false);
 });
 
+test('the real Epsilon Indi B file allows a difference image only where Session A says so', () => {
+  const real = JSON.parse(readFileSync(new URL('../static/data/epsindib/investigation.json', import.meta.url), 'utf8'));
+  const d1 = pairComparison(real, 0, 2, { kind: 'detector', detector: 1 });
+  assert.equal(allowsDifference(d1.comparison), true);
+  assert.equal(d1.comparison.checks.background, 'not_checked', 'the caption must say background was not checked');
+  const d5 = pairComparison(real, 0, 2, { kind: 'detector', detector: 5 });
+  assert.equal(allowsDifference(d5.comparison), false, 'registration not verified: no difference image');
+  assert.equal(pairComparison(real, 0, 2, { kind: 'composite' }).reason, 'composite');
+  const allowed = real.comparisons.filter(allowsDifference);
+  for (const comparison of allowed) {
+    assert.equal(comparison.checks.psf, 'pass');
+    assert.equal(comparison.checks.registration, 'pass');
+  }
+});
+
 test('epoch coverage counts epochs on visits the viewer has', () => {
   assert.deepEqual(epochCoverage(doc, [0, 3]), { matched: 4, total: 4 });
   assert.deepEqual(epochCoverage(doc, [0]), { matched: 2, total: 4 });

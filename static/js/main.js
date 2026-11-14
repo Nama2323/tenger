@@ -465,7 +465,7 @@ function framesKind() {
 
 function statusNote(picture) {
   if (picture.status === 'context') return t('statusNote.context');
-  if (picture.status === 'difference') return t('statusNote.difference');
+  if (picture.status === 'difference') return `${t('statusNote.difference')} ${uncheckedText(currentComparison()?.comparison)}`.trim();
   const kind = framesKind();
   const combine = has(`statusNote.${picture.combine}`) ? t(`statusNote.${picture.combine}`) : '';
   return `${combine} ${kind === 'live' ? '' : t(`statusNote.${kind}`)}`.trim();
@@ -511,7 +511,11 @@ function renderCaption(left, aStep, bStep) {
     if (state.mode === 'diff') columns.push(captionColumn(t('plate.diff'), describe(bStep, true), 'diff'));
     if (shownSide === 'other') columns.push(captionColumn('·', describe(left), 'other'));
     columns.push(captionColumn(t('ab.a'), a, 'a'), captionColumn(t('ab.b'), b, 'b'));
-    const warning = comparisonWarning(a, b);
+    // A quantitative comparison of this pair in this array already says the responses match; the generic
+    // broad-band warning would contradict it.
+    const quantitative = currentComparison()?.comparison?.grade === 'quantitative';
+    const general = comparisonWarning(a, b);
+    const warning = general === 'caption.warnBroadBand' && quantitative ? null : general;
     $('caption-body').replaceChildren(...[
       el('div', { class: 'caption-cols' }, columns),
       gradeNote(),
@@ -738,9 +742,20 @@ function currentComparison() {
   return pairComparison(doc, visitOf(aStep), visitOf(bStep), state.band);
 }
 
-/** Difference needs a comparison of exactly this A/B pair, in one array, that allows it. */
+/**
+ * Difference needs a comparison of exactly this A/B pair that allows it, shown in that one detector array
+ * (the comparison covers the array's exposures, not a single channel or the all-band composite).
+ */
 function differenceAllowed() {
+  if (state.previews || state.band.kind !== 'detector') return false;
   return allowsDifference(currentComparison()?.comparison);
+}
+
+/** "Not checked: background." for the checks a comparison left open (the page never implies they passed). */
+function uncheckedText(comparison) {
+  const open = Object.entries(comparison?.checks ?? {}).filter(([, value]) => value === 'not_checked')
+    .map(([name]) => (has(`checkName.${name}`) ? t(`checkName.${name}`) : name));
+  return open.length ? t('caption.notChecked', { checks: open.join(', ') }) : '';
 }
 
 /** Contract V2.4: a pair covered by the evidence file is labelled with its comparison grade. */
@@ -755,12 +770,14 @@ function gradeNote() {
   const { comparison } = found;
   const reasons = [...comparisonReasons(comparison), comparison.explain_key].filter(Boolean)
     .map((key) => tData(key, 'explain.unknown')).join(' ');
+  const unchecked = uncheckedText(comparison);
   return el('p', { class: 'note' }, [
     chip(t(found.pair ? 'caption.gradePair' : 'caption.grade', {
       grade: has(`grade.${comparison.grade}`) ? t(`grade.${comparison.grade}`) : comparison.grade,
       detector: String(found.detector),
     })),
     reasons ? ` ${reasons}` : '',
+    unchecked ? ` ${unchecked}` : '',
   ]);
 }
 

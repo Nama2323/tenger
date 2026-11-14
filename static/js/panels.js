@@ -81,6 +81,15 @@ function measurementItem(measurement) {
     chip(t(`content.${measurement.content_type}`), `chip-${measurement.content_type}`),
     measurement.status !== 'measured' ? chip(t(`mstatus.${measurement.status}`)) : null,
     inputs ? el('small', { text: t('changed.inputs', { inputs }) }) : null,
+    Number.isFinite(measurement.raw_ratio) ? el('small', { text: t('changed.rawRatio', {
+      raw: formatNumber(measurement.raw_ratio, 4),
+      stat: Number.isFinite(measurement.sigma_statistical) ? formatNumber(measurement.sigma_statistical, 4) : '—',
+    }) }) : null,
+    measurement.control && Number.isFinite(measurement.control.n_stars) ? el('small', { text: t('changed.control', {
+      n: String(measurement.control.n_stars),
+      median: formatNumber(measurement.control.median_ratio, 4),
+      scatter: Number.isFinite(measurement.control.scatter_fraction) ? formatNumber(measurement.control.scatter_fraction * 100, 1) : '—',
+    }) }) : null,
     measurement.status_reason_key ? el('small', { text: tData(measurement.status_reason_key, 'explain.unknown') }) : null,
   ]);
 }
