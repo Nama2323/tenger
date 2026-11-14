@@ -1,0 +1,146 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "contract_version": 5,
+  "trial_id": "epsindib-position-2026b",
+  "trial_ref": {
+    "path": "trials/epsindib-position-2026b/trial.json",
+    "sha256": "ee8b19ba26dd42386a1448a5f83a75172d9102f24cf2422efbec2593136e5131"
+  },
+  "training_sha256": "bb7494eda1c49e276e4870753137ae24ed6a3b4afd71d4296343cb53999cb5be",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "open_forecast": false,
+  "created_utc": "2026-11-14T14:49:29Z",
+  "prediction_status": "predicted",
+  "status_reason_key": null,
+  "t_mjd": 61310.725537,
+  "model": {
+    "ra_deg": 331.09814267,
+    "dec_deg": -56.8013797,
+    "cov_arcsec2": [
+      [
+        0.025266,
+        -0.002699
+      ],
+      [
+        -0.002699,
+        0.02633
+      ]
+    ],
+    "observer": "geocentre (spacecraft parallax below 0.0001 arcsec for stars)",
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "ra_deg": 331.09819343,
+    "dec_deg": -56.80133271,
+    "cov_arcsec2": [
+      [
+        0.003294,
+        -2.7e-05
+      ],
+      [
+        -2.7e-05,
+        0.003356
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "track": null,
+  "model_state": {
+    "kind": "linear_pm_fixed_parallax",
+    "reference": {
+      "ra_deg": 331.0955080646858,
+      "dec_deg": -56.80026793649603,
+      "t_ref_mjd": 60950.0551925
+    },
+    "params_arcsec": {
+      "east0": 1.4647625013281231,
+      "north0": -1.341849083301733,
+      "pm_east_arcsec_yr": 3.9232698329092193,
+      "pm_north_arcsec_yr": -2.49686800913863
+    },
+    "covariance_arcsec": [
+      [
+        0.0005929330272584081,
+        -0.00032003158342321737,
+        0.0012755785419186082,
+        -0.0003122124490304771
+      ],
+      [
+        -0.0003200315834232193,
+        0.001071935189725304,
+        -0.0002700053613013727,
+        0.0002720629858628911
+      ],
+      [
+        0.0012755785419186073,
+        -0.0002700053613013675,
+        0.0032555362874507592,
+        -0.0018498812009644303
+      ],
+      [
+        -0.00031221244903047646,
+        0.00027206298586288823,
+        -0.0018498812009644303,
+        0.005888015809198441
+      ]
+    ],
+    "parallax_arcsec": 0.270658,
+    "sigma_sys_arcsec": 0.1378,
+    "sigma_basis": "visit",
+    "visit_systematic": {
+      "sigma_visit_arcsec": 0.0852,
+      "n_visits": 3,
+      "visit_offsets_arcsec": {
+        "0": [
+          0.0588,
+          0.0566
+        ],
+        "1": [
+          -0.0773,
+          -0.1134
+        ],
+        "2": [
+          0.0185,
+          0.0568
+        ]
+      }
+    },
+    "covariance_candidates_trace": {
+      "exposure": 0.04106,
+      "visit": 0.0516,
+      "visit_systematic": 0.04979
+    }
+  },
+  "diagnostics": {
+    "n_training_points": 308,
+    "n_groups": 18,
+    "exposure_fit_chi2_red": 5.7416,
+    "visit_fit_chi2_red": 9.5491,
+    "pm_arcsec_yr": [
+      3.92327,
+      -2.49687
+    ],
+    "training_residuals_rms_arcsec": [
+      0.2246,
+      0.2858
+    ],
+    "baseline": {
+      "chi2_red": 12.2971,
+      "params_arcsec": [
+        1.47519,
+        -1.31491,
+        3.81521,
+        -2.51649
+      ]
+    }
+  },
+  "limitation_keys": [
+    "limit.parallax-from-catalogue",
+    "limit.gaussian-psf-model",
+    "limit.catalogue-assisted-identification"
+  ]
+}
