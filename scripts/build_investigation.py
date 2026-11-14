@@ -216,6 +216,16 @@ def build(key: str, out: Path, cached_only: bool = False) -> dict:
         measurements += motion_measurements
     photometry_block, photometry_measurements = measure_brightness(usable, star, comparisons, stars)
     measurements += photometry_measurements
+    if key not in MOVERS:
+        ratios = [item for item in photometry_measurements if item["status"] == "measured"]
+        if ratios:
+            best = min(ratios, key=lambda item: item["sigma"])
+            explanation.append({"key": "explain.brightness-measured", "params": {
+                "measurement": best["id"], "value": best["value"], "sigma": best["sigma"], "n_ratios": len(ratios)}})
+        else:
+            refused = photometry_block.get("refused", {})
+            explanation.append({"key": "explain.brightness-insufficient", "params": {
+                "n_flagged": refused.get("measure.flagged-pixels-in-aperture", 0), "n_exposures": photometry_block["n_points"]}})
     for measurement in measurements:
         if measurement["content_type"] == "measured" and key in TARGET_LIMITS:
             measurement["limitation_keys"] = sorted(set(measurement.get("limitation_keys", [])) | set(TARGET_LIMITS[key]))

@@ -26,7 +26,7 @@ STRINGS = {
     "explain.motion-contaminated": "The target's light overlaps a catalogued neighbour star (G {neighbour_g_mag}, about {neighbour_arcsec} arcsec away) in {n_contaminated} pictures, so no motion is reported.",
     "explain.control": "Check: {n_stars} ordinary field stars were measured the same way and compared with Gaia. Share that agree within the 95% region: {fraction}.",
     "explain.brightness-measured": "In matching wavelengths the star was {value} times as bright on date B as on date A (± {sigma}).",
-    "explain.brightness-insufficient": "No pair of dates has the same wavelength and clean pixels at the star, so no brightness change is reported.",
+    "explain.brightness-insufficient": "No pair of dates has the same wavelength and clean pixels at the star ({n_flagged} of {n_exposures} pictures have saturated or flagged pixels on it), so no brightness change is reported.",
     "explain.not-available": "SPHEREx data for this target are not available here yet: {reason}.",
     "explain.see-only": "This target is shown for looking only. It is not part of the prediction tests.",
     "explain.training-only": "Only the training visits are opened. The newest visit stays closed until the prediction is frozen.",

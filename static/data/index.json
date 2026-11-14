@@ -2,7 +2,7 @@
   "schema_version": "tenger.site_index/1",
   "contract_version": 3,
   "dataset_version": "a3-2026-11-14",
-  "generated_utc": "2026-11-14T14:11:52Z",
+  "generated_utc": "2026-11-14T14:13:09Z",
   "targets": [
     {
       "key": "barnard",
@@ -194,23 +194,41 @@
       "name_key": "target.rdra.name",
       "role": "challenge",
       "kind": "variable",
-      "reference": null,
-      "footprint": null,
-      "data_status": "unavailable",
-      "measurement_status": null,
-      "investigation_path": null,
-      "thumbnails": [],
-      "status_reason_key": "unavailable.no-validated-product",
+      "reference": {
+        "ra_deg": 248.16737836729,
+        "dec_deg": 66.75500674547,
+        "epoch_jyear": 2016.0,
+        "pmra_mas_yr": -20.643,
+        "pmdec_mas_yr": 6.149,
+        "source": "Gaia DR3"
+      },
+      "footprint": {
+        "centre_ra_deg": 248.167225,
+        "centre_dec_deg": 66.755127,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "measurement_status": "insufficient_data",
+      "investigation_path": "rdra/investigation.json",
+      "thumbnails": [
+        {
+          "path": "rdra/epochs/v6-d4.webp",
+          "content_type": "processed",
+          "label_key": "thumb.spherex",
+          "epoch_id": "v6-d4",
+          "time_utc": null
+        }
+      ],
       "prediction": {
         "status": null,
         "trial_ids": []
       },
       "map": {
         "distance": {
-          "value": 799.424,
+          "value": 799.4244,
           "unit": "pc",
           "kind": "parallax_distance",
-          "source": "SIMBAD parallax 1.2509 mas (2020yCat.1350....0G) via simbad.cfa.harvard.edu"
+          "source": "Gaia DR3 parallax 1.2509 mas"
         },
         "angle_deg": 200.0,
         "angle_is_arbitrary": true
@@ -340,7 +358,9 @@
   "strings_path": "strings.en.json",
   "releases": [
     "spherex_dr1",
-    "spherex_qr3"
+    "spherex_dr1_deep",
+    "spherex_qr3",
+    "spherex_qr3_deep"
   ],
   "credits_keys": [
     "credit.irsa",

@@ -22,7 +22,7 @@
     "credit.horizons": "Ephemerides: JPL Horizons.",
     "credit.irsa": "Data: NASA/IPAC Infrared Science Archive (IRSA).",
     "credit.spherex": "SPHEREx is a NASA mission led by Caltech and managed by JPL.",
-    "explain.brightness-insufficient": "No pair of dates has the same wavelength and clean pixels at the star, so no brightness change is reported.",
+    "explain.brightness-insufficient": "No pair of dates has the same wavelength and clean pixels at the star ({n_flagged} of {n_exposures} pictures have saturated or flagged pixels on it), so no brightness change is reported.",
     "explain.brightness-measured": "In matching wavelengths the star was {value} times as bright on date B as on date A (± {sigma}).",
     "explain.control": "Check: {n_stars} ordinary field stars were measured the same way and compared with Gaia. Share that agree within the 95% region: {fraction}.",
     "explain.fixed-sky-pair": "Two dates of the same patch of sky: the body moves across the background stars.",
