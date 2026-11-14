@@ -154,6 +154,18 @@ Consequences:
 Session A opens Pluto's evaluation pixels only after this record is committed and pushed, through
 `scripts/verify.py`, with cutouts centred on the frozen model (not on the listing's positions).
 
+## Task A5 (14 Nov 2026, from 23:17 UB): evaluation data opened for verification
+
+- **Pluto evaluation visit opened** at 2026-11-14 15:17:11 UTC (23:17 UB) by `scripts/verify.py
+  acquire-pluto`. That was after the team update above was pushed (`63d53bd`) and after the frozen
+  prediction's receipt was checked. All 20 rows (10 obs_ids, D3 and D6, QR3) were requested as cutouts
+  centred on the **frozen model** position, never on the listing's positions. From this moment that
+  visit is exposed.
+- Barnard and Epsilon Indi B: their holdout visits were already opened in A3. Verification reused the
+  A3 measurements.
+- JPL Horizons was queried for Pluto only **after** the Pluto verdict was computed, for the separate
+  comparison in `verification.json` (`after_verdict_comparison`).
+
 ## Task A4 (14 Nov 2026, 22:35–22:55 UB): predictions frozen, nothing opened
 
 A4 opened, downloaded, rendered or measured **no pixels**. It made no Horizons query and read no

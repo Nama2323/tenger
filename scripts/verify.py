@@ -363,18 +363,19 @@ def local_peaks(product, ra: float, dec: float, radius_arcsec: float) -> list[tu
 
 
 def candidates_for(product, model_ra: float, model_dec: float, fwhm: float | None) -> list[dict]:
-    """Every source fitted near the model, deduplicated (within 3 arcsec)."""
+    """Every peak (S/N >= 5) near the model, with its fit; failed fits are kept as alternatives."""
     out = []
     for ra, dec, peak in local_peaks(product, model_ra, model_dec, SEARCH_RADIUS_ARCSEC):
         position = astrometry.fit_position(product, ra, dec, fwhm)
-        if position.status != "measured":
-            continue
-        east, north = tangent_offsets_arcsec(model_ra, model_dec, position.ra_deg, position.dec_deg)
+        fitted = position.status == "measured"
+        sky_ra, sky_dec = (position.ra_deg, position.dec_deg) if fitted else (ra, dec)
+        east, north = tangent_offsets_arcsec(model_ra, model_dec, sky_ra, sky_dec)
         if any(math.hypot(east - item["east_arcsec"], north - item["north_arcsec"]) < 3.0 for item in out):
             continue
-        out.append({"ra_deg": position.ra_deg, "dec_deg": position.dec_deg, "cov_arcsec2": position.cov_arcsec2,
-                    "snr": position.snr, "peak_snr": peak, "east_arcsec": east, "north_arcsec": north,
-                    "distance_arcsec": math.hypot(east, north)})
+        out.append({"ra_deg": sky_ra, "dec_deg": sky_dec, "cov_arcsec2": position.cov_arcsec2 if fitted else None,
+                    "snr": position.snr if fitted else 0.0, "fit_status": position.status,
+                    "fit_reason_key": position.reason_key, "peak_snr": peak, "east_arcsec": east,
+                    "north_arcsec": north, "distance_arcsec": math.hypot(east, north)})
     return out
 
 
@@ -402,8 +403,11 @@ def recover(items: list[dict], search_radius: float) -> dict:
         product = item["product"]
         item["candidates"] = candidates_for(product, item["model"][0], item["model"][1], product.info.get("PSF_FWHM"))
         for candidate in item["candidates"]:
-            candidate["static_check"] = static_probe(candidate, item, items)
-            candidate["passes"] = bool(candidate["snr"] >= IDENTIFY_SNR and candidate["distance_arcsec"] <= search_radius
+            fitted = candidate["fit_status"] == "measured"
+            candidate["static_check"] = static_probe(candidate, item, items) if fitted else {
+                "checked_against": None, "static_source": None, "probe_snr": None}
+            candidate["passes"] = bool(fitted and candidate["snr"] >= IDENTIFY_SNR
+                                       and candidate["distance_arcsec"] <= search_radius
                                        and candidate["static_check"]["static_source"] is False)
         passing = [candidate for candidate in item["candidates"] if candidate["passes"]]
         item["identification"] = ("ambiguous" if len(passing) > 1 else "identified" if passing else "none")
@@ -463,6 +467,8 @@ def verify_pluto(trial_id: str = "pluto-position-2026b") -> dict:
         "model": {"ra_deg": _r(item["model"][0], 8), "dec_deg": _r(item["model"][1], 8)},
         "identification": item["identification"],
         "candidates": [{"ra_deg": _r(c["ra_deg"], 8), "dec_deg": _r(c["dec_deg"], 8), "snr": _r(c["snr"], 2),
+                        "peak_snr": _r(c["peak_snr"], 2), "fit_status": c["fit_status"],
+                        "fit_reason_key": c["fit_reason_key"],
                         "offset_east_arcsec": _r(c["east_arcsec"], 3), "offset_north_arcsec": _r(c["north_arcsec"], 3),
                         "distance_arcsec": _r(c["distance_arcsec"], 3), "static_check": c["static_check"],
                         "passes": c["passes"]} for c in item["candidates"]],
@@ -524,12 +530,17 @@ def horizons_comparison(verification: dict, prediction: dict) -> dict:
     response = httpx.get("https://ssd.jpl.nasa.gov/api/horizons.api", params=params, timeout=120)
     response.raise_for_status()
     result = response.json()["result"]
-    lines = [line for line in result.split("$$SOE")[1].split("$$EOE")[0].strip().splitlines() if line.strip()]
+    header_block, body = result.split("$$SOE")
+    header = [name.strip() for name in header_block.strip().splitlines()[-2].split(",")]
+    columns = {name: index for index, name in enumerate(header)}
+    ra_col = next(index for name, index in columns.items() if name.startswith("R.A."))
+    dec_col = next(index for name, index in columns.items() if name.startswith("DEC"))
+    delta_col = columns["delta"]
+    lines = [line for line in body.split("$$EOE")[0].strip().splitlines() if line.strip()]
     per = []
     for (key, t, spacecraft), line in zip(rows, lines):
         fields = [field.strip() for field in line.split(",")]
-        numbers = [float(field) for field in fields if _is_number(field)]
-        ra, dec, delta = numbers[1], numbers[2], numbers[3]
+        ra, dec, delta = float(fields[ra_col]), float(fields[dec_col]), float(fields[delta_col])
         a, d = math.radians(ra), math.radians(dec)
         east_vec = np.array([-math.sin(a), math.cos(a), 0.0])
         north_vec = np.array([-math.sin(d) * math.cos(a), -math.sin(d) * math.sin(a), math.cos(d)])
