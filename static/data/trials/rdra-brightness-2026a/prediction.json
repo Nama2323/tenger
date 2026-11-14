@@ -1,0 +1,27 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "contract_version": 5,
+  "trial_id": "rdra-brightness-2026a",
+  "trial_ref": {
+    "path": "trials/rdra-brightness-2026a/trial.json",
+    "sha256": "3ae1852a51149100e133d3fb466841032efdb4d6a3ff0195da8e53e654c4e704"
+  },
+  "training_sha256": "8f1c2cdb741e0494092bde06aa498990914a1978aa7ecfb1cac6c19ec1ce6643",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "open_forecast": false,
+  "created_utc": "2026-11-14T14:49:58Z",
+  "prediction_status": "insufficient_data",
+  "status_reason_key": "predict.no-training-measurements",
+  "t_mjd": 61277.243893,
+  "model": null,
+  "baseline": null,
+  "track": null,
+  "diagnostics": {
+    "n_training_points": 0
+  },
+  "limitation_keys": []
+}
