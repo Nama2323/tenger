@@ -1127,3 +1127,27 @@ state is identical when the model, baseline and actual are moved anywhere; no co
 training points and speed × days in every direction; it only widens after the reveal and then shows all three;
 a typed offset at the actual's offset scores as the actual. In the browser (real Barnard, ε Indi B, Pluto rounds):
 the zero gridlines cross on the last dot, typing 0, 0 puts the guess there, the axis labels fit.
+
+### Task B7, 15 Nov 2026 (Beat the physics: help players predict)
+
+Part 0 (the answer leak) was published on its own as `a422795`, see above. User decisions recorded for B6: the
+invented batch stays behind `?fixtures=1`; when Session A's real batch lands it is its own block on Predictions and
+is **not** added to the main hit/miss headline (B6 already shows it only as its own section).
+
+| Part | Files | Result |
+|---|---|---|
+| How to predict | `js/game-help.js` (`howToBox`), `js/game-ui.js` | A box above the chart, open on the first visit, then remembered closed (best-effort storage; open every time if storage is blocked). Text per round type (`game.js roundType`): stars (Barnard's Star, ε Indi B): straight drift plus the yearly loop, four steps (direction, speed between dated dots, extend to the target date, allow for the bend); Pluto (and Makemake): moves along its orbit, Earth's motion makes it loop backwards once a year, link "Why Pluto loops"; brightness rounds: rising/fading, rate, turning. |
+| Dates | `js/game.js` (`dateClusters`), `js/game-help.js` (`timelineStrip`, `clusterDate`) | Every group of dots (one SPHEREx visit, dots ≤ 30 days apart) is labelled on the chart with its dates ("2025-08-21 – 08-27"). Under the chart a time line: one mark per visit at its start date, the target date, the stretch from the last measurement to the target, and "The target date is N days after the last measurement (date)". Positions follow the days; dates alternate rows so close visits never touch. |
+| Hints | `js/game.js` (`trainingMotion`, `hintDirection`, `hintRuler`), `js/game-help.js` (`hintBody`, `hintOverlay`), `js/game-ui.js` | Optional, one at a time, position rounds only, all from the training points on screen: 1 "Which way?" arrow along the least-squares direction of motion with the compass word; 2 "How far?" dashed ruler from the last measurement with a tick every 30 days to the target date, the speed per day and the distance, "a straight-line extrapolation: it ignores the bend"; 3 "Why the path bends" one sentence for the round type and a small labelled sketch of the yearly loop. The results table says "You (with N hints)"; the score formula is unchanged. Hints lock with the guess. |
+| After the reveal | `js/game.js` (`resultExplanation`), `js/game-help.js` (`explainResult`) | One line with the errors from the round file's `outcome` block (positions as fallback): e.g. Pluto "The straight line missed by 19,870″ (5.5°) because it ignores the loop that Earth's motion adds every year; the physics model, which follows both Earth and Pluto, missed by 5.9″. That was outside the model's own 95% region, so the trial counts as a miss." When the straight line was closer it says so ("Physics is allowed to lose"). |
+
+**Checks**
+
+| Check | Result |
+|---|---|
+| `node --test tests/` | **191 passed, 0 failed**. The leak test now also covers the date groups, the hint direction and the ruler (the pre-reveal state does not change when the answers move; no shown coordinate equals them). New: round types; one date group per visit on the real rounds (2/3/2); date labels; hint direction is a unit vector, ruler ticks every 30 days and its end at speed × days; compass words; angle text; the explanation uses the file's outcome numbers (Barnard 3.1073/1.5188″, Pluto 19869.7467/5.8991″ and "outside"), the example where the straight line wins says so; English strings for every round type. |
+| `node docs/screens/capture.mjs http://localhost:8766 docs/screens` (game pages, merged) | New `game-howto`, `game-hints`, `game-timeline`, `game-pluto-hints`, `game-explained`, plus `game`, `game-example`, `game-example-revealed`, `game-rdra-revealed` again, at 360/390/768/1280: no horizontal scroll (the first time-line design overflowed at 768 and was redrawn), no control under 44 px, every page ready, no console errors. Report: 269 entries. |
+| Keyboard (in-app browser, real ε Indi B round) | Tab to "How to predict", Enter opens it; Enter on the hint button shows hints 1 and 2 and keeps focus there; arrow keys on the chart move the guess from the last measurement (0.18″ steps), Enter locks it and moves focus to the next reveal step; the hint button is disabled after the lock. |
+
+**Limits**: the yearly-loop sketch is a schematic, not the round's real loop; the hint direction uses all training
+dots, so for Pluto (two visits) it is the line between the visits; not checked on a real phone.

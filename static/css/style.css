@@ -1742,3 +1742,39 @@ body.embed .panel-title { top: 0; }
 .planetx-chart .marker-number { font: 700 11px var(--font-mono); }
 .planetx-key { margin: 0; padding-left: 1.6em; display: grid; gap: 2px; font-size: 13px; color: var(--dim); }
 .planetx-key li::marker { color: var(--hypothetical); font-weight: 700; font-family: var(--font-mono); }
+
+/* ---------- Beat the physics, help for the player (B7) ---------- */
+.howto { border: 1px solid var(--border-strong); border-left: 3px solid var(--accent); border-radius: var(--radius); background: rgba(var(--accent-rgb), 0.05); padding: 0 var(--s2); }
+.howto summary { min-height: var(--tap); display: flex; align-items: center; cursor: pointer; font: 600 16px var(--font-head); }
+.howto-body { display: grid; gap: 8px; padding-bottom: var(--s2); }
+.howto-body ol { margin: 0; padding-left: 22px; display: grid; gap: 4px; }
+.timeline { margin: 0; display: grid; gap: 4px; }
+.tl-track { position: relative; height: 66px; margin: 0 6px; }
+.tl-line { position: absolute; left: 0; right: 0; top: 22px; border-top: 1px dashed var(--border-strong); }
+.tl-ahead { position: absolute; top: 21px; height: 3px; background: rgba(var(--accent-rgb), 0.55); border-radius: 2px; }
+.tl-mark { position: absolute; top: 17px; height: 11px; border-radius: 6px; background: var(--text); opacity: 0.85; transform: translateX(-3px); }
+.tl-date { position: absolute; top: 32px; transform: translateX(-50%); font: 11px var(--font-mono); color: var(--muted); white-space: nowrap; }
+.tl-date-first { transform: translateX(-3px); }
+.tl-diamond { position: absolute; right: -5px; top: 17px; width: 11px; height: 11px; transform: rotate(45deg); border: 2px solid var(--accent); background: var(--bg); }
+.tl-target { position: absolute; right: -4px; top: 0; font: 600 11.5px var(--font-mono); color: var(--accent); white-space: nowrap; }
+.tl-summary { font-size: 13.5px; color: var(--accent); }
+.hints { border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 12px var(--s2) var(--s2); display: grid; gap: 8px; }
+.hints h3 { font-size: 15px; }
+.hint-list { display: grid; gap: 8px; }
+.hint-list:empty { display: none; }
+.game-hint { border-left: 3px solid var(--hypothetical); padding: 2px 0 2px 10px; display: grid; gap: 4px; }
+.game-hint h4 { font-size: 14px; color: var(--hypothetical); }
+.hint-sketch { margin: 0; display: grid; gap: 2px; }
+.hint-sketch svg { width: 100%; max-width: 240px; height: auto; background: var(--panel); border-radius: 8px; }
+.hint-sketch .sketch-straight { stroke: var(--muted); stroke-dasharray: 4 4; }
+.hint-sketch .sketch-path { fill: none; stroke: var(--hypothetical); stroke-width: 2; }
+.game-plot .hint-arrow { stroke: var(--hypothetical); stroke-width: 2.5; }
+.game-plot .hint-head { fill: var(--hypothetical); }
+.game-plot .hint-ruler { stroke: var(--hypothetical); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.game-plot .hint-tick { stroke: var(--hypothetical); stroke-width: 1.5; }
+.game-plot .hint-end { fill: none; stroke: var(--hypothetical); stroke-width: 2; }
+.game-plot .hint-label { fill: var(--hypothetical); font: 10.5px var(--font-mono); }
+.game-plot .hint-label-end { font-weight: 700; }
+.explain-line { border-left: 3px solid var(--star); padding-left: 10px; }
+.tl-date-end { transform: translateX(calc(-100% + 3px)); }
+.tl-date-low { top: 47px; }

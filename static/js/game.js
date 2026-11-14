@@ -166,17 +166,70 @@ export function revealView(round, extra = []) {
   return squareAround([...view.east, ...offsets.map((offset) => offset.east)], [...view.north, ...offsets.map((offset) => offset.north)], 0);
 }
 
+// ---------- Help for the player: everything from the training points on screen ----------
+
+/** Which "How to predict" text and hints fit a round: 'star', 'solar' (Pluto, Makemake) or 'brightness'. */
+const SOLAR_SYSTEM = new Set(['pluto', 'makemake']);
+export function roundType(round, targetKey) {
+  if (roundKind(round) === 'scalar') return 'brightness';
+  const key = targetKey ?? String(round?.trial_id ?? '').split('-')[0];
+  return SOLAR_SYSTEM.has(key) ? 'solar' : 'star';
+}
+
+/** Dots taken within `gapDays` of each other form one group (one SPHEREx visit), labelled with its dates. */
+export function dateClusters(round, gapDays = 30) {
+  const sorted = byTime(round);
+  const groups = [];
+  for (const point of sorted) {
+    const current = groups.at(-1);
+    if (current && point.t_mjd - current.at(-1).t_mjd <= gapDays) current.push(point);
+    else groups.push([point]);
+  }
+  const origin = roundKind(round) === 'position' ? lastMeasurement(round) : null;
+  return groups.map((points) => {
+    const centre = origin
+      ? { east: points.reduce((sum, point) => sum + toOffset(origin, point).east, 0) / points.length, north: points.reduce((sum, point) => sum + toOffset(origin, point).north, 0) / points.length }
+      : null;
+    const value = origin ? null : points.reduce((sum, point) => sum + point.value, 0) / points.length;
+    const time = points.reduce((sum, point) => sum + point.t_mjd, 0) / points.length;
+    return { start: points[0].t_mjd, end: points.at(-1).t_mjd, count: points.length, centre, value, time };
+  });
+}
+
+/** Hint 1 "Which way?": the unit direction of the dots' own average motion (east, north), or null. */
+export function hintDirection(round) {
+  const motion = trainingMotion(round);
+  return motion && motion.speed > 0 ? { east: motion.east / motion.speed, north: motion.north / motion.speed } : null;
+}
+
+/**
+ * Hint 2 "How far?": a straight-line ruler from the last measurement along the dots' average motion, with a tick
+ * every `stepDays` days and its end at the target date. Offsets in arcsec. A straight line ignores the bend.
+ */
+export function hintRuler(round, stepDays = 30) {
+  const motion = trainingMotion(round);
+  const days = daysToTarget(round);
+  if (!motion || !(days > 0)) return null;
+  const at = (day) => ({ days: day, east: motion.east * day, north: motion.north * day });
+  const ticks = [];
+  for (let day = stepDays; day < days - 1e-9; day += stepDays) ticks.push(at(day));
+  return { ticks, end: at(days), stepDays };
+}
+
 /**
  * Everything the page draws or prints for a position round before the reveal, as plain numbers (for the leak
- * test): the view, the training points as offsets with their dates, the motion and the days to the target.
+ * test): the view, the training points as offsets with their dates, the date groups, the motion, the days to
+ * the target and the two drawn hints.
  */
 export function preRevealState(round) {
   const origin = lastMeasurement(round);
   return {
     view: guessView(round),
     training: byTime(round).map((point) => ({ ...toOffset(origin, point), t_mjd: point.t_mjd })),
+    clusters: dateClusters(round),
     motion: trainingMotion(round),
     daysToTarget: daysToTarget(round),
+    hints: { direction: hintDirection(round), ruler: hintRuler(round) },
   };
 }
 
@@ -233,4 +286,23 @@ export function saveBest(storage, roundId, score) {
   } catch {
     return null;
   }
+}
+
+/**
+ * After the reveal: which explanation fits and its numbers, in the round's error unit. The errors come from the
+ * round file's outcome block when it has them (arcsec rounds), else from its positions.
+ */
+export function resultExplanation(round, type, result) {
+  const outcome = round?.outcome ?? {};
+  const fromFile = (key, fallback) => (Number.isFinite(outcome[key]) && result.unit === 'arcsec' ? outcome[key] : fallback);
+  const model = fromFile('model_error_arcsec', result.errors.model);
+  const baseline = fromFile('baseline_error_arcsec', result.errors.baseline);
+  if (!Number.isFinite(model) || !Number.isFinite(baseline)) return null;
+  return {
+    key: baseline < model ? 'baselineCloser' : type,
+    model,
+    baseline,
+    outside: outcome.model === 'miss',
+    fromFile: Number.isFinite(outcome.model_error_arcsec) && result.unit === 'arcsec',
+  };
 }

@@ -4,9 +4,13 @@ import { readdirSync, readFileSync } from 'node:fs';
 import {
   checkRound, daysToTarget, expDecayScore, fromOffset, guessView, isMagnitude, lastMeasurement, physicsLost, pointError, preRevealState,
   readBest, revealView, roundKind, saveBest, scalarView, scoreRound, ticks, toOffset, trainingMotion,
+  dateClusters, hintDirection, hintRuler, resultExplanation, roundType,
 } from '../static/js/game.js';
+import { angleText, clusterDate, compassOf } from '../static/js/game-help.js';
+import { has } from '../static/js/i18n.js';
 
 const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
+const near = (actual, expected, tolerance, message) => assert.ok(Math.abs(actual - expected) <= tolerance, `${message ?? ''} ${actual} vs ${expected}`);
 const barnard = read('../static/dev-fixtures/game/barnard-position-example.json');
 const makemake = read('../static/dev-fixtures/game/makemake-position-example.json');
 const rdra = read('../static/dev-fixtures/game/rdra-brightness-example.json');
@@ -201,4 +205,70 @@ test('best scores are kept per round, and storage failures are harmless', () => 
   assert.equal(readBest(null, 'r1'), null);
   memory.set('tenger.game.v1', '{not json');
   assert.equal(readBest(storage, 'r1'), null);
+});
+
+const realRound = (name) => ROUNDS.find(([label]) => label === `real ${name}-position.json`)?.[1];
+
+test('B7: round types, date groups and the timeline numbers come from the round file', () => {
+  assert.equal(roundType(realRound('barnard'), 'barnard'), 'star');
+  assert.equal(roundType(realRound('epsindib'), 'epsindib'), 'star');
+  assert.equal(roundType(realRound('pluto'), 'pluto'), 'solar');
+  assert.equal(roundType(makemake), 'solar', 'from the trial id when the target key is unknown');
+  assert.equal(roundType(rdra), 'brightness');
+  const groups = Object.fromEntries(['barnard', 'epsindib', 'pluto'].map((name) => [name, dateClusters(realRound(name))]));
+  assert.deepEqual(Object.values(groups).map((list) => list.length), [2, 3, 2], 'one group per SPHEREx visit');
+  for (const [name, list] of Object.entries(groups)) {
+    assert.equal(list.reduce((sum, group) => sum + group.count, 0), realRound(name).training_points.length, `${name}: every dot in a group`);
+    assert.equal(list.at(-1).end, lastMeasurement(realRound(name)).t_mjd);
+  }
+  assert.equal(clusterDate(groups.barnard[0]), '2025-08-21 – 08-27');
+  assert.equal(clusterDate({ start: 61000, end: 61000.4 }), '2025-11-21');
+  assert.match(clusterDate({ start: 61030, end: 61045 }), /^2025-12-21 – 2026-01-05$/, 'the year again when it changes');
+  near(daysToTarget(realRound('barnard')), 144.5, 0.05);
+});
+
+test('B7 hints come from the training points only: direction, a 30-day ruler to the target date', () => {
+  for (const [name, round] of POSITION_ROUNDS) {
+    const direction = hintDirection(round);
+    near(Math.hypot(direction.east, direction.north), 1, 1e-12, `${name}: unit direction`);
+    const motion = trainingMotion(round);
+    const ruler = hintRuler(round);
+    const days = daysToTarget(round);
+    assert.deepEqual(ruler.ticks.map((tick) => tick.days), Array.from({ length: Math.ceil(days / 30) - 1 }, (_, index) => 30 * (index + 1)), `${name}: a tick every 30 days`);
+    near(ruler.end.days, days, 1e-9);
+    near(ruler.end.east, motion.east * days, 1e-9);
+    near(ruler.end.north, motion.north * days, 1e-9);
+  }
+  assert.equal(compassOf({ east: 0, north: 1 }), 'n');
+  assert.equal(compassOf({ east: 1, north: 0 }), 'e');
+  assert.equal(compassOf({ east: -0.7, north: -0.7 }), 'sw');
+  assert.equal(compassOf(realRound('barnard') && hintDirection(realRound('barnard'))), 'n', "Barnard's Star moves north");
+  assert.equal(hintRuler({ ...barnard, training_points: [barnard.training_points[0]] }), null, 'one date: no speed, no ruler');
+  assert.equal(angleText(19869.7467), '19,870″ (5.5°)');
+  assert.equal(angleText(0.0755), '0.08″');
+  assert.equal(angleText(1.5188), '1.5″');
+});
+
+test('B7 explanation after the reveal uses the errors in the round file', () => {
+  const barnardReal = realRound('barnard');
+  const star = resultExplanation(barnardReal, 'star', scoreRound(barnardReal, barnardReal.actual));
+  assert.deepEqual([star.key, star.model, star.baseline, star.outside, star.fromFile], ['star', 1.5188, 3.1073, false, true]);
+  const plutoReal = realRound('pluto');
+  const solar = resultExplanation(plutoReal, 'solar', scoreRound(plutoReal, plutoReal.actual));
+  assert.deepEqual([solar.key, solar.model, solar.baseline, solar.outside], ['solar', 5.8991, 19869.7467, true]);
+  const lost = resultExplanation(barnard, 'star', scoreRound(barnard, barnard.actual));
+  assert.equal(lost.key, 'baselineCloser', 'the example where the straight line wins says so');
+  assert.equal(lost.fromFile, false);
+  const brightness = resultExplanation(rdra, 'brightness', scoreRound(rdra, { value: 5 }));
+  assert.equal(brightness.key, 'brightness');
+});
+
+test('B7 strings exist in English for every round type', () => {
+  for (const type of ['star', 'solar', 'brightness']) {
+    assert.ok(has(`game.howto.${type}.idea`) && has(`game.howto.${type}.step1`), type);
+    assert.ok(has(`game.explain.${type}`), type);
+  }
+  for (const key of ['game.howto.title', 'game.timeline.after', 'game.timeline.target', 'game.timeline.label', 'game.hints.title', 'game.hints.show', 'game.hint1.title', 'game.hint1.text',
+    'game.hint2.title', 'game.hint2.text', 'game.hint2.straight', 'game.hint3.title', 'game.hint3.star', 'game.hint3.solar', 'game.who.playerHints', 'game.who.playerHint',
+    'game.explain.baselineCloser', 'game.explain.outside', ...['n', 'ne', 'e', 'se', 's', 'sw', 'w', 'nw'].map((d) => `game.dir.${d}`)]) assert.ok(has(key), key);
 });

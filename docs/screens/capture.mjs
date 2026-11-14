@@ -79,6 +79,12 @@ const PAGES = [
   { name: 'learn-lesson-sure-pluto', path: '/?page=learn&lesson=sure', ready: '.pluto-example', scrollTo: '.pluto-example' },
   { name: 'learn-lesson-distance-loop', path: '/?page=learn&lesson=distance', ready: '.loop-part', scrollTo: '.loop-part' },
   { name: 'loop', path: '/?page=loop', ready: '#loop-chart svg' },
+  // B7: help for the player in Beat the physics (real rounds; offsets from the last measurement).
+  { name: 'game-howto', path: '/?page=game&round=barnard-position', ready: '.game-plot', act: "document.querySelector('.howto').open = true", scrollTo: '.howto' },
+  { name: 'game-hints', path: '/?page=game&round=barnard-position', ready: '.game-plot', act: "(() => { document.querySelector('.howto').open = false; for (let i = 0; i < 3; i += 1) document.getElementById('hint-next').click(); })()", scrollTo: '.round-grid' },
+  { name: 'game-timeline', path: '/?page=game&round=epsindib-position', ready: '.game-plot', act: "(() => { document.querySelector('.howto').open = false; })()", scrollTo: '.timeline' },
+  { name: 'game-pluto-hints', path: '/?page=game&round=pluto-position', ready: '.game-plot', act: "(() => { document.querySelector('.howto').open = true; for (let i = 0; i < 2; i += 1) document.getElementById('hint-next').click(); })()", scrollTo: '.howto' },
+  { name: 'game-explained', path: '/?page=game&round=pluto-position', ready: '.game-plot', act: "(() => { document.getElementById('hint-next').click(); const e = document.getElementById('guess-east'); e.value = '-8000'; e.dispatchEvent(new Event('change')); const n = document.getElementById('guess-north'); n.value = '-2900'; n.dispatchEvent(new Event('change')); document.getElementById('lock-guess').click(); for (let i = 0; i < 3; i += 1) document.getElementById('reveal-next').click(); })()", scrollTo: '#round-results' },
   // B6: the asteroid batch (only the invented example exists yet, so only in ?fixtures=1 mode).
   { name: 'predictions-batch', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch' },
   { name: 'predictions-batch-charts', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch .batch-charts' },

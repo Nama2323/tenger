@@ -906,10 +906,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game",
@@ -922,10 +919,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game",
@@ -938,10 +932,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game",
@@ -954,10 +945,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-example",
@@ -970,10 +958,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-example",
@@ -986,10 +971,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-example",
@@ -1002,10 +984,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-example",
@@ -1018,10 +997,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-example-revealed",
@@ -1034,10 +1010,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-example-revealed",
@@ -1050,10 +1023,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-example-revealed",
@@ -1066,10 +1036,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-example-revealed",
@@ -1082,10 +1049,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-rdra-revealed",
@@ -1098,10 +1062,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-rdra-revealed",
@@ -1114,10 +1075,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-rdra-revealed",
@@ -1130,10 +1088,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "game-rdra-revealed",
@@ -1146,10 +1101,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions",
@@ -4294,6 +4246,266 @@
   },
   {
     "page": "learn-lab-measured-w1",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-howto",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-howto",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-howto",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-howto",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-hints",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-hints",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-hints",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-hints",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-timeline",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-timeline",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-timeline",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-timeline",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-pluto-hints",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-pluto-hints",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-pluto-hints",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-pluto-hints",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-explained",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-explained",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-explained",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "game-explained",
     "requested": 1280,
     "ready": true,
     "innerWidth": 1280,

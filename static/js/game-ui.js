@@ -4,9 +4,10 @@
 import { covarianceEllipse } from './coords.js';
 import { $, chip, dataTable, el, formatNumber, formatUtc, withUnit } from './dom.js';
 import {
-  checkRound, errorUnit, fromOffset, isMagnitude, lastMeasurement, physicsLost, readBest, revealView, roundKind, saveBest, scalarView, scoreRound, ticks,
-  toOffset,
+  checkRound, dateClusters, errorUnit, fromOffset, isMagnitude, lastMeasurement, physicsLost, readBest, revealView, roundKind, roundType, saveBest,
+  scalarView, scoreRound, ticks, toOffset,
 } from './game.js';
+import { clusterDate, explainResult, HINT_COUNT, hintBody, hintOverlay, howToBox, timelineStrip } from './game-help.js';
 import { has, t } from './i18n.js';
 import { categoryChip, categoryNote, exampleChip, prospectiveChip, trialStatusChip } from './labels.js';
 import { mjdToDate } from './stack.js';
@@ -202,10 +203,13 @@ function drawPlot() {
   const trainingXY = training.map((point) => (play.kind === 'position' ? geo.toPlot(point) : geo.toPlot(point, point.t_mjd)));
   plot.append(svg('polyline', { points: trainingXY.map(({ x, y }) => `${x},${y}`).join(' '), class: 'track' }));
   trainingXY.forEach(({ x, y }) => plot.append(marker('training', x, y)));
-  [0, training.length - 1].filter((index, position, list) => list.indexOf(index) === position).forEach((index) => {
-    const { x, y } = trainingXY[index];
-    plot.append(svg('text', { x: x + 8, y: y - 8, class: 'point-label' }, dateOf(training[index].t_mjd)));
-  });
+  // Every group of dots (one SPHEREx visit) carries its dates.
+  for (const cluster of dateClusters(round)) {
+    const { x, y } = play.kind === 'position' ? geo.offsetToPlot(cluster.centre) : geo.toPlot({ value: cluster.value }, cluster.time);
+    const right = x < SIZE - PAD - 120;
+    plot.append(svg('text', { x: right ? x + 10 : x - 10, y: y - 10, class: 'point-label', 'text-anchor': right ? 'start' : 'end' }, clusterDate(cluster)));
+  }
+  if (play.kind === 'position' && play.hints) plot.append(...hintOverlay(round, play.hints, geo));
   const parts = revealedParts();
   const last = trainingXY.at(-1);
   if (parts.includes('baseline')) {
@@ -337,12 +341,47 @@ function revealNext() {
   if (next === 'actual') showResults();
 }
 
+// ---------- Hints (position rounds) ----------
+
+function hintButtonLabel() {
+  return play.hints >= HINT_COUNT ? '' : t('game.hints.show', { n: String(play.hints + 1), title: t(`game.hint${play.hints + 1}.title`) });
+}
+
+function showHint() {
+  if (play.stage !== 'guess' || play.hints >= HINT_COUNT) return;
+  play.hints += 1;
+  const n = play.hints;
+  const unit = errorUnit(play.round);
+  $('hint-list').append(el('article', { class: 'game-hint', id: `hint-${n}`, tabindex: '-1' }, [
+    el('h4', { text: t(`game.hint${n}.title`) }),
+    ...hintBody(n, play.round, play.type, play.name, unit),
+  ]));
+  drawPlot();
+  const button = $('hint-next');
+  button.hidden = play.hints >= HINT_COUNT;
+  button.textContent = hintButtonLabel();
+  $('hint-count').textContent = t('game.hints.used', { n: String(play.hints), total: String(HINT_COUNT) });
+  $('round-status').textContent = t('game.hints.announce', { n: String(n), title: t(`game.hint${n}.title`) });
+  if (button.hidden) $(`hint-${n}`).focus({ preventScroll: true });
+}
+
+function hintsPanel() {
+  if (play.kind !== 'position') return null;
+  return el('section', { class: 'hints', 'aria-labelledby': 'hints-title' }, [
+    el('h3', { id: 'hints-title', text: t('game.hints.title') }),
+    el('p', { class: 'note', text: t('game.hints.lead') }),
+    el('div', { id: 'hint-list', class: 'hint-list' }),
+    el('p', { id: 'hint-count', class: 'note', 'aria-live': 'polite' }),
+    el('button', { id: 'hint-next', type: 'button', class: 'quiet', text: hintButtonLabel(), onclick: showHint }),
+  ]);
+}
+
 // ---------- Results ----------
 
 function resultRow(who, result, unit) {
   const best = result.best.includes(who);
   return el('tr', { class: best ? 'is-best' : '' }, [
-    el('th', { scope: 'row' }, [legendIcon(who), t(`game.who.${who}`)]),
+    el('th', { scope: 'row' }, [legendIcon(who), who === 'player' && play.hints ? t(play.hints === 1 ? 'game.who.playerHint' : 'game.who.playerHints', { n: String(play.hints) }) : t(`game.who.${who}`)]),
     el('td', { text: withUnit(result.errors[who], unit, 3) }),
     el('td', { text: result.scores[who] === null ? '—' : String(result.scores[who]) }),
     el('td', { text: best ? t('game.closest') : '' }),
@@ -384,6 +423,7 @@ function showResults() {
   $('round-results').replaceChildren(...[
     el('h3', { text: t('game.resultsTitle') }),
     el('p', { class: 'verdict', text: verdict(result) }),
+    explainResult(round, play.type, play.name, result),
     physicsLost(result) ? el('p', { class: 'note', text: t('game.physicsMayLose') }) : null,
     el('div', { class: 'table-scroll' }, el('table', { class: 'results-table' }, [
       el('caption', { text: t('game.tableCaption') }),
@@ -405,6 +445,7 @@ function showResults() {
 function renderControls() {
   const guessing = play.stage === 'guess';
   for (const input of document.querySelectorAll('#guess-inputs input, #guess-inputs .nudge')) input.disabled = !guessing;
+  if ($('hint-next')) $('hint-next').disabled = !guessing;
   $('lock-guess').hidden = !guessing;
   $('lock-guess').disabled = !play.guess;
   const label = NEXT_LABEL[play.stage];
@@ -478,13 +519,16 @@ function renderRound() {
       el('p', { class: 'note', text: categoryNote(round.category) }),
       el('p', { id: 'round-task', text: t(play.kind === 'position' ? 'game.taskPosition' : 'game.taskScalar', { name, date, count }) }),
     ]),
+    howToBox(play.type, name),
     el('div', { class: 'round-grid' }, [
       el('figure', { class: 'round-figure' }, [
         el('div', { id: 'round-plot', class: 'round-plot' }),
         el('figcaption', {}, [legend(), el('p', { id: 'game-keys', class: 'note', text: t('game.keys') })]),
+        timelineStrip(round),
       ]),
       el('div', { class: 'round-side' }, [
         guessInputs(),
+        hintsPanel(),
         el('button', { id: 'lock-guess', type: 'button', class: 'glow', text: t('game.lock'), onclick: lockGuess, disabled: true }),
         el('ol', { id: 'reveal-steps', class: 'reveal-steps' }, ['locked', 'baseline', 'model', 'actual']
           .map((stage) => el('li', { dataset: { stage }, text: t(`game.step.${stage}`) }))),
@@ -502,7 +546,11 @@ function renderRound() {
 
 function startRound(roundId) {
   const entry = context.rounds.find((item) => item.doc.round_id === roundId) ?? context.rounds[0];
-  play = { round: entry.doc, bundle: entry.bundle, kind: roundKind(entry.doc), stage: 'guess', guess: null, regionShown: null };
+  const targetKey = entry.bundle?.trial?.doc?.target_key ?? null;
+  play = {
+    round: entry.doc, bundle: entry.bundle, kind: roundKind(entry.doc), stage: 'guess', guess: null, regionShown: null, hints: 0,
+    type: roundType(entry.doc, targetKey), name: context.nameOf(targetKey) ?? entry.doc.trial_id,
+  };
   for (const button of document.querySelectorAll('#round-picker button')) {
     button.setAttribute('aria-pressed', String(button.dataset.round === entry.doc.round_id));
   }
