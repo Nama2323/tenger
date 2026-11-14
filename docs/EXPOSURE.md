@@ -247,9 +247,11 @@ statement in chat.
 | 162 Laurentia | 9.09 | 2 (275 exposures) | 61269.90–61280.75 | 10 | true |
 | 379 Huenna | 9.1 | 2 (267 exposures) | 61299.62–61310.75 | 10 | true |
 
-**Opened so far:** none.
-- Training pixels are opened next, from MOST training rows only.
-- Evaluation pixels are opened only after the batch is frozen and pushed.
+**Opened so far:**
+- **Training pixels** (02:56–05:45 UB): every training exposure listed by MOST, 2,041 cutouts centred
+  on the MOST training-time positions (`cache/asteroids/<number>/train/`).
+- **Evaluation pixels: none.** They are opened only after "predict: freeze asteroid batch" is committed
+  and pushed with its receipts.
 
 ## Who has seen what
 

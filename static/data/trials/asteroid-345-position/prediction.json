@@ -1,0 +1,1224 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "contract_version": 13,
+  "trial_id": "asteroid-345-position",
+  "trial_ref": {
+    "path": "trials/asteroid-345-position/trial.json",
+    "sha256": "4c52ef033ebb02968a9d0a3748bbd4bf98adf8d040fcad65e1ca6b506c092fb9"
+  },
+  "training_sha256": "19f1e4ab12f8aabc1e8b319e901eb65b3c38e4ea07cf3c5a9beb671e8370a0e9",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "batch_id": "asteroids-2026a",
+  "target_name": "345 Tercidina (A892 WB)",
+  "open_forecast": false,
+  "created_utc": "2026-11-14T21:54:12Z",
+  "t_mjd": 61308.270946,
+  "prediction_status": "predicted",
+  "status_reason_key": null,
+  "model": {
+    "t_mjd": 61308.270946,
+    "ra_deg": 293.24597143,
+    "dec_deg": -9.25599866,
+    "cov_arcsec2": [
+      [
+        504.619282,
+        -324.91822
+      ],
+      [
+        -324.91822,
+        250.191675
+      ]
+    ],
+    "c_fit_arcsec2": [
+      [
+        9.498742,
+        -0.046764
+      ],
+      [
+        -0.046764,
+        9.439113
+      ]
+    ],
+    "c_model_arcsec2": [
+      [
+        495.12054,
+        -324.871456
+      ],
+      [
+        -324.871456,
+        240.752562
+      ]
+    ],
+    "uncertainty_basis": {
+      "along": "monte_carlo",
+      "cross": "monte_carlo"
+    },
+    "distance_au": 1.85307,
+    "along_track_95_arcsec": 65.669,
+    "cross_track_95_arcsec": 14.49,
+    "motion_arcsec_per_day": 530.517,
+    "motion_position_angle_deg": 118.74,
+    "content_type": "modeled",
+    "frame": "heliocentric_two_body",
+    "observer": "geocentre; spacecraft offset in the covariance"
+  },
+  "secondary_model": {
+    "t_mjd": 61308.270946,
+    "ra_deg": 293.19547967,
+    "dec_deg": -9.24930285,
+    "cov_arcsec2": [
+      [
+        119739.026965,
+        -45608.515158
+      ],
+      [
+        -45608.515158,
+        63151.578168
+      ]
+    ],
+    "c_fit_arcsec2": [
+      [
+        19.897187,
+        -1.62974
+      ],
+      [
+        -1.62974,
+        17.810227
+      ]
+    ],
+    "c_model_arcsec2": [
+      [
+        119719.129778,
+        -45606.885419
+      ],
+      [
+        -45606.885419,
+        63133.76794
+      ]
+    ],
+    "uncertainty_basis": {
+      "along": "monte_carlo",
+      "cross": "monte_carlo"
+    },
+    "distance_au": 1.84946,
+    "along_track_95_arcsec": 932.433,
+    "cross_track_95_arcsec": 475.763,
+    "motion_arcsec_per_day": 532.245,
+    "motion_position_angle_deg": 118.68,
+    "content_type": "modeled",
+    "frame": "barycentric_two_body",
+    "observer": "geocentre; spacecraft offset in the covariance"
+  },
+  "baseline": {
+    "ra_deg": 111.06489668,
+    "dec_deg": 11.45901827,
+    "cov_arcsec2": [
+      [
+        3788292.249224,
+        -49257.071741
+      ],
+      [
+        -49257.071741,
+        3721563.281992
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "track": [
+    {
+      "t_mjd": 61308.269454,
+      "ra_deg": 293.24577608,
+      "dec_deg": -9.25589297,
+      "cov_arcsec2": [
+        [
+          504.590927,
+          -324.929382
+        ],
+        [
+          -324.929382,
+          250.220366
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          9.498904,
+          -0.046763
+        ],
+        [
+          -0.046763,
+          9.439287
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          495.092023,
+          -324.882619
+        ],
+        [
+          -324.882619,
+          240.781079
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.85305,
+      "along_track_95_arcsec": 65.669,
+      "cross_track_95_arcsec": 14.49,
+      "motion_arcsec_per_day": 530.492,
+      "motion_position_angle_deg": 118.74,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.269454,
+      "ra_deg": 293.24577608,
+      "dec_deg": -9.25589297,
+      "cov_arcsec2": [
+        [
+          504.590927,
+          -324.929382
+        ],
+        [
+          -324.929382,
+          250.220366
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          9.498904,
+          -0.046763
+        ],
+        [
+          -0.046763,
+          9.439287
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          495.092023,
+          -324.882619
+        ],
+        [
+          -324.882619,
+          240.781079
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.85305,
+      "along_track_95_arcsec": 65.669,
+      "cross_track_95_arcsec": 14.49,
+      "motion_arcsec_per_day": 530.492,
+      "motion_position_angle_deg": 118.74,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.270946,
+      "ra_deg": 293.24597145,
+      "dec_deg": -9.25599867,
+      "cov_arcsec2": [
+        [
+          504.619285,
+          -324.918218
+        ],
+        [
+          -324.918218,
+          250.191672
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          9.498742,
+          -0.046764
+        ],
+        [
+          -0.046764,
+          9.439113
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          495.120544,
+          -324.871455
+        ],
+        [
+          -324.871455,
+          240.752559
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.85307,
+      "along_track_95_arcsec": 65.669,
+      "cross_track_95_arcsec": 14.49,
+      "motion_arcsec_per_day": 530.517,
+      "motion_position_angle_deg": 118.74,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.270946,
+      "ra_deg": 293.24597145,
+      "dec_deg": -9.25599867,
+      "cov_arcsec2": [
+        [
+          504.619285,
+          -324.918218
+        ],
+        [
+          -324.918218,
+          250.191672
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          9.498742,
+          -0.046764
+        ],
+        [
+          -0.046764,
+          9.439113
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          495.120544,
+          -324.871455
+        ],
+        [
+          -324.871455,
+          240.752559
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.85307,
+      "along_track_95_arcsec": 65.669,
+      "cross_track_95_arcsec": 14.49,
+      "motion_arcsec_per_day": 530.517,
+      "motion_position_angle_deg": 118.74,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.272438,
+      "ra_deg": 293.24616685,
+      "dec_deg": -9.25610438,
+      "cov_arcsec2": [
+        [
+          504.64764,
+          -324.907053
+        ],
+        [
+          -324.907053,
+          250.162981
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          9.49858,
+          -0.046764
+        ],
+        [
+          -0.046764,
+          9.438939
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          495.14906,
+          -324.860289
+        ],
+        [
+          -324.860289,
+          240.724042
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.85308,
+      "along_track_95_arcsec": 65.669,
+      "cross_track_95_arcsec": 14.49,
+      "motion_arcsec_per_day": 530.543,
+      "motion_position_angle_deg": 118.74,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.272438,
+      "ra_deg": 293.24616685,
+      "dec_deg": -9.25610438,
+      "cov_arcsec2": [
+        [
+          504.64764,
+          -324.907053
+        ],
+        [
+          -324.907053,
+          250.162981
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          9.49858,
+          -0.046764
+        ],
+        [
+          -0.046764,
+          9.438939
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          495.149061,
+          -324.860289
+        ],
+        [
+          -324.860289,
+          240.724042
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.85308,
+      "along_track_95_arcsec": 65.669,
+      "cross_track_95_arcsec": 14.49,
+      "motion_arcsec_per_day": 530.543,
+      "motion_position_angle_deg": 118.74,
+      "content_type": "modeled"
+    }
+  ],
+  "secondary_track": [
+    {
+      "t_mjd": 61308.269454,
+      "ra_deg": 293.19528358,
+      "dec_deg": -9.249197,
+      "cov_arcsec2": [
+        [
+          119735.033917,
+          -45610.992071
+        ],
+        [
+          -45610.992071,
+          63155.571919
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          19.897308,
+          -1.629693
+        ],
+        [
+          -1.629693,
+          17.81081
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          119715.13661,
+          -45609.362378
+        ],
+        [
+          -45609.362378,
+          63137.761109
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.84945,
+      "along_track_95_arcsec": 932.433,
+      "cross_track_95_arcsec": 475.763,
+      "motion_arcsec_per_day": 532.219,
+      "motion_position_angle_deg": 118.69,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.269454,
+      "ra_deg": 293.19528358,
+      "dec_deg": -9.249197,
+      "cov_arcsec2": [
+        [
+          119735.033917,
+          -45610.992071
+        ],
+        [
+          -45610.992071,
+          63155.571919
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          19.897308,
+          -1.629693
+        ],
+        [
+          -1.629693,
+          17.81081
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          119715.13661,
+          -45609.362378
+        ],
+        [
+          -45609.362378,
+          63137.761109
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.84945,
+      "along_track_95_arcsec": 932.433,
+      "cross_track_95_arcsec": 475.763,
+      "motion_arcsec_per_day": 532.219,
+      "motion_position_angle_deg": 118.69,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.270946,
+      "ra_deg": 293.1954797,
+      "dec_deg": -9.24930286,
+      "cov_arcsec2": [
+        [
+          119739.027479,
+          -45608.51484
+        ],
+        [
+          -45608.51484,
+          63151.577654
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          19.897187,
+          -1.62974
+        ],
+        [
+          -1.62974,
+          17.810227
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          119719.130292,
+          -45606.8851
+        ],
+        [
+          -45606.8851,
+          63133.767426
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.84946,
+      "along_track_95_arcsec": 932.433,
+      "cross_track_95_arcsec": 475.763,
+      "motion_arcsec_per_day": 532.245,
+      "motion_position_angle_deg": 118.68,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.270946,
+      "ra_deg": 293.1954797,
+      "dec_deg": -9.24930286,
+      "cov_arcsec2": [
+        [
+          119739.027479,
+          -45608.51484
+        ],
+        [
+          -45608.51484,
+          63151.577654
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          19.897187,
+          -1.62974
+        ],
+        [
+          -1.62974,
+          17.810227
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          119719.130292,
+          -45606.8851
+        ],
+        [
+          -45606.8851,
+          63133.767426
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.84946,
+      "along_track_95_arcsec": 932.433,
+      "cross_track_95_arcsec": 475.763,
+      "motion_arcsec_per_day": 532.245,
+      "motion_position_angle_deg": 118.68,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.272438,
+      "ra_deg": 293.19567582,
+      "dec_deg": -9.24940872,
+      "cov_arcsec2": [
+        [
+          119743.020408,
+          -45606.037516
+        ],
+        [
+          -45606.037516,
+          63147.584022
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          19.897067,
+          -1.629786
+        ],
+        [
+          -1.629786,
+          17.809645
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          119723.123341,
+          -45604.40773
+        ],
+        [
+          -45604.40773,
+          63129.774377
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.84948,
+      "along_track_95_arcsec": 932.433,
+      "cross_track_95_arcsec": 475.763,
+      "motion_arcsec_per_day": 532.271,
+      "motion_position_angle_deg": 118.68,
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.272438,
+      "ra_deg": 293.19567583,
+      "dec_deg": -9.24940872,
+      "cov_arcsec2": [
+        [
+          119743.02044,
+          -45606.037496
+        ],
+        [
+          -45606.037496,
+          63147.58399
+        ]
+      ],
+      "c_fit_arcsec2": [
+        [
+          19.897067,
+          -1.629786
+        ],
+        [
+          -1.629786,
+          17.809645
+        ]
+      ],
+      "c_model_arcsec2": [
+        [
+          119723.123373,
+          -45604.40771
+        ],
+        [
+          -45604.40771,
+          63129.774345
+        ]
+      ],
+      "uncertainty_basis": {
+        "along": "monte_carlo",
+        "cross": "monte_carlo"
+      },
+      "distance_au": 1.84948,
+      "along_track_95_arcsec": 932.433,
+      "cross_track_95_arcsec": 475.763,
+      "motion_arcsec_per_day": 532.271,
+      "motion_position_angle_deg": 118.68,
+      "content_type": "modeled"
+    }
+  ],
+  "baseline_track": [
+    {
+      "t_mjd": 61308.269454,
+      "ra_deg": 111.06498117,
+      "dec_deg": 11.45900895,
+      "cov_arcsec2": [
+        [
+          3788258.919485,
+          -49256.305402
+        ],
+        [
+          -49256.305402,
+          3721530.221155
+        ]
+      ],
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.269454,
+      "ra_deg": 111.06498117,
+      "dec_deg": 11.45900895,
+      "cov_arcsec2": [
+        [
+          3788258.919485,
+          -49256.305402
+        ],
+        [
+          -49256.305402,
+          3721530.221155
+        ]
+      ],
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.270946,
+      "ra_deg": 111.06489667,
+      "dec_deg": 11.45901827,
+      "cov_arcsec2": [
+        [
+          3788292.253513,
+          -49257.071839
+        ],
+        [
+          -49257.071839,
+          3721563.286247
+        ]
+      ],
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.270946,
+      "ra_deg": 111.06489667,
+      "dec_deg": 11.45901827,
+      "cov_arcsec2": [
+        [
+          3788292.253513,
+          -49257.071839
+        ],
+        [
+          -49257.071839,
+          3721563.286247
+        ]
+      ],
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.272438,
+      "ra_deg": 111.06481216,
+      "dec_deg": 11.45902758,
+      "cov_arcsec2": [
+        [
+          3788325.587742,
+          -49257.838284
+        ],
+        [
+          -49257.838284,
+          3721596.351541
+        ]
+      ],
+      "content_type": "modeled"
+    },
+    {
+      "t_mjd": 61308.272438,
+      "ra_deg": 111.06481216,
+      "dec_deg": 11.45902758,
+      "cov_arcsec2": [
+        [
+          3788325.58801,
+          -49257.83829
+        ],
+        [
+          -49257.83829,
+          3721596.351807
+        ]
+      ],
+      "content_type": "modeled"
+    }
+  ],
+  "model_state": {
+    "kind": "heliocentric_two_body",
+    "t0_mjd_utc": 60805.929426,
+    "state_au_au_per_day": [
+      -2.3188407159749262,
+      -0.30300421002248124,
+      -0.30223884585946376,
+      0.001091006476748841,
+      -0.01070829763671801,
+      -0.002807142076527234
+    ],
+    "covariance_fit": [
+      [
+        8.498520026268293e-11,
+        -1.690110047752582e-11,
+        -2.6117072538774324e-13,
+        -5.457385053932852e-13,
+        2.688304986087297e-14,
+        -4.65837125244476e-14
+      ],
+      [
+        -1.6901100477524986e-11,
+        3.672149928640295e-12,
+        7.459648859683963e-14,
+        1.1268500783433862e-13,
+        -1.1343855001800637e-14,
+        8.06971438417833e-15
+      ],
+      [
+        -2.611707253877781e-13,
+        7.45964885968256e-14,
+        2.357196808732224e-13,
+        2.01352725445682e-15,
+        -9.95498647829864e-16,
+        -6.176716990550397e-17
+      ],
+      [
+        -5.457385053932199e-13,
+        1.1268500783433099e-13,
+        2.0135272544574947e-15,
+        3.8889302708197375e-15,
+        -6.206002832110961e-16,
+        2.1680504950472504e-16
+      ],
+      [
+        2.6883049860796177e-14,
+        -1.1343855001785819e-14,
+        -9.954986478287573e-16,
+        -6.206002832106246e-16,
+        5.374188248917236e-16,
+        8.209527648824712e-17
+      ],
+      [
+        -4.658371252446183e-14,
+        8.069714384181602e-15,
+        -6.17671699054412e-17,
+        2.1680504950485244e-16,
+        8.209527648820046e-17,
+        4.57586686113841e-17
+      ]
+    ],
+    "light_time": true,
+    "aberration": false,
+    "sigma_g_arcsec": 0.2,
+    "start": {
+      "distance_au": 1.4,
+      "chi2_red": 4.4536,
+      "grid": [
+        {
+          "distance_au": 0.8,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 1.0,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 1.2,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 1.4,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 1.6,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 1.8,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 2.0,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 2.2,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 2.4,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 2.6,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 2.8,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 3.0,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 3.2,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 3.4,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 3.6,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 3.8,
+          "chi2_red": 4.4536
+        },
+        {
+          "distance_au": 4.0,
+          "chi2_red": 4.4536
+        }
+      ]
+    },
+    "model_error": {
+      "elements_used": {
+        "a_au": 2.32549,
+        "e": 0.06121,
+        "i_deg": 9.74329
+      },
+      "orbits": 24,
+      "used": 24,
+      "failed": 0,
+      "synthetic_times": 30,
+      "c_along_cross_arcsec2": [
+        [
+          710.242971,
+          -67.405824
+        ],
+        [
+          -67.405824,
+          25.630132
+        ]
+      ],
+      "rms_along_arcsec": 26.6504,
+      "rms_cross_arcsec": 5.0626,
+      "median_total_arcsec": 13.3624,
+      "max_total_arcsec": 59.1297
+    },
+    "diagnostics": {
+      "n_points": 80,
+      "n_groups": 10,
+      "chi2_red": 4.4536,
+      "residual_rms": [
+        0.2311,
+        0.3418
+      ],
+      "group_means": {
+        "1-d4": [
+          -0.0377,
+          -0.3258
+        ],
+        "1-d1": [
+          -0.1405,
+          -0.3907
+        ],
+        "1-d3": [
+          -0.105,
+          0.2771
+        ],
+        "1-d6": [
+          -0.0365,
+          0.3394
+        ],
+        "2-d1": [
+          0.0076,
+          -0.0617
+        ],
+        "2-d4": [
+          -0.0169,
+          -0.128
+        ],
+        "2-d2": [
+          0.0388,
+          -0.1518
+        ],
+        "2-d5": [
+          0.0672,
+          0.0666
+        ],
+        "2-d3": [
+          -0.0261,
+          0.0815
+        ],
+        "2-d6": [
+          0.0575,
+          -0.0484
+        ]
+      },
+      "group_residual_rms": 0.166,
+      "jackknife_groups": 10,
+      "monte_carlo_draws": 300
+    }
+  },
+  "secondary_state": {
+    "kind": "barycentric_two_body",
+    "t0_mjd_utc": 60805.929426,
+    "state_au_au_per_day": [
+      -2.3201791902286923,
+      -0.3087660609834236,
+      -0.304238078536232,
+      0.0010970325182611336,
+      -0.01069974200392675,
+      -0.0028064919400633474
+    ],
+    "covariance_fit": [
+      [
+        6.335097299346527e-09,
+        -1.2604661576664291e-09,
+        -1.9511543243080308e-11,
+        -4.0603700830554525e-11,
+        1.99691005594023e-12,
+        -3.470542841001308e-12
+      ],
+      [
+        -1.26046615766654e-09,
+        2.738878336753759e-10,
+        5.562909137900037e-12,
+        8.387349726767186e-12,
+        -8.429445618809191e-13,
+        6.01836807249177e-13
+      ],
+      [
+        -1.951154324310456e-11,
+        5.562909137902863e-12,
+        1.7510987715855796e-11,
+        1.500248165387774e-13,
+        -7.391163387286674e-14,
+        -4.705714053140204e-15
+      ],
+      [
+        -4.060370083056426e-11,
+        8.387349726768416e-12,
+        1.5002481653872752e-13,
+        2.888392321167466e-13,
+        -4.61074260924085e-14,
+        1.612618782478583e-14
+      ],
+      [
+        1.9969100559516136e-12,
+        -8.429445618831626e-13,
+        -7.391163387284949e-14,
+        -4.610742609247843e-14,
+        3.994067697534232e-14,
+        6.098296173694246e-15
+      ],
+      [
+        -3.4705428409992296e-12,
+        6.018368072486998e-13,
+        -4.7057140531425345e-15,
+        1.6126187824767176e-14,
+        6.098296173701137e-15,
+        3.402199700053529e-15
+      ]
+    ],
+    "light_time": true,
+    "aberration": false,
+    "sigma_g_arcsec": 1.2636,
+    "start": {
+      "distance_au": 1.2,
+      "chi2_red": 331.9981,
+      "grid": [
+        {
+          "distance_au": 0.8,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 1.0,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 1.2,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 1.4,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 1.6,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 1.8,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 2.0,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 2.2,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 2.4,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 2.6,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 2.8,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 3.0,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 3.2,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 3.4,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 3.6,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 3.8,
+          "chi2_red": 331.9981
+        },
+        {
+          "distance_au": 4.0,
+          "chi2_red": 331.9981
+        }
+      ]
+    },
+    "model_error": {
+      "elements_used": {
+        "a_au": 2.31481,
+        "e": 0.06261,
+        "i_deg": 9.73978
+      },
+      "orbits": 24,
+      "used": 24,
+      "failed": 0,
+      "synthetic_times": 30,
+      "c_along_cross_arcsec2": [
+        [
+          145090.950717,
+          -764.873532
+        ],
+        [
+          -764.873532,
+          37761.947001
+        ]
+      ],
+      "rms_along_arcsec": 380.9081,
+      "rms_cross_arcsec": 194.3243,
+      "median_total_arcsec": 359.4712,
+      "max_total_arcsec": 846.7385
+    },
+    "diagnostics": {
+      "n_points": 80,
+      "n_groups": 10,
+      "chi2_red": 331.9981,
+      "residual_rms": [
+        1.3504,
+        2.8639
+      ],
+      "group_means": {
+        "1-d4": [
+          0.5362,
+          1.5542
+        ],
+        "1-d1": [
+          -0.1148,
+          2.5567
+        ],
+        "1-d3": [
+          0.2008,
+          -1.9619
+        ],
+        "1-d6": [
+          0.1381,
+          -3.2475
+        ],
+        "2-d1": [
+          -0.4907,
+          1.3179
+        ],
+        "2-d4": [
+          -0.0176,
+          0.4493
+        ],
+        "2-d2": [
+          -0.0849,
+          -0.0488
+        ],
+        "2-d5": [
+          -0.4012,
+          0.9341
+        ],
+        "2-d3": [
+          0.4902,
+          -1.1917
+        ],
+        "2-d6": [
+          0.7452,
+          -1.6693
+        ]
+      },
+      "group_residual_rms": 1.2636,
+      "jackknife_groups": 10,
+      "monte_carlo_draws": 300
+    }
+  },
+  "diagnostics": {
+    "baseline": {
+      "chi2_red": 5931614683.0424,
+      "params_arcsec": [
+        -127635.70317,
+        33288.71708,
+        -228135.78542,
+        52913.73134
+      ]
+    }
+  },
+  "limitation_keys": [
+    "limit.two-body-only",
+    "limit.gaussian-psf-model",
+    "limit.ephemeris-guided-training"
+  ]
+}

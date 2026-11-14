@@ -1,0 +1,28 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "contract_version": 13,
+  "trial_id": "asteroid-286-position",
+  "trial_ref": {
+    "path": "trials/asteroid-286-position/trial.json",
+    "sha256": "2ec15773e3e09fba26f2f053f28564bab48ba9fda82f06a89cebf032b0becf1e"
+  },
+  "training_sha256": "35fa08c2fb64328d696a80ed444c504a06d584461b395bcde13bf4cf5d363ae5",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "batch_id": "asteroids-2026a",
+  "target_name": "286 Iclea (A889 PB)",
+  "open_forecast": false,
+  "created_utc": "2026-11-14T21:54:12Z",
+  "t_mjd": 61176.852939,
+  "prediction_status": "insufficient_data",
+  "status_reason_key": "predict.fewer-than-2-visits",
+  "model": null,
+  "baseline": null,
+  "limitation_keys": [
+    "limit.two-body-only",
+    "limit.gaussian-psf-model",
+    "limit.ephemeris-guided-training"
+  ]
+}

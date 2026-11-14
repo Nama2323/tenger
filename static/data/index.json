@@ -405,6 +405,14 @@
     }
   ],
   "trials": [
+    "trials/asteroid-1021-position/trial.json",
+    "trials/asteroid-162-position/trial.json",
+    "trials/asteroid-286-position/trial.json",
+    "trials/asteroid-345-position/trial.json",
+    "trials/asteroid-363-position/trial.json",
+    "trials/asteroid-379-position/trial.json",
+    "trials/asteroid-491-position/trial.json",
+    "trials/asteroid-714-position/trial.json",
     "trials/barnard-position-2026b/trial.json",
     "trials/epsindib-position-2026b/trial.json",
     "trials/makemake-position-2026a/trial.json",
@@ -442,5 +450,8 @@
     "credit.gaia",
     "credit.horizons",
     "credit.base-project"
+  ],
+  "batch_paths": [
+    "batches/asteroids-2026a.json"
   ]
 }

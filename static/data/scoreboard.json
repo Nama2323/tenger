@@ -1,8 +1,72 @@
 {
   "schema_version": "tenger.scoreboard/1",
-  "contract_version": 5,
-  "generated_utc": "2026-11-14T16:32:07Z",
+  "contract_version": 13,
+  "generated_utc": "2026-11-14T22:03:23Z",
   "derived_from": [
+    {
+      "path": "trials/asteroid-1021-position/trial.json",
+      "sha256": "e5176439350e12603818fc7e1fdc3fbac7d7140904d0bd9e30069494415fa2e0"
+    },
+    {
+      "path": "trials/asteroid-1021-position/prediction.json",
+      "sha256": "2a0360d509026ea84e4f7efe54dcb2293c4a1e5ad4c3f76c6b89642aa43e93f6"
+    },
+    {
+      "path": "trials/asteroid-162-position/trial.json",
+      "sha256": "a49e662f9cd0398b91c2da4a1d781ada6e3df47bf0f6e20049cf7d53c6eacbc8"
+    },
+    {
+      "path": "trials/asteroid-162-position/prediction.json",
+      "sha256": "485e50743fbe7db489f1c00369e80268870cfd50ccded397b8be71c304345021"
+    },
+    {
+      "path": "trials/asteroid-286-position/trial.json",
+      "sha256": "2ec15773e3e09fba26f2f053f28564bab48ba9fda82f06a89cebf032b0becf1e"
+    },
+    {
+      "path": "trials/asteroid-286-position/prediction.json",
+      "sha256": "7459694a0aa2672370554e9d70fb6992240f2d2531011392cb458c4e1da35689"
+    },
+    {
+      "path": "trials/asteroid-345-position/trial.json",
+      "sha256": "4c52ef033ebb02968a9d0a3748bbd4bf98adf8d040fcad65e1ca6b506c092fb9"
+    },
+    {
+      "path": "trials/asteroid-345-position/prediction.json",
+      "sha256": "75032dddb27d1d90c3f960b7194d8aae2d370e5ba4bc122f0d0f0c25b32456e5"
+    },
+    {
+      "path": "trials/asteroid-363-position/trial.json",
+      "sha256": "9ccdd5e9b420bd13a5c206276b8edb4937b0b23cce72a2bfae0ac4df2959ab2a"
+    },
+    {
+      "path": "trials/asteroid-363-position/prediction.json",
+      "sha256": "e65fd4f5824f8f681d7d86c36a2636e3a1da21e4038d35c562b43fe54d796da8"
+    },
+    {
+      "path": "trials/asteroid-379-position/trial.json",
+      "sha256": "f5e1c61c3212fd6fff43435163c06e7e34c4fbbd7b3087e9d1895f9beb314513"
+    },
+    {
+      "path": "trials/asteroid-379-position/prediction.json",
+      "sha256": "6b1135a9253f1ca0593dd761fa94f5068a2d13840d781074e291f878944cdbd5"
+    },
+    {
+      "path": "trials/asteroid-491-position/trial.json",
+      "sha256": "249bac40c178ebbe891b4bcb74c19c0e0ad5ff5bd7dea7f4b7071f92d51938f7"
+    },
+    {
+      "path": "trials/asteroid-491-position/prediction.json",
+      "sha256": "cabd0d21fb3e638400fe5c6791aa71244c514a3ab736ed9f30f54fe66defb254"
+    },
+    {
+      "path": "trials/asteroid-714-position/trial.json",
+      "sha256": "0e1a04b8fb5d07a8bc04f3d2da113890f9e8f5b1aae74b1ba51ad3c5770e28bf"
+    },
+    {
+      "path": "trials/asteroid-714-position/prediction.json",
+      "sha256": "c1ba990b5d51ac278f11388f89de9f85bf13bed75f7069740bd770cc98099fac"
+    },
     {
       "path": "trials/barnard-position-2026b/trial.json",
       "sha256": "b93fdaa599d791c0c0584a1e4fefb50adac14b80accbc81d3b2010d7547f7835"
@@ -280,5 +344,183 @@
       "model_error_arcsec": null,
       "baseline_error_arcsec": null
     }
-  ]
+  ],
+  "asteroid_batch": {
+    "batch_id": "asteroids-2026a",
+    "path": "batches/asteroids-2026a.json",
+    "category": "prospective_unexposed",
+    "team_statement_pending": true,
+    "counts": {
+      "waiting": 7,
+      "hit": 0,
+      "miss": 0,
+      "insufficient_data": 1,
+      "ambiguous": 0,
+      "invalid_comparison": 0
+    },
+    "calibration": {
+      "model": "model",
+      "n": 0,
+      "k_inside": 0,
+      "level": 0.95,
+      "expected_inside": 0.0,
+      "interval": [
+        0.0,
+        1.0
+      ],
+      "interval_method": "clopper_pearson",
+      "wilson_interval": [
+        0.0,
+        1.0
+      ],
+      "independence_note_key": "batch.independence"
+    },
+    "not_attempted": [],
+    "rows": [
+      {
+        "trial_id": "asteroid-1021-position",
+        "batch_id": "asteroids-2026a",
+        "target_name": "1021 Flammario (A924 EW)",
+        "category": "prospective_unexposed",
+        "labels": [
+          "prospective_unexposed"
+        ],
+        "status": "waiting",
+        "status_reason_key": null,
+        "team_statement_pending": true,
+        "model_d2": null,
+        "secondary_d2": null,
+        "baseline_d2": null,
+        "model_error_arcsec": null,
+        "secondary_error_arcsec": null,
+        "baseline_error_arcsec": null
+      },
+      {
+        "trial_id": "asteroid-162-position",
+        "batch_id": "asteroids-2026a",
+        "target_name": "162 Laurentia (A876 HB)",
+        "category": "prospective_unexposed",
+        "labels": [
+          "prospective_unexposed"
+        ],
+        "status": "waiting",
+        "status_reason_key": null,
+        "team_statement_pending": true,
+        "model_d2": null,
+        "secondary_d2": null,
+        "baseline_d2": null,
+        "model_error_arcsec": null,
+        "secondary_error_arcsec": null,
+        "baseline_error_arcsec": null
+      },
+      {
+        "trial_id": "asteroid-286-position",
+        "batch_id": "asteroids-2026a",
+        "target_name": "286 Iclea (A889 PB)",
+        "category": "prospective_unexposed",
+        "labels": [
+          "prospective_unexposed"
+        ],
+        "status": "insufficient_data",
+        "status_reason_key": "predict.fewer-than-2-visits",
+        "team_statement_pending": true,
+        "model_d2": null,
+        "secondary_d2": null,
+        "baseline_d2": null,
+        "model_error_arcsec": null,
+        "secondary_error_arcsec": null,
+        "baseline_error_arcsec": null
+      },
+      {
+        "trial_id": "asteroid-345-position",
+        "batch_id": "asteroids-2026a",
+        "target_name": "345 Tercidina (A892 WB)",
+        "category": "prospective_unexposed",
+        "labels": [
+          "prospective_unexposed"
+        ],
+        "status": "waiting",
+        "status_reason_key": null,
+        "team_statement_pending": true,
+        "model_d2": null,
+        "secondary_d2": null,
+        "baseline_d2": null,
+        "model_error_arcsec": null,
+        "secondary_error_arcsec": null,
+        "baseline_error_arcsec": null
+      },
+      {
+        "trial_id": "asteroid-363-position",
+        "batch_id": "asteroids-2026a",
+        "target_name": "363 Padua (A893 FD)",
+        "category": "prospective_unexposed",
+        "labels": [
+          "prospective_unexposed"
+        ],
+        "status": "waiting",
+        "status_reason_key": null,
+        "team_statement_pending": true,
+        "model_d2": null,
+        "secondary_d2": null,
+        "baseline_d2": null,
+        "model_error_arcsec": null,
+        "secondary_error_arcsec": null,
+        "baseline_error_arcsec": null
+      },
+      {
+        "trial_id": "asteroid-379-position",
+        "batch_id": "asteroids-2026a",
+        "target_name": "379 Huenna (A894 AA)",
+        "category": "prospective_unexposed",
+        "labels": [
+          "prospective_unexposed"
+        ],
+        "status": "waiting",
+        "status_reason_key": null,
+        "team_statement_pending": true,
+        "model_d2": null,
+        "secondary_d2": null,
+        "baseline_d2": null,
+        "model_error_arcsec": null,
+        "secondary_error_arcsec": null,
+        "baseline_error_arcsec": null
+      },
+      {
+        "trial_id": "asteroid-491-position",
+        "batch_id": "asteroids-2026a",
+        "target_name": "491 Carina (A902 RG)",
+        "category": "prospective_unexposed",
+        "labels": [
+          "prospective_unexposed"
+        ],
+        "status": "waiting",
+        "status_reason_key": null,
+        "team_statement_pending": true,
+        "model_d2": null,
+        "secondary_d2": null,
+        "baseline_d2": null,
+        "model_error_arcsec": null,
+        "secondary_error_arcsec": null,
+        "baseline_error_arcsec": null
+      },
+      {
+        "trial_id": "asteroid-714-position",
+        "batch_id": "asteroids-2026a",
+        "target_name": "714 Ulula (A911 KG)",
+        "category": "prospective_unexposed",
+        "labels": [
+          "prospective_unexposed"
+        ],
+        "status": "waiting",
+        "status_reason_key": null,
+        "team_statement_pending": true,
+        "model_d2": null,
+        "secondary_d2": null,
+        "baseline_d2": null,
+        "model_error_arcsec": null,
+        "secondary_error_arcsec": null,
+        "baseline_error_arcsec": null
+      }
+    ]
+  }
 }

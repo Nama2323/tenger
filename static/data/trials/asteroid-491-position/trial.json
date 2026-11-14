@@ -1,0 +1,151 @@
+{
+  "schema_version": "tenger.trial/1",
+  "contract_version": 13,
+  "trial_id": "asteroid-491-position",
+  "target_key": "asteroid-491",
+  "target_name": "491 Carina (A902 RG)",
+  "batch_id": "asteroids-2026a",
+  "quantity": "position",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "open_forecast": false,
+  "frozen_utc": "2026-11-14T21:54:11Z",
+  "confirmation_pending": true,
+  "team_statement_pending": true,
+  "exposure": {
+    "status": "unexposed",
+    "why": "no teammate has opened these images (statement pending); the evaluation-time ephemeris was never printed or saved (MOST rule, docs/EXPOSURE.md)",
+    "team_statement": {
+      "path": "docs/EXPOSURE.md",
+      "section": "Task A9",
+      "status": "pending"
+    }
+  },
+  "selection": {
+    "rule": "docs/asteroid-batch.md section 1",
+    "record": "docs/exposure/asteroids/selection.json",
+    "H": 9.0,
+    "order": 1
+  },
+  "training": {
+    "path": "trials/asteroid-491-position/training.json",
+    "measurements_sha256": "41578e6343383bdffd67ef24d812a9ad18237b22b4e4853eefeb7e57eba13a39",
+    "n_points": 97,
+    "visits": [
+      1,
+      2,
+      3
+    ]
+  },
+  "holdout": {
+    "visit": 4,
+    "window_mjd": [
+      61274.131974,
+      61274.133697
+    ],
+    "obs": [
+      {
+        "obs_id": "2026W34_2A_0340_1",
+        "detector": 5,
+        "t_mjd": 61274.131973669,
+        "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/5/level2_2026W34_2A_0340_1D5_spx_l2b-v27-2026-243.fits"
+      },
+      {
+        "obs_id": "2026W34_2A_0340_1",
+        "detector": 2,
+        "t_mjd": 61274.131973681,
+        "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0340_1D2_spx_l2b-v27-2026-243.fits"
+      },
+      {
+        "obs_id": "2026W34_2A_0341_1",
+        "detector": 2,
+        "t_mjd": 61274.133696863,
+        "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0341_1D2_spx_l2b-v27-2026-243.fits"
+      },
+      {
+        "obs_id": "2026W34_2A_0341_1",
+        "detector": 5,
+        "t_mjd": 61274.133696863,
+        "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/5/level2_2026W34_2A_0341_1D5_spx_l2b-v27-2026-243.fits"
+      }
+    ],
+    "t_mjd": 61274.132835,
+    "data_state": "released_unopened",
+    "selection_rule_key": "holdout.newest-visit-window"
+  },
+  "permitted_inputs": [
+    {
+      "name": "our own training positions (SPHEREx pixels, A3 fit)",
+      "content_type": "measured",
+      "used_for": "orbit fit"
+    },
+    {
+      "name": "observer: Earth (astropy built-in) plus spacecraft header position",
+      "content_type": "catalogue",
+      "used_for": "observer geometry"
+    },
+    {
+      "name": "Sun and giant-planet positions (astropy built-in)",
+      "content_type": "catalogue",
+      "used_for": "frames and the synthetic N-body orbits of the model-error term"
+    },
+    {
+      "name": "evaluation exposure times (MOST listing, identifiers and times only)",
+      "content_type": "catalogue",
+      "used_for": "forecast times"
+    }
+  ],
+  "ephemeris_use": "JPL positions (MOST) located the training images and guided the training fits (3 arcsec gate); they never enter the orbit fit or the forecast. Evaluation-time positions were never read.",
+  "model": {
+    "id": "two-body-v2-asteroid",
+    "version": "a9-2026-11-15",
+    "code_sha256": "6c91029ac79abc3f03902d6373465ffff6b1715406eada28bb6fb0afbccbaa68",
+    "code_files": [
+      "scripts/asteroid_forecast.py",
+      "scripts/forecast_v2.py",
+      "scripts/postmortem.py",
+      "scripts/predict.py",
+      "backend/orbit.py",
+      "backend/astrometry.py"
+    ],
+    "primary_frame": "heliocentric_two_body",
+    "secondary_frame": "barycentric_two_body",
+    "uncertainty": "v2 envelope (group Monte Carlo, 300 draws, and visit x detector jackknife, along and across the track) + sigma_g^2 + spacecraft term + two-body model error (second moment of 24 synthetic N-body orbits with our fitted a, e, i)",
+    "start_source": "our first-visit positions and motion over geocentric distances 0.8-4.0 AU",
+    "rules": "docs/asteroid-batch.md section 4"
+  },
+  "baseline": {
+    "id": "linear-tangent-plane",
+    "description": "straight line in RA/Dec fitted to the same positions"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "threshold_radius": 2.4477468306808166,
+    "covariance": "S = C_pred + C_obs",
+    "observed": "mean over identified evaluation exposures of observed - model(t_i), east/north arcsec",
+    "c_obs": "sample covariance of the residuals / N (N >= 3), never below the mean fit covariance / N",
+    "c_pred": "frozen primary covariance at the mean evaluation time",
+    "secondary": "the heliocentric forecast and the straight line are scored on the same positions and C_obs"
+  },
+  "identification": {
+    "method_key": "ident.frozen-model-search",
+    "rules": [
+      "cutouts centred on the frozen primary forecast at each evaluation exposure time (no ephemeris query)",
+      "every peak with S/N >= 5 within the listing radius is a candidate and is kept",
+      "A3 fit S/N >= 10 within max(15 arcsec, 3 x the largest 1-sigma of C_pred) of the forecast",
+      "static check: no source at S/N >= 5 at the same sky position in another exposure of the same detector taken at least 0.5 day apart (a static reference cutout)",
+      "two or more passing candidates in one exposure -> ambiguous; motion consistency across exposures (chi-square, p = 0.997, 0.3 arcsec allowance)",
+      "fewer than 3 identified exposures -> insufficient_data"
+    ],
+    "alternatives_kept": true
+  },
+  "limitation_keys": [
+    "limit.two-body-only",
+    "limit.gaussian-psf-model",
+    "limit.ephemeris-guided-training"
+  ]
+}
