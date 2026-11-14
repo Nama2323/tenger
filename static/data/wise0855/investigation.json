@@ -6,7 +6,7 @@
   "pipeline": {
     "version": "tenger-a2-2026.11.14",
     "config_sha256": "1da5cb57a2d745528e56b60d384216af7368e8663435c03c95cbb903cd9a82c5",
-    "code_sha256": "137b6b9155e989d019926553d840e5c4df2962169a57d9d37a120467d1857040",
+    "code_sha256": "ebf69f49568bffaa5e74b6de2a72cebeb7c2e3e264bbe1d0b89ca404c976fa23",
     "settings": {
       "pipeline": "tenger-a2-2026.11.14",
       "mask_policy": "tenger-mask-v1",
@@ -22682,6 +22682,37 @@
         }
       }
     ]
+  },
+  "context": {
+    "twomass_ks": {
+      "survey": "2MASS PSC",
+      "band": "Ks",
+      "source": "IRSA fp_psc",
+      "content_type": "catalogue",
+      "label_key": "context.twomass-ks",
+      "note_key": "context.not-like-for-like",
+      "search_radius_arcsec": 34.5,
+      "match_arcsec": 3.0,
+      "status": "not_detected",
+      "reason_key": "context.no-source-on-track",
+      "detections": []
+    },
+    "allwise_w2": {
+      "survey": "AllWISE multi-epoch photometry",
+      "band": "W2",
+      "source": "IRSA allwise_p3as_mep",
+      "content_type": "catalogue",
+      "label_key": "context.allwise-w2",
+      "note_key": "context.not-like-for-like",
+      "search_radius_arcsec": 18.2,
+      "match_arcsec": 3.0,
+      "status": "detected",
+      "n_exposures": 27,
+      "mjd_first": 55319.89408,
+      "mjd_last": 55511.88392,
+      "w2_median_mag": 13.717,
+      "w2_measured_exposures": 27
+    }
   },
   "explanation": [
     {

@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from backend import astrometry, config, gaia, investigation as inv
+from backend import astrometry, config, context as survey_context, gaia, investigation as inv
 from backend.coords import mjd_to_year
 from backend.flags import MASK_POLICY
 from backend.jobs import Job
@@ -273,6 +273,7 @@ def build(key: str, out: Path, cached_only: bool = False) -> dict:
         "measurements": measurements,
         "astrometry": astrometry_block,
         "photometry": photometry_block,
+        "context": survey_context.for_star(star) if key in MOVERS else None,
         "explanation": explanation,
         "capabilities": {
             "modes": ["blink", "side_by_side", "swipe"],

@@ -94,6 +94,12 @@ STRINGS = {
     "unavailable.no-validated-product": "no validated SPHEREx product yet",
     "unavailable.no-current-product": "the exposure listed in the official table has no current (DR1) product",
     "unavailable.holdout-closed": "the newest visit is reserved for the prediction test",
+    # cross-mission context
+    "context.twomass-ks": "2MASS Ks (2.2 µm), with its own observation date",
+    "context.allwise-w2": "AllWISE W2 (4.6 µm) single exposures, with their dates",
+    "context.not-like-for-like": "Other telescopes use other filters: compare positions and dates, not brightness.",
+    "context.no-source-on-track": "Not detected: no source within 3 arcsec of where the target was on that date.",
+    "context.service-failed": "The catalogue service could not be reached when this file was made.",
     # reserved sky
     "reserved.rule": "Live loading is paused near these paths so reserved observations stay unopened.",
     "reserved.prediction-holdout": "Reserved for a prediction test.",
