@@ -1,0 +1,59 @@
+{
+  "created_date": "2026-11-14",
+  "timezone": "Asia/Ulaanbaatar",
+  "contents": [
+    {
+      "path": "MERGED-PLAN.md",
+      "bytes": 30084,
+      "sha256": "05170bf54cfd1e986b37561e1290dfb1958f6068c5e3ee8dd7a2df51bb6e9698"
+    },
+    {
+      "path": "CLAUDE.md",
+      "bytes": 10767,
+      "sha256": "e1fff3b60ae1a0ac2513e589a9018b907a002bb15c789f37b5e4f26a19f63c61"
+    },
+    {
+      "path": "START-HERE.md",
+      "bytes": 18296,
+      "sha256": "6dd151c0bb78df4d1106270cbc12d31eaa242b30a4638f687113d29b821d931d"
+    },
+    {
+      "path": "context/KNOWN-STATE.md",
+      "bytes": 3513,
+      "sha256": "d5f0ad6873d1de16f0f968f7358981c8e0065d36fc1e4ffbfd4a993eb07f8f9a"
+    },
+    {
+      "path": "context/TENGER-audit-and-roadmap.md",
+      "bytes": 54747,
+      "sha256": "4be6ebd0022e44c628713b693963dfdc63daf95df99acd8db041c66466540016"
+    },
+    {
+      "path": "context/TENGER-modification-blueprint.md",
+      "bytes": 31779,
+      "sha256": "ef631a0ee049dd8703b40969de5840b2e210ce5dc404e32757ee1ced8944a4f3"
+    },
+    {
+      "path": "context/verification-results.json",
+      "bytes": 13805,
+      "sha256": "64c41a9b2f3d831ff8ee630ed992e03b1e1e2aef8b32cdab2684e66840f6f862"
+    },
+    {
+      "path": "context/IRSA-acknowledgement.txt",
+      "bytes": 513,
+      "sha256": "a54e6cfd2d6e8db20378133f47b5305daaf343d3c6eba10325507a8b8af0bc5d"
+    },
+    {
+      "path": "reference-pdfs/v2-final-plan.pdf",
+      "bytes": 400350,
+      "sha256": "0dd388eb21a0f765bac162173d3b270f45419f4da412bb8fc8388b4c8b5c0458"
+    },
+    {
+      "path": "reference-pdfs/original-strategy.pdf",
+      "bytes": 620580,
+      "sha256": "60f2cf26969e5ea9be7262de21e2d881808cab6f05e60ca648e58f712c5f45d1"
+    }
+  ],
+  "application_source_included": false,
+  "application_modified": false,
+  "entrypoint": "START-HERE.md"
+}

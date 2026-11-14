@@ -1,0 +1,444 @@
+{
+  "audit_date_local": "2026-11-14",
+  "timezone": "Asia/Ulaanbaatar",
+  "scope": "Local supplied repository; no product source changes",
+  "unit_tests": {
+    "python_passed": 54,
+    "javascript_passed": 39
+  },
+  "irsa_queries": [
+    {
+      "label": "barnard_spherex_dr1",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_dr1&POS=circle+269.4464797438944+4.768669380549852+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 218446,
+      "type": "text/csv",
+      "seconds": 2.8,
+      "rows": 239,
+      "mjds": [
+        "60902.864715",
+        "60917.947502",
+        "61118.310724"
+      ],
+      "utc_range": [
+        "2025-08-15T20:45:11.376000Z",
+        "2026-05-05T01:59:28.780800Z"
+      ]
+    },
+    {
+      "label": "barnard_spherex_qr3",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_qr3&POS=circle+269.4464797438944+4.768669380549852+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 109022,
+      "type": "text/csv",
+      "seconds": 2.11,
+      "rows": 119,
+      "mjds": [
+        "61268.630812",
+        "61273.381672",
+        "61276.368934"
+      ],
+      "utc_range": [
+        "2026-08-16T15:08:22.156800Z",
+        "2026-09-22T15:04:21.014400Z"
+      ]
+    },
+    {
+      "label": "wise0855_spherex_dr1",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_dr1&POS=circle+133.75952899096637+-7.242222163377443+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 237559,
+      "type": "text/csv",
+      "seconds": 2.86,
+      "rows": 258,
+      "mjds": [
+        "60800.700028",
+        "60989.296807",
+        "61162.336956"
+      ],
+      "utc_range": [
+        "2025-05-05T16:48:02.419200Z",
+        "2026-05-14T06:53:35.635200Z"
+      ]
+    },
+    {
+      "label": "wise0855_spherex_qr3",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_qr3&POS=circle+133.75952899096637+-7.242222163377443+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 641,
+      "type": "text/csv",
+      "seconds": 1.26,
+      "rows": 0
+    },
+    {
+      "label": "epsindib_spherex_dr1",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_dr1&POS=circle+331.09635023677424+-56.80113606103126+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 312406,
+      "type": "text/csv",
+      "seconds": 3.02,
+      "rows": 340,
+      "mjds": [
+        "60789.855522",
+        "60947.573964",
+        "60990.359311"
+      ],
+      "utc_range": [
+        "2025-04-24T20:31:57.100800Z",
+        "2026-05-04T02:48:24.480000Z"
+      ]
+    },
+    {
+      "label": "epsindib_spherex_qr3",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_qr3&POS=circle+331.09635023677424+-56.80113606103126+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 110723,
+      "type": "text/csv",
+      "seconds": 1.93,
+      "rows": 120,
+      "mjds": [
+        "61305.226906",
+        "61310.318853",
+        "61314.188448"
+      ],
+      "utc_range": [
+        "2026-09-22T05:26:44.678400Z",
+        "2026-10-02T11:28:25.766400Z"
+      ]
+    },
+    {
+      "label": "rwaur_spherex_dr1",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_dr1&POS=circle+76.95647033216964+30.401223235721346+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 206302,
+      "type": "text/csv",
+      "seconds": 5.88,
+      "rows": 226,
+      "mjds": [
+        "60919.419647",
+        "60935.926418",
+        "61104.214869"
+      ],
+      "utc_range": [
+        "2025-09-01T10:04:17.500800Z",
+        "2026-03-12T00:03:00.316800Z"
+      ]
+    },
+    {
+      "label": "rwaur_spherex_qr3",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_qr3&POS=circle+76.95647033216964+30.401223235721346+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 99848,
+      "type": "text/csv",
+      "seconds": 2.32,
+      "rows": 109,
+      "mjds": [
+        "61285.097169",
+        "61293.382950",
+        "61298.129191"
+      ],
+      "utc_range": [
+        "2026-09-02T02:19:55.401600Z",
+        "2026-09-16T21:30:05.500800Z"
+      ]
+    },
+    {
+      "label": "rdra_spherex_dr1",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_dr1&POS=circle+248.16722504385717+66.75512696919918+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 376790,
+      "type": "text/csv",
+      "seconds": 3.32,
+      "rows": 413,
+      "mjds": [
+        "60811.955829",
+        "60965.619002",
+        "61035.221038"
+      ],
+      "utc_range": [
+        "2025-05-16T22:56:23.625600Z",
+        "2026-05-13T05:55:56.956800Z"
+      ]
+    },
+    {
+      "label": "rdra_spherex_qr3",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_qr3&POS=circle+248.16722504385717+66.75512696919918+0.001&RESPONSEFORMAT=CSV&MAXREC=5000",
+      "status": 200,
+      "bytes": 115384,
+      "type": "text/csv",
+      "seconds": 2.0,
+      "rows": 126,
+      "mjds": [
+        "61176.363744",
+        "61212.618274",
+        "61232.374150"
+      ],
+      "utc_range": [
+        "2026-05-16T08:43:47.481600Z",
+        "2026-07-16T20:57:27.417600Z"
+      ]
+    },
+    {
+      "label": "sia_description",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_dr1&POS=circle+0+0+0.0001&MAXREC=0",
+      "status": 200,
+      "bytes": 27480,
+      "type": "application/x-votable+xml",
+      "seconds": 1.6
+    },
+    {
+      "label": "challenge",
+      "url": "https://www.spaceappschallenge.org/2026/challenges/planet-x-and-spherex/",
+      "status": 200,
+      "bytes": 77466,
+      "type": "text/html; charset=utf-8",
+      "seconds": 1.25
+    },
+    {
+      "label": "judging",
+      "url": "https://www.spaceappschallenge.org/resources/judging-and-awards/",
+      "status": 200,
+      "bytes": 39570,
+      "type": "text/html; charset=utf-8",
+      "seconds": 1.08
+    },
+    {
+      "label": "local",
+      "url": "https://www.spaceappsulaanbaatar.com/",
+      "status": 200,
+      "bytes": 46473,
+      "type": "text/html; charset=utf-8",
+      "seconds": 0.67
+    },
+    {
+      "label": "mission",
+      "url": "https://irsa.ipac.caltech.edu/Missions/spherex.html",
+      "status": 200,
+      "bytes": 9985,
+      "type": "text/html",
+      "seconds": 0.95
+    }
+  ],
+  "service_probes": [
+    {
+      "name": "qr2_retired",
+      "url": "https://irsa.ipac.caltech.edu/SIA?COLLECTION=spherex_qr2&POS=circle+269.44648+4.76867+0.001&MAXREC=1",
+      "status": "200",
+      "error": "",
+      "bytes": 27474
+    },
+    {
+      "name": "tap_schema",
+      "url": "https://irsa.ipac.caltech.edu/TAP/sync?REQUEST=doQuery&LANG=ADQL&FORMAT=csv&QUERY=SELECT+TOP+1+a.uri%2Cp.time_bounds_lower+FROM+spherex.artifact+a+JOIN+spherex.plane+p+ON+a.planeid%3Dp.planeid+WHERE+1%3DCONTAINS%28POINT%28%27ICRS%27%2C269.44648%2C4.76867%29%2Cp.poly%29+ORDER+BY+p.time_bounds_lower",
+      "status": "200",
+      "error": "",
+      "bytes": 146
+    },
+    {
+      "name": "cube_properties",
+      "url": "https://irsa.ipac.caltech.edu/data/hips/SPHEREx/spherex_allsky_cube/properties",
+      "status": "200",
+      "error": "",
+      "bytes": 3504
+    },
+    {
+      "name": "comet",
+      "url": "https://irsa.ipac.caltech.edu/data/SPHEREx/docs/comet3iatlas/index.html",
+      "status": "200",
+      "error": "",
+      "bytes": 5135
+    },
+    {
+      "name": "most",
+      "url": "https://irsa.ipac.caltech.edu/applications/MOST",
+      "status": "200",
+      "error": "",
+      "bytes": 18710
+    },
+    {
+      "name": "sbident",
+      "url": "https://ssd-api.jpl.nasa.gov/sb_ident.api?mpc-code=500&obs-time=2025-08-15T00:00:00&fov-ra-center=17-57-47&fov-dec-center=04-46-07&fov-ra-hwidth=0.05&fov-dec-hwidth=0.05&two-pass=true&suppress-first-pass=true&req-elem=false",
+      "status": "000",
+      "error": "curl: (28) Operation timed out after 25005 milliseconds with 0 bytes received\n",
+      "bytes": 0
+    },
+    {
+      "name": "skybot_doc",
+      "url": "https://ssp.imcce.fr/webservices/skybot/",
+      "status": "200",
+      "error": "",
+      "bytes": 28133
+    },
+    {
+      "name": "wwt_sdk",
+      "url": "https://docs.worldwidetelescope.org/webgl-reference/latest/",
+      "status": "200",
+      "error": "",
+      "bytes": 11258
+    },
+    {
+      "name": "aladin_doc",
+      "url": "https://cds-astro.github.io/aladin-lite/",
+      "status": "200",
+      "error": "",
+      "bytes": 31700
+    },
+    {
+      "name": "spectrophotometry",
+      "url": "https://irsa.ipac.caltech.edu/applications/spherex/tool-spectrophotometry",
+      "status": "404",
+      "error": "",
+      "bytes": 1591
+    }
+  ],
+  "extra_target_probes": [
+    {
+      "name": "makemake",
+      "status": "200",
+      "ephemeris": "2025-Aug-15 00:00, , ,   200.04621,   20.82916,   17.136,   n.a.,  53.3124180389212, 19.2717297,\n 2025-Aug-16 00:00, , ,   200.05772,   20.81711,   17.136,   n.a.,  53.3234641766872, 18.9791369,",
+      "ra": 200.04621,
+      "dec": 20.82916,
+      "spherex_dr1": {
+        "http": "200",
+        "records": 283,
+        "note": "fixed position at one sample epoch, not an object-following search"
+      },
+      "spherex_qr3": {
+        "http": "200",
+        "records": 115,
+        "note": "fixed position at one sample epoch, not an object-following search"
+      }
+    },
+    {
+      "name": "pluto",
+      "status": "200",
+      "ephemeris": "2025-Aug-15 00:00, , ,   304.91275,  -23.44768,   14.445,  9.079,  34.3762489417724, 11.6228991,\n 2025-Aug-16 00:00, , ,   304.89000,  -23.45335,   14.447,  9.080,  34.3831015102697, 12.1052032,",
+      "ra": 304.91275,
+      "dec": -23.44768,
+      "spherex_dr1": {
+        "http": "200",
+        "records": 266,
+        "note": "fixed position at one sample epoch, not an object-following search"
+      },
+      "spherex_qr3": {
+        "http": "200",
+        "records": 56,
+        "note": "fixed position at one sample epoch, not an object-following search"
+      }
+    },
+    {
+      "name": "comet3i",
+      "status": "200",
+      "ephemeris": "2025-Aug-15 00:00, , ,   243.31000,  -16.31738,   17.550,   n.a.,  2.66174250681738,-13.3258811,\n 2025-Aug-16 00:00, , ,   242.63700,  -16.21829,   17.509,   n.a.,  2.65423318833662,-12.6779661,",
+      "ra": 243.31,
+      "dec": -16.31738,
+      "spherex_dr1": {
+        "http": "200",
+        "records": 362,
+        "note": "fixed position at one sample epoch, not an object-following search"
+      },
+      "spherex_qr3": {
+        "http": "200",
+        "records": 114,
+        "note": "fixed position at one sample epoch, not an object-following search"
+      }
+    },
+    {
+      "name": "ceres",
+      "status": "200",
+      "ephemeris": "2025-Aug-15 00:00, , ,    20.36251,   -6.20143,    8.387,  6.944,  2.26521595988250,-19.0920978,\n 2025-Aug-16 00:00, , ,    20.36541,   -6.26340,    8.370,  6.938,  2.25425620114696,-18.8598885,",
+      "ra": 20.36251,
+      "dec": -6.20143,
+      "spherex_dr1": {
+        "http": "200",
+        "records": 225,
+        "note": "fixed position at one sample epoch, not an object-following search"
+      },
+      "spherex_qr3": {
+        "http": "200",
+        "records": 112,
+        "note": "fixed position at one sample epoch, not an object-following search"
+      }
+    }
+  ],
+  "cutouts": [
+    {
+      "release": "dr1",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W33_2C/l2b-v27-2026-228/6/level2_2025W33_2C_0321_1D6_spx_l2b-v27-2026-228.fits?center=269.44648,4.76867&size=0.02",
+      "http": "200",
+      "bytes": 3951360,
+      "hdus": [
+        {
+          "name": "PRIMARY",
+          "shape": null,
+          "unit": null
+        },
+        {
+          "name": "IMAGE",
+          "shape": "(12, 12)",
+          "unit": "MJy / sr"
+        },
+        {
+          "name": "FLAGS",
+          "shape": "(12, 12)",
+          "unit": ""
+        },
+        {
+          "name": "VARIANCE",
+          "shape": "(12, 12)",
+          "unit": "MJy2 / sr2"
+        },
+        {
+          "name": "ZODI",
+          "shape": "(12, 12)",
+          "unit": "MJy / sr"
+        },
+        {
+          "name": "EPSF",
+          "shape": "(441,)",
+          "unit": null
+        },
+        {
+          "name": "WCS-WAVE",
+          "shape": "(1,)",
+          "unit": null
+        }
+      ],
+      "flags": {},
+      "loader": "passed",
+      "wavelength_um": 4.928984758097128
+    },
+    {
+      "release": "qr3",
+      "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W33_2A/l2b-v27-2026-241/6/level2_2026W33_2A_0594_4D6_spx_l2b-v27-2026-241.fits?center=269.44648,4.76867&size=0.02",
+      "http": "503",
+      "bytes": 25,
+      "error": "No SIMPLE card found, this file does not appear to be a valid FITS file. If this is really a FITS file, try with ignore_missing_simple=True"
+    }
+  ],
+  "critical_mask_probe": {
+    "sample": "DR1 D6, Barnard field, 12 x 12 pixels",
+    "pixels": 144,
+    "hazard_flag_pixels": 17,
+    "code_masked_pixels": 0,
+    "overflow_pixels": 2
+  },
+  "limitations": [
+    "Archive records demonstrate coverage, not a detected target at every wavelength.",
+    "Additional-target fixed-position searches do not establish object-centered detection.",
+    "No deployment or full data rebake performed.",
+    "HiPS browser test initialized Aladin but sky remained blank with a fetch error."
+  ],
+  "additional_probes": {
+    "public_site_http": 200,
+    "public_parse_api": {
+      "status": 200,
+      "ra": 133.79512916666664,
+      "dec": -7.245147222222222
+    },
+    "gaia_irsa_query": "timed out after 15 seconds",
+    "allwise_ibe_search": "timed out after 15 seconds",
+    "aladin_3.8.2_package_license": "GPL-3",
+    "current_aladin_upstream_license": "LGPL-3.0"
+  }
+}
