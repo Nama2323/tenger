@@ -1,0 +1,113 @@
+{
+  "schema_version": "tenger.trial/1",
+  "contract_version": 11,
+  "trial_id": "pluto-position-open-2027a-v2b",
+  "target_key": "pluto",
+  "quantity": "position",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "open_forecast": true,
+  "forecast_label_key": "forecast.after-2026-miss",
+  "method_version": 2,
+  "revises": "pluto-position-open-2027a",
+  "frozen_utc": "2026-11-14T16:29:15Z",
+  "exposure": {
+    "status": "unexposed",
+    "why": "future visit, not yet observed or released"
+  },
+  "training": {
+    "path": "trials/pluto-position-open-2027a-v2b/training.json",
+    "measurements_sha256": "8d927c5ff308b1813135db0bcde0a4b316acfd5c06816b866d3680e25720cb81",
+    "n_points": 54,
+    "visits": [
+      1,
+      2,
+      3
+    ]
+  },
+  "holdout": {
+    "visit": null,
+    "window_mjd": [
+      61490.0,
+      61550.0
+    ],
+    "obs": [],
+    "t_mjd": 61520.0,
+    "data_state": "not_released",
+    "check_after_utc": "2027-05-15",
+    "selection_rule_key": "holdout.next-visit-forecast",
+    "cadence_note": "Pluto visits so far start near 04-25 and 09-29 each year"
+  },
+  "permitted_inputs": [
+    {
+      "name": "observer position: Earth (astropy built-in) plus spacecraft header position",
+      "content_type": "catalogue",
+      "used_for": "observer geometry"
+    },
+    {
+      "name": "Sun's barycentric position (astropy built-in) and solar-system mass",
+      "content_type": "catalogue",
+      "used_for": "barycentric frame"
+    }
+  ],
+  "model": {
+    "id": "barycentric-two-body-group-resampled",
+    "version": "a7-2026-11-15",
+    "code_sha256": "b9a38455a8d6e772bb1fe3399a8825e69f3ff8d0b941dade82cbac5fa4617f7d",
+    "code_files": [
+      "scripts/forecast_v2.py",
+      "scripts/postmortem.py",
+      "backend/orbit.py",
+      "backend/astrometry.py"
+    ],
+    "uncertainty": "envelope, separately along and across the track, of a group Monte Carlo (offset per visit x array group, sigma_g = max(RMS of group mean residuals, 0.2 arcsec), exposures resampled within groups) and a leave-one-group-out jackknife; plus sigma_g^2 and the unknown spacecraft position",
+    "lessons": "docs/postmortem-pluto.md",
+    "start_state_bary_au_au_per_day": [
+      18.951415644055462,
+      -26.376717541973022,
+      -13.941280500140858,
+      0.002806540834065977,
+      0.0011670269338415853,
+      -0.00048106785519320044
+    ],
+    "start_t0_mjd_utc": 60943.016342,
+    "start_source": "frozen A4 Pluto orbit moved to the barycentre (starting values only)"
+  },
+  "baseline": {
+    "id": "linear-tangent-plane",
+    "description": "straight line in RA/Dec fitted to the same positions"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "frame": "tangent plane at the predicted position, east/north arcsec",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "threshold_radius": 2.4477468306808166,
+    "covariance": "S = C_pred + C_obs",
+    "observed": "mean over identified holdout exposures of r_i = observed_i - model(t_i, observer_i), east/north arcsec in the tangent plane at the model position",
+    "c_obs": "sample covariance of the r_i divided by N (N >= 3), never smaller than the mean per-exposure fit covariance divided by N",
+    "c_pred": "frozen model covariance at the mean holdout time (parameter covariance scaled by max(1, reduced chi-square)) plus sigma_sys^2 per axis for the new visit's own offset",
+    "model_evaluation": "the frozen model is evaluated at each identified holdout exposure's time and observer position (Earth plus the FITS header spacecraft position)"
+  },
+  "identification": {
+    "method_key": "ident.frozen-model-search",
+    "rules": [
+      "holdout cutouts are centred on the frozen model position at each exposure time (no ephemeris query)",
+      "native Gaussian fit (A3), S/N >= 10, within max(15 arcsec, 3 x sqrt(largest C_pred eigenvalue)) of the model",
+      "static-source check: the fitted sky position must be empty (S/N < 5) in another holdout exposure of the same array taken when the model position had moved more than 30 arcsec",
+      "two or more distinct sources passing these rules in one exposure -> ambiguous",
+      "fewer than 3 identified exposures -> insufficient_data"
+    ],
+    "alternatives_kept": true
+  },
+  "exclusion_rules_keys": [
+    "exclude.quality-gate",
+    "exclude.flagged-pixels",
+    "exclude.identification",
+    "exclude.contaminated",
+    "exclude.fewer-than-3"
+  ],
+  "exploratory": false
+}
