@@ -1278,3 +1278,26 @@ within the hour. It will be recorded once the calibration is in.
 **Checks**: 206 tests pass. Captures `predictions-asteroids` and `predictions-asteroids-cards` at
 360/390/768/1280: no console error, no failing request, no horizontal scroll. Session A's validator: 112 files,
 0 failures.
+
+### Live site check, 15 Nov 2026 morning (after the user updated `main` to `8fea8b9`)
+
+- **Files.** All 157 text files on https://nama2323.github.io/tenger/ are byte-identical to `main`'s `static/`.
+  All 1,277 binary files are served (200).
+- **Crawl.** Every page, lesson, the Lab, the loop, 8 targets × 4 panels, viewer modes, embed and a coordinate
+  search: 52 URLs, every button on 11 pages, run against the live site and against `main` served locally. Live:
+  no failing request, no `dev-fixtures` request, no button error. The only console errors are on the coordinate
+  search (below).
+- **Same as local on every page changed tonight** (Predictions, Beat the physics, Learn and its lessons, the Lab,
+  Find the hidden planet, About). The remaining text differences were timing (blink frame A or B, "Loading…" on the
+  slower network, the 3D loop's speed fallback under load) or the single-threaded local test server dropping
+  connections.
+- **Live only, 1: coordinate search does not work.** `api.js` calls `https://spherex-blink.onrender.com`, whose
+  CORS allows only `https://pythonhack000.github.io`. From `nama2323.github.io` the request is blocked and the
+  viewer says "The images did not load. Check the connection and try again." Locally the uvicorn backend answers.
+  Changing the Render service or `LIVE_SERVER` needs the user's decision (CLAUDE.md).
+- **Live only, 2: a misleading label during the first load.** On a first visit the See panel says "Prepared frames
+  (legacy, not yet re-validated)" while the ~6 MB `frames.bin.gz` downloads (about 2–13 s here), then switches to
+  "Frames from the investigation (quality-gated DR1/QR3)". `framesKind()` reads the investigation file, which is
+  fetched after the frames. Locally the load is too fast to see it. This predates tonight.
+- **Not live yet:** the Planet X wording, the lesson fix and the real asteroid batch block (on `tenger-dev` at
+  `082c98d`).
