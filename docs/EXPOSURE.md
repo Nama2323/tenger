@@ -94,6 +94,40 @@ Decided by the team for Task A3 (phases C–D). It changes the exposed set as fo
 - Live jobs near the targets remain blocked in the web app (`static/js/reserved.js`, and
   `static/data/reserved.json` from A3).
 
+## Team confirmation for Task A4 (recorded 14 Nov 2026, 22:35 UB, before any prediction)
+
+Statement passed to Session A in the A4 task message, recorded as given. The message left two template
+placeholders unfilled. They are kept as placeholders here, not guessed.
+
+- **Viewer:** "[Name]" (one teammate; the name was not filled in). They downloaded and inspected SPHEREx
+  cutouts of:
+  - **Makemake** on 2025-05-31, 06-01, 06-02, 06-11, 12-28, 12-29, 12-30, 12-31 and 2026-01-01, 01-03,
+    01-05, 01-09, **06-09, 06-12** (UTC);
+  - **Pluto** on 2025-10-04 and 10-06 (detectors D2 and D3) and 2026-04-30 15:57:59 UTC (D2).
+- **Other teammates:** "[confirmed none / not answered yet]". The choice was not filled in, so Session A
+  records it as **not answered yet**. Every trial that depends on it carries `"confirmation_pending": true`.
+- Rule: seeing any exposure of a visit counts as seeing that visit.
+
+Mapped onto the visits in the inventory:
+
+| Body | Visit (UTC) | Role | Seen by the team? |
+|---|---|---|---|
+| Makemake | 2025-05-30 → 06-19 | training | yes (05-31, 06-01, 06-02, 06-11) |
+| Makemake | 2025-07-04 → 07-06 | training | not reported |
+| Makemake | 2025-12-28 → 2026-01-09 | training | yes (8 dates) |
+| Makemake | **2026-05-30 → 06-13** | **evaluation** | **yes (06-09, 06-12)**: the Makemake trial can only be `retrospective_holdout` |
+| Pluto | 2025-04-25 → 05-01 | training | not reported |
+| Pluto | 2025-09-25 → 10-12 | training | yes (10-04, 10-06; D2, D3) |
+| Pluto | 2026-04-25 → 05-12 | training | yes (04-30 15:57:59, D2) |
+| Pluto | **2026-09-29 → 10-02** | **evaluation** | **not reported by the viewer; other teammates pending** |
+
+Consequences: Makemake's evaluation visit is exposed (retrospective). Pluto's evaluation visit is
+not known to be exposed. A Pluto trial fitted only to our training positions may be
+`prospective_unexposed` with `"confirmation_pending": true` until every teammate has answered. Neither
+Session A nor this repository has opened any pixel of either evaluation visit. Horizons positions for
+the evaluation exposures do exist in `docs/exposure/<key>.json` and `static/data/reserved.json`: the
+A1 coverage check computed them. The A4 prediction code never reads them (tested).
+
 ## Who has seen what
 
 - **Teammates** have viewed the bundled frames, thumbnails and results of the five challenge targets
