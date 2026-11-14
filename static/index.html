@@ -304,28 +304,54 @@
     </section>
 
     <!-- ======================= Learn ======================= -->
-    <section id="page-learn" class="page page-text" hidden aria-labelledby="learn-title">
-      <h1 id="learn-title" tabindex="-1" data-t="learn.title"></h1>
-      <p class="lead" data-t="learn.lead"></p>
-      <ul id="lesson-list" class="cards-list"></ul>
-      <article id="lab" class="page-card lab" aria-labelledby="lab-title">
-        <h2 id="lab-title" data-t="lab.title"></h2>
-        <p data-t="lab.text"></p>
-        <p class="panel-note" data-t="lab.preparing"></p>
+    <section id="page-learn" class="page page-learn" hidden aria-labelledby="learn-title">
+      <header class="page-head">
+        <p class="eyebrow" data-t="learn.eyebrow"></p>
+        <h1 id="learn-title" tabindex="-1" data-t="learn.title"></h1>
+        <p class="lead" data-t="learn.lead"></p>
+      </header>
+      <ul id="lesson-list" class="cards-list lessons"></ul>
+      <article id="lab" class="page-card lab glass" aria-labelledby="lab-title">
+        <svg class="lab-orbit" viewBox="0 0 120 60" aria-hidden="true" focusable="false">
+          <ellipse cx="60" cy="30" rx="56" ry="20" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 4"/>
+          <circle cx="60" cy="30" r="4" class="lab-sun"/>
+          <circle cx="114" cy="26" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2"/>
+        </svg>
+        <div class="lab-words">
+          <h2 id="lab-title" data-t="lab.title"></h2>
+          <p data-t="lab.text"></p>
+          <p class="panel-note" data-t="lab.preparing"></p>
+        </div>
       </article>
     </section>
 
     <!-- ======================= About ======================= -->
-    <section id="page-about" class="page page-text" hidden aria-labelledby="about-title">
-      <h1 id="about-title" tabindex="-1" data-t="about.title"></h1>
-      <p class="lead" data-t="about.what"></p>
-      <h2 data-t="about.dataTitle"></h2>
-      <ul id="about-data"></ul>
-      <h2 data-t="about.methodsTitle"></h2>
-      <ul id="about-methods"></ul>
-      <h2 data-t="about.creditsTitle"></h2>
-      <ul id="about-credits"></ul>
-      <p data-t="about.license"></p>
+    <section id="page-about" class="page page-about" hidden aria-labelledby="about-title">
+      <header class="page-head">
+        <p class="eyebrow" data-t="about.eyebrow"></p>
+        <h1 id="about-title" tabindex="-1" data-t="about.title"></h1>
+        <p class="lead" data-t="about.what"></p>
+      </header>
+      <div class="about-grid">
+        <section class="about-card glass" aria-labelledby="about-data-title">
+          <h2 id="about-data-title" data-t="about.dataTitle"></h2>
+          <ul id="about-data"></ul>
+        </section>
+        <section class="about-card glass" aria-labelledby="about-methods-title">
+          <h2 id="about-methods-title" data-t="about.methodsTitle"></h2>
+          <ul id="about-methods"></ul>
+        </section>
+        <section class="about-card glass about-wide" aria-labelledby="about-credits-title">
+          <h2 id="about-credits-title" data-t="about.creditsTitle"></h2>
+          <ul id="about-credits"></ul>
+          <p class="note" data-t="about.license"></p>
+        </section>
+        <section class="about-card glass" aria-labelledby="about-fonts-title">
+          <h2 id="about-fonts-title" data-t="about.fontsTitle"></h2>
+          <ul id="about-fonts" class="font-list"></ul>
+          <p class="note" data-t="font.selfHosted"></p>
+        </section>
+      </div>
     </section>
   </main>
 

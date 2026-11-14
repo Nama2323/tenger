@@ -904,12 +904,30 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 #evidence-body h3 { margin-top: 8px; }
 .credit { color: var(--dim); font-size: 13px; }
 
-/* ---------- Game, Learn, About ---------- */
+/* ---------- Learn and About ---------- */
 
-.cards-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
-.page-card { margin: 0; padding: 16px; background: var(--card); border: 1px solid var(--edge); border-radius: 14px; display: grid; gap: 8px; align-content: start; }
-.page-card.lab { border-color: var(--hypothetical); border-left-width: 4px; }
-#about-credits li, #about-methods li, #about-data li { color: var(--ink); }
+.page-learn, .page-about { max-width: 1180px; margin: 0 auto; }
+.cards-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--s2); }
+.page-card { position: relative; margin: 0; padding: var(--s3); display: grid; gap: var(--s1); align-content: start; border-radius: var(--radius); }
+.lessons .page-card { padding-top: var(--s4); }
+.lesson-number { position: absolute; top: var(--s2); right: var(--s2); font: 600 13px var(--font-mono); color: var(--accent); }
+.page-card.lab { margin-top: var(--s3); display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: var(--s3); align-items: center; border-left: 3px solid var(--hypothetical); }
+.lab-orbit { width: 120px; height: 60px; color: var(--hypothetical); }
+.lab-sun { fill: var(--star); }
+.lab-words { display: grid; gap: var(--s1); }
+.about-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s2); align-items: start; }
+.about-card { padding: var(--s3); display: grid; gap: 12px; }
+.about-card h2 { font-size: 18px; }
+.about-card ul { display: grid; gap: var(--s1); padding-left: 18px; }
+.about-card li { margin: 0; color: var(--text); }
+.about-wide { grid-row: span 2; }
+.font-list { list-style: none; padding-left: 0 !important; }
+.font-list li { display: grid; gap: 2px; }
+.font-list strong { font-size: 17px; }
+.font-list .font-head { font-family: var(--font-head); }
+.font-list .font-text { font-family: var(--font-text); }
+.font-list .font-mono { font-family: var(--font-mono); }
+.font-list a { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 13.5px; }
 
 /* ---------- Text pages share a header ---------- */
 
@@ -1081,6 +1099,8 @@ body.embed main { padding: 0 12px 12px; }
   .segment button { flex: 1; padding: 0 6px; }
   .pred-figure { grid-template-columns: 1fr; }
   .round { padding: 12px; }
+  .about-grid { grid-template-columns: 1fr; }
+  .page-card.lab { grid-template-columns: 1fr; }
   .round-grid { grid-template-columns: minmax(0, 1fr); }
   .ring-label.minor { display: none; }
   .map-marker { font-size: 12px; }
