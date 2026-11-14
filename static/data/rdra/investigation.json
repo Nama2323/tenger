@@ -6,7 +6,7 @@
   "pipeline": {
     "version": "tenger-a2-2026.11.14",
     "config_sha256": "1da5cb57a2d745528e56b60d384216af7368e8663435c03c95cbb903cd9a82c5",
-    "code_sha256": "52dd0b767c18fa518851fbe8576eafce5a335261db9421f72adfe3b336af0c89",
+    "code_sha256": "ebf69f49568bffaa5e74b6de2a72cebeb7c2e3e264bbe1d0b89ca404c976fa23",
     "settings": {
       "pipeline": "tenger-a2-2026.11.14",
       "mask_policy": "tenger-mask-v1",
@@ -19342,6 +19342,7 @@
       }
     ]
   },
+  "context": null,
   "explanation": [
     {
       "key": "explain.brightness-insufficient",

@@ -60,7 +60,10 @@ Decided by the team for Task A3 (phases C–D). It changes the exposed set as fo
   same-visit exposures that A1 listed as never opened (`scripts/acquire.py`, fixed 0.1° field,
   cutout 0.145°). From now on every current DR1/QR3 observation of Barnard, WISE 0855, Epsilon Indi B,
   RW Aurigae and R Draconis counts as exposed. The exact obs_keys opened are listed in each target's
-  `static/data/<key>/investigation.json` (`observations`).
+  `static/data/<key>/investigation.json` (`observations`). Opened 14 Nov 21:10–22:10 UB: Barnard
+  356 of 358, WISE 0855 256 of 258 (2 failed downloads each, never opened), Epsilon Indi B 460 of
+  460, RW Aurigae 335 of 335, R Draconis an even sample of 300 of 2,493 (the other 2,193 were not opened,
+  but they count as exposed for trials anyway because they share visits with opened frames).
 - **Makemake and Pluto: training visits only.** Opened: every visit in the table below except the
   newest. **Still closed** until Task A4 has frozen and pushed the predictions: Makemake 2026-05-30 →
   06-13 (QR3, 65 obs_ids) and Pluto 2026-09-29 → 10-02 (QR3, 10 obs_ids). The acquisition code

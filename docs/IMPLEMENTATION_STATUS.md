@@ -9,8 +9,8 @@ still open. Session A edits only "Science/data". Session B edits only "Web".
 
 ### Current phase
 
-**Phases C–D: real investigations. Task A3 is in progress** (see "Task A3" below: per-target table,
-what was opened, what is left). A2 (science repair) is done.
+**Phases C–D done (Task A3).** All eight targets have a published evidence file built from DR1/QR3
+native data (see "Task A3"). Next: Task A4, freeze and push the predictions (phase F).
 
 ### Task A1, 14 Nov 2026 (git base `58f993b`, branch `tenger-dev`)
 
@@ -93,18 +93,62 @@ visits closed, refused in code); 3I/ATLAS See-only.
 | Comparisons | `backend/investigation.py` | Every pair of epochs in the same array; brightness grade at the target, field grade over the plate, `difference` only if both quantitative |
 | Outputs | `static/data/<key>/investigation.json`, `epochs/*.webp`, `meta.json`, `frames.bin.gz`, `index.json`, `reserved.json`, `strings.en.json` | Contract V3 (and V4 for brightness game rounds) |
 
-**Results per target** (all numbers from the published files)
+**Results per target** (from the published files, dataset `a3-2026-11-14`, pipeline `tenger-a2-2026.11.14`)
 
-| Target | Exposures used | Status | Main result | Checks |
+| Target | Exposures used / listed | Status | Main result | Checks and limits |
 |---|---|---|---|---|
-| Barnard's Star | 356 of 358 (DR1 239, QR3 119 listed) | measured | μ = 10.42 ± 0.33″/yr (parallax fixed to Gaia; visit-level σ). Gaia DR3 10.393 (z = 0.07) | 14 control stars all agree with Gaia (median Δ 0.04″/yr). Free parallax 0.95 ± 0.04″ vs Gaia 0.547″ (z = 9): exposure-level fits share visit systematics (saturated-core wing fits); flagged `limit.visit-systematics`. Brightness: saturated core in every exposure → insufficient |
-| WISE 0855 | 256 of 258 (DR1) | insufficient_data | No motion: every fit near the track is outside the 3″ gate or contaminated by a Gaia G = 16.3 star 4–12″ away; photometry contaminated/flagged | Catalogue: SIMBAD (CfA mirror), Kirkpatrick et al. 2021 |
-| Epsilon Indi B | pending | — | — | — |
-| RW Aurigae | pending | — | — | — |
-| R Draconis | pending | — | — | — |
-| Makemake | 234 of 236 training rows (DR1) | measured (partial data) | Not detected in single exposures; joint fits: 1 validated epoch (v0-d2: −0.32″ E, +0.92″ N of the spacecraft-corrected ephemeris, S/N 9.3), 2 candidates (null test also finds signal), 9 below S/N 5 | Static-source check; time-shuffled null |
-| Pluto | 218 of 218 training rows (DR1) | measured (partial data) | Joint fits: 9 validated epochs (visit 1 all six arrays, visit 2 arrays 1–3; S/N 11–26), offsets −0.83…+0.61″ E, −0.44…+0.50″ N; 3 candidates; first visit (10 rows) too sparse | Array-to-array scatter ~0.4″ within a visit (as for Barnard) |
-| 3I/ATLAS | pending | — | — | — |
+| Barnard's Star | 356 / 358 (DR1 + QR3; 2 failed downloads) | measured | μ = **10.42 ± 0.33″/yr** (parallax fixed to Gaia; σ from the visit-level fit). Gaia DR3 10.393 (z = 0.07) | Control: 14 field stars, all agree with Gaia (median Δ 0.040″/yr). Floor 0.15″. Saturated core: wing fits in arrays 4–6. Free parallax 0.95 ± 0.04″ vs 0.547″ (z = 9): visit systematics, flagged. Brightness: saturated in every exposure → 0 of 8 ratios. No difference image passes |
+| WISE 0855 | 256 / 258 (DR1) | insufficient_data | No motion, no brightness: every fit near the track is outside the 3″ gate or contaminated by a Gaia G = 16.3 star 4–12″ from the track | Catalogue: SIMBAD via CfA (Kirkpatrick+2021). Context: 2MASS non-detection (kept as such); AllWISE W2 27 exposures, 2010. 4 difference-image pairs pass all gates |
+| Epsilon Indi B | 458 / 460 (DR1 + QR3) | measured | μ = **4.668 ± 0.043″/yr**, catalogue 4.684 (z = −0.37). 16 of 20 matched brightness ratios measured, all consistent with no change (3–25%) | Control: 5 field stars, 3 agree → **not passed** (flagged). Free parallax 0.369 ± 0.014″ vs 0.271″ (z = 7), flagged. Repeatability floor 1.6%. 6 difference-image pairs |
+| RW Aurigae | 335 / 335 | insufficient_data | Brightness refused: flagged (saturated/bloom) pixels in the aperture in 318 exposures; 0 of 9 ratios | Blended binary (1.2″). 1 difference-image pair |
+| R Draconis | 299 / 2,493 (sample of 300; deep + wide, DR1 + QR3) | insufficient_data | Brightness refused: saturated in all 299; 0 of 17 ratios | 7 visits; 3 difference-image pairs |
+| Makemake | 234 / 236 training rows (DR1) | measured (partial) | Not seen in single exposures. Joint fits: **1 validated epoch** (v0-d2, −0.32″ E/+0.92″ N of the spacecraft-corrected ephemeris, S/N 9.3), 2 candidates, 9 below S/N 5 | Static-source check, time-shuffled null test. Holdout visit closed |
+| Pluto | 218 / 218 training rows (DR1) | measured (partial) | **9 validated epochs** (S/N 11–26, offsets within 0.9″), 3 candidates, 4 too sparse or faint | Array-to-array scatter about 0.4″ within a visit. Holdout visit closed |
+| 3I/ATLAS | 258 / 259 official-table rows | See-only | 12 body-centred previews (Aug, Dec 2025); no measurements, no trial | Table's QR2 links no longer resolve; DR1 products found by SIA. 1 row has no DR1 product (listed as unavailable) |
+
+**What Session B gets** (all under `static/data/`): `index.json` (eight targets, sourced map distances,
+`reserved_path`, `strings_path`), `<key>/investigation.json` (contract V3), `<key>/epochs/*.webp`
+(one preview per epoch, same exposures as the measurements), rebuilt `<key>/meta.json` +
+`frames.bin.gz` for the five challenge targets (epochs map to them through `epochs[].viewer` and
+`viewer.visits`, whose `date_utc` equals the viewer's step id), `reserved.json` (Makemake/Pluto
+holdout paths, 3I/ATLAS path), `strings.en.json` (English text for every key emitted; B copies it into
+`i18n.js`). Contract V4 adds brightness game rounds. B confirmed all of these render (messages
+between sessions, 14 Nov).
+
+**Commands and results** (14 Nov 2026, 22:29 UB)
+
+| Command | Result |
+|---|---|
+| `.venv/bin/python -m pytest` | **133 passed, 2 skipped** (network). New A3 tests: `test_astrometry.py` (synthetic stars: masks, VARIANCE, saturation, parallax, refusals), `test_investigation.py` (no cross-array or nearest-channel comparisons, PSF/registration gates, FOV centring, identification gate, contamination, reproducibility), `test_stacking.py` (joint fit, null test, spacecraft correction), `test_static_data.py` (every emitted key has English text, no example data, previews exist, viewer mapping, holdout never opened, reserved paths), fractional-aperture test |
+| `.venv/bin/python -m pytest --network tests/test_network.py` | 2 passed (A2) |
+| `node --test tests/*.mjs` | 106 of 107 here at 22:29; the failure was B's check that every new `strings.en.json` key is copied into `i18n.js` (`context.*`). B copied them in `3dc1e22` and reports 115/115 |
+| Full rebuild twice (`build_investigation` ×5 `--cached-only`, `build_body` ×3) | **All 52 published data files byte-identical** between the two runs |
+| Server + in-app browser, `?target=` for all five, plus Pluto | All open from the rebuilt bundles with their evidence files; **0 `/api/` requests** |
+
+**Exposure accounting.** Opened in A3: every current DR1/QR3 exposure of the five challenge targets
+(R Dra: the 300 sampled), Makemake and Pluto training visits only (holdout windows refused in code,
+newest opened exposure MJD 61049.26 and 61172.96), and 3I/ATLAS. The tables are in
+`docs/EXPOSURE.md`. Raw cutouts stay in the git-ignored `cache/`, with SHA-256 values in each
+observation record.
+
+### Still open after A3
+
+- **Saturation.** Barnard, RW Aur and R Dra saturate SPHEREx in nearly every exposure. Their
+  brightness is `insufficient_data`. Wing or PSF-wing photometry of saturated stars, and ePSF fits,
+  are not implemented.
+- **Visit-level systematics.** For the saturated Barnard star and for Eps Ind B, the free parallax
+  disagrees with Gaia (z = 9 and 7). Motion uncertainties therefore use the visit-level fit. The
+  cause (wing-fit asymmetry, array-dependent offsets of about 0.4″) is not modelled.
+- **WISE 0855** needs a joint along-track fit in arrays 5–6 that models the neighbour star. That is
+  the only route to a measurement there.
+- **Moving bodies.** Only 1 Makemake epoch passes the null test. Detectability of the closed holdout
+  visits is unknown (Task A4 must allow `insufficient_data`).
+- **Checks still `not_checked`:** background in comparisons. The registration check reads header
+  flags only, and `FINAST` is 0 in every sampled file, so it barely discriminates.
+- WCS-WAVE (≈1 nm) is used instead of the CWAVE/CBAND product. The 10%-of-bandwidth tolerance is
+  adopted, not validated.
+- `static/data/results.json` and `scripts/results.mjs` remain legacy (no longer shown by B).
+- `astroquery` is not installed (httpx mirror helpers only). Dependencies are unpinned.
 
 ### Task A2, 14 Nov 2026 (phase B, git base `a646a75`, branch `tenger-dev`)
 
@@ -196,11 +240,14 @@ neutral position (0, 0). Bake and live jobs were not run.
 
 ### Next action (proposed)
 
-Phase C: first real investigation. Write `scripts/build_investigation.py` that emits
-`static/data/<key>/investigation.json` (contract V1 §5) from bundled legacy metadata, marked
-`legacy`, with comparison grades computed from recorded responses where they exist and `invalid` /
-`response-unknown` where they do not. In parallel, draft the Makemake/Pluto trial manifests
-(`trial.json`) so their training visits can be opened under the new pipeline.
+Task A4 (phase F): freeze trial manifests and predictions, then push and write receipts before any
+holdout is opened. Candidates:
+- Pluto position (training epochs above; holdout 2026-09-29 → 10-02, QR3, arrays 3 and 6), and
+  Makemake position (one validated epoch; may end `insufficient_data`). Both are
+  `catalogue_assisted` if the Horizons orbit shapes the prediction.
+- Barnard and Eps Ind B `retrospective_holdout` position trials (hold out the newest visit, predict
+  from the earlier ones).
+Then game rounds and lesson records (A5) from the frozen trials.
 
 ---
 
