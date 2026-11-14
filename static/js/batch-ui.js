@@ -59,11 +59,13 @@ function otherLine(key, calibration) {
   return el('p', { text: t(key, { k: String(calibration.k), n: String(calibration.n), range }) });
 }
 
-/** Counts by status ("7 waiting for their check, 1 insufficient data"), in the file's order of first appearance. */
+/** Counts by status ("1 inside its 95% region; 4 ambiguous (not counted)"): outcomes first, then the rows not counted. */
 function statusCounts(batch) {
   const counts = new Map();
   for (const row of batch.rows) counts.set(row.status ?? 'unknown', (counts.get(row.status ?? 'unknown') ?? 0) + 1);
-  return [...counts].map(([status, count]) => t(has(`batch.count.${status}`) ? `batch.count.${status}` : 'batch.count.other', { n: String(count), status })).join(t('batch.countJoin'));
+  const order = ['hit', 'miss', 'waiting', 'ambiguous', 'insufficient_data'];
+  const rank = (status) => (order.includes(status) ? order.indexOf(status) : order.length);
+  return [...counts].sort((a, b) => rank(a[0]) - rank(b[0])).map(([status, count]) => t(has(`batch.count.${status}`) ? `batch.count.${status}` : 'batch.count.other', { n: String(count), status })).join(t('batch.countJoin'));
 }
 
 function summary(batch) {
@@ -81,12 +83,16 @@ function summary(batch) {
     ]);
   }
   const verdict = coverageVerdict(batch.calibration);
+  // "Consistent" says little when the interval covers most of 0–100%: say the batch is too small to test instead.
+  const verdictKey = verdict === 'fits' && interval && interval[1] - interval[0] > 0.5 ? 'batch.tooFew' : verdict ? `batch.${verdict}` : null;
+  const exploratory = batch.exploratory?.primary?.n > 0 ? batch.exploratory : null;
   // The file's own independence note when it has one (shown once, with the other notes), else ours.
   const independence = noteKey ? (batch.noteKeys.includes(noteKey) ? null : note(noteKey)) : t('batch.assumeIndependent');
   return el('div', { class: 'batch-summary' }, [
     el('p', { class: 'batch-headline' }, [el('strong', { text: t('batch.headline', { k: String(k), n: String(n) }) })]),
+    batch.rows.length > n ? el('p', { text: t('batch.ofAll', { total: String(batch.rows.length), counts: statusCounts(batch) }) }) : null,
     interval ? el('p', { text: t('batch.interval', { low: pct(interval[0]), high: pct(interval[1]), method: t(`batch.method.${method === 'wilson' ? 'wilson' : 'exact'}`) }) }) : null,
-    verdict ? el('p', { text: t(`batch.${verdict}`) }) : null,
+    verdictKey ? el('p', { text: t(verdictKey, { n: String(n) }) }) : null,
     el('p', { class: 'note', text: t('batch.expected', { expected: formatNumber(expected, 1), n: String(n) }) }),
     otherLine('batch.secondaryLine', batch.secondaryCalibration),
     otherLine('batch.baselineLine', batch.baselineCalibration),
@@ -94,6 +100,13 @@ function summary(batch) {
     el('p', { class: 'note', text: t('batch.smallN') }),
     independence ? el('p', { class: 'note', text: independence }) : null,
     computed ? el('p', { class: 'note', text: t('batch.computed') }) : null,
+    exploratory ? el('p', { class: 'note batch-exploratory' }, [
+      chip(t('batch.exploratoryChip'), 'chip-exploratory'),
+      el('span', { text: ` ${exploratory.noteKey ? note(exploratory.noteKey) : ''} ${t('batch.exploratoryCounts', {
+        k: String(exploratory.primary.k), n: String(exploratory.primary.n),
+        k2: exploratory.secondary ? String(exploratory.secondary.k) : '—', n2: exploratory.secondary ? String(exploratory.secondary.n) : '—',
+      })}`.trim() }),
+    ]) : null,
   ]);
 }
 
@@ -134,10 +147,12 @@ function distanceChart(batch) {
 function errorChart(batch) {
   const rows = batch.rows.filter((row) => Number.isFinite(row.modelError) && Number.isFinite(row.baselineError));
   if (!rows.length) return null;
-  const [size, left, bottom, top] = [240, 44, 40, 10];
-  const span = size - left - top;
   const max = Math.max(...rows.flatMap((row) => [row.modelError, row.baselineError])) * 1.08;
   const step = niceStep(max / 4);
+  // Room for the widest tick label ("10,000") beside the rotated axis title.
+  const widest = formatNumber(Math.floor(max / step) * step, step < 1 ? 1 : 0).length;
+  const [size, left, bottom, top] = [240, Math.max(44, 24 + widest * 6.6), 40, 10];
+  const span = size - left - top;
   const sx = (value) => left + (value / max) * span;
   const sy = (value) => size - bottom - (value / max) * (size - bottom - top);
   const ticks = [];
@@ -216,7 +231,7 @@ function card(row, bundle) {
     el('div', { class: 'card-head' }, [
       el('h4', { text: trial?.target_name ?? row.name }),
       inside === null && row.status === 'waiting' ? chip(t('batch.waiting'), 'chip-trial-waiting')
-        : chip(inside === null ? (row.excludedKey ? t('batch.excluded') : row.status === 'insufficient_data' ? t('batch.insufficient') : t('batch.notScored')) : t(inside ? 'batch.inside' : 'batch.outside'), inside === null ? 'chip-trial-unavailable' : inside ? 'chip-trial-hit' : 'chip-trial-miss'),
+        : chip(inside === null ? (row.excludedKey ? t('batch.excluded') : row.status === 'insufficient_data' ? t('batch.insufficient') : row.status === 'ambiguous' ? t('batch.ambiguous') : t('batch.notScored')) : t(inside ? 'batch.inside' : 'batch.outside'), inside === null ? 'chip-trial-unavailable' : inside ? 'chip-trial-hit' : 'chip-trial-miss'),
     ]),
     el('div', { class: 'batch-card-body' }, [
       miniPlot(region, verification?.residuals?.model),
@@ -231,8 +246,11 @@ function card(row, bundle) {
         el('dd', { text: Number.isFinite(row.modelError) ? t('batch.observedValue', { error: formatNumber(row.modelError, 1), d: Number.isFinite(row.d) ? formatNumber(row.d, 2) : '—' }) : '—' }),
         el('dt', { text: t('batch.f.baseline') }),
         el('dd', { text: Number.isFinite(row.baselineError) ? `${formatNumber(row.baselineError, 1)}″` : '—' }),
+        row.horizons && Number.isFinite(row.horizons.error) ? el('dt', { text: t('batch.f.horizons') }) : null,
+        row.horizons && Number.isFinite(row.horizons.error) ? el('dd', { text: t(row.horizons.inside === true ? 'batch.horizonsInside' : row.horizons.inside === false ? 'batch.horizonsOutside' : 'batch.horizonsValue', { error: formatNumber(row.horizons.error, 1) }) }) : null,
       ]),
     ]),
+    region && !region.withMeasurement ? el('p', { class: 'note', text: t('batch.regionForecastNote') }) : null,
     row.excludedKey ? el('p', { class: 'note', text: note(row.excludedKey) }) : null,
     !row.excludedKey && row.statusKey ? el('p', { class: 'note', text: note(row.statusKey) }) : null,
     receipt?.url
@@ -282,9 +300,12 @@ export function lessonBatchSection(data) {
       batch.statementPending ? chip(t('batch.statementPending'), 'chip-pending') : null,
     ]),
     batch.example ? el('p', { class: 'panel-note warn', text: t('lesson.sure.batchExample') }) : null,
-    el('p', { text: t('lesson.sure.batchCount', { k: String(k), n: String(n), share: pct(k / n) }) }),
+    // Frozen and scored are different numbers: every row was frozen; only n could be scored.
+    el('p', { text: n === 1
+      ? t('lesson.sure.batchCountOne', { total: String(batch.rows.length), where: t(k === 1 ? 'lesson.sure.batchInside' : 'lesson.sure.batchOutside') })
+      : t('lesson.sure.batchCount', { total: String(batch.rows.length), k: String(k), n: String(n), share: pct(k / n) }) }),
     el('p', { text: t('lesson.sure.batchMeaning', { k: String(k), n: String(n), expected: formatNumber(expected, 1) }) }),
-    el('p', { text: t('lesson.sure.batchInterval', { n: String(n), low: pct(interval[0]), high: pct(interval[1]), width: formatNumber((interval[1] - interval[0]) * 100, 0) }) }),
+    el('p', { text: t(n === 1 ? 'lesson.sure.batchIntervalOne' : 'lesson.sure.batchInterval', { n: String(n), low: pct(interval[0]), high: pct(interval[1]), width: formatNumber((interval[1] - interval[0]) * 100, 0) }) }),
     el('h4', { text: t('lesson.sure.batchWhatIf') }),
     el('div', { class: 'table-scroll' }, el('table', { class: 'results-table' }, [
       el('caption', { text: t('lesson.sure.batchCaption') }),
@@ -295,7 +316,8 @@ export function lessonBatchSection(data) {
         el('td', { text: range(row.interval) }),
       ]))),
     ])),
-    el('p', { class: 'worked-answer', text: t('lesson.sure.batchLesson', { k: String(k), n: String(n) }) }),
+    // "Not badly wrong" needs an interval that rules out a low hit rate; a wide one says almost nothing yet.
+    el('p', { class: 'worked-answer', text: t(interval[0] < 0.5 ? 'lesson.sure.batchLessonWeak' : 'lesson.sure.batchLesson', { k: String(k), n: String(n), low: pct(interval[0]), high: pct(interval[1]) }) }),
     el('p', { class: 'note', text: batch.calibration.noteKey ? note(batch.calibration.noteKey) : t('batch.assumeIndependent') }),
     el('p', { class: 'note', text: t('lesson.sure.batchSource', { file: data.path ?? t('batch.title') }) }),
   ]);

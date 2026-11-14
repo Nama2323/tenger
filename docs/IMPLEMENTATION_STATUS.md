@@ -1351,3 +1351,36 @@ within the hour. It will be recorded once the calibration is in.
   Session A's strings re-copied (193 + 3; new `batch.exploratory-horizons`, `batch.outlier-flag`).
 - **Checks:** 207 tests pass. Captures `home`, `about`, `about-refs` and the new `about-footer` at 360 and 1280:
   no horizontal scroll, no control under 44 px, no console error.
+
+### Asteroid batch after Session A's check (`9cf2bfd`), and demo clip (f), 15 Nov 2026
+
+Session A's verification: 345 Tercidina inside (D² 0.12); 4 ambiguous; 3 insufficient data. Calibration 1 of 1
+(Clopper–Pearson 0.025–1.0). The page now shows:
+
+- **Summary.**
+  - "1 of 1 landed inside our 95% regions", then "Of all 8 asteroids: 1 inside its 95% region; 4 ambiguous (not
+    counted); 3 insufficient data (not counted)".
+  - Instead of "consistent with honest 95% regions" (an interval that covers almost everything says nothing), it
+    says "With 1 scored … far too few to test".
+  - The second frozen model (1 of 1) and the straight line (0 of 1) each get their own line.
+  - Session A's OUTLIER-flag note explains why most objects were not scored.
+- **Exploratory JPL comparison** (`exploratory_horizons_coverage`). It is read only when it says `exploratory: true,
+  counts: false`, has its own "Exploratory" chip, and ends "This is not the calibration above" (7 of 7 inside for
+  both models). Each card adds "JPL, after the verdict: 3.4″ from the forecast, inside the frozen region
+  (exploratory, not counted)".
+- **Cards.**
+  - "Ambiguous" and "Insufficient data" chips, each with the file's reason.
+  - Unscored cards say "95% forecast region" with a note that the measurement error is added at scoring (the long
+    label had squeezed phone layouts).
+  - The model-versus-straight-line chart leaves room for five-digit ticks (11,082″).
+- **Lesson 3 corrections.**
+  - It no longer says "We froze 1 asteroid forecasts" (frozen 8 ≠ scored 1).
+  - It no longer says "with only 1 asteroids".
+  - It no longer claims "1 of 1 … can only show they are not badly wrong"; it now says "says almost nothing about
+    our regions yet: the true hit rate could still be anywhere from 3% to 100%".
+- **Demo clip (f)** `docs/screens/demo/f-asteroid-batch.mp4`: 5.5 s, 0.82 MB, 1280×720 H.264 30 fps, public page, no
+  error. The recorder now counts a page clip's first frame from the start of recording; a still page's first
+  frame arrives late, which had cut the opening hold short.
+- **Checks:** 208 tests pass (new: the scored-batch rules; a block that claims to count is refused). Captures
+  `predictions-asteroids`, `predictions-asteroids-cards` and `learn-lesson-sure-batch` (now the public page) at
+  360/390/768/1280: no console error, no failing request, no horizontal scroll.

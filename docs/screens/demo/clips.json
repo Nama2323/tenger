@@ -48,5 +48,15 @@
     "size": "1280x720",
     "fps": "30/1",
     "errors": []
+  },
+  {
+    "file": "f-asteroid-batch.mp4",
+    "name": "f-asteroid-batch",
+    "seconds": 5.533333,
+    "bytes": 820921,
+    "codec": "h264",
+    "size": "1280x720",
+    "fps": "30/1",
+    "errors": []
   }
 ]

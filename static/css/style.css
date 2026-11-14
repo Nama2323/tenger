@@ -1725,7 +1725,7 @@ body.embed .panel-title { top: 0; }
 .batch-mini .region { fill: rgba(var(--band), 0.12); stroke: var(--star); stroke-width: 1.2; }
 .batch-mini .forecast { fill: var(--star); }
 .batch-mini .observed { stroke: #fff; stroke-width: 2; stroke-linecap: round; }
-.batch-facts { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 10px; margin: 0; font-size: 14px; }
+.batch-facts { display: grid; grid-template-columns: fit-content(45%) minmax(0, 1fr); gap: 2px 10px; margin: 0; font-size: 14px; }
 .batch-facts dt { color: var(--dim); }
 .batch-facts dd { margin: 0; overflow-wrap: anywhere; }
 .batch-lesson .results-table { max-width: 520px; }

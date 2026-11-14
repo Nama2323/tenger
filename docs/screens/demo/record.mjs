@@ -82,7 +82,8 @@ function encode(name, { frames, start, end, even }) {
   frames.forEach((frame, index) => {
     const file = join(dir, `f${String(index).padStart(5, '0')}.${even ? 'png' : 'jpg'}`);
     writeFileSync(file, Buffer.from(frame.data, 'base64'));
-    const next = even ? 1 / FPS : (frames[index + 1]?.t ?? end) - Math.max(frame.t, start);
+    // The first frame is the page as it was when recording started; a still page sends it late, so it counts from the start.
+    const next = even ? 1 / FPS : (frames[index + 1]?.t ?? end) - (index === 0 ? start : Math.max(frame.t, start));
     // Real gaps (the 30 fps filter drops extra frames); a frame never gets more time than it was on screen.
     lines.push(`file '${file}'`, `duration ${Math.max(0.001, next).toFixed(4)}`);
   });
@@ -202,6 +203,22 @@ const CLIPS = {
       await sleep(1400);
       await smoothScroll(page, '#measured .planetx-band:nth-child(2)', 1100, -76);
       await sleep(1700);
+    });
+  },
+
+  /** (f) The asteroid batch: the summary (k of N scored, why the others were not, the exploratory JPL line), then the cards. */
+  async 'f-asteroid-batch'(page) {
+    await page.open('/?page=predictions', "document.querySelector('#ledger-batch .batch-card')");
+    // The ledger above keeps growing while its cards load: scroll, let it settle, scroll again.
+    const toSummary = "scrollTo(0, document.querySelector('#ledger-batch .batch-summary').getBoundingClientRect().top + scrollY - 140)";
+    await page.evaluate(toSummary);
+    await sleep(1500);
+    await page.evaluate(toSummary);
+    await sleep(500);
+    return screencast(page, async () => {
+      await sleep(2000);
+      await smoothScroll(page, '#ledger-batch .batch-cards', 1100);
+      await sleep(1200);
     });
   },
 

@@ -95,7 +95,7 @@ const PAGES = [
   { name: 'predictions-batch', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch' },
   { name: 'predictions-batch-charts', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch .batch-charts' },
   { name: 'predictions-batch-cards', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch .batch-cards' },
-  { name: 'learn-lesson-sure-batch', path: '/?page=learn&lesson=sure&fixtures=1', ready: '#lesson-batch h3', scrollTo: '#lesson-batch' },
+  { name: 'learn-lesson-sure-batch', path: '/?page=learn&lesson=sure', ready: '#lesson-batch h3', scrollTo: '#lesson-batch' },
   { name: 'loop-chart', path: '/?page=loop', ready: '#loop-chart svg', scrollTo: '#loop-chart-title' },
   { name: 'about-see', path: '/?page=about', ready: '#about-data li', scrollTo: '#about-limits-title' },
   { name: 'about-credits', path: '/?page=about', ready: '#about-data li', scrollTo: '#about-data-title' },

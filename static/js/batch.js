@@ -106,6 +106,11 @@ export function readBatch(doc) {
       baseline,
       status: row.status ?? null,
       statusKey: row.status_reason_key ?? null,
+      // JPL compared with the frozen regions after the verdict (V13 + A9): exploratory, never counted.
+      horizons: row.exploratory_vs_horizons && row.exploratory_vs_horizons.counts === false ? {
+        error: finite(row.exploratory_vs_horizons.primary_median_error_arcsec) ? row.exploratory_vs_horizons.primary_median_error_arcsec : null,
+        inside: typeof row.exploratory_vs_horizons.primary_inside_95 === 'boolean' ? row.exploratory_vs_horizons.primary_inside_95 : null,
+      } : null,
       excludedKey: row.excluded_reason_key ?? null,
     }];
   });
@@ -126,6 +131,12 @@ export function readBatch(doc) {
     secondaryCalibration: doc.secondary_calibration ? readCalibration(doc.secondary_calibration, pick('secondary')) : null,
     baselineCalibration: doc.baseline_calibration ? readCalibration(doc.baseline_calibration, pick('baseline')) : null,
     waiting: rows.filter((row) => row.status === 'waiting').length,
+    // Only a block that says it is exploratory and not counted is read, and it is never the calibration.
+    exploratory: doc.exploratory_horizons_coverage?.exploratory === true && doc.exploratory_horizons_coverage?.counts === false ? {
+      noteKey: doc.exploratory_horizons_coverage.note_key ?? null,
+      primary: readCalibration(doc.exploratory_horizons_coverage.primary, null),
+      secondary: doc.exploratory_horizons_coverage.secondary ? readCalibration(doc.exploratory_horizons_coverage.secondary, null) : null,
+    } : null,
     notAttempted: Array.isArray(doc.not_attempted) ? doc.not_attempted : [],
     rows,
     noteKeys: Array.isArray(doc.note_keys) ? doc.note_keys.filter((key) => typeof key === 'string') : [],

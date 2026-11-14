@@ -232,3 +232,23 @@ test('loading a published batch never requests a verification file for a row sti
     assert.equal(bundle.verification.state, 'ok', `${row.trialId}: verification read`);
   }
 });
+
+test('the scored batch: outcomes counted, frozen ≠ scored, "consistent" never claimed from a near-empty interval, JPL kept exploratory', { skip: realBatch() ? false : 'real batch not on this branch yet' }, () => {
+  const doc = realBatch();
+  const batch = readBatch(doc);
+  for (const key of ['batch.ofAll', 'batch.tooFew', 'batch.ambiguous', 'batch.exploratoryChip', 'batch.exploratoryCounts', 'batch.f.horizons', 'batch.horizonsInside',
+    'batch.regionForecastNote', 'lesson.sure.batchCountOne', 'lesson.sure.batchLessonWeak', 'lesson.sure.batchIntervalOne']) assert.ok(has(key), key);
+  // The calibration is the file's own block; the exploratory JPL comparison is read apart and never replaces it.
+  assert.equal(batch.calibration.n, doc.calibration.n);
+  assert.equal(batch.calibration.k, doc.calibration.k_inside);
+  if (doc.exploratory_horizons_coverage) {
+    assert.ok(batch.exploratory, 'exploratory block read');
+    assert.equal(batch.exploratory.primary.n, doc.exploratory_horizons_coverage.primary.n);
+    assert.equal(readBatch({ ...doc, exploratory_horizons_coverage: { ...doc.exploratory_horizons_coverage, counts: true } }).exploratory, null, 'a block that claims to count is refused');
+  }
+  assert.ok(batch.rows.length >= batch.calibration.n, 'frozen rows are at least the scored ones');
+  if (batch.calibration.interval && batch.calibration.interval[1] - batch.calibration.interval[0] > 0.5) {
+    assert.equal(coverageVerdict(batch.calibration), 'fits', 'the page then says "too few to test", not "consistent"');
+  }
+  assert.ok(batch.rows.every((row) => row.horizons === null || row.horizons.inside === null || typeof row.horizons.inside === 'boolean'));
+});
