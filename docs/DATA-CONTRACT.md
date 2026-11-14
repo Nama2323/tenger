@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 5 | 2026-11-14 | Additive (Task A4). Trial labels and precedence, confirmation_pending, open forecasts, training.json, prediction_status, model_state, receipts with full SHA; names agreed with Session B. |
 | 4 | 2026-11-14 | Additive (Task A3). Brightness game round shape (`quantity: "brightness"`), confirmed with Session B. |
 | 3 | 2026-11-14 | Additive (Task A3). Real investigation fields (provenance, quality gate, epochs mapped to viewer frames and previews, graded comparisons, astrometry and photometry blocks), `reserved.json`, `strings.en.json`, index additions. `schema_version` majors unchanged. |
 | 2 | 2026-11-14 | Additive (Task A2). Live/bake frame metadata fields, flag mask policy, comparison and measurement reason keys, the comparison rule for the viewer. Version 1 file kinds and their `schema_version` values are unchanged. |
@@ -570,3 +571,77 @@ A game round (V1 §11) may have `"quantity": "brightness"`. Then:
 Smaller magnitudes mean brighter; a reader must not assume larger is brighter when `units` is
 `mag_ab`. Values come from a trial's frozen prediction and its verification, with `derived_from`
 hashes, exactly as for position rounds.
+
+---
+
+# Version 5 (additive, Task A4, 14 Nov 2026): freezing and predicting
+
+Readers of V1 files keep working. New files written under this version carry `"contract_version": 5`.
+
+## V5.1 Categories: labels and precedence
+
+`trial.json` and `prediction.json` carry `"labels"`: **every** category that applies. `"category"`
+is the most limiting of them, in this order: `illustrative` > `retrospective_holdout` >
+`catalogue_assisted` > `prospective_unexposed`. Example: a Barnard trial whose evaluation visit was
+already seen, and which fixes the parallax to Gaia, has `labels: ["retrospective_holdout",
+"catalogue_assisted"]` and `category: "retrospective_holdout"`. The page shows all labels. (V1 said
+`catalogue_assisted` takes precedence over `prospective_unexposed`; that still holds.)
+
+`"confirmation_pending": true` (top level of `trial.json`) means that not every teammate has yet
+stated that they never viewed the evaluation visit (`docs/EXPOSURE.md`). It only appears with
+`prospective_unexposed`.
+
+`"ephemeris_use"` (optional, `trial.json`) says how an ephemeris was used when it was *not* a model
+input (e.g. to centre training cutouts).
+
+## V5.2 Trial manifest additions (`trial.json`)
+
+| Field | Meaning |
+|---|---|
+| `open_forecast` | `true` for a forecast of a future visit that IRSA has not released |
+| `holdout.data_state` | `"released"` or `"not_released"` |
+| `holdout.check_after_utc` | Earliest date the data could be released (estimate), or `null` |
+| `holdout.obs[]` | `{obs_key, t_start_mjd, t_end_mjd}` only: IDs and times, never positions |
+| `holdout.t_mjd` | Reference time (median evaluation exposure start; for open forecasts the expected mid-visit) |
+| `training.path`, `measurements_sha256`, `n_points`, `visits`, `obs[]` | `training.json` path, the SHA-256 of its bytes, and each training observation with its source hash |
+| `permitted_inputs[]` | Priors with `value_mas` / `pmra_mas_yr` / `pmdec_mas_yr` when numeric, and `used_for` |
+| `model.code_sha256` | SHA-256 over `backend/orbit.py`, `backend/astrometry.py`, `scripts/predict.py`, `scripts/trials.py`. Prediction refuses to run if it differs |
+| `scoring.observed`, `c_obs`, `c_pred`, `model_evaluation` | How verification will build the residual and both covariances |
+| `identification` | Pre-registered rules for finding the target in the evaluation data |
+
+## V5.3 Training measurements (`trials/<id>/training.json`, kind `tenger.training/1`)
+
+```json
+{"schema_version": "tenger.training/1", "contract_version": 5, "trial_id": "…", "target_key": "…",
+ "source": {"path": "pluto/investigation.json", "sha256": "…"}, "selection": "…",
+ "points": [{"t_mjd": 60949.55, "ra_deg": 304.17, "dec_deg": -23.61, "cov_arcsec2": [[0.04, 0], [0, 0.04]],
+             "obs_keys": ["spherex_dr1:…:D3"], "visit": 1, "detector": 3, "spacecraft_km": [491.3, -6065.3, -3323.6],
+             "content_type": "measured"}]}
+```
+
+`trial.training.measurements_sha256` is the SHA-256 of these exact bytes. Brightness trials use
+`flux_ujy` and `sigma_ujy` in place of positions.
+
+## V5.4 Prediction additions (`prediction.json`)
+
+| Field | Meaning |
+|---|---|
+| `prediction_status` | `"predicted"` or `"insufficient_data"` (with `status_reason_key`). If `insufficient_data`, `model`, `baseline` and `track` are `null`, and the trial counts as `insufficient_data` (never `waiting`) |
+| `training_sha256` | Copy of the frozen training hash |
+| `t_mjd`, `model`, `baseline` | Position at the reference time with `cov_arcsec2` (east/north arcsec²; the 95% region is D² ≤ 5.991) |
+| `track`, `baseline_track` | Open forecasts only: `[{t_mjd, ra_deg, dec_deg, cov_arcsec2}]` over the expected visit window |
+| `model_state` | Everything needed to evaluate the frozen model at any time and observer: the heliocentric state and its covariance (orbits), or reference, parameters, covariance and parallax (stars) |
+| `diagnostics` | Training fit quality: χ², residual RMS, every starting distance and its converged χ², spread of near-best solutions, baseline fit |
+
+## V5.5 Receipts and scoreboard
+
+`receipt.commit` is the full 40-character SHA of the commit that added `prediction.json`.
+`pushed.utc` is the time Session A confirmed that commit on `origin/tenger-dev`.
+`scoreboard.json` leaves open forecasts out of `counts` and `rows` and lists them as
+`"open_forecasts": ["<trial_id>", …]`, like `see_only`.
+
+## V5.6 Verification image geometry (for later)
+
+`verification.observed.image` = `{"path", "content_type": "processed", "epoch_id", "centre_ra_deg",
+"centre_dec_deg", "scale_arcsec_px", "width_px", "height_px", "north_up": true, "east_left": true}`
+or `null`.

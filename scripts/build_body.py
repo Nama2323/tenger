@@ -77,9 +77,11 @@ def build(key: str, out: Path) -> dict:
             per_exposure.append({"obs_key": item["obsKey"], "identification": "not_attempted"})
         else:
             position = astrometry.fit_position(product, ra, dec, product.info.get("PSF_FWHM"))
+            spacecraft = [product.info.get(axis) for axis in ("X_SC", "Y_SC", "Z_SC")]
             row = {"obs_key": item["obsKey"], "mjd": round(float(product.info.get("MJD-AVG", item["mjd"])), 6),
                    "detector": item["detector"], "visit": item["visit"], **position.to_json(),
-                   "ephemeris_ra_deg": ra, "ephemeris_dec_deg": dec}
+                   "ephemeris_ra_deg": ra, "ephemeris_dec_deg": dec,
+                   "spacecraft_km": None if None in spacecraft else [round(float(v), 3) for v in spacecraft]}
             if position.status == "measured":
                 east, north = astrometry.tangent_offsets_arcsec(ra, dec, position.ra_deg, position.dec_deg)
                 row.update(offset_east_arcsec=round(east, 3), offset_north_arcsec=round(north, 3))
@@ -249,14 +251,35 @@ def joint_epoch_fits(groups: dict, distance_au: float | None = None) -> list[dic
         identification = ("body" if detected and null.get("passes") is True
                           else "candidate" if detected else "none")
         mjds = [float(member["product"].info.get("MJD-AVG", member["mjd"])) for member in members]
+        # Absolute position at the epoch's mean time: mean reference position plus the common offset
+        # (linear motion within the epoch, so the mean of the positions is the position at the mean time).
+        reference = _mean_position(positions)
+        absolute = None
+        if fit.get("offset_east_arcsec") is not None:
+            absolute = astrometry.tangent_to_sky(reference[0], reference[1], fit["offset_east_arcsec"],
+                                                 fit["offset_north_arcsec"])
+        spacecraft = [[member["product"].info.get(axis) for axis in ("X_SC", "Y_SC", "Z_SC")] for member in members]
+        spacecraft = [row for row in spacecraft if None not in row]
         rows.append({"epoch": inv.epoch_id(visit, detector), "visit": visit, "detector": detector,
                      "mean_mjd": round(float(np.mean(mjds)), 6), "n_exposures": fit.get("n_exposures"),
+                     "reference_ra_deg": round(reference[0], 8), "reference_dec_deg": round(reference[1], 8),
+                     "ra_deg": round(absolute[0], 8) if absolute else None,
+                     "dec_deg": round(absolute[1], 8) if absolute else None,
+                     "spacecraft_km": [round(float(v), 3) for v in np.mean(spacecraft, axis=0)] if spacecraft else None,
+                     "obs_keys": [member["obsKey"] for member in members],
                      "identification": identification, "reason_key": fit.get("reason_key"),
                      "snr": _r(fit.get("snr")), "offset_east_arcsec": _r(fit.get("offset_east_arcsec")),
                      "offset_north_arcsec": _r(fit.get("offset_north_arcsec")),
                      "cov_arcsec2": fit.get("cov_arcsec2"), "chi2_red": _r(fit.get("chi2_red")),
                      "null": {key: (_r(value) if isinstance(value, float) else value) for key, value in null.items()}})
     return rows
+
+
+def _mean_position(positions: list[tuple[float, float]]) -> tuple[float, float]:
+    """Mean of nearby sky positions through the tangent plane of the first one."""
+    ra0, dec0 = positions[0]
+    offsets = np.array([astrometry.tangent_offsets_arcsec(ra0, dec0, ra, dec) for ra, dec in positions])
+    return astrometry.tangent_to_sky(ra0, dec0, float(offsets[:, 0].mean()), float(offsets[:, 1].mean()))
 
 
 def _r(value, digits=4):

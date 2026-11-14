@@ -9046,6 +9046,38 @@
         "detector": 1,
         "mean_mjd": 60837.560821,
         "n_exposures": 21,
+        "reference_ra_deg": 199.92139875,
+        "reference_dec_deg": 21.46643288,
+        "ra_deg": 199.92161147,
+        "dec_deg": 21.46697233,
+        "spacecraft_km": [
+          -6218.872,
+          766.147,
+          2864.296
+        ],
+        "obs_keys": [
+          "spherex_dr1:2025W23_2B_0620_1:D1",
+          "spherex_dr1:2025W23_2B_0620_2:D1",
+          "spherex_dr1:2025W23_2B_0620_3:D1",
+          "spherex_dr1:2025W23_2B_0620_4:D1",
+          "spherex_dr1:2025W24_1A_0080_3:D1",
+          "spherex_dr1:2025W24_1A_0080_4:D1",
+          "spherex_dr1:2025W24_1A_0111_1:D1",
+          "spherex_dr1:2025W24_1A_0111_2:D1",
+          "spherex_dr1:2025W24_1A_0111_3:D1",
+          "spherex_dr1:2025W24_1A_0111_4:D1",
+          "spherex_dr1:2025W24_1A_0124_1:D1",
+          "spherex_dr1:2025W24_1A_0124_2:D1",
+          "spherex_dr1:2025W24_1A_0124_3:D1",
+          "spherex_dr1:2025W24_1A_0124_4:D1",
+          "spherex_dr1:2025W24_1A_0485_1:D1",
+          "spherex_dr1:2025W24_1A_0485_2:D1",
+          "spherex_dr1:2025W24_1A_0485_3:D1",
+          "spherex_dr1:2025W24_1A_0485_4:D1",
+          "spherex_dr1:2025W24_1A_0660_1:D1",
+          "spherex_dr1:2025W25_2A_0004_1:D1",
+          "spherex_dr1:2025W27_2A_0725_1:D1"
+        ],
         "identification": "none",
         "reason_key": "measure.low-snr",
         "snr": 3.5426,
@@ -9075,6 +9107,40 @@
         "detector": 2,
         "mean_mjd": 60836.913745,
         "n_exposures": 23,
+        "reference_ra_deg": 199.94844355,
+        "reference_dec_deg": 21.45778383,
+        "ra_deg": 199.94834833,
+        "dec_deg": 21.45803812,
+        "spacecraft_km": [
+          -5985.872,
+          803.439,
+          2278.349
+        ],
+        "obs_keys": [
+          "spherex_dr1:2025W22_2B_0488_1:D2",
+          "spherex_dr1:2025W22_2B_0488_2:D2",
+          "spherex_dr1:2025W22_2B_0488_3:D2",
+          "spherex_dr1:2025W22_2B_0488_4:D2",
+          "spherex_dr1:2025W22_2B_0521_1:D2",
+          "spherex_dr1:2025W22_2B_0521_2:D2",
+          "spherex_dr1:2025W22_2B_0521_3:D2",
+          "spherex_dr1:2025W22_2B_0521_4:D2",
+          "spherex_dr1:2025W22_2B_0546_1:D2",
+          "spherex_dr1:2025W22_2B_0580_1:D2",
+          "spherex_dr1:2025W22_2B_0580_2:D2",
+          "spherex_dr1:2025W22_2B_0580_3:D2",
+          "spherex_dr1:2025W23_1C_0169_1:D2",
+          "spherex_dr1:2025W23_1C_0169_2:D2",
+          "spherex_dr1:2025W23_1C_0169_4:D2",
+          "spherex_dr1:2025W23_2B_0709_1:D2",
+          "spherex_dr1:2025W23_2B_0738_1:D2",
+          "spherex_dr1:2025W27_2A_0115_1:D2",
+          "spherex_dr1:2025W27_2A_0146_1:D2",
+          "spherex_dr1:2025W27_2A_0162_1:D2",
+          "spherex_dr1:2025W27_2A_0195_1:D2",
+          "spherex_dr1:2025W27_2A_0212_1:D2",
+          "spherex_dr1:2025W27_2A_0229_1:D2"
+        ],
         "identification": "body",
         "reason_key": null,
         "snr": 9.2644,
@@ -9104,6 +9170,35 @@
         "detector": 3,
         "mean_mjd": 60826.599873,
         "n_exposures": 18,
+        "reference_ra_deg": 200.01424985,
+        "reference_dec_deg": 21.52579169,
+        "ra_deg": 200.01523589,
+        "dec_deg": 21.52691303,
+        "spacecraft_km": [
+          -5780.151,
+          1761.192,
+          3465.076
+        ],
+        "obs_keys": [
+          "spherex_dr1:2025W22_2B_0258_1:D3",
+          "spherex_dr1:2025W22_2B_0258_2:D3",
+          "spherex_dr1:2025W22_2B_0258_3:D3",
+          "spherex_dr1:2025W22_2B_0258_4:D3",
+          "spherex_dr1:2025W22_2B_0314_1:D3",
+          "spherex_dr1:2025W22_2B_0314_2:D3",
+          "spherex_dr1:2025W22_2B_0337_1:D3",
+          "spherex_dr1:2025W22_2B_0337_2:D3",
+          "spherex_dr1:2025W22_2B_0337_3:D3",
+          "spherex_dr1:2025W22_2B_0337_4:D3",
+          "spherex_dr1:2025W22_2B_0348_1:D3",
+          "spherex_dr1:2025W22_2B_0348_2:D3",
+          "spherex_dr1:2025W22_2B_0348_3:D3",
+          "spherex_dr1:2025W22_2B_0348_4:D3",
+          "spherex_dr1:2025W22_2B_0359_2:D3",
+          "spherex_dr1:2025W22_2B_0359_3:D3",
+          "spherex_dr1:2025W23_1C_0121_1:D3",
+          "spherex_dr1:2025W23_1C_0121_2:D3"
+        ],
         "identification": "candidate",
         "reason_key": null,
         "snr": 6.2526,
@@ -9133,6 +9228,37 @@
         "detector": 4,
         "mean_mjd": 60837.566491,
         "n_exposures": 19,
+        "reference_ra_deg": 199.92162101,
+        "reference_dec_deg": 21.4662573,
+        "ra_deg": 199.92220535,
+        "dec_deg": 21.46627501,
+        "spacecraft_km": [
+          -6214.876,
+          765.426,
+          2855.811
+        ],
+        "obs_keys": [
+          "spherex_dr1:2025W23_2B_0620_1:D4",
+          "spherex_dr1:2025W23_2B_0620_2:D4",
+          "spherex_dr1:2025W23_2B_0620_3:D4",
+          "spherex_dr1:2025W23_2B_0620_4:D4",
+          "spherex_dr1:2025W24_1A_0080_3:D4",
+          "spherex_dr1:2025W24_1A_0080_4:D4",
+          "spherex_dr1:2025W24_1A_0111_1:D4",
+          "spherex_dr1:2025W24_1A_0111_2:D4",
+          "spherex_dr1:2025W24_1A_0111_3:D4",
+          "spherex_dr1:2025W24_1A_0111_4:D4",
+          "spherex_dr1:2025W24_1A_0124_1:D4",
+          "spherex_dr1:2025W24_1A_0124_2:D4",
+          "spherex_dr1:2025W24_1A_0124_3:D4",
+          "spherex_dr1:2025W24_1A_0124_4:D4",
+          "spherex_dr1:2025W24_1A_0485_1:D4",
+          "spherex_dr1:2025W24_1A_0485_3:D4",
+          "spherex_dr1:2025W24_1A_0485_4:D4",
+          "spherex_dr1:2025W24_1A_0660_1:D4",
+          "spherex_dr1:2025W25_2A_0004_1:D4",
+          "spherex_dr1:2025W27_2A_0725_1:D4"
+        ],
         "identification": "none",
         "reason_key": "measure.low-snr",
         "snr": 3.0742,
@@ -9162,6 +9288,40 @@
         "detector": 5,
         "mean_mjd": 60836.91381,
         "n_exposures": 23,
+        "reference_ra_deg": 199.94844303,
+        "reference_dec_deg": 21.4577838,
+        "ra_deg": 199.94769098,
+        "dec_deg": 21.45799825,
+        "spacecraft_km": [
+          -6003.954,
+          815.067,
+          2242.068
+        ],
+        "obs_keys": [
+          "spherex_dr1:2025W22_2B_0488_1:D5",
+          "spherex_dr1:2025W22_2B_0488_2:D5",
+          "spherex_dr1:2025W22_2B_0488_3:D5",
+          "spherex_dr1:2025W22_2B_0488_4:D5",
+          "spherex_dr1:2025W22_2B_0521_1:D5",
+          "spherex_dr1:2025W22_2B_0521_2:D5",
+          "spherex_dr1:2025W22_2B_0521_3:D5",
+          "spherex_dr1:2025W22_2B_0521_4:D5",
+          "spherex_dr1:2025W22_2B_0546_1:D5",
+          "spherex_dr1:2025W22_2B_0580_1:D5",
+          "spherex_dr1:2025W22_2B_0580_2:D5",
+          "spherex_dr1:2025W22_2B_0580_3:D5",
+          "spherex_dr1:2025W23_1C_0169_1:D5",
+          "spherex_dr1:2025W23_1C_0169_3:D5",
+          "spherex_dr1:2025W23_1C_0169_4:D5",
+          "spherex_dr1:2025W23_2B_0709_1:D5",
+          "spherex_dr1:2025W23_2B_0738_1:D5",
+          "spherex_dr1:2025W27_2A_0115_1:D5",
+          "spherex_dr1:2025W27_2A_0146_1:D5",
+          "spherex_dr1:2025W27_2A_0162_1:D5",
+          "spherex_dr1:2025W27_2A_0195_1:D5",
+          "spherex_dr1:2025W27_2A_0212_1:D5",
+          "spherex_dr1:2025W27_2A_0229_1:D5"
+        ],
         "identification": "none",
         "reason_key": "measure.low-snr",
         "snr": 4.0206,
@@ -9191,6 +9351,35 @@
         "detector": 6,
         "mean_mjd": 60826.599873,
         "n_exposures": 17,
+        "reference_ra_deg": 200.01424985,
+        "reference_dec_deg": 21.52579169,
+        "ra_deg": 200.01570226,
+        "dec_deg": 21.52651818,
+        "spacecraft_km": [
+          -5780.151,
+          1761.192,
+          3465.076
+        ],
+        "obs_keys": [
+          "spherex_dr1:2025W22_2B_0258_1:D6",
+          "spherex_dr1:2025W22_2B_0258_2:D6",
+          "spherex_dr1:2025W22_2B_0258_3:D6",
+          "spherex_dr1:2025W22_2B_0258_4:D6",
+          "spherex_dr1:2025W22_2B_0314_1:D6",
+          "spherex_dr1:2025W22_2B_0314_2:D6",
+          "spherex_dr1:2025W22_2B_0337_1:D6",
+          "spherex_dr1:2025W22_2B_0337_2:D6",
+          "spherex_dr1:2025W22_2B_0337_3:D6",
+          "spherex_dr1:2025W22_2B_0337_4:D6",
+          "spherex_dr1:2025W22_2B_0348_1:D6",
+          "spherex_dr1:2025W22_2B_0348_2:D6",
+          "spherex_dr1:2025W22_2B_0348_3:D6",
+          "spherex_dr1:2025W22_2B_0348_4:D6",
+          "spherex_dr1:2025W22_2B_0359_2:D6",
+          "spherex_dr1:2025W22_2B_0359_3:D6",
+          "spherex_dr1:2025W23_1C_0121_1:D6",
+          "spherex_dr1:2025W23_1C_0121_2:D6"
+        ],
         "identification": "none",
         "reason_key": "measure.low-snr",
         "snr": 1.1637,
@@ -9220,6 +9409,35 @@
         "detector": 1,
         "mean_mjd": 61039.06927,
         "n_exposures": 18,
+        "reference_ra_deg": 202.29281354,
+        "reference_dec_deg": 20.13412566,
+        "ra_deg": 202.2931077,
+        "dec_deg": 20.13392233,
+        "spacecraft_km": [
+          -4986.592,
+          75.601,
+          4802.263
+        ],
+        "obs_keys": [
+          "spherex_dr1:2025W52_2A_0525_1:D1",
+          "spherex_dr1:2025W52_2A_0525_2:D1",
+          "spherex_dr1:2025W52_2A_0525_3:D1",
+          "spherex_dr1:2025W52_2A_0525_4:D1",
+          "spherex_dr1:2026W01_1A_0032_1:D1",
+          "spherex_dr1:2026W01_1A_0032_2:D1",
+          "spherex_dr1:2026W01_1A_0032_3:D1",
+          "spherex_dr1:2026W01_1A_0032_4:D1",
+          "spherex_dr1:2026W01_1A_0297_1:D1",
+          "spherex_dr1:2026W01_1A_0297_2:D1",
+          "spherex_dr1:2026W01_1A_0297_3:D1",
+          "spherex_dr1:2026W01_1A_0297_4:D1",
+          "spherex_dr1:2026W01_1A_0310_1:D1",
+          "spherex_dr1:2026W01_1A_0533_1:D1",
+          "spherex_dr1:2026W01_1A_0533_2:D1",
+          "spherex_dr1:2026W01_1A_0533_3:D1",
+          "spherex_dr1:2026W01_2A_0077_1:D1",
+          "spherex_dr1:2026W01_2A_0077_2:D1"
+        ],
         "identification": "candidate",
         "reason_key": null,
         "snr": 13.0796,
@@ -9249,6 +9467,36 @@
         "detector": 2,
         "mean_mjd": 61042.629358,
         "n_exposures": 19,
+        "reference_ra_deg": 202.31593246,
+        "reference_dec_deg": 20.15645586,
+        "ra_deg": 202.31579343,
+        "dec_deg": 20.15645946,
+        "spacecraft_km": [
+          -4920.468,
+          -228.957,
+          4775.033
+        ],
+        "obs_keys": [
+          "spherex_dr1:2026W01_1A_0455_1:D2",
+          "spherex_dr1:2026W01_1A_0455_2:D2",
+          "spherex_dr1:2026W01_1A_0455_3:D2",
+          "spherex_dr1:2026W01_1A_0455_4:D2",
+          "spherex_dr1:2026W01_2A_0062_1:D2",
+          "spherex_dr1:2026W01_2A_0062_2:D2",
+          "spherex_dr1:2026W01_2A_0062_3:D2",
+          "spherex_dr1:2026W01_2A_0062_4:D2",
+          "spherex_dr1:2026W01_2A_0177_1:D2",
+          "spherex_dr1:2026W01_2A_0217_1:D2",
+          "spherex_dr1:2026W01_2A_0217_2:D2",
+          "spherex_dr1:2026W01_2A_0217_3:D2",
+          "spherex_dr1:2026W01_2A_0217_4:D2",
+          "spherex_dr1:2026W01_2A_0466_1:D2",
+          "spherex_dr1:2026W01_2A_0466_2:D2",
+          "spherex_dr1:2026W01_2A_0466_3:D2",
+          "spherex_dr1:2026W01_2A_0466_4:D2",
+          "spherex_dr1:2026W02_1A_0049_1:D2",
+          "spherex_dr1:2026W02_2A_0161_1:D2"
+        ],
         "identification": "none",
         "reason_key": "measure.low-snr",
         "snr": 3.672,
@@ -9278,6 +9526,35 @@
         "detector": 3,
         "mean_mjd": 61045.436022,
         "n_exposures": 18,
+        "reference_ra_deg": 202.33209052,
+        "reference_dec_deg": 20.17501082,
+        "ra_deg": 202.32964786,
+        "dec_deg": 20.17455159,
+        "spacecraft_km": [
+          -5346.874,
+          -605.905,
+          4387.943
+        ],
+        "obs_keys": [
+          "spherex_dr1:2026W01_2A_0438_1:D3",
+          "spherex_dr1:2026W01_2A_0438_2:D3",
+          "spherex_dr1:2026W01_2A_0438_3:D3",
+          "spherex_dr1:2026W01_2A_0623_1:D3",
+          "spherex_dr1:2026W01_2A_0623_2:D3",
+          "spherex_dr1:2026W01_2A_0688_1:D3",
+          "spherex_dr1:2026W01_2A_0688_2:D3",
+          "spherex_dr1:2026W01_2A_0688_3:D3",
+          "spherex_dr1:2026W01_2A_0688_4:D3",
+          "spherex_dr1:2026W02_1A_0200_1:D3",
+          "spherex_dr1:2026W02_1A_0200_2:D3",
+          "spherex_dr1:2026W02_1A_0200_3:D3",
+          "spherex_dr1:2026W02_1A_0200_4:D3",
+          "spherex_dr1:2026W02_1A_0328_1:D3",
+          "spherex_dr1:2026W02_1A_0328_2:D3",
+          "spherex_dr1:2026W02_1A_0328_3:D3",
+          "spherex_dr1:2026W02_1A_0328_4:D3",
+          "spherex_dr1:2026W02_1A_0542_1:D3"
+        ],
         "identification": "none",
         "reason_key": "measure.low-snr",
         "snr": 2.6589,
@@ -9307,6 +9584,35 @@
         "detector": 4,
         "mean_mjd": 61039.06927,
         "n_exposures": 18,
+        "reference_ra_deg": 202.29281354,
+        "reference_dec_deg": 20.13412566,
+        "ra_deg": 202.2941715,
+        "dec_deg": 20.13192837,
+        "spacecraft_km": [
+          -4986.592,
+          75.601,
+          4802.263
+        ],
+        "obs_keys": [
+          "spherex_dr1:2025W52_2A_0525_1:D4",
+          "spherex_dr1:2025W52_2A_0525_2:D4",
+          "spherex_dr1:2025W52_2A_0525_3:D4",
+          "spherex_dr1:2025W52_2A_0525_4:D4",
+          "spherex_dr1:2026W01_1A_0032_1:D4",
+          "spherex_dr1:2026W01_1A_0032_2:D4",
+          "spherex_dr1:2026W01_1A_0032_3:D4",
+          "spherex_dr1:2026W01_1A_0032_4:D4",
+          "spherex_dr1:2026W01_1A_0297_1:D4",
+          "spherex_dr1:2026W01_1A_0297_2:D4",
+          "spherex_dr1:2026W01_1A_0297_3:D4",
+          "spherex_dr1:2026W01_1A_0297_4:D4",
+          "spherex_dr1:2026W01_1A_0310_1:D4",
+          "spherex_dr1:2026W01_1A_0533_1:D4",
+          "spherex_dr1:2026W01_1A_0533_2:D4",
+          "spherex_dr1:2026W01_1A_0533_3:D4",
+          "spherex_dr1:2026W01_2A_0077_1:D4",
+          "spherex_dr1:2026W01_2A_0077_2:D4"
+        ],
         "identification": "none",
         "reason_key": "measure.low-snr",
         "snr": 2.8722,
@@ -9336,6 +9642,36 @@
         "detector": 5,
         "mean_mjd": 61042.629358,
         "n_exposures": 19,
+        "reference_ra_deg": 202.31593246,
+        "reference_dec_deg": 20.15645586,
+        "ra_deg": 202.31656889,
+        "dec_deg": 20.15609509,
+        "spacecraft_km": [
+          -4920.468,
+          -228.957,
+          4775.033
+        ],
+        "obs_keys": [
+          "spherex_dr1:2026W01_1A_0455_1:D5",
+          "spherex_dr1:2026W01_1A_0455_2:D5",
+          "spherex_dr1:2026W01_1A_0455_3:D5",
+          "spherex_dr1:2026W01_1A_0455_4:D5",
+          "spherex_dr1:2026W01_2A_0062_1:D5",
+          "spherex_dr1:2026W01_2A_0062_2:D5",
+          "spherex_dr1:2026W01_2A_0062_3:D5",
+          "spherex_dr1:2026W01_2A_0062_4:D5",
+          "spherex_dr1:2026W01_2A_0177_1:D5",
+          "spherex_dr1:2026W01_2A_0217_1:D5",
+          "spherex_dr1:2026W01_2A_0217_2:D5",
+          "spherex_dr1:2026W01_2A_0217_3:D5",
+          "spherex_dr1:2026W01_2A_0217_4:D5",
+          "spherex_dr1:2026W01_2A_0466_1:D5",
+          "spherex_dr1:2026W01_2A_0466_2:D5",
+          "spherex_dr1:2026W01_2A_0466_3:D5",
+          "spherex_dr1:2026W01_2A_0466_4:D5",
+          "spherex_dr1:2026W02_1A_0049_1:D5",
+          "spherex_dr1:2026W02_2A_0161_1:D5"
+        ],
         "identification": "none",
         "reason_key": "measure.low-snr",
         "snr": 2.3379,
@@ -9365,6 +9701,36 @@
         "detector": 6,
         "mean_mjd": 61045.394659,
         "n_exposures": 18,
+        "reference_ra_deg": 202.33188357,
+        "reference_dec_deg": 20.17472343,
+        "ra_deg": 202.32874533,
+        "dec_deg": 20.17446351,
+        "spacecraft_km": [
+          -5291.439,
+          -581.381,
+          4449.062
+        ],
+        "obs_keys": [
+          "spherex_dr1:2026W01_2A_0438_1:D6",
+          "spherex_dr1:2026W01_2A_0438_2:D6",
+          "spherex_dr1:2026W01_2A_0438_3:D6",
+          "spherex_dr1:2026W01_2A_0623_1:D6",
+          "spherex_dr1:2026W01_2A_0623_2:D6",
+          "spherex_dr1:2026W01_2A_0638_4:D6",
+          "spherex_dr1:2026W01_2A_0688_1:D6",
+          "spherex_dr1:2026W01_2A_0688_2:D6",
+          "spherex_dr1:2026W01_2A_0688_3:D6",
+          "spherex_dr1:2026W01_2A_0688_4:D6",
+          "spherex_dr1:2026W02_1A_0200_1:D6",
+          "spherex_dr1:2026W02_1A_0200_2:D6",
+          "spherex_dr1:2026W02_1A_0200_3:D6",
+          "spherex_dr1:2026W02_1A_0200_4:D6",
+          "spherex_dr1:2026W02_1A_0328_1:D6",
+          "spherex_dr1:2026W02_1A_0328_2:D6",
+          "spherex_dr1:2026W02_1A_0328_3:D6",
+          "spherex_dr1:2026W02_1A_0328_4:D6",
+          "spherex_dr1:2026W02_1A_0542_1:D6"
+        ],
         "identification": "none",
         "reason_key": "measure.low-snr",
         "snr": 1.2041,
@@ -9407,6 +9773,11 @@
         "sigma_ratio": 0.5000000000029392,
         "ephemeris_ra_deg": 200.02075,
         "ephemeris_dec_deg": 21.528504,
+        "spacecraft_km": [
+          -5281.261,
+          1488.032,
+          4400.48
+        ],
         "identification": "none"
       },
       {
@@ -9426,6 +9797,11 @@
         "sigma_ratio": 0.9414474039339727,
         "ephemeris_ra_deg": 200.02075,
         "ephemeris_dec_deg": 21.528504,
+        "spacecraft_km": [
+          -5281.261,
+          1488.032,
+          4400.48
+        ],
         "identification": "none"
       },
       {
@@ -9445,6 +9821,11 @@
         "sigma_ratio": 0.5000044639675936,
         "ephemeris_ra_deg": 200.020734,
         "ephemeris_dec_deg": 21.528498,
+        "spacecraft_km": [
+          -5766.338,
+          1804.552,
+          3603.596
+        ],
         "identification": "none"
       },
       {
@@ -9464,6 +9845,11 @@
         "sigma_ratio": 0.5000000000007656,
         "ephemeris_ra_deg": 200.020734,
         "ephemeris_dec_deg": 21.528498,
+        "spacecraft_km": [
+          -5766.338,
+          1804.552,
+          3603.596
+        ],
         "identification": "none"
       },
       {
@@ -9483,6 +9869,11 @@
         "sigma_ratio": 0.5000000000000002,
         "ephemeris_ra_deg": 200.020719,
         "ephemeris_dec_deg": 21.528492,
+        "spacecraft_km": [
+          -6133.505,
+          2081.653,
+          2749.672
+        ],
         "identification": "none"
       },
       {
@@ -9502,6 +9893,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 200.020719,
         "ephemeris_dec_deg": 21.528492,
+        "spacecraft_km": [
+          -6133.505,
+          2081.653,
+          2749.672
+        ],
         "identification": "none"
       },
       {
@@ -9521,6 +9917,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 200.020703,
         "ephemeris_dec_deg": 21.528486,
+        "spacecraft_km": [
+          -6384.052,
+          2319.176,
+          1843.326
+        ],
         "identification": "none"
       },
       {
@@ -9540,6 +9941,11 @@
         "sigma_ratio": 0.5000000000126117,
         "ephemeris_ra_deg": 200.020703,
         "ephemeris_dec_deg": 21.528486,
+        "spacecraft_km": [
+          -6384.052,
+          2319.176,
+          1843.326
+        ],
         "identification": "none"
       },
       {
@@ -9559,6 +9965,11 @@
         "sigma_ratio": 0.9652260371470254,
         "ephemeris_ra_deg": 200.01722,
         "ephemeris_dec_deg": 21.527089,
+        "spacecraft_km": [
+          -5383.876,
+          1514.921,
+          4264.988
+        ],
         "identification": "none"
       },
       {
@@ -9578,6 +9989,11 @@
         "sigma_ratio": 0.7377746183307731,
         "ephemeris_ra_deg": 200.01722,
         "ephemeris_dec_deg": 21.527089,
+        "spacecraft_km": [
+          -5383.876,
+          1514.921,
+          4264.988
+        ],
         "identification": "none"
       },
       {
@@ -9597,6 +10013,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 200.017205,
         "ephemeris_dec_deg": 21.527083,
+        "spacecraft_km": [
+          -5841.792,
+          1816.235,
+          3473.892
+        ],
         "identification": "none"
       },
       {
@@ -9616,6 +10037,11 @@
         "sigma_ratio": 0.5000000000000616,
         "ephemeris_ra_deg": 200.017205,
         "ephemeris_dec_deg": 21.527083,
+        "spacecraft_km": [
+          -5841.792,
+          1816.235,
+          3473.892
+        ],
         "identification": "none"
       },
       {
@@ -9635,6 +10061,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 200.015815,
         "ephemeris_dec_deg": 21.526522,
+        "spacecraft_km": [
+          -5291.732,
+          1444.035,
+          4402.497
+        ],
         "identification": "none"
       },
       {
@@ -9654,6 +10085,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 200.015815,
         "ephemeris_dec_deg": 21.526522,
+        "spacecraft_km": [
+          -5291.732,
+          1444.035,
+          4402.497
+        ],
         "identification": "none"
       },
       {
@@ -9673,6 +10109,11 @@
         "sigma_ratio": 0.7973915464462452,
         "ephemeris_ra_deg": 200.0158,
         "ephemeris_dec_deg": 21.526516,
+        "spacecraft_km": [
+          -5772.947,
+          1752.165,
+          3618.657
+        ],
         "identification": "none"
       },
       {
@@ -9692,6 +10133,11 @@
         "sigma_ratio": 0.80402030828735,
         "ephemeris_ra_deg": 200.0158,
         "ephemeris_dec_deg": 21.526516,
+        "spacecraft_km": [
+          -5772.947,
+          1752.165,
+          3618.657
+        ],
         "identification": "none"
       },
       {
@@ -9711,6 +10157,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 200.015784,
         "ephemeris_dec_deg": 21.52651,
+        "spacecraft_km": [
+          -6144.405,
+          2026.978,
+          2765.833
+        ],
         "identification": "none"
       },
       {
@@ -9730,6 +10181,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 200.015784,
         "ephemeris_dec_deg": 21.52651,
+        "spacecraft_km": [
+          -6144.405,
+          2026.978,
+          2765.833
+        ],
         "identification": "none"
       },
       {
@@ -9749,6 +10205,11 @@
         "sigma_ratio": 0.8123611901426079,
         "ephemeris_ra_deg": 200.015769,
         "ephemeris_dec_deg": 21.526504,
+        "spacecraft_km": [
+          -6399.03,
+          2263.246,
+          1860.277
+        ],
         "identification": "none"
       },
       {
@@ -9768,6 +10229,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 200.015769,
         "ephemeris_dec_deg": 21.526504,
+        "spacecraft_km": [
+          -6399.03,
+          2263.246,
+          1860.277
+        ],
         "identification": "none"
       },
       {
@@ -9787,6 +10253,11 @@
         "sigma_ratio": 2.240244701693336,
         "ephemeris_ra_deg": 200.015122,
         "ephemeris_dec_deg": 21.526242,
+        "spacecraft_km": [
+          -4916.733,
+          1217.757,
+          4878.383
+        ],
         "identification": "none"
       },
       {
@@ -9806,6 +10277,11 @@
         "sigma_ratio": 0.5000000002158634,
         "ephemeris_ra_deg": 200.015122,
         "ephemeris_dec_deg": 21.526242,
+        "spacecraft_km": [
+          -4916.733,
+          1217.757,
+          4878.383
+        ],
         "identification": "none"
       },
       {
@@ -9825,6 +10301,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 200.015106,
         "ephemeris_dec_deg": 21.526236,
+        "spacecraft_km": [
+          -5466.401,
+          1544.163,
+          4148.813
+        ],
         "identification": "none"
       },
       {
@@ -9844,6 +10325,11 @@
         "sigma_ratio": 0.5000000000000002,
         "ephemeris_ra_deg": 200.015106,
         "ephemeris_dec_deg": 21.526236,
+        "spacecraft_km": [
+          -5466.401,
+          1544.163,
+          4148.813
+        ],
         "identification": "none"
       },
       {
@@ -9863,6 +10349,11 @@
         "sigma_ratio": 2.2773047386500727,
         "ephemeris_ra_deg": 200.015091,
         "ephemeris_dec_deg": 21.52623,
+        "spacecraft_km": [
+          -5912.158,
+          1841.216,
+          3340.167
+        ],
         "identification": "none"
       },
       {
@@ -9882,6 +10373,11 @@
         "sigma_ratio": null,
         "ephemeris_ra_deg": 200.015091,
         "ephemeris_dec_deg": 21.52623,
+        "spacecraft_km": [
+          -5912.158,
+          1841.216,
+          3340.167
+        ],
         "identification": "none"
       },
       {
@@ -9901,6 +10397,11 @@
         "sigma_ratio": 2.4999999999999987,
         "ephemeris_ra_deg": 200.015075,
         "ephemeris_dec_deg": 21.526224,
+        "spacecraft_km": [
+          -6243.357,
+          2101.362,
+          2474.874
+        ],
         "identification": "none"
       },
       {
@@ -9920,6 +10421,11 @@
         "sigma_ratio": 0.5000000000000029,
         "ephemeris_ra_deg": 200.015075,
         "ephemeris_dec_deg": 21.526224,
+        "spacecraft_km": [
+          -6243.357,
+          2101.362,
+          2474.874
+        ],
         "identification": "none"
       },
       {
@@ -9939,6 +10445,11 @@
         "sigma_ratio": 0.9859094143274553,
         "ephemeris_ra_deg": 200.014398,
         "ephemeris_dec_deg": 21.52595,
+        "spacecraft_km": [
+          -5608.728,
+          1627.039,
+          3921.868
+        ],
         "identification": "none"
       },
       {
@@ -9958,6 +10469,11 @@
         "sigma_ratio": 0.9600005652333292,
         "ephemeris_ra_deg": 200.014398,
         "ephemeris_dec_deg": 21.52595,
+        "spacecraft_km": [
+          -5608.728,
+          1627.039,
+          3921.868
+        ],
         "identification": "none"
       },
       {
@@ -9977,6 +10493,11 @@
         "sigma_ratio": 0.8860014886129586,
         "ephemeris_ra_deg": 200.014382,
         "ephemeris_dec_deg": 21.525944,
+        "spacecraft_km": [
+          -6023.017,
+          1914.008,
+          3093.128
+        ],
         "identification": "none"
       },
       {
@@ -9996,6 +10517,11 @@
         "sigma_ratio": 0.5000000000000037,
         "ephemeris_ra_deg": 200.014382,
         "ephemeris_dec_deg": 21.525944,
+        "spacecraft_km": [
+          -6023.017,
+          1914.008,
+          3093.128
+        ],
         "identification": "none"
       },
       {
@@ -10015,6 +10541,11 @@
         "sigma_ratio": 0.500000000000001,
         "ephemeris_ra_deg": 200.006748,
         "ephemeris_dec_deg": 21.522772,
+        "spacecraft_km": [
+          -5127.635,
+          1257.108,
+          4646.359
+        ],
         "identification": "none"
       },
       {
@@ -10034,6 +10565,11 @@
         "sigma_ratio": 1.1781775723045138,
         "ephemeris_ra_deg": 200.006748,
         "ephemeris_dec_deg": 21.522772,
+        "spacecraft_km": [
+          -5127.635,
+          1257.108,
+          4646.359
+        ],
         "identification": "none"
       },
       {
@@ -10053,6 +10589,11 @@
         "sigma_ratio": 0.5000000000018583,
         "ephemeris_ra_deg": 200.006733,
         "ephemeris_dec_deg": 21.522765,
+        "spacecraft_km": [
+          -5648.278,
+          1567.3,
+          3888.945
+        ],
         "identification": "none"
       },
       {
@@ -10072,6 +10613,11 @@
         "sigma_ratio": 0.5000000004867318,
         "ephemeris_ra_deg": 200.006733,
         "ephemeris_dec_deg": 21.522765,
+        "spacecraft_km": [
+          -5648.278,
+          1567.3,
+          3888.945
+        ],
         "identification": "none"
       },
       {
@@ -10091,6 +10637,11 @@
         "sigma_ratio": 0.6116370242782361,
         "ephemeris_ra_deg": 200.006718,
         "ephemeris_dec_deg": 21.522759,
+        "spacecraft_km": [
+          -6061.535,
+          1847.696,
+          3057.397
+        ],
         "identification": "none"
       },
       {
@@ -10110,6 +10661,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 200.006718,
         "ephemeris_dec_deg": 21.522759,
+        "spacecraft_km": [
+          -6061.535,
+          1847.696,
+          3057.397
+        ],
         "identification": "none"
       },
       {
@@ -10129,6 +10685,11 @@
         "sigma_ratio": 0.8689240331314516,
         "ephemeris_ra_deg": 200.006703,
         "ephemeris_dec_deg": 21.522752,
+        "spacecraft_km": [
+          -6359.531,
+          2092.958,
+          2167.557
+        ],
         "identification": "none"
       },
       {
@@ -10148,6 +10709,11 @@
         "sigma_ratio": 1.4899824784825013,
         "ephemeris_ra_deg": 200.006703,
         "ephemeris_dec_deg": 21.522752,
+        "spacecraft_km": [
+          -6359.531,
+          2092.958,
+          2167.557
+        ],
         "identification": "none"
       },
       {
@@ -10167,6 +10733,11 @@
         "sigma_ratio": 2.4999999999999885,
         "ephemeris_ra_deg": 200.004688,
         "ephemeris_dec_deg": 21.521882,
+        "spacecraft_km": [
+          -5043.762,
+          1190.088,
+          4754.652
+        ],
         "identification": "none"
       },
       {
@@ -10186,6 +10757,11 @@
         "sigma_ratio": 0.5000000879278285,
         "ephemeris_ra_deg": 200.004688,
         "ephemeris_dec_deg": 21.521882,
+        "spacecraft_km": [
+          -5043.762,
+          1190.088,
+          4754.652
+        ],
         "identification": "none"
       },
       {
@@ -10205,6 +10781,11 @@
         "sigma_ratio": 1.0259203732945628,
         "ephemeris_ra_deg": 200.004673,
         "ephemeris_dec_deg": 21.521875,
+        "spacecraft_km": [
+          -5581.048,
+          1502.389,
+          4009.883
+        ],
         "identification": "none"
       },
       {
@@ -10224,6 +10805,11 @@
         "sigma_ratio": 0.8041039536970066,
         "ephemeris_ra_deg": 200.004673,
         "ephemeris_dec_deg": 21.521875,
+        "spacecraft_km": [
+          -5581.048,
+          1502.389,
+          4009.883
+        ],
         "identification": "none"
       },
       {
@@ -10243,6 +10829,11 @@
         "sigma_ratio": 0.5000000000000037,
         "ephemeris_ra_deg": 200.004658,
         "ephemeris_dec_deg": 21.521869,
+        "spacecraft_km": [
+          -6012.243,
+          1786.131,
+          3188.688
+        ],
         "identification": "none"
       },
       {
@@ -10262,6 +10853,11 @@
         "sigma_ratio": 1.0358816662525345,
         "ephemeris_ra_deg": 200.004658,
         "ephemeris_dec_deg": 21.521869,
+        "spacecraft_km": [
+          -6012.243,
+          1786.131,
+          3188.688
+        ],
         "identification": "none"
       },
       {
@@ -10281,6 +10877,11 @@
         "sigma_ratio": 0.5000000001746929,
         "ephemeris_ra_deg": 200.004643,
         "ephemeris_dec_deg": 21.521862,
+        "spacecraft_km": [
+          -6329.132,
+          2035.914,
+          2306.71
+        ],
         "identification": "none"
       },
       {
@@ -10300,6 +10901,11 @@
         "sigma_ratio": 0.5000000000000047,
         "ephemeris_ra_deg": 200.004643,
         "ephemeris_dec_deg": 21.521862,
+        "spacecraft_km": [
+          -6329.132,
+          2035.914,
+          2306.71
+        ],
         "identification": "none"
       },
       {
@@ -10319,6 +10925,11 @@
         "sigma_ratio": 0.9813006956612141,
         "ephemeris_ra_deg": 200.003308,
         "ephemeris_dec_deg": 21.521286,
+        "spacecraft_km": [
+          -5246.571,
+          1290.041,
+          4503.448
+        ],
         "identification": "none"
       },
       {
@@ -10338,6 +10949,11 @@
         "sigma_ratio": 0.5000001896540925,
         "ephemeris_ra_deg": 200.003308,
         "ephemeris_dec_deg": 21.521286,
+        "spacecraft_km": [
+          -5246.571,
+          1290.041,
+          4503.448
+        ],
         "identification": "none"
       },
       {
@@ -10357,6 +10973,11 @@
         "sigma_ratio": 1.143199948418192,
         "ephemeris_ra_deg": 200.001247,
         "ephemeris_dec_deg": 21.520396,
+        "spacecraft_km": [
+          -5178.614,
+          1231.147,
+          4597.104
+        ],
         "identification": "none"
       },
       {
@@ -10376,6 +10997,11 @@
         "sigma_ratio": 1.9171147505618216,
         "ephemeris_ra_deg": 200.001247,
         "ephemeris_dec_deg": 21.520396,
+        "spacecraft_km": [
+          -5178.614,
+          1231.147,
+          4597.104
+        ],
         "identification": "none"
       },
       {
@@ -10395,6 +11021,11 @@
         "sigma_ratio": 1.1447567988641552,
         "ephemeris_ra_deg": 200.001232,
         "ephemeris_dec_deg": 21.52039,
+        "spacecraft_km": [
+          -5694.961,
+          1534.678,
+          3834.119
+        ],
         "identification": "none"
       },
       {
@@ -10414,6 +11045,11 @@
         "sigma_ratio": 0.5000000000025322,
         "ephemeris_ra_deg": 200.001232,
         "ephemeris_dec_deg": 21.52039,
+        "spacecraft_km": [
+          -5694.961,
+          1534.678,
+          3834.119
+        ],
         "identification": "none"
       },
       {
@@ -10433,6 +11069,11 @@
         "sigma_ratio": 0.5000000000628565,
         "ephemeris_ra_deg": 200.001217,
         "ephemeris_dec_deg": 21.520383,
+        "spacecraft_km": [
+          -6103.043,
+          1809.031,
+          2998.052
+        ],
         "identification": "none"
       },
       {
@@ -10452,6 +11093,11 @@
         "sigma_ratio": 2.499999999997223,
         "ephemeris_ra_deg": 200.001217,
         "ephemeris_dec_deg": 21.520383,
+        "spacecraft_km": [
+          -6103.043,
+          1809.031,
+          2998.052
+        ],
         "identification": "none"
       },
       {
@@ -10471,6 +11117,11 @@
         "sigma_ratio": 0.8493233081891016,
         "ephemeris_ra_deg": 199.993166,
         "ephemeris_dec_deg": 21.516707,
+        "spacecraft_km": [
+          -5507.101,
+          1331.923,
+          4168.866
+        ],
         "identification": "none"
       },
       {
@@ -10490,6 +11141,11 @@
         "sigma_ratio": 0.5000000000008741,
         "ephemeris_ra_deg": 199.993166,
         "ephemeris_dec_deg": 21.516707,
+        "spacecraft_km": [
+          -5507.101,
+          1331.923,
+          4168.866
+        ],
         "identification": "none"
       },
       {
@@ -10509,6 +11165,11 @@
         "sigma_ratio": 1.2085131448085231,
         "ephemeris_ra_deg": 199.993151,
         "ephemeris_dec_deg": 21.5167,
+        "spacecraft_km": [
+          -5966.289,
+          1613.001,
+          3362.053
+        ],
         "identification": "none"
       },
       {
@@ -10528,6 +11189,11 @@
         "sigma_ratio": 0.6267253210780906,
         "ephemeris_ra_deg": 199.993151,
         "ephemeris_dec_deg": 21.5167,
+        "spacecraft_km": [
+          -5966.289,
+          1613.001,
+          3362.053
+        ],
         "identification": "none"
       },
       {
@@ -10547,6 +11213,11 @@
         "sigma_ratio": 2.499999999999993,
         "ephemeris_ra_deg": 199.990496,
         "ephemeris_dec_deg": 21.515475,
+        "spacecraft_km": [
+          -5186.358,
+          1127.101,
+          4615.074
+        ],
         "identification": "none"
       },
       {
@@ -10566,6 +11237,11 @@
         "sigma_ratio": 0.5000001645243034,
         "ephemeris_ra_deg": 199.990496,
         "ephemeris_dec_deg": 21.515475,
+        "spacecraft_km": [
+          -5186.358,
+          1127.101,
+          4615.074
+        ],
         "identification": "none"
       },
       {
@@ -10585,6 +11261,11 @@
         "sigma_ratio": 1.3042888948702387,
         "ephemeris_ra_deg": 199.990481,
         "ephemeris_dec_deg": 21.515468,
+        "spacecraft_km": [
+          -5710.797,
+          1421.572,
+          3854.072
+        ],
         "identification": "none"
       },
       {
@@ -10604,6 +11285,11 @@
         "sigma_ratio": 1.1593264465252844,
         "ephemeris_ra_deg": 199.990466,
         "ephemeris_dec_deg": 21.515461,
+        "spacecraft_km": [
+          -6126.674,
+          1689.018,
+          3019.611
+        ],
         "identification": "none"
       },
       {
@@ -10623,6 +11309,11 @@
         "sigma_ratio": 1.3804175327534565,
         "ephemeris_ra_deg": 199.990451,
         "ephemeris_dec_deg": 21.515454,
+        "spacecraft_km": [
+          -6426.062,
+          1924.351,
+          2127.584
+        ],
         "identification": "none"
       },
       {
@@ -10642,6 +11333,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 199.990451,
         "ephemeris_dec_deg": 21.515454,
+        "spacecraft_km": [
+          -6426.062,
+          1924.351,
+          2127.584
+        ],
         "identification": "none"
       },
       {
@@ -10661,6 +11357,11 @@
         "sigma_ratio": 2.4999999999999982,
         "ephemeris_ra_deg": 199.941255,
         "ephemeris_dec_deg": 21.487753,
+        "spacecraft_km": [
+          -5622.007,
+          793.774,
+          4152.033
+        ],
         "identification": "none"
       },
       {
@@ -10680,6 +11381,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 199.941255,
         "ephemeris_dec_deg": 21.487753,
+        "spacecraft_km": [
+          -5622.007,
+          793.774,
+          4152.033
+        ],
         "identification": "none"
       },
       {
@@ -10699,6 +11405,11 @@
         "sigma_ratio": 0.9241529402344713,
         "ephemeris_ra_deg": 199.941242,
         "ephemeris_dec_deg": 21.487744,
+        "spacecraft_km": [
+          -6103.688,
+          1028.571,
+          3343.448
+        ],
         "identification": "none"
       },
       {
@@ -10718,6 +11429,11 @@
         "sigma_ratio": 0.5000000000000064,
         "ephemeris_ra_deg": 199.941242,
         "ephemeris_dec_deg": 21.487744,
+        "spacecraft_km": [
+          -6103.688,
+          1028.571,
+          3343.448
+        ],
         "identification": "none"
       },
       {
@@ -10737,6 +11453,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 199.94123,
         "ephemeris_dec_deg": 21.487736,
+        "spacecraft_km": [
+          -6469.29,
+          1243.806,
+          2471.109
+        ],
         "identification": "none"
       },
       {
@@ -10756,6 +11477,11 @@
         "sigma_ratio": 0.5000001074443272,
         "ephemeris_ra_deg": 199.94123,
         "ephemeris_dec_deg": 21.487736,
+        "spacecraft_km": [
+          -6469.29,
+          1243.806,
+          2471.109
+        ],
         "identification": "none"
       },
       {
@@ -10775,6 +11501,11 @@
         "sigma_ratio": 0.5000000000139544,
         "ephemeris_ra_deg": 199.941217,
         "ephemeris_dec_deg": 21.487728,
+        "spacecraft_km": [
+          -6711.827,
+          1435.379,
+          1551.636
+        ],
         "identification": "none"
       },
       {
@@ -10794,6 +11525,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 199.941217,
         "ephemeris_dec_deg": 21.487728,
+        "spacecraft_km": [
+          -6711.827,
+          1435.379,
+          1551.636
+        ],
         "identification": "none"
       },
       {
@@ -10813,6 +11549,11 @@
         "sigma_ratio": 0.5000000001823354,
         "ephemeris_ra_deg": 199.937286,
         "ephemeris_dec_deg": 21.485095,
+        "spacecraft_km": [
+          -5917.844,
+          881.465,
+          3699.818
+        ],
         "identification": "none"
       },
       {
@@ -10832,6 +11573,11 @@
         "sigma_ratio": 1.6115489352288874,
         "ephemeris_ra_deg": 199.937286,
         "ephemeris_dec_deg": 21.485095,
+        "spacecraft_km": [
+          -5917.844,
+          881.465,
+          3699.818
+        ],
         "identification": "none"
       },
       {
@@ -10851,6 +11597,11 @@
         "sigma_ratio": 0.9799906838731208,
         "ephemeris_ra_deg": 199.936161,
         "ephemeris_dec_deg": 21.484341,
+        "spacecraft_km": [
+          -5664.289,
+          750.088,
+          4102.793
+        ],
         "identification": "none"
       },
       {
@@ -10870,6 +11621,11 @@
         "sigma_ratio": 0.5000000001862471,
         "ephemeris_ra_deg": 199.936161,
         "ephemeris_dec_deg": 21.484341,
+        "spacecraft_km": [
+          -5664.289,
+          750.088,
+          4102.793
+        ],
         "identification": "none"
       },
       {
@@ -10889,6 +11645,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 199.933408,
         "ephemeris_dec_deg": 21.482379,
+        "spacecraft_km": [
+          -6143.949,
+          941.555,
+          3294.621
+        ],
         "identification": "none"
       },
       {
@@ -10908,6 +11669,11 @@
         "sigma_ratio": null,
         "ephemeris_ra_deg": 199.933408,
         "ephemeris_dec_deg": 21.482379,
+        "spacecraft_km": [
+          -6143.949,
+          941.555,
+          3294.621
+        ],
         "identification": "none"
       },
       {
@@ -10927,6 +11693,11 @@
         "sigma_ratio": 0.5034085947902752,
         "ephemeris_ra_deg": 199.933396,
         "ephemeris_dec_deg": 21.48237,
+        "spacecraft_km": [
+          -6506.02,
+          1149.721,
+          2419.062
+        ],
         "identification": "none"
       },
       {
@@ -10946,6 +11717,11 @@
         "sigma_ratio": 0.5000000000000007,
         "ephemeris_ra_deg": 199.933396,
         "ephemeris_dec_deg": 21.48237,
+        "spacecraft_km": [
+          -6506.02,
+          1149.721,
+          2419.062
+        ],
         "identification": "none"
       },
       {
@@ -10965,6 +11741,11 @@
         "sigma_ratio": 0.5000000000004614,
         "ephemeris_ra_deg": 199.932329,
         "ephemeris_dec_deg": 21.48161,
+        "spacecraft_km": [
+          -5435.224,
+          604.706,
+          4423.12
+        ],
         "identification": "none"
       },
       {
@@ -10984,6 +11765,11 @@
         "sigma_ratio": 0.933055432675499,
         "ephemeris_ra_deg": 199.932329,
         "ephemeris_dec_deg": 21.48161,
+        "spacecraft_km": [
+          -5435.224,
+          604.706,
+          4423.12
+        ],
         "identification": "none"
       },
       {
@@ -11003,6 +11789,11 @@
         "sigma_ratio": 0.500000000000369,
         "ephemeris_ra_deg": 199.932316,
         "ephemeris_dec_deg": 21.481601,
+        "spacecraft_km": [
+          -5960.679,
+          835.716,
+          3641.159
+        ],
         "identification": "none"
       },
       {
@@ -11022,6 +11813,11 @@
         "sigma_ratio": 1.2993054911614115,
         "ephemeris_ra_deg": 199.932316,
         "ephemeris_dec_deg": 21.481601,
+        "spacecraft_km": [
+          -5960.679,
+          835.716,
+          3641.159
+        ],
         "identification": "none"
       },
       {
@@ -11041,6 +11837,11 @@
         "sigma_ratio": 0.5000000000022126,
         "ephemeris_ra_deg": 199.932304,
         "ephemeris_dec_deg": 21.481593,
+        "spacecraft_km": [
+          -6370.03,
+          1049.223,
+          2796.662
+        ],
         "identification": "none"
       },
       {
@@ -11060,6 +11861,11 @@
         "sigma_ratio": 0.7588539734522249,
         "ephemeris_ra_deg": 199.932304,
         "ephemeris_dec_deg": 21.481593,
+        "spacecraft_km": [
+          -6370.03,
+          1049.223,
+          2796.662
+        ],
         "identification": "none"
       },
       {
@@ -11079,6 +11885,11 @@
         "sigma_ratio": 2.499999999999999,
         "ephemeris_ra_deg": 199.932292,
         "ephemeris_dec_deg": 21.481584,
+        "spacecraft_km": [
+          -6661.895,
+          1244.52,
+          1892.425
+        ],
         "identification": "none"
       },
       {
@@ -11098,6 +11909,11 @@
         "sigma_ratio": 1.3114090375178824,
         "ephemeris_ra_deg": 199.932292,
         "ephemeris_dec_deg": 21.481584,
+        "spacecraft_km": [
+          -6661.895,
+          1244.52,
+          1892.425
+        ],
         "identification": "none"
       },
       {
@@ -11117,6 +11933,11 @@
         "sigma_ratio": 2.068187699764243,
         "ephemeris_ra_deg": 199.93178,
         "ephemeris_dec_deg": 21.481219,
+        "spacecraft_km": [
+          -5463.101,
+          609.482,
+          4388.151
+        ],
         "identification": "none"
       },
       {
@@ -11136,6 +11957,11 @@
         "sigma_ratio": 1.258825765627688,
         "ephemeris_ra_deg": 199.93178,
         "ephemeris_dec_deg": 21.481219,
+        "spacecraft_km": [
+          -5463.101,
+          609.482,
+          4388.151
+        ],
         "identification": "none"
       },
       {
@@ -11155,6 +11981,11 @@
         "sigma_ratio": 0.5000000000000326,
         "ephemeris_ra_deg": 199.931768,
         "ephemeris_dec_deg": 21.48121,
+        "spacecraft_km": [
+          -5983.712,
+          839.213,
+          3602.591
+        ],
         "identification": "none"
       },
       {
@@ -11174,6 +12005,11 @@
         "sigma_ratio": 2.156426742882949,
         "ephemeris_ra_deg": 199.931768,
         "ephemeris_dec_deg": 21.48121,
+        "spacecraft_km": [
+          -5983.712,
+          839.213,
+          3602.591
+        ],
         "identification": "none"
       },
       {
@@ -11193,6 +12029,11 @@
         "sigma_ratio": 0.5558333304902798,
         "ephemeris_ra_deg": 199.931756,
         "ephemeris_dec_deg": 21.481202,
+        "spacecraft_km": [
+          -6390.542,
+          1052.986,
+          2748.348
+        ],
         "identification": "none"
       },
       {
@@ -11212,6 +12053,11 @@
         "sigma_ratio": 0.5000000000000002,
         "ephemeris_ra_deg": 199.931756,
         "ephemeris_dec_deg": 21.481202,
+        "spacecraft_km": [
+          -6390.542,
+          1052.986,
+          2748.348
+        ],
         "identification": "none"
       },
       {
@@ -11231,6 +12077,11 @@
         "sigma_ratio": 0.5000000000000026,
         "ephemeris_ra_deg": 199.931744,
         "ephemeris_dec_deg": 21.481193,
+        "spacecraft_km": [
+          -6674.075,
+          1245.303,
+          1848.94
+        ],
         "identification": "none"
       },
       {
@@ -11250,6 +12101,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 199.931744,
         "ephemeris_dec_deg": 21.481193,
+        "spacecraft_km": [
+          -6674.075,
+          1245.303,
+          1848.94
+        ],
         "identification": "none"
       },
       {
@@ -11269,6 +12125,11 @@
         "sigma_ratio": 0.5000000002043224,
         "ephemeris_ra_deg": 199.916942,
         "ephemeris_dec_deg": 21.469959,
+        "spacecraft_km": [
+          -5846.974,
+          575.589,
+          3867.622
+        ],
         "identification": "none"
       },
       {
@@ -11288,6 +12149,11 @@
         "sigma_ratio": 2.4999999999810023,
         "ephemeris_ra_deg": 199.916942,
         "ephemeris_dec_deg": 21.469959,
+        "spacecraft_km": [
+          -5846.974,
+          575.589,
+          3867.622
+        ],
         "identification": "none"
       },
       {
@@ -11307,6 +12173,11 @@
         "sigma_ratio": 2.499999999999999,
         "ephemeris_ra_deg": 199.916931,
         "ephemeris_dec_deg": 21.46995,
+        "spacecraft_km": [
+          -6298.795,
+          780.573,
+          3034.01
+        ],
         "identification": "none"
       },
       {
@@ -11326,6 +12197,11 @@
         "sigma_ratio": 0.5000000000003278,
         "ephemeris_ra_deg": 199.91692,
         "ephemeris_dec_deg": 21.469941,
+        "spacecraft_km": [
+          -6634.993,
+          973.54,
+          2128.216
+        ],
         "identification": "none"
       },
       {
@@ -11345,6 +12221,11 @@
         "sigma_ratio": 1.834568240411784,
         "ephemeris_ra_deg": 199.91692,
         "ephemeris_dec_deg": 21.469941,
+        "spacecraft_km": [
+          -6634.993,
+          973.54,
+          2128.216
+        ],
         "identification": "none"
       },
       {
@@ -11364,6 +12245,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 199.916908,
         "ephemeris_dec_deg": 21.469931,
+        "spacecraft_km": [
+          -6838.797,
+          1144.879,
+          1195.352
+        ],
         "identification": "none"
       },
       {
@@ -11383,6 +12269,11 @@
         "sigma_ratio": 0.5000000831432834,
         "ephemeris_ra_deg": 199.916908,
         "ephemeris_dec_deg": 21.469931,
+        "spacecraft_km": [
+          -6838.797,
+          1144.879,
+          1195.352
+        ],
         "identification": "none"
       },
       {
@@ -11402,6 +12293,11 @@
         "sigma_ratio": 2.4999999999995985,
         "ephemeris_ra_deg": 199.909902,
         "ephemeris_dec_deg": 21.464122,
+        "spacecraft_km": [
+          -5315.349,
+          282.575,
+          4596.604
+        ],
         "identification": "none"
       },
       {
@@ -11421,6 +12317,11 @@
         "sigma_ratio": 0.5000000000440206,
         "ephemeris_ra_deg": 199.909902,
         "ephemeris_dec_deg": 21.464122,
+        "spacecraft_km": [
+          -5315.349,
+          282.575,
+          4596.604
+        ],
         "identification": "none"
       },
       {
@@ -11440,6 +12341,11 @@
         "sigma_ratio": 1.127460360177908,
         "ephemeris_ra_deg": 199.865034,
         "ephemeris_dec_deg": 21.415644,
+        "spacecraft_km": [
+          -6339.169,
+          -97.444,
+          3043.484
+        ],
         "identification": "none"
       },
       {
@@ -11459,6 +12365,11 @@
         "sigma_ratio": 0.977487906896316,
         "ephemeris_ra_deg": 199.865034,
         "ephemeris_dec_deg": 21.415644,
+        "spacecraft_km": [
+          -6339.169,
+          -97.444,
+          3043.484
+        ],
         "identification": "none"
       },
       {
@@ -11478,6 +12389,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 199.819784,
         "ephemeris_dec_deg": 21.294412,
+        "spacecraft_km": [
+          -6740.147,
+          -1098.773,
+          -1662.339
+        ],
         "identification": "none"
       },
       {
@@ -11497,6 +12413,11 @@
         "sigma_ratio": 1.2091444296870144,
         "ephemeris_ra_deg": 199.819784,
         "ephemeris_dec_deg": 21.294412,
+        "spacecraft_km": [
+          -6740.147,
+          -1098.773,
+          -1662.339
+        ],
         "identification": "none"
       },
       {
@@ -11516,6 +12437,11 @@
         "sigma_ratio": 1.227993774930437,
         "ephemeris_ra_deg": 199.819677,
         "ephemeris_dec_deg": 21.293134,
+        "spacecraft_km": [
+          -6684.027,
+          -1070.746,
+          -1891.437
+        ],
         "identification": "none"
       },
       {
@@ -11535,6 +12461,11 @@
         "sigma_ratio": 0.5000000129542926,
         "ephemeris_ra_deg": 199.819677,
         "ephemeris_dec_deg": 21.293134,
+        "spacecraft_km": [
+          -6684.027,
+          -1070.746,
+          -1891.437
+        ],
         "identification": "none"
       },
       {
@@ -11554,6 +12485,11 @@
         "sigma_ratio": 0.5000000000001091,
         "ephemeris_ra_deg": 199.819624,
         "ephemeris_dec_deg": 21.292496,
+        "spacecraft_km": [
+          -6661.121,
+          -1062.142,
+          -1975.061
+        ],
         "identification": "none"
       },
       {
@@ -11573,6 +12509,11 @@
         "sigma_ratio": 0.8970886359025056,
         "ephemeris_ra_deg": 199.819624,
         "ephemeris_dec_deg": 21.292496,
+        "spacecraft_km": [
+          -6661.121,
+          -1062.142,
+          -1975.061
+        ],
         "identification": "none"
       },
       {
@@ -11592,6 +12533,11 @@
         "sigma_ratio": 2.026294993365182,
         "ephemeris_ra_deg": 199.819519,
         "ephemeris_dec_deg": 21.291234,
+        "spacecraft_km": [
+          -6822.054,
+          -1227.527,
+          -1160.425
+        ],
         "identification": "none"
       },
       {
@@ -11611,6 +12557,11 @@
         "sigma_ratio": 0.5000000000986409,
         "ephemeris_ra_deg": 199.819519,
         "ephemeris_dec_deg": 21.291234,
+        "spacecraft_km": [
+          -6822.054,
+          -1227.527,
+          -1160.425
+        ],
         "identification": "none"
       },
       {
@@ -11630,6 +12581,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 199.819466,
         "ephemeris_dec_deg": 21.290589,
+        "spacecraft_km": [
+          -6727.549,
+          -1141.549,
+          -1683.24
+        ],
         "identification": "none"
       },
       {
@@ -11649,6 +12605,11 @@
         "sigma_ratio": 0.5000000000159618,
         "ephemeris_ra_deg": 199.819466,
         "ephemeris_dec_deg": 21.290589,
+        "spacecraft_km": [
+          -6727.549,
+          -1141.549,
+          -1683.24
+        ],
         "identification": "none"
       },
       {
@@ -11668,6 +12629,11 @@
         "sigma_ratio": 0.5000000000000009,
         "ephemeris_ra_deg": 199.819413,
         "ephemeris_dec_deg": 21.289953,
+        "spacecraft_km": [
+          -6748.459,
+          -1169.218,
+          -1577.73
+        ],
         "identification": "none"
       },
       {
@@ -11687,6 +12653,11 @@
         "sigma_ratio": 0.5690741359133451,
         "ephemeris_ra_deg": 199.819413,
         "ephemeris_dec_deg": 21.289953,
+        "spacecraft_km": [
+          -6748.459,
+          -1169.218,
+          -1577.73
+        ],
         "identification": "none"
       },
       {
@@ -11706,6 +12677,11 @@
         "sigma_ratio": 0.5000000001149927,
         "ephemeris_ra_deg": 199.818417,
         "ephemeris_dec_deg": 21.268668,
+        "spacecraft_km": [
+          -6826.198,
+          -1644.57,
+          -288.367
+        ],
         "identification": "none"
       },
       {
@@ -11725,6 +12701,11 @@
         "sigma_ratio": 0.9022809111308524,
         "ephemeris_ra_deg": 199.818417,
         "ephemeris_dec_deg": 21.268668,
+        "spacecraft_km": [
+          -6826.198,
+          -1644.57,
+          -288.367
+        ],
         "identification": "none"
       },
       {
@@ -11744,6 +12725,11 @@
         "sigma_ratio": 0.809432451572387,
         "ephemeris_ra_deg": 202.278568,
         "ephemeris_dec_deg": 20.12255,
+        "spacecraft_km": [
+          -5765.371,
+          72.928,
+          4000.783
+        ],
         "identification": "none"
       },
       {
@@ -11763,6 +12749,11 @@
         "sigma_ratio": 1.85504616687264,
         "ephemeris_ra_deg": 202.278568,
         "ephemeris_dec_deg": 20.12255,
+        "spacecraft_km": [
+          -5765.371,
+          72.928,
+          4000.783
+        ],
         "identification": "none"
       },
       {
@@ -11782,6 +12773,11 @@
         "sigma_ratio": 0.6741954480049172,
         "ephemeris_ra_deg": 202.278579,
         "ephemeris_dec_deg": 20.122558,
+        "spacecraft_km": [
+          -5152.034,
+          230.753,
+          4758.169
+        ],
         "identification": "none"
       },
       {
@@ -11801,6 +12797,11 @@
         "sigma_ratio": 0.9510405158059476,
         "ephemeris_ra_deg": 202.278579,
         "ephemeris_dec_deg": 20.122558,
+        "spacecraft_km": [
+          -5152.034,
+          230.753,
+          4758.169
+        ],
         "identification": "none"
       },
       {
@@ -11820,6 +12821,11 @@
         "sigma_ratio": 0.7611156858557485,
         "ephemeris_ra_deg": 202.278591,
         "ephemeris_dec_deg": 20.122567,
+        "spacecraft_km": [
+          -4448.72,
+          381.717,
+          5411.961
+        ],
         "identification": "none"
       },
       {
@@ -11839,6 +12845,11 @@
         "sigma_ratio": 0.8077429768011223,
         "ephemeris_ra_deg": 202.278591,
         "ephemeris_dec_deg": 20.122567,
+        "spacecraft_km": [
+          -4448.72,
+          381.717,
+          5411.961
+        ],
         "identification": "none"
       },
       {
@@ -11858,6 +12869,11 @@
         "sigma_ratio": 1.7781230481449717,
         "ephemeris_ra_deg": 202.278602,
         "ephemeris_dec_deg": 20.122575,
+        "spacecraft_km": [
+          -3660.326,
+          525.382,
+          5961.977
+        ],
         "identification": "none"
       },
       {
@@ -11877,6 +12893,11 @@
         "sigma_ratio": 0.7954815041411523,
         "ephemeris_ra_deg": 202.278602,
         "ephemeris_dec_deg": 20.122575,
+        "spacecraft_km": [
+          -3660.326,
+          525.382,
+          5961.977
+        ],
         "identification": "none"
       },
       {
@@ -11896,6 +12917,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.286309,
         "ephemeris_dec_deg": 20.128416,
+        "spacecraft_km": [
+          -5738.458,
+          -19.447,
+          4039.867
+        ],
         "identification": "none"
       },
       {
@@ -11915,6 +12941,11 @@
         "sigma_ratio": 2.49999999999979,
         "ephemeris_ra_deg": 202.286309,
         "ephemeris_dec_deg": 20.128416,
+        "spacecraft_km": [
+          -5738.458,
+          -19.447,
+          4039.867
+        ],
         "identification": "none"
       },
       {
@@ -11934,6 +12965,11 @@
         "sigma_ratio": 1.0708099481518802,
         "ephemeris_ra_deg": 202.28632,
         "ephemeris_dec_deg": 20.128424,
+        "spacecraft_km": [
+          -5133.005,
+          146.376,
+          4782.093
+        ],
         "identification": "none"
       },
       {
@@ -11953,6 +12989,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.28632,
         "ephemeris_dec_deg": 20.128424,
+        "spacecraft_km": [
+          -5133.005,
+          146.376,
+          4782.093
+        ],
         "identification": "none"
       },
       {
@@ -11972,6 +13013,11 @@
         "sigma_ratio": 0.5000001484394242,
         "ephemeris_ra_deg": 202.286331,
         "ephemeris_dec_deg": 20.128433,
+        "spacecraft_km": [
+          -4435.184,
+          308.143,
+          5427.875
+        ],
         "identification": "none"
       },
       {
@@ -11991,6 +13037,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 202.286331,
         "ephemeris_dec_deg": 20.128433,
+        "spacecraft_km": [
+          -4435.184,
+          308.143,
+          5427.875
+        ],
         "identification": "none"
       },
       {
@@ -12010,6 +13061,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.286342,
         "ephemeris_dec_deg": 20.128442,
+        "spacecraft_km": [
+          -3647.416,
+          465.31,
+          5975.048
+        ],
         "identification": "none"
       },
       {
@@ -12029,6 +13085,11 @@
         "sigma_ratio": 2.499999999999996,
         "ephemeris_ra_deg": 202.286342,
         "ephemeris_dec_deg": 20.128442,
+        "spacecraft_km": [
+          -3647.416,
+          465.31,
+          5975.048
+        ],
         "identification": "none"
       },
       {
@@ -12048,6 +13109,11 @@
         "sigma_ratio": 0.9945354052758536,
         "ephemeris_ra_deg": 202.295148,
         "ephemeris_dec_deg": 20.135668,
+        "spacecraft_km": [
+          -5672.275,
+          -118.983,
+          4130.574
+        ],
         "identification": "none"
       },
       {
@@ -12067,6 +13133,11 @@
         "sigma_ratio": 0.5000000001113083,
         "ephemeris_ra_deg": 202.295148,
         "ephemeris_dec_deg": 20.135668,
+        "spacecraft_km": [
+          -5672.275,
+          -118.983,
+          4130.574
+        ],
         "identification": "none"
       },
       {
@@ -12086,6 +13157,11 @@
         "sigma_ratio": 0.5000000000000213,
         "ephemeris_ra_deg": 202.295159,
         "ephemeris_dec_deg": 20.135677,
+        "spacecraft_km": [
+          -5058.403,
+          59.539,
+          4862.838
+        ],
         "identification": "none"
       },
       {
@@ -12105,6 +13181,11 @@
         "sigma_ratio": 1.3160478139990195,
         "ephemeris_ra_deg": 202.295159,
         "ephemeris_dec_deg": 20.135677,
+        "spacecraft_km": [
+          -5058.403,
+          59.539,
+          4862.838
+        ],
         "identification": "none"
       },
       {
@@ -12124,6 +13205,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 202.295169,
         "ephemeris_dec_deg": 20.135686,
+        "spacecraft_km": [
+          -4347.752,
+          236.919,
+          5501.82
+        ],
         "identification": "none"
       },
       {
@@ -12143,6 +13229,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 202.295169,
         "ephemeris_dec_deg": 20.135686,
+        "spacecraft_km": [
+          -4347.752,
+          236.919,
+          5501.82
+        ],
         "identification": "none"
       },
       {
@@ -12162,6 +13253,11 @@
         "sigma_ratio": 0.5000000000009116,
         "ephemeris_ra_deg": 202.29518,
         "ephemeris_dec_deg": 20.135695,
+        "spacecraft_km": [
+          -3553.97,
+          409.766,
+          6035.326
+        ],
         "identification": "none"
       },
       {
@@ -12181,6 +13277,11 @@
         "sigma_ratio": 0.500000001998392,
         "ephemeris_ra_deg": 202.29518,
         "ephemeris_dec_deg": 20.135695,
+        "spacecraft_km": [
+          -3553.97,
+          409.766,
+          6035.326
+        ],
         "identification": "none"
       },
       {
@@ -12200,6 +13301,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.295623,
         "ephemeris_dec_deg": 20.136077,
+        "spacecraft_km": [
+          -5757.22,
+          -152.989,
+          4010.608
+        ],
         "identification": "none"
       },
       {
@@ -12219,6 +13325,11 @@
         "sigma_ratio": 2.4999999999994498,
         "ephemeris_ra_deg": 202.295623,
         "ephemeris_dec_deg": 20.136077,
+        "spacecraft_km": [
+          -5757.22,
+          -152.989,
+          4010.608
+        ],
         "identification": "none"
       },
       {
@@ -12238,6 +13349,11 @@
         "sigma_ratio": 0.5000000000078493,
         "ephemeris_ra_deg": 202.300809,
         "ephemeris_dec_deg": 20.140613,
+        "spacecraft_km": [
+          -5660.652,
+          -195.035,
+          4143.826
+        ],
         "identification": "none"
       },
       {
@@ -12257,6 +13373,11 @@
         "sigma_ratio": 0.5000000196027972,
         "ephemeris_ra_deg": 202.300809,
         "ephemeris_dec_deg": 20.140613,
+        "spacecraft_km": [
+          -5660.652,
+          -195.035,
+          4143.826
+        ],
         "identification": "none"
       },
       {
@@ -12276,6 +13397,11 @@
         "sigma_ratio": 0.5000000000000132,
         "ephemeris_ra_deg": 202.300819,
         "ephemeris_dec_deg": 20.140622,
+        "spacecraft_km": [
+          -5047.644,
+          -7.988,
+          4874.653
+        ],
         "identification": "none"
       },
       {
@@ -12295,6 +13421,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.300819,
         "ephemeris_dec_deg": 20.140622,
+        "spacecraft_km": [
+          -5047.644,
+          -7.988,
+          4874.653
+        ],
         "identification": "none"
       },
       {
@@ -12314,6 +13445,11 @@
         "sigma_ratio": 0.5000000000001285,
         "ephemeris_ra_deg": 202.300829,
         "ephemeris_dec_deg": 20.140632,
+        "spacecraft_km": [
+          -4343.961,
+          177.758,
+          5507.391
+        ],
         "identification": "none"
       },
       {
@@ -12333,6 +13469,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.300829,
         "ephemeris_dec_deg": 20.140632,
+        "spacecraft_km": [
+          -4343.961,
+          177.758,
+          5507.391
+        ],
         "identification": "none"
       },
       {
@@ -12352,6 +13493,11 @@
         "sigma_ratio": 0.5000000000000002,
         "ephemeris_ra_deg": 202.300839,
         "ephemeris_dec_deg": 20.140641,
+        "spacecraft_km": [
+          -3552.046,
+          361.575,
+          6039.927
+        ],
         "identification": "none"
       },
       {
@@ -12371,6 +13517,11 @@
         "sigma_ratio": 1.6395575266389606,
         "ephemeris_ra_deg": 202.300839,
         "ephemeris_dec_deg": 20.140641,
+        "spacecraft_km": [
+          -3552.046,
+          361.575,
+          6039.927
+        ],
         "identification": "none"
       },
       {
@@ -12390,6 +13541,11 @@
         "sigma_ratio": 0.50000000000007,
         "ephemeris_ra_deg": 202.303535,
         "ephemeris_dec_deg": 20.143127,
+        "spacecraft_km": [
+          -5888.098,
+          -315.613,
+          3806.216
+        ],
         "identification": "none"
       },
       {
@@ -12409,6 +13565,11 @@
         "sigma_ratio": 2.4469054616214994,
         "ephemeris_ra_deg": 202.303535,
         "ephemeris_dec_deg": 20.143127,
+        "spacecraft_km": [
+          -5888.098,
+          -315.613,
+          3806.216
+        ],
         "identification": "none"
       },
       {
@@ -12428,6 +13589,11 @@
         "sigma_ratio": 1.8538636258799548,
         "ephemeris_ra_deg": 202.303545,
         "ephemeris_dec_deg": 20.143136,
+        "spacecraft_km": [
+          -5321.415,
+          -125.786,
+          4572.874
+        ],
         "identification": "none"
       },
       {
@@ -12447,6 +13613,11 @@
         "sigma_ratio": 0.500000001209297,
         "ephemeris_ra_deg": 202.303545,
         "ephemeris_dec_deg": 20.143136,
+        "spacecraft_km": [
+          -5321.415,
+          -125.786,
+          4572.874
+        ],
         "identification": "none"
       },
       {
@@ -12466,6 +13637,11 @@
         "sigma_ratio": 1.014424161957738,
         "ephemeris_ra_deg": 202.303555,
         "ephemeris_dec_deg": 20.143145,
+        "spacecraft_km": [
+          -4652.904,
+          66.447,
+          5251.799
+        ],
         "identification": "none"
       },
       {
@@ -12485,6 +13661,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.303555,
         "ephemeris_dec_deg": 20.143145,
+        "spacecraft_km": [
+          -4652.904,
+          66.447,
+          5251.799
+        ],
         "identification": "none"
       },
       {
@@ -12504,6 +13685,11 @@
         "sigma_ratio": 0.5000071524211855,
         "ephemeris_ra_deg": 202.311478,
         "ephemeris_dec_deg": 20.150801,
+        "spacecraft_km": [
+          -5825.891,
+          -417.508,
+          3891.342
+        ],
         "identification": "none"
       },
       {
@@ -12523,6 +13709,11 @@
         "sigma_ratio": 2.4999999999995954,
         "ephemeris_ra_deg": 202.311478,
         "ephemeris_dec_deg": 20.150801,
+        "spacecraft_km": [
+          -5825.891,
+          -417.508,
+          3891.342
+        ],
         "identification": "none"
       },
       {
@@ -12542,6 +13733,11 @@
         "sigma_ratio": 0.5000000000415853,
         "ephemeris_ra_deg": 202.311488,
         "ephemeris_dec_deg": 20.15081,
+        "spacecraft_km": [
+          -5252.033,
+          -215.227,
+          4649.385
+        ],
         "identification": "none"
       },
       {
@@ -12561,6 +13757,11 @@
         "sigma_ratio": 0.7560873494143224,
         "ephemeris_ra_deg": 202.311488,
         "ephemeris_dec_deg": 20.15081,
+        "spacecraft_km": [
+          -5252.033,
+          -215.227,
+          4649.385
+        ],
         "identification": "none"
       },
       {
@@ -12580,6 +13781,11 @@
         "sigma_ratio": 2.4999999999981926,
         "ephemeris_ra_deg": 202.311497,
         "ephemeris_dec_deg": 20.15082,
+        "spacecraft_km": [
+          -4566.417,
+          -5.588,
+          5327.919
+        ],
         "identification": "none"
       },
       {
@@ -12599,6 +13805,11 @@
         "sigma_ratio": 0.6886178575367964,
         "ephemeris_ra_deg": 202.311497,
         "ephemeris_dec_deg": 20.15082,
+        "spacecraft_km": [
+          -4566.417,
+          -5.588,
+          5327.919
+        ],
         "identification": "none"
       },
       {
@@ -12618,6 +13829,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.311507,
         "ephemeris_dec_deg": 20.150829,
+        "spacecraft_km": [
+          -3803.297,
+          200.953,
+          5893.136
+        ],
         "identification": "none"
       },
       {
@@ -12637,6 +13853,11 @@
         "sigma_ratio": 0.5000000164471594,
         "ephemeris_ra_deg": 202.311507,
         "ephemeris_dec_deg": 20.150829,
+        "spacecraft_km": [
+          -3803.297,
+          200.953,
+          5893.136
+        ],
         "identification": "none"
       },
       {
@@ -12656,6 +13877,11 @@
         "sigma_ratio": 0.9950215872961119,
         "ephemeris_ra_deg": 202.311908,
         "ephemeris_dec_deg": 20.151227,
+        "spacecraft_km": [
+          -6027.755,
+          -504.867,
+          3560.308
+        ],
         "identification": "none"
       },
       {
@@ -12675,6 +13901,11 @@
         "sigma_ratio": 0.5000000000064324,
         "ephemeris_ra_deg": 202.311908,
         "ephemeris_dec_deg": 20.151227,
+        "spacecraft_km": [
+          -6027.755,
+          -504.867,
+          3560.308
+        ],
         "identification": "none"
       },
       {
@@ -12694,6 +13925,11 @@
         "sigma_ratio": 0.5000002155019343,
         "ephemeris_ra_deg": 202.311918,
         "ephemeris_dec_deg": 20.151236,
+        "spacecraft_km": [
+          -5498.34,
+          -304.786,
+          4350.605
+        ],
         "identification": "none"
       },
       {
@@ -12713,6 +13949,11 @@
         "sigma_ratio": 2.3757918688135353,
         "ephemeris_ra_deg": 202.311918,
         "ephemeris_dec_deg": 20.151236,
+        "spacecraft_km": [
+          -5498.34,
+          -304.786,
+          4350.605
+        ],
         "identification": "none"
       },
       {
@@ -12732,6 +13973,11 @@
         "sigma_ratio": 0.5304769211165342,
         "ephemeris_ra_deg": 202.314845,
         "ephemeris_dec_deg": 20.154291,
+        "spacecraft_km": [
+          -5572.972,
+          -377.511,
+          4249.134
+        ],
         "identification": "none"
       },
       {
@@ -12751,6 +13997,11 @@
         "sigma_ratio": 0.5000000036071929,
         "ephemeris_ra_deg": 202.314845,
         "ephemeris_dec_deg": 20.154291,
+        "spacecraft_km": [
+          -5572.972,
+          -377.511,
+          4249.134
+        ],
         "identification": "none"
       },
       {
@@ -12770,6 +14021,11 @@
         "sigma_ratio": 2.4999999999999987,
         "ephemeris_ra_deg": 202.316079,
         "ephemeris_dec_deg": 20.155606,
+        "spacecraft_km": [
+          -5733.198,
+          -458.419,
+          4022.285
+        ],
         "identification": "none"
       },
       {
@@ -12789,6 +14045,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.316079,
         "ephemeris_dec_deg": 20.155606,
+        "spacecraft_km": [
+          -5733.198,
+          -458.419,
+          4022.285
+        ],
         "identification": "none"
       },
       {
@@ -12808,6 +14069,11 @@
         "sigma_ratio": 2.4999999999975455,
         "ephemeris_ra_deg": 202.316088,
         "ephemeris_dec_deg": 20.155616,
+        "spacecraft_km": [
+          -5144.595,
+          -247.72,
+          4766.554
+        ],
         "identification": "none"
       },
       {
@@ -12827,6 +14093,11 @@
         "sigma_ratio": 0.7666719722842227,
         "ephemeris_ra_deg": 202.316088,
         "ephemeris_dec_deg": 20.155616,
+        "spacecraft_km": [
+          -5144.595,
+          -247.72,
+          4766.554
+        ],
         "identification": "none"
       },
       {
@@ -12846,6 +14117,11 @@
         "sigma_ratio": 0.8589315802074216,
         "ephemeris_ra_deg": 202.316097,
         "ephemeris_dec_deg": 20.155625,
+        "spacecraft_km": [
+          -4457.582,
+          -32.283,
+          5419.405
+        ],
         "identification": "none"
       },
       {
@@ -12865,6 +14141,11 @@
         "sigma_ratio": 0.5000000393250785,
         "ephemeris_ra_deg": 202.316097,
         "ephemeris_dec_deg": 20.155625,
+        "spacecraft_km": [
+          -4457.582,
+          -32.283,
+          5419.405
+        ],
         "identification": "none"
       },
       {
@@ -12884,6 +14165,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.316106,
         "ephemeris_dec_deg": 20.155635,
+        "spacecraft_km": [
+          -3685.361,
+          183.773,
+          5968.387
+        ],
         "identification": "none"
       },
       {
@@ -12903,6 +14189,11 @@
         "sigma_ratio": 0.5000000000181339,
         "ephemeris_ra_deg": 202.316106,
         "ephemeris_dec_deg": 20.155635,
+        "spacecraft_km": [
+          -3685.361,
+          183.773,
+          5968.387
+        ],
         "identification": "none"
       },
       {
@@ -12931,6 +14222,11 @@
         "sigma_ratio": 0.7022356011505398,
         "ephemeris_ra_deg": 202.322466,
         "ephemeris_dec_deg": 20.162722,
+        "spacecraft_km": [
+          -6104.203,
+          -730.601,
+          3387.269
+        ],
         "offset_east_arcsec": -8.796,
         "offset_north_arcsec": -1.616,
         "static_check": {
@@ -12957,6 +14253,11 @@
         "sigma_ratio": 1.0727149620290277,
         "ephemeris_ra_deg": 202.322466,
         "ephemeris_dec_deg": 20.162722,
+        "spacecraft_km": [
+          -6104.203,
+          -730.601,
+          3387.269
+        ],
         "identification": "none"
       },
       {
@@ -12985,6 +14286,11 @@
         "sigma_ratio": 0.7077391590773068,
         "ephemeris_ra_deg": 202.322475,
         "ephemeris_dec_deg": 20.162731,
+        "spacecraft_km": [
+          -5604.287,
+          -517.096,
+          4193.089
+        ],
         "offset_east_arcsec": -7.886,
         "offset_north_arcsec": -1.911,
         "static_check": {
@@ -13011,6 +14317,11 @@
         "sigma_ratio": 0.6618986137757028,
         "ephemeris_ra_deg": 202.322475,
         "ephemeris_dec_deg": 20.162731,
+        "spacecraft_km": [
+          -5604.287,
+          -517.096,
+          4193.089
+        ],
         "identification": "none"
       },
       {
@@ -13039,6 +14350,11 @@
         "sigma_ratio": 0.6912036243166273,
         "ephemeris_ra_deg": 202.322483,
         "ephemeris_dec_deg": 20.162741,
+        "spacecraft_km": [
+          -4997.126,
+          -293.694,
+          4918.457
+        ],
         "offset_east_arcsec": -8.843,
         "offset_north_arcsec": -1.708,
         "static_check": {
@@ -13065,6 +14381,11 @@
         "sigma_ratio": 0.8632014938506415,
         "ephemeris_ra_deg": 202.322483,
         "ephemeris_dec_deg": 20.162741,
+        "spacecraft_km": [
+          -4997.126,
+          -293.694,
+          4918.457
+        ],
         "identification": "none"
       },
       {
@@ -13084,6 +14405,11 @@
         "sigma_ratio": 0.8658556533141046,
         "ephemeris_ra_deg": 202.323255,
         "ephemeris_dec_deg": 20.16363,
+        "spacecraft_km": [
+          -5630.903,
+          -540.929,
+          4154.43
+        ],
         "identification": "none"
       },
       {
@@ -13103,6 +14429,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 202.323255,
         "ephemeris_dec_deg": 20.16363,
+        "spacecraft_km": [
+          -5630.903,
+          -540.929,
+          4154.43
+        ],
         "identification": "none"
       },
       {
@@ -13122,6 +14453,11 @@
         "sigma_ratio": 0.5000000051403014,
         "ephemeris_ra_deg": 202.323264,
         "ephemeris_dec_deg": 20.16364,
+        "spacecraft_km": [
+          -5029.404,
+          -316.516,
+          4884.181
+        ],
         "identification": "none"
       },
       {
@@ -13141,6 +14477,11 @@
         "sigma_ratio": 1.1163248556880083,
         "ephemeris_ra_deg": 202.323264,
         "ephemeris_dec_deg": 20.16364,
+        "spacecraft_km": [
+          -5029.404,
+          -316.516,
+          4884.181
+        ],
         "identification": "none"
       },
       {
@@ -13160,6 +14501,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 202.323272,
         "ephemeris_dec_deg": 20.16365,
+        "spacecraft_km": [
+          -4331.722,
+          -86.049,
+          5520.278
+        ],
         "identification": "none"
       },
       {
@@ -13179,6 +14525,11 @@
         "sigma_ratio": 0.5000000074831583,
         "ephemeris_ra_deg": 202.323272,
         "ephemeris_dec_deg": 20.16365,
+        "spacecraft_km": [
+          -4331.722,
+          -86.049,
+          5520.278
+        ],
         "identification": "none"
       },
       {
@@ -13198,6 +14549,11 @@
         "sigma_ratio": 0.5759704991813034,
         "ephemeris_ra_deg": 202.323281,
         "ephemeris_dec_deg": 20.16366,
+        "spacecraft_km": [
+          -3551.256,
+          146.065,
+          6050.599
+        ],
         "identification": "none"
       },
       {
@@ -13217,6 +14573,11 @@
         "sigma_ratio": 1.0752756994349368,
         "ephemeris_ra_deg": 202.323281,
         "ephemeris_dec_deg": 20.16366,
+        "spacecraft_km": [
+          -3551.256,
+          146.065,
+          6050.599
+        ],
         "identification": "none"
       },
       {
@@ -13236,6 +14597,11 @@
         "sigma_ratio": 0.5000007655405098,
         "ephemeris_ra_deg": 202.327758,
         "ephemeris_dec_deg": 20.169097,
+        "spacecraft_km": [
+          -5765.665,
+          -680.545,
+          3944.498
+        ],
         "identification": "none"
       },
       {
@@ -13255,6 +14621,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.327758,
         "ephemeris_dec_deg": 20.169097,
+        "spacecraft_km": [
+          -5765.665,
+          -680.545,
+          3944.498
+        ],
         "identification": "none"
       },
       {
@@ -13274,6 +14645,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 202.327767,
         "ephemeris_dec_deg": 20.169107,
+        "spacecraft_km": [
+          -5195.232,
+          -450.582,
+          4697.09
+        ],
         "identification": "none"
       },
       {
@@ -13293,6 +14669,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.327767,
         "ephemeris_dec_deg": 20.169107,
+        "spacecraft_km": [
+          -5195.232,
+          -450.582,
+          4697.09
+        ],
         "identification": "none"
       },
       {
@@ -13312,6 +14693,11 @@
         "sigma_ratio": null,
         "ephemeris_ra_deg": 202.328147,
         "ephemeris_dec_deg": 20.169578,
+        "spacecraft_km": [
+          -4293.602,
+          -139.951,
+          5549.206
+        ],
         "identification": "none"
       },
       {
@@ -13331,6 +14717,11 @@
         "sigma_ratio": 0.5000000000000006,
         "ephemeris_ra_deg": 202.329599,
         "ephemeris_dec_deg": 20.17138,
+        "spacecraft_km": [
+          -6150.599,
+          -897.131,
+          3262.416
+        ],
         "identification": "none"
       },
       {
@@ -13350,6 +14741,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 202.329599,
         "ephemeris_dec_deg": 20.17138,
+        "spacecraft_km": [
+          -6150.599,
+          -897.131,
+          3262.416
+        ],
         "identification": "none"
       },
       {
@@ -13369,6 +14765,11 @@
         "sigma_ratio": 0.5000000018359803,
         "ephemeris_ra_deg": 202.329607,
         "ephemeris_dec_deg": 20.17139,
+        "spacecraft_km": [
+          -5672.28,
+          -674.908,
+          4078.834
+        ],
         "identification": "none"
       },
       {
@@ -13388,6 +14789,11 @@
         "sigma_ratio": 0.5000000000007064,
         "ephemeris_ra_deg": 202.329607,
         "ephemeris_dec_deg": 20.17139,
+        "spacecraft_km": [
+          -5672.28,
+          -674.908,
+          4078.834
+        ],
         "identification": "none"
       },
       {
@@ -13407,6 +14813,11 @@
         "sigma_ratio": 0.5000000000161863,
         "ephemeris_ra_deg": 202.329615,
         "ephemeris_dec_deg": 20.1714,
+        "spacecraft_km": [
+          -5085.434,
+          -439.775,
+          4817.005
+        ],
         "identification": "none"
       },
       {
@@ -13426,6 +14837,11 @@
         "sigma_ratio": 0.5000000000786796,
         "ephemeris_ra_deg": 202.329615,
         "ephemeris_dec_deg": 20.1714,
+        "spacecraft_km": [
+          -5085.434,
+          -439.775,
+          4817.005
+        ],
         "identification": "none"
       },
       {
@@ -13445,6 +14861,11 @@
         "sigma_ratio": 0.5000006731308311,
         "ephemeris_ra_deg": 202.329623,
         "ephemeris_dec_deg": 20.17141,
+        "spacecraft_km": [
+          -4401.349,
+          -196.236,
+          5462.826
+        ],
         "identification": "none"
       },
       {
@@ -13464,6 +14885,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.329623,
         "ephemeris_dec_deg": 20.17141,
+        "spacecraft_km": [
+          -4401.349,
+          -196.236,
+          5462.826
+        ],
         "identification": "none"
       },
       {
@@ -13483,6 +14909,11 @@
         "sigma_ratio": 1.6819364895413704,
         "ephemeris_ra_deg": 202.331369,
         "ephemeris_dec_deg": 20.173719,
+        "spacecraft_km": [
+          -5632.164,
+          -692.053,
+          4131.217
+        ],
         "identification": "none"
       },
       {
@@ -13502,6 +14933,11 @@
         "sigma_ratio": 0.5000000000000996,
         "ephemeris_ra_deg": 202.331369,
         "ephemeris_dec_deg": 20.173719,
+        "spacecraft_km": [
+          -5632.164,
+          -692.053,
+          4131.217
+        ],
         "identification": "none"
       },
       {
@@ -13521,6 +14957,11 @@
         "sigma_ratio": 0.5000000010008034,
         "ephemeris_ra_deg": 202.335176,
         "ephemeris_dec_deg": 20.178853,
+        "spacecraft_km": [
+          -6164.577,
+          -1028.396,
+          3197.44
+        ],
         "identification": "none"
       },
       {
@@ -13540,6 +14981,11 @@
         "sigma_ratio": 2.4999999999680287,
         "ephemeris_ra_deg": 202.335176,
         "ephemeris_dec_deg": 20.178853,
+        "spacecraft_km": [
+          -6164.577,
+          -1028.396,
+          3197.44
+        ],
         "identification": "none"
       },
       {
@@ -13559,6 +15005,11 @@
         "sigma_ratio": 0.5000000000356516,
         "ephemeris_ra_deg": 202.335183,
         "ephemeris_dec_deg": 20.178864,
+        "spacecraft_km": [
+          -5699.21,
+          -798.73,
+          4019.213
+        ],
         "identification": "none"
       },
       {
@@ -13578,6 +15029,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.335183,
         "ephemeris_dec_deg": 20.178864,
+        "spacecraft_km": [
+          -5699.21,
+          -798.73,
+          4019.213
+        ],
         "identification": "none"
       },
       {
@@ -13597,6 +15053,11 @@
         "sigma_ratio": 0.5000000001047642,
         "ephemeris_ra_deg": 202.33519,
         "ephemeris_dec_deg": 20.178874,
+        "spacecraft_km": [
+          -5124.813,
+          -553.783,
+          4763.891
+        ],
         "identification": "none"
       },
       {
@@ -13616,6 +15077,11 @@
         "sigma_ratio": 0.5000000000473372,
         "ephemeris_ra_deg": 202.33519,
         "ephemeris_dec_deg": 20.178874,
+        "spacecraft_km": [
+          -5124.813,
+          -553.783,
+          4763.891
+        ],
         "identification": "none"
       },
       {
@@ -13635,6 +15101,11 @@
         "sigma_ratio": 2.4980105695544506,
         "ephemeris_ra_deg": 202.335197,
         "ephemeris_dec_deg": 20.178885,
+        "spacecraft_km": [
+          -4452.438,
+          -298.248,
+          5417.25
+        ],
         "identification": "none"
       },
       {
@@ -13654,6 +15125,11 @@
         "sigma_ratio": 2.499999999999923,
         "ephemeris_ra_deg": 202.335197,
         "ephemeris_dec_deg": 20.178885,
+        "spacecraft_km": [
+          -4452.438,
+          -298.248,
+          5417.25
+        ],
         "identification": "none"
       },
       {
@@ -13673,6 +15149,11 @@
         "sigma_ratio": 1.9615565651559048,
         "ephemeris_ra_deg": 202.338114,
         "ephemeris_dec_deg": 20.18315,
+        "spacecraft_km": [
+          -5881.725,
+          -950.894,
+          3711.455
+        ],
         "identification": "none"
       },
       {
@@ -13692,6 +15173,11 @@
         "sigma_ratio": 0.6086143717511004,
         "ephemeris_ra_deg": 202.338114,
         "ephemeris_dec_deg": 20.18315,
+        "spacecraft_km": [
+          -5881.725,
+          -950.894,
+          3711.455
+        ],
         "identification": "none"
       },
       {
@@ -13711,6 +15197,11 @@
         "sigma_ratio": 0.5000000000000001,
         "ephemeris_ra_deg": 202.338121,
         "ephemeris_dec_deg": 20.18316,
+        "spacecraft_km": [
+          -5350.598,
+          -705.68,
+          4487.578
+        ],
         "identification": "none"
       },
       {
@@ -13730,6 +15221,11 @@
         "sigma_ratio": 1.1645242965446034,
         "ephemeris_ra_deg": 202.338121,
         "ephemeris_dec_deg": 20.18316,
+        "spacecraft_km": [
+          -5350.598,
+          -705.68,
+          4487.578
+        ],
         "identification": "none"
       },
       {
@@ -13749,6 +15245,11 @@
         "sigma_ratio": 1.629736944363283,
         "ephemeris_ra_deg": 202.338128,
         "ephemeris_dec_deg": 20.183171,
+        "spacecraft_km": [
+          -4717.14,
+          -446.968,
+          5177.649
+        ],
         "identification": "none"
       },
       {
@@ -13768,6 +15269,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.338128,
         "ephemeris_dec_deg": 20.183171,
+        "spacecraft_km": [
+          -4717.14,
+          -446.968,
+          5177.649
+        ],
         "identification": "none"
       },
       {
@@ -13787,6 +15293,11 @@
         "sigma_ratio": 2.282643134692199,
         "ephemeris_ra_deg": 202.338135,
         "ephemeris_dec_deg": 20.183181,
+        "spacecraft_km": [
+          -3993.53,
+          -179.712,
+          5768.507
+        ],
         "identification": "none"
       },
       {
@@ -13806,6 +15317,11 @@
         "sigma_ratio": 2.4999999999999996,
         "ephemeris_ra_deg": 202.338135,
         "ephemeris_dec_deg": 20.183181,
+        "spacecraft_km": [
+          -3993.53,
+          -179.712,
+          5768.507
+        ],
         "identification": "none"
       },
       {
@@ -13825,6 +15341,11 @@
         "sigma_ratio": 2.1504045354345385,
         "ephemeris_ra_deg": 202.342793,
         "ephemeris_dec_deg": 20.190382,
+        "spacecraft_km": [
+          -5883.531,
+          -1063.313,
+          3678.508
+        ],
         "identification": "none"
       },
       {
@@ -13844,6 +15365,11 @@
         "sigma_ratio": 0.5000000000010074,
         "ephemeris_ra_deg": 202.342793,
         "ephemeris_dec_deg": 20.190382,
+        "spacecraft_km": [
+          -5883.531,
+          -1063.313,
+          3678.508
+        ],
         "identification": "none"
       },
       {
@@ -13863,6 +15389,11 @@
         "sigma_ratio": 2.4999999999999605,
         "ephemeris_ra_deg": 202.349571,
         "ephemeris_dec_deg": 20.202212,
+        "spacecraft_km": [
+          -6667.801,
+          -1827.476,
+          1231.577
+        ],
         "identification": "none"
       },
       {
@@ -13882,6 +15413,11 @@
         "sigma_ratio": 0.5000000000008036,
         "ephemeris_ra_deg": 202.349571,
         "ephemeris_dec_deg": 20.202212,
+        "spacecraft_km": [
+          -6667.801,
+          -1827.476,
+          1231.577
+        ],
         "identification": "none"
       }
     ],
