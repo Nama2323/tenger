@@ -1,6 +1,6 @@
 {
   "schema_version": "tenger.batch/1",
-  "contract_version": 13,
+  "contract_version": 14,
   "batch_id": "asteroids-2026a",
   "title_key": "batch.asteroids.title",
   "category": "prospective_unexposed",
@@ -376,5 +376,5 @@
     "batch.team-statement-pending",
     "batch.outlier-flag"
   ],
-  "generated_utc": "2026-11-14T22:33:27Z"
+  "generated_utc": "2026-11-14T22:41:57Z"
 }

@@ -872,3 +872,60 @@ one of three forms:
 `verdict_key` adds `planetx.verdict.partial` (≥ 5% found but fainter than the 50% depth).
 `verdict_summary.values` adds `one_in`.
 
+
+# Version 14 (additive, Task A10, 15 Nov 2026): the asteroid batch format, complete
+
+This version restates the batch format as Session A actually produced it. It starts from Session B's B6
+proposal (Web status, Task B6). It adds nothing that V13 forbids. `batches/<id>.json` now says
+`contract_version: 14`. The frozen trial files keep 13.
+
+**Trials** (`trials/asteroid-<number>-position/`): normal position trials, as V13 describes them.
+- **`trial.json`:** `target_name`, `batch_id`, `team_statement_pending`, `confirmation_pending`,
+  `selection {rule, record, H, order}`, `holdout.obs[] {obs_id, detector, t_mjd, uri}`, and
+  `model {primary_frame, secondary_frame, code_files, code_sha256, …}`.
+- **`prediction.json`:** `model`, `secondary_model` and `baseline` (95% region at the planned mean
+  evaluation time); `track[]`, `secondary_track[]` and `baseline_track[]` (one per evaluation exposure);
+  `model_state` and `secondary_state` (each with `model_error`).
+- **`verification.json`:**
+  - `status` and `status_reason_key`;
+  - `residuals {model, secondary, baseline}` when scored, otherwise null;
+  - `identification` and `candidates[]` (each with its `static_reference`);
+  - `horizons_after_verdict` (exploratory, `counts: false`): `per_exposure[]` with Horizons minus each
+    frozen forecast and `primary_/secondary_d2_vs_horizons`, plus medians and
+    `primary_/secondary_inside_95_vs_horizons`.
+
+**`batches/<batch_id>.json`** (kind `tenger.batch/1`):
+
+| Field | Meaning | B6 proposal |
+|---|---|---|
+| `batch_id`, `title_key`, `category`, `labels` | as for trials | same |
+| `team_statement_pending` | true until the user confirms the team statement | same |
+| `frozen_utc`, `receipt {commit_sha, frozen_utc}` | the freeze (one commit for the batch) | same |
+| `rules`, `selection` | paths of the pre-registered rules and the selection record | added |
+| `trial_ids[]` | attempted trials | same |
+| `rows[]` | one per attempted object (below) | same, renamed fields |
+| `not_attempted[] {number, trial_id, status: "not_attempted"}` | selected but never started (never partial) | added |
+| `calibration` | primary model: `{model, n, k_inside, level, expected_inside, interval, interval_method: "clopper_pearson", wilson_interval, independence_note_key}`; `n` counts scored rows only | same plus `model`, `wilson_interval` |
+| `secondary_calibration`, `baseline_calibration` | the same for the secondary frame and the straight line; never added into the primary | added |
+| `exploratory_horizons_coverage` | `{exploratory: true, counts: false, note_key, primary {n, k_inside, interval}, secondary {…}}`: JPL position inside the frozen region, after the verdicts; never a calibration | added |
+| `note_keys[]` | `batch.independence`, `batch.small-n`, `batch.model-error`, `batch.ephemeris-guided-training`, `batch.team-statement-pending`, `batch.outlier-flag` | same |
+| `generated_utc` | build time (derived file) | added |
+
+**`rows[]`:**
+- `trial_id`, `number`, `name`, `H`, `status`, `status_reason_key`, `excluded_reason_key` (always null:
+  nothing is dropped after the reveal).
+- `model_95_along_arcsec`, `model_95_cross_arcsec`, `secondary_95_along_arcsec`,
+  `secondary_95_cross_arcsec`.
+- For each prefix `model_`, `secondary_` and `baseline_`: `d2`, `d` (= √D²), `error_arcsec` and `inside`
+  (D² ≤ 5.991), or null when not scored.
+- B6's bare `d`, `d2`, `inside`, `model_error_arcsec` and `baseline_error_arcsec` are the `model_` and
+  `baseline_` fields here.
+- `observed_minus_horizons_arcsec` (identified objects only).
+- `exploratory_vs_horizons {primary_median_error_arcsec, primary_median_d2, primary_inside_95,
+  secondary_median_error_arcsec, secondary_inside_95, counts: false}`.
+
+**`scoreboard.json` `asteroid_batch`:** `{batch_id, path, category, team_statement_pending, counts,
+calibration, not_attempted, rows[]}`. Rows carry `trial_id`, `batch_id`, `target_name`, `category`,
+`labels`, `status`, `status_reason_key`, `team_statement_pending`, `model_d2`, `secondary_d2`,
+`baseline_d2` and the three `_error_arcsec`. Batch trials are not in the per-category `counts`.
+**`index.json`:** `batch_paths[]`.

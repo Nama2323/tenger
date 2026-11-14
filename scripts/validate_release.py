@@ -29,7 +29,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "static" / "data"
 FIXTURES = ROOT / "static" / "dev-fixtures"
-LATEST_CONTRACT = 13
+LATEST_CONTRACT = 14
 MIN_CONTRACT = {"postmortem": 8, "scene3d": 9, "composites": 10, "abandoned": 11, "hindcast": 11,
                 "planetx_depth": 12, "hidden_planet": 12, "batch": 13}
 KINDS = {"site_index", "investigation", "trial", "prediction", "receipt", "verification", "scoreboard", "game_round",

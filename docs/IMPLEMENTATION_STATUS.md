@@ -14,6 +14,18 @@ still open. Session A edits only "Science/data". Session B edits only "Web".
 `bake.yml` disabled on GitHub. Open: three teammates' confirmation for Pluto; updating `main`; making
 the repository public and enabling Pages (`docs/RELEASE.md`).
 
+### Task A10, 15 Nov 2026 (integrity audit, Planet X wording, batch contract, submission numbers)
+
+| Part | Files | Result |
+|---|---|---|
+| Integrity audit | `scripts/audit_integrity.py`, `docs/audit-integrity.md`, `tests/test_audit.py` | From git and files only. **21 trial folders pass, 7 asteroid-batch checks pass, 0 fixes needed.** Checked: prediction and receipt commits are ancestors of, and earlier than, the first commit adding any evaluation-derived file; receipt hashes and committed bytes; every D² recomputed from verification.json (largest difference 0.0003, rounding); verdicts match the scoreboard. For Pluto and the asteroids, the earliest evaluation cutout on disk is later than the prediction commit. Rules, model code and both amendments (`3dfd962`, `4d7a076`) are ancestors of the freeze `61b3cb7` and earlier than it |
+| Planet X wording | `scripts/strings_en.py`, `planetx/depth.json` (regenerated, unchanged apart from timestamps) | `planetx.verdict.partial` reads "Partly within reach: one exposure finds about {percent}% …". The threshold is ≥ 5%, as on the website (no row sits at exactly 5%). 17 too-faint rows, 1 partial (lm16-280au-i, 28%) |
+| Batch contract | `docs/DATA-CONTRACT.md` V14; `batches/asteroids-2026a.json` now contract 14; validator latest 14 | The batch format as produced, field by field, against Session B's B6 proposal (renamed fields, additions) |
+| Submission numbers | `scripts/submission_numbers.py` → `docs/SUBMISSION-NUMBERS.md` | 46 lines, each generated from its file and field, nothing typed by hand |
+
+**Checks:** `pytest` 207 passed, 2 skipped; `node --test` 207 passed (after rebasing on Session B's `1a4f27a`);
+validator 120 files, 0 failures; audit exit 0.
+
 ### Task A9, 15 Nov 2026 (blind asteroid batch with a calibration result; contract V13)
 
 | Step | Files and commits | Result |

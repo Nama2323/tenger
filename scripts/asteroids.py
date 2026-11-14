@@ -962,7 +962,7 @@ def build_batch(attempted: list[str]) -> dict:
         rows.append(row)
     not_attempted = [{"number": n, "trial_id": trial_id(n), "status": "not_attempted"}
                      for n in selection["selected"] if n not in attempted]
-    document = {"schema_version": "tenger.batch/1", "contract_version": CONTRACT, "batch_id": BATCH_ID,
+    document = {"schema_version": "tenger.batch/1", "contract_version": 14, "batch_id": BATCH_ID,
                 "title_key": "batch.asteroids.title", "category": "prospective_unexposed", "labels": ["prospective_unexposed"],
                 "team_statement_pending": True, "frozen_utc": frozen, "receipt": receipt,
                 "rules": "docs/asteroid-batch.md", "selection": "docs/exposure/asteroids/selection.json",
