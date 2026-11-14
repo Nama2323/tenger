@@ -329,3 +329,12 @@ test('the motion between the frames is read as the contract gives it (V12 object
   }
   assert.equal(readHiddenPlanet(fixture(HIDDEN_PATH)).pairs[0].motion, fixture(HIDDEN_PATH).pairs[0].motion_arcsec);
 });
+
+test('Session A\'s headline and the page\'s own headline say the same once the file carries one_in (A10 follow-up)', () => {
+  const doc = real(DEPTH_PATH);
+  if (!doc?.verdict_summary?.values?.one_in) return;
+  const depth = readDepth(doc);
+  const built = headline(depth);
+  assert.equal(t(built.key, { ...built.values, reach: t(built.reach.key, built.reach.values) }), t(depth.verdictSummary.key, depth.verdictSummary.values));
+  assert.equal(built.reach.values.odds, doc.verdict_summary.values.one_in);
+});

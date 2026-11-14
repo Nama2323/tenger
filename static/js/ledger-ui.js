@@ -63,12 +63,16 @@ async function load() {
   const indexDoc = index.state === 'ok' ? index.doc : null;
   const board = await source.scoreboard(indexDoc?.scoreboard_path);
   const boardDoc = board.state === 'ok' ? board.doc : null;
+  // Trials of the asteroid batch are shown in its own section, not again as single cards. The scoreboard names them
+  // (V13 asteroid_batch.rows), so they are not loaded twice here and their missing verification files are never
+  // requested by the ledger; the batch loader reads them with the batch's own status.
+  const batchRows = Array.isArray(boardDoc?.asteroid_batch?.rows) ? boardDoc.asteroid_batch.rows : [];
+  const listedInBatch = new Set(batchRows.map((row) => row?.trial_id).filter((id) => typeof id === 'string'));
   const [bundles, batch] = await Promise.all([
-    Promise.all(ledgerTrialIds(indexDoc, boardDoc).map((id) => source.trial(id))),
+    Promise.all(ledgerTrialIds(indexDoc, boardDoc).filter((id) => !listedInBatch.has(id)).map((id) => source.trial(id))),
     context.loadBatch ? context.loadBatch() : null,
   ]);
-  // Trials of the asteroid batch are shown in its own section, not again as single cards.
-  const inBatch = new Set(batch?.batch?.trialIds ?? []);
+  const inBatch = new Set([...listedInBatch, ...(batch?.batch?.trialIds ?? [])]);
   const rowOf = (id) => (Array.isArray(boardDoc?.rows) ? boardDoc.rows.find((row) => row?.trial_id === id) ?? null : null);
   const cards = [];
   const forecasts = [];

@@ -1717,6 +1717,8 @@ body.embed .panel-title { top: 0; }
 .batch-card h4 { font-size: 16px; }
 .batch-card .chip { font-size: 13px; font-weight: 700; }
 .batch-card-body { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: start; }
+/* A forecast not checked yet has no plot: its facts take the whole card. */
+.batch-card-body > .batch-facts:only-child { grid-column: 1 / -1; }
 .batch-mini { width: 96px; height: 96px; display: block; background: var(--panel); border-radius: 8px; }
 .batch-mini .axis-line { stroke: rgba(230, 237, 247, 0.18); stroke-width: 1; }
 .batch-mini .axis-text { fill: var(--dim); font-size: 9px; }

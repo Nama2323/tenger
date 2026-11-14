@@ -73,7 +73,8 @@ export function createSource({ fixtures = false, fetchImpl = (...args) => fetch(
     fixtures,
     index: () => load('index.json', 'site_index'),
     investigation: (path) => (path ? load(path, 'investigation') : missing()),
-    async trial(trialId) {
+    /** `waiting: true` when another file (a batch row) already says the trial has not been checked yet. */
+    async trial(trialId, { waiting = false } = {}) {
       if (!isKey(trialId)) return { id: trialId, trial: { state: 'invalid' } };
       const folder = `trials/${trialId}`;
       const [trial, prediction, receipt] = await Promise.all([
@@ -84,7 +85,7 @@ export function createSource({ fixtures = false, fetchImpl = (...args) => fetch(
       // A verification file cannot exist yet when there was nothing to predict (contract V5:
       // prediction_status "insufficient_data") or for an open forecast before its check-after date; it is not
       // requested then, so the page makes no failing request. Every other trial's file is read as before.
-      const notYet = verificationNotDue(trial, prediction);
+      const notYet = waiting ? 'waiting' : verificationNotDue(trial, prediction);
       const verification = notYet ? { state: 'missing', path: `${folder}/verification.json`, notDue: notYet } : await load(`${folder}/verification.json`, 'verification');
       return { id: trialId, trial, prediction, receipt, verification };
     },

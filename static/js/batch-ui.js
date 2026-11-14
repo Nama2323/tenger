@@ -1,7 +1,7 @@
 // "Asteroid batch" on the Predictions page: how often the truth landed inside our 95% regions, a chart of each
 // trial's distance D against the 2.45 line, model versus straight-line errors, and one compact card per asteroid.
 // Numbers come from the batch file and each asteroid's own trial files.
-import { chip, el, formatNumber } from './dom.js';
+import { chip, el, formatNumber, formatUtc } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { categoryLabel } from './labels.js';
 import { addCovariance, covarianceEllipse } from './coords.js';
@@ -43,24 +43,56 @@ export async function loadBatch({ real, fixtures, allowExample = false }) {
   const paths = Array.isArray(indexDoc?.batch_paths) ? indexDoc.batch_paths.filter((path) => typeof path === 'string') : [];
   for (const path of paths) {
     const batch = readBatch(await json(real.url(path)));
-    if (batch && !batch.example) return { batch, path: `data/${path}`, bundles: await Promise.all(batch.trialIds.map((id) => real.trial(id))) };
+    // A row the batch marks as waiting has no verification file yet, so it is not requested (no failing request).
+    const waiting = (id) => batch.rows.find((row) => row.trialId === id)?.status === 'waiting';
+    if (batch && !batch.example) return { batch, path: `data/${path}`, bundles: await Promise.all(batch.trialIds.map((id) => real.trial(id, { waiting: waiting(id) }))) };
   }
   if (!allowExample) return null;
   const example = readBatch(await json(fixtures.url(BATCH_FIXTURE_PATH)));
   return example ? { batch: example, path: `dev-fixtures/${BATCH_FIXTURE_PATH}`, bundles: await Promise.all(example.trialIds.map((id) => fixtures.trial(id))) } : null;
 }
 
+/** "k of N inside (low–high)" for the second frozen model or the straight line, kept apart from the primary. */
+function otherLine(key, calibration) {
+  if (!calibration || !(calibration.n > 0)) return null;
+  const range = calibration.interval ? `${pct(calibration.interval[0])}–${pct(calibration.interval[1])}` : '—';
+  return el('p', { text: t(key, { k: String(calibration.k), n: String(calibration.n), range }) });
+}
+
+/** Counts by status ("7 waiting for their check, 1 insufficient data"), in the file's order of first appearance. */
+function statusCounts(batch) {
+  const counts = new Map();
+  for (const row of batch.rows) counts.set(row.status ?? 'unknown', (counts.get(row.status ?? 'unknown') ?? 0) + 1);
+  return [...counts].map(([status, count]) => t(has(`batch.count.${status}`) ? `batch.count.${status}` : 'batch.count.other', { n: String(count), status })).join(t('batch.countJoin'));
+}
+
 function summary(batch) {
   const { n, k, interval, expected, method, computed, noteKey } = batch.calibration;
+  if (!(n > 0)) {
+    // Nothing checked yet: say what is frozen and what it waits for; never "0 of 0" or an interval.
+    const frozen = batch.frozenUtc ? formatUtc(new Date(batch.frozenUtc), { time: true }) : null;
+    return el('div', { class: 'batch-summary' }, [
+      el('p', { class: 'batch-headline' }, [el('strong', { text: frozen
+        ? t('batch.waitingHeadline', { count: String(batch.rows.length), date: frozen })
+        : t('batch.waitingHeadlineNoDate', { count: String(batch.rows.length) }) })]),
+      el('p', { text: `${statusCounts(batch)}.` }),
+      batch.notAttempted.length ? el('p', { class: 'note', text: t('batch.notAttempted', { n: String(batch.notAttempted.length) }) }) : null,
+      el('p', { class: 'note', text: t('batch.waitingNext') }),
+    ]);
+  }
   const verdict = coverageVerdict(batch.calibration);
+  // The file's own independence note when it has one (shown once, with the other notes), else ours.
+  const independence = noteKey ? (batch.noteKeys.includes(noteKey) ? null : note(noteKey)) : t('batch.assumeIndependent');
   return el('div', { class: 'batch-summary' }, [
     el('p', { class: 'batch-headline' }, [el('strong', { text: t('batch.headline', { k: String(k), n: String(n) }) })]),
     interval ? el('p', { text: t('batch.interval', { low: pct(interval[0]), high: pct(interval[1]), method: t(`batch.method.${method === 'wilson' ? 'wilson' : 'exact'}`) }) }) : null,
     verdict ? el('p', { text: t(`batch.${verdict}`) }) : null,
     el('p', { class: 'note', text: t('batch.expected', { expected: formatNumber(expected, 1), n: String(n) }) }),
+    otherLine('batch.secondaryLine', batch.secondaryCalibration),
+    otherLine('batch.baselineLine', batch.baselineCalibration),
+    batch.notAttempted.length ? el('p', { class: 'note', text: t('batch.notAttempted', { n: String(batch.notAttempted.length) }) }) : null,
     el('p', { class: 'note', text: t('batch.smallN') }),
-    // The file's own independence note when it has one, else ours (never both).
-    el('p', { class: 'note', text: noteKey ? note(noteKey) : t('batch.assumeIndependent') }),
+    independence ? el('p', { class: 'note', text: independence }) : null,
     computed ? el('p', { class: 'note', text: t('batch.computed') }) : null,
   ]);
 }
@@ -183,7 +215,8 @@ function card(row, bundle) {
   return el('article', { class: `batch-card glass ${inside === null ? '' : inside ? 'is-inside' : 'is-outside'}`.trim() }, [
     el('div', { class: 'card-head' }, [
       el('h4', { text: trial?.target_name ?? row.name }),
-      chip(inside === null ? (row.excludedKey ? t('batch.excluded') : t('batch.notScored')) : t(inside ? 'batch.inside' : 'batch.outside'), inside === null ? 'chip-trial-unavailable' : inside ? 'chip-trial-hit' : 'chip-trial-miss'),
+      inside === null && row.status === 'waiting' ? chip(t('batch.waiting'), 'chip-trial-waiting')
+        : chip(inside === null ? (row.excludedKey ? t('batch.excluded') : row.status === 'insufficient_data' ? t('batch.insufficient') : t('batch.notScored')) : t(inside ? 'batch.inside' : 'batch.outside'), inside === null ? 'chip-trial-unavailable' : inside ? 'chip-trial-hit' : 'chip-trial-miss'),
     ]),
     el('div', { class: 'batch-card-body' }, [
       miniPlot(region, verification?.residuals?.model),
@@ -192,7 +225,7 @@ function card(row, bundle) {
         el('dd', { class: 'mono', text: model && Number.isFinite(model.ra_deg) ? `${formatNumber(model.ra_deg, 4)}°, ${formatNumber(model.dec_deg, 4)}°` : '—' }),
         date ? el('dt', { text: t('batch.f.date') }) : null,
         date ? el('dd', { class: 'mono', text: date }) : null,
-        el('dt', { text: t('batch.f.region') }),
+        el('dt', { text: t(region && !region.withMeasurement ? 'batch.f.regionForecast' : 'batch.f.region') }),
         el('dd', { text: region ? t('batch.regionValue', { major: formatNumber(region.major, 1), minor: formatNumber(region.minor, 1) }) : '—' }),
         el('dt', { text: t('batch.f.observed') }),
         el('dd', { text: Number.isFinite(row.modelError) ? t('batch.observedValue', { error: formatNumber(row.modelError, 1), d: Number.isFinite(row.d) ? formatNumber(row.d, 2) : '—' }) : '—' }),
@@ -201,6 +234,7 @@ function card(row, bundle) {
       ]),
     ]),
     row.excludedKey ? el('p', { class: 'note', text: note(row.excludedKey) }) : null,
+    !row.excludedKey && row.statusKey ? el('p', { class: 'note', text: note(row.statusKey) }) : null,
     receipt?.url
       ? el('p', { class: 'note' }, [el('span', { text: `${t('batch.frozen')} ` }), el('a', { href: receipt.url, rel: 'noopener', class: 'mono', text: receipt.short })])
       : el('p', { class: 'note', text: receipt?.example ? t('batch.frozenExample') : t('batch.frozenNoLink') }),
@@ -220,7 +254,7 @@ export function batchSection(data) {
       batch.statementPending ? chip(t('batch.statementPending'), 'chip-pending') : null,
     ]),
     batch.example ? el('p', { class: 'panel-note warn', text: t('batch.exampleNote') }) : null,
-    batch.statementPending ? el('p', { class: 'note', text: t('batch.statementPendingNote') }) : null,
+    batch.statementPending && !batch.noteKeys.includes('batch.team-statement-pending') ? el('p', { class: 'note', text: t('batch.statementPendingNote') }) : null,
     el('p', { class: 'note', text: t('batch.lead') }),
     summary(batch),
     el('div', { class: 'batch-charts' }, [distanceChart(batch), errorChart(batch)]),

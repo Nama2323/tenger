@@ -47,34 +47,70 @@ export function clopperPearson(k, n, level = 0.95) {
   return [lower, upper];
 }
 
+/** One model's numbers on a row: V13 prefixes them (`model_d2`, `secondary_d`, `baseline_inside`); the example used bare names for the model. */
+function scoreOf(row, prefix, bare) {
+  const pick = (name) => (row[`${prefix}_${name}`] !== undefined ? row[`${prefix}_${name}`] : bare ? row[name] : undefined);
+  const d2 = finite(pick('d2')) ? pick('d2') : finite(pick('d')) ? pick('d') ** 2 : null;
+  const inside = pick('inside');
+  return {
+    d: finite(pick('d')) ? pick('d') : d2 !== null ? Math.sqrt(d2) : null,
+    d2,
+    inside: typeof inside === 'boolean' ? inside : d2 !== null ? d2 <= D2_LIMIT_95 : null,
+    error: finite(row[`${prefix}_error_arcsec`]) ? row[`${prefix}_error_arcsec`] : null,
+  };
+}
+
+/** A calibration block (`calibration`, `secondary_calibration`, `baseline_calibration`) as the page uses it, or null. */
+function readCalibration(given, fallbackRows) {
+  if (!given && !fallbackRows) return null;
+  const level = finite(given?.level) ? given.level : 0.95;
+  const n = Number.isInteger(given?.n) ? given.n : fallbackRows.length;
+  const k = Number.isInteger(given?.k_inside) ? given.k_inside : fallbackRows.filter((row) => row.inside).length;
+  const fileInterval = Array.isArray(given?.interval) && given.interval.every(finite) ? given.interval : null;
+  return {
+    n,
+    k,
+    level,
+    // No forecast checked yet: no interval to show (0 of 0 says nothing).
+    interval: n > 0 ? fileInterval ?? clopperPearson(k, n, level) : null,
+    wilson: n > 0 && Array.isArray(given?.wilson_interval) && given.wilson_interval.every(finite) ? given.wilson_interval : null,
+    method: fileInterval ? given.interval_method ?? null : 'clopper_pearson',
+    expected: finite(given?.expected_inside) ? given.expected_inside : n * level,
+    computed: !given,
+    noteKey: given?.independence_note_key ?? null,
+  };
+}
+
 /**
  * The batch file as the page shows it, or null. Rows come from the file; the calibration numbers too. Only when
  * the file has no calibration block are k and n counted from the rows (excluded rows left out) and the interval
- * computed exactly; the result says so (`computed: true`).
+ * computed exactly; the result says so (`computed: true`). The secondary model and the straight line are read
+ * the same way and kept apart from the primary (V13).
  */
 export function readBatch(doc) {
   if (!doc || !/^tenger\.batch\/\d+$/.test(doc.schema_version ?? '') || !Array.isArray(doc.rows)) return null;
   const rows = doc.rows.flatMap((row) => {
     if (typeof row?.trial_id !== 'string') return [];
-    const d2 = finite(row.d2) ? row.d2 : finite(row.d) ? row.d ** 2 : null;
+    const model = scoreOf(row, 'model', true);
+    const secondary = scoreOf(row, 'secondary', false);
+    const baseline = scoreOf(row, 'baseline', false);
     return [{
       trialId: row.trial_id,
       name: typeof row.name === 'string' ? row.name : row.trial_id,
-      d: finite(row.d) ? row.d : d2 !== null ? Math.sqrt(d2) : null,
-      d2,
-      inside: typeof row.inside === 'boolean' ? row.inside : d2 !== null ? d2 <= D2_LIMIT_95 : null,
-      modelError: finite(row.model_error_arcsec) ? row.model_error_arcsec : null,
-      baselineError: finite(row.baseline_error_arcsec) ? row.baseline_error_arcsec : null,
+      d: model.d,
+      d2: model.d2,
+      inside: model.inside,
+      modelError: model.error,
+      baselineError: baseline.error,
+      secondary,
+      baseline,
       status: row.status ?? null,
+      statusKey: row.status_reason_key ?? null,
       excludedKey: row.excluded_reason_key ?? null,
     }];
   });
   const scored = rows.filter((row) => !row.excludedKey && row.inside !== null);
-  const given = doc.calibration;
-  const level = finite(given?.level) ? given.level : 0.95;
-  const n = Number.isInteger(given?.n) ? given.n : scored.length;
-  const k = Number.isInteger(given?.k_inside) ? given.k_inside : scored.filter((row) => row.inside).length;
-  const fileInterval = Array.isArray(given?.interval) && given.interval.every(finite) ? given.interval : null;
+  const pick = (name) => scored.map((row) => ({ inside: row[name].inside })).filter((row) => row.inside !== null);
   return {
     example: doc.example === true,
     id: doc.batch_id ?? null,
@@ -83,18 +119,14 @@ export function readBatch(doc) {
     category: doc.category ?? null,
     labels: Array.isArray(doc.labels) ? doc.labels : [],
     statementPending: doc.team_statement_pending === true,
+    frozenUtc: typeof doc.frozen_utc === 'string' ? doc.frozen_utc : doc.receipt?.frozen_utc ?? null,
     receipt: doc.receipt ?? null,
     trialIds: Array.isArray(doc.trial_ids) ? doc.trial_ids : rows.map((row) => row.trialId),
-    calibration: {
-      n,
-      k,
-      level,
-      interval: fileInterval ?? clopperPearson(k, n, level),
-      method: fileInterval ? given.interval_method ?? null : 'clopper_pearson',
-      expected: finite(given?.expected_inside) ? given.expected_inside : n * level,
-      computed: !given,
-      noteKey: given?.independence_note_key ?? null,
-    },
+    calibration: readCalibration(doc.calibration, scored),
+    secondaryCalibration: doc.secondary_calibration ? readCalibration(doc.secondary_calibration, pick('secondary')) : null,
+    baselineCalibration: doc.baseline_calibration ? readCalibration(doc.baseline_calibration, pick('baseline')) : null,
+    waiting: rows.filter((row) => row.status === 'waiting').length,
+    notAttempted: Array.isArray(doc.not_attempted) ? doc.not_attempted : [],
     rows,
     noteKeys: Array.isArray(doc.note_keys) ? doc.note_keys.filter((key) => typeof key === 'string') : [],
   };

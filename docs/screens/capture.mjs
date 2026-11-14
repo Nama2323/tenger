@@ -87,7 +87,10 @@ const PAGES = [
   { name: 'game-timeline', path: '/?page=game&round=epsindib-position', ready: '.game-plot', act: "(() => { document.querySelector('.howto').open = false; })()", scrollTo: '.timeline' },
   { name: 'game-pluto-hints', path: '/?page=game&round=pluto-position', ready: '.game-plot', act: "(() => { document.querySelector('.howto').open = true; for (let i = 0; i < 2; i += 1) document.getElementById('hint-next').click(); })()", scrollTo: '.howto' },
   { name: 'game-explained', path: '/?page=game&round=pluto-position', ready: '.game-plot', act: "(() => { document.getElementById('hint-next').click(); const e = document.getElementById('guess-east'); e.value = '-8000'; e.dispatchEvent(new Event('change')); const n = document.getElementById('guess-north'); n.value = '-2900'; n.dispatchEvent(new Event('change')); document.getElementById('lock-guess').click(); for (let i = 0; i < 3; i += 1) document.getElementById('reveal-next').click(); })()", scrollTo: '#round-results' },
-  // B6: the asteroid batch (only the invented example exists yet, so only in ?fixtures=1 mode).
+  // A9 real batch on the public page (frozen; once Session A lists a batch, it also replaces the example in ?fixtures=1 mode).
+  { name: 'predictions-asteroids', path: '/?page=predictions', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch' },
+  { name: 'predictions-asteroids-cards', path: '/?page=predictions', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch .batch-cards' },
+  // B6: the asteroid batch as first built on the invented example (?fixtures=1).
   { name: 'predictions-batch', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch' },
   { name: 'predictions-batch-charts', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch .batch-charts' },
   { name: 'predictions-batch-cards', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch .batch-cards' },

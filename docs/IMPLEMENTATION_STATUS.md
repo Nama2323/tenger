@@ -1245,3 +1245,36 @@ also defined: `lesson.distance.q1–q3`, `lesson.brightness.q1–q2`, and both l
 
 **Checks**: `node --test tests/` 201 passed, 0 failed. Captures of every Learn page and the new `learn-lab-reach`
 (the table open) at 360/390/768/1280: no horizontal scroll, no control under 44 px.
+
+**After Session A's A10 follow-up (`f1d0cc4`)**: re-copied its strings (191 copied + 3 the web defines;
+new `planetx.verdict.partial`). `depth.json` now carries `recovered_fraction` per verdict; the test that the
+file's verdict keys agree with the curve is active and passes. The file's headline and the page's are identical
+(new test).
+
+### Asteroid batch, real file (A9 frozen: `61b3cb7`, `ffe833f`), 15 Nov 2026 morning
+
+Session A's frozen batch is now listed in `index.json`. With the B6 code it would have read "0 of 0 landed inside …
+consistent with 95%", sent 7 failing requests for verification files that cannot exist yet, and broken the card
+layout. Fixed:
+
+- `js/batch.js`: V13 row fields (`model_*`, `secondary_*`, `baseline_*`; the example's bare names still read). The
+  secondary and straight-line calibration blocks are read separately. With nothing checked there is no interval
+  and no coverage verdict.
+- `js/batch-ui.js`: "8 asteroid forecasts frozen in git on 2026-11-14 21:54 UTC. None has been checked yet.",
+  then "7 waiting for their check; 1 could not be forecast (insufficient data) and will not be counted." Once
+  scored, the second model and the straight line each get their own "k of N" line, never added into the primary.
+  Cards show "Waiting for its check" and "95% forecast region (measurement error added at the check)"; 286 Iclea
+  shows "Insufficient data" with the file's reason. The file's independence and team-statement notes appear once.
+- No failing requests: the ledger skips the trials the scoreboard's `asteroid_batch.rows` names, and the batch
+  loader does not request `verification.json` for a row whose status is `waiting` (`contract.js`
+  `trial(id, { waiting })`). New test with a request spy.
+- Card layout: a card without a plot gives its facts the full width (it was one character per line at 1280).
+- Once Session A lists a real batch, the invented example no longer shows in `?fixtures=1` mode either (the loader
+  test now stubs an index without `batch_paths`).
+
+Clip (f) not recorded yet: Session A is verifying the batch now, and a clip of 8 "waiting" cards would be stale
+within the hour. It will be recorded once the calibration is in.
+
+**Checks**: 206 tests pass. Captures `predictions-asteroids` and `predictions-asteroids-cards` at
+360/390/768/1280: no console error, no failing request, no horizontal scroll. Session A's validator: 112 files,
+0 failures.
