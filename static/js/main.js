@@ -8,7 +8,7 @@ import { allowsDifference, comparisonReasons, epochCoverage, pairComparison } fr
 import { parseCoordinates, separationDeg } from './coords.js';
 import { $, chip, dataTable, el, formatNumber, formatUtc, prefersReducedMotion } from './dom.js';
 import {
-  bindCoordinateSearch, buildFovOptions, entryName, fillCoordinates, kindLabel, placeMapLabels, predictionLabel, renderHome, startBlinking,
+  buildFovOptions, drawStarfield, entryName, fillCoordinates, kindLabel, placeMapLabels, predictionLabel, renderHome, startBlinking,
   statusLabel,
 } from './home.js';
 import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
@@ -1384,7 +1384,18 @@ function addNotice(key, params = {}) {
 }
 
 function renderNotices() {
-  $('notices').replaceChildren(...app.notices.map((item) => el('p', { class: 'notice', text: t(item.key, item.params) })));
+  $('notices').replaceChildren(...app.notices.map((item, index) => el('div', { class: 'notice', role: 'status' }, [
+    el('p', { text: t(item.key, item.params) }),
+    el('button', {
+      type: 'button',
+      text: '×',
+      'aria-label': t('notice.dismiss'),
+      onclick: () => {
+        app.notices.splice(index, 1);
+        renderNotices();
+      },
+    }),
+  ])));
 }
 
 // ---------- Navigation and URL ----------
@@ -1418,8 +1429,15 @@ function writeUrl({ push = false } = {}) {
   else history.replaceState(null, '', url);
 }
 
+/** The phone menu (the nav is a drop-down below 720 px). */
+function setMenu(open) {
+  $('menu-toggle').setAttribute('aria-expanded', String(open));
+  $('site-nav').classList.toggle('open', open);
+}
+
 function showPage(page, { push = true, focus = true } = {}) {
   app.page = page;
+  setMenu(false);
   for (const name of PAGES) $(`page-${name}`).hidden = name !== page;
   document.body.dataset.page = page;
   for (const link of document.querySelectorAll('.nav [data-page-link]')) {
@@ -1576,9 +1594,16 @@ async function search(text) {
   if (!query) return;
   const coordinates = parseCoordinates(query);
   if (coordinates) {
-    openPosition(coordinates);
+    openPosition({ ...coordinates, fov: Number($('search-fov').value) || DEFAULT_FOV });
     return;
   }
+  // Two numbers that are not valid coordinates: say so instead of searching for a name.
+  if (/^[\d\s.,:+\-−hdms°′″'"]+$/i.test(query) && /\d/.test(query)) {
+    $('search-input').setAttribute('aria-invalid', 'true');
+    $('search-message').textContent = t('search.badCoords');
+    return;
+  }
+  $('search-input').setAttribute('aria-invalid', 'false');
   const named = findByName(query, app.legacyPresets);
   if (named) {
     openNamed(named);
@@ -1667,8 +1692,14 @@ function bindSearchList() {
 
 // ---------- Real sky context (Aladin Lite, loaded on demand) ----------
 
+function toggleSkyPanel(open = $('sky-panel').hidden) {
+  $('sky-panel').hidden = !open;
+  $('sky-open').setAttribute('aria-expanded', String(open));
+  if (open) openSkyContext();
+}
+
 async function openSkyContext() {
-  if (app.sky || !$('sky-details').open) return;
+  if (app.sky) return;
   app.sky = 'loading';
   const sky = await createSky('sky', (ra, dec) => fillCoordinates(ra, dec));
   app.sky = sky;
@@ -1737,7 +1768,16 @@ function bindControls() {
   $('tour-start').addEventListener('click', () => runTour(demoActions));
   $('tour-stop').addEventListener('click', stopTour);
   bindViewingTools();
-  bindCoordinateSearch((request) => openPosition(request));
+  $('menu-toggle').addEventListener('click', () => setMenu($('menu-toggle').getAttribute('aria-expanded') !== 'true'));
+  $('rail-toggle').addEventListener('click', () => {
+    const open = $('rail-toggle').getAttribute('aria-expanded') !== 'true';
+    $('rail-toggle').setAttribute('aria-expanded', String(open));
+  });
+  $('sky-open').addEventListener('click', () => toggleSkyPanel());
+  $('sky-close').addEventListener('click', () => {
+    toggleSkyPanel(false);
+    $('sky-open').focus();
+  });
   $('search').addEventListener('submit', (event) => {
     event.preventDefault();
     closeSearchList();
@@ -1787,12 +1827,15 @@ function bindControls() {
   $('swap').addEventListener('click', () => setRange({ from: state.range.to, to: state.range.from }));
   $('endpoints').addEventListener('click', () => setRange({ endpoints: !state.range.endpoints }));
   $('measure').addEventListener('click', measureMotion);
-  $('sky-details').addEventListener('toggle', openSkyContext);
+
   addEventListener('popstate', () => applyLocation());
   let resizeTimer = null;
   addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(placeMapLabels, RESIZE_MS);
+    resizeTimer = setTimeout(() => {
+      drawStarfield();
+      placeMapLabels();
+    }, RESIZE_MS);
   });
 }
 
@@ -1879,6 +1922,11 @@ async function start() {
   buildBandScale();
   buildArrays();
   buildFovOptions($('fov'));
+  buildFovOptions($('search-fov'));
+  drawStarfield();
+  // Phones start with the target sheet folded and the colour key closed; wider screens show both.
+  $('rail-toggle').setAttribute('aria-expanded', String(matchMedia('(min-width: 901px)').matches));
+  $('map-key').open = matchMedia('(min-width: 1200px)').matches;
   bindControls();
   setPressed($('modes'), 'mode', 'blink');
   $('composite').setAttribute('aria-pressed', 'true');

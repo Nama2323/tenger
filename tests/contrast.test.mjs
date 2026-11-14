@@ -23,16 +23,17 @@ function contrast(first, second) {
   return (light + 0.05) / (dark + 0.05);
 }
 
-test('the tokens are the ones agreed in the plan', () => {
-  assert.equal(token('bg'), '#05070d');
-  assert.equal(token('panel'), '#0a0f1a');
-  assert.equal(token('card'), '#0f1726');
-  assert.equal(token('ink'), '#e6edf7');
+test('the tokens are the R1 design system', () => {
+  const expected = {
+    bg: '#05070d', panel: '#0a0f1a', border: '#1e2738', text: '#e6edf7', muted: '#8d9bb0', accent: '#5cc8ff',
+    star: '#ffe08a', variable: '#c9a0ff', solar: '#5cc8ff', hypothetical: '#ffa94d', hit: '#5fd38d', miss: '#ffb547', waiting: '#8d9bb0',
+  };
+  for (const [name, value] of Object.entries(expected)) assert.equal(token(name), value, `--${name}`);
 });
 
-test('text and category colours reach 4.5:1 on every surface', () => {
-  const surfaces = ['bg', 'panel', 'card'];
-  const foregrounds = ['ink', 'dim', 'star', 'variable', 'solar', 'hypothetical', 'other', 'ok', 'bad', 'warn'];
+test('text, accent, category and verdict colours reach 4.5:1 on every surface', () => {
+  const surfaces = ['bg', 'panel', 'raise'];
+  const foregrounds = ['text', 'muted', 'accent', 'star', 'variable', 'solar', 'hypothetical', 'other', 'hit', 'miss', 'waiting', 'bad'];
   for (const surface of surfaces) {
     for (const foreground of foregrounds) {
       const ratio = contrast(token(foreground), token(surface));
@@ -41,11 +42,11 @@ test('text and category colours reach 4.5:1 on every surface', () => {
   }
 });
 
-test('dark text on the amber buttons reaches 4.5:1', () => {
-  assert.ok(contrast(token('on-accent'), token('star')) >= 4.5);
+test('dark text on accent buttons reaches 4.5:1', () => {
+  assert.ok(contrast(token('on-accent'), token('accent')) >= 4.5);
 });
 
 test('the example banner text is readable', () => {
-  assert.ok(contrast(token('ink'), '#241a06') >= 4.5);
-  assert.ok(contrast(token('warn'), '#241a06') >= 4.5);
+  assert.ok(contrast(token('text'), '#2a1c05') >= 4.5);
+  assert.ok(contrast(token('miss'), '#2a1c05') >= 4.5);
 });

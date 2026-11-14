@@ -1,6 +1,5 @@
 // Home / Investigate: coordinate search, the challenge shortcuts, the schematic distance map and the
 // accessible target list. All three views are built from one target list (targets.js).
-import { parseDec, parseRa } from './coords.js';
 import { $, el, prefersReducedMotion } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { AU_PER_UNIT, RINGS, mapRadius, placeOnMap } from './map.js';
@@ -68,42 +67,25 @@ export function startBlinking() {
 
 // ---------- Shortcuts ----------
 
-function shortcutCard(entry, thumbs, onOpen) {
-  const words = el('span', { class: 'card-words' }, [
-    el('strong', { text: entryName(entry) }),
-    el('small', { text: hookOf(entry) }),
-    el('small', { class: 'card-status', text: `${statusLabel(entry)} · ${predictionLabel(entry)}` }),
-  ]);
-  const thumbNote = thumbs ? el('span', { class: 'sr-only', text: t(`thumb.${thumbs.kind}`) }) : null;
+/** One of the five official targets as a compact chip with a tiny blinking thumbnail. */
+function shortcutChip(entry, thumbs, onOpen) {
+  const label = `${entryName(entry)}. ${hookOf(entry) ?? ''} ${statusLabel(entry)}. ${predictionLabel(entry)}.`;
+  const tile = thumbs ? blinkTile(entry.key, thumbs) : el('span', { class: 'blink empty', 'aria-hidden': 'true' });
+  if (!isViewable(entry)) {
+    return el('li', {}, el('span', { class: `target-chip chip-off colour-${entry.colour}`, 'aria-label': label, role: 'img' }, [tile, entryName(entry)]));
+  }
   return el('li', {}, el('button', {
     type: 'button',
-    class: `card colour-${entry.colour}`,
+    class: `target-chip colour-${entry.colour}`,
+    'aria-label': label,
+    title: label,
     onclick: () => onOpen(entry),
-  }, [thumbs ? blinkTile(entry.key, thumbs) : el('span', { class: 'blink empty', 'aria-hidden': 'true' }), words, thumbNote]));
-}
-
-function plannedCard(entry) {
-  return el('li', { class: `card is-off colour-${entry.colour}` }, [
-    el('span', { class: 'blink empty', 'aria-hidden': 'true' }),
-    el('span', { class: 'card-words' }, [
-      el('strong', { text: entryName(entry) }),
-      el('small', { text: hookOf(entry) }),
-      el('small', { class: 'card-status', text: [
-        entry.statusReasonKey ? t('data.unavailableBecause', { reason: tData(entry.statusReasonKey, 'explain.unknown') }) : statusLabel(entry),
-        entry.seeOnly ? t('trial.see_only') : null,
-      ].filter(Boolean).join(' · ') }),
-    ]),
-  ]);
+  }, [tile, el('span', { text: entryName(entry), 'aria-hidden': 'true' })]));
 }
 
 function renderShortcuts(entries, thumbsOf, onOpen) {
   const official = entries.filter((entry) => entry.official);
-  const others = entries.filter((entry) => !entry.official && entry.role !== 'place');
-  $('shortcut-list').replaceChildren(...official.map((entry) => (isViewable(entry)
-    ? shortcutCard(entry, thumbsOf(entry), onOpen) : plannedCard(entry))));
-  $('planned-list').replaceChildren(...others.map((entry) => (isViewable(entry)
-    ? shortcutCard(entry, thumbsOf(entry), onOpen) : plannedCard(entry))));
-  $('planned').hidden = !others.length;
+  $('shortcut-list').replaceChildren(...official.map((entry) => shortcutChip(entry, thumbsOf(entry), onOpen)));
 }
 
 // ---------- Map ----------
@@ -159,6 +141,7 @@ function renderMap(entries, indexLoaded, onOpen) {
   });
   svg.append(svgNode('circle', { cx: 50, cy: 50, r: 1.6, class: 'sun' }));
   const sun = el('span', { class: 'sun-label', text: t('map.sun') });
+  const glow = el('span', { class: 'sun-glow', 'aria-hidden': 'true' });
   const markers = [];
   const unplaced = [];
   const clamped = [];
@@ -171,7 +154,7 @@ function renderMap(entries, indexLoaded, onOpen) {
     if (place.clamped) clamped.push(t('map.clamped', { name: entryName(entry) }));
     markers.push(mapMarker(entry, place, onOpen));
   }
-  canvas.replaceChildren(svg, ...labels, sun, ...markers);
+  canvas.replaceChildren(glow, svg, ...labels, sun, ...markers);
   placeMapLabels();
   notes.replaceChildren(
     ...(unplaced.length ? [el('p', { text: t('map.unplaced', { names: unplaced.join(', ') }) })] : []),
@@ -221,33 +204,42 @@ export function placeMapLabels() {
   });
 }
 
-// ---------- Feed ----------
+// ---------- Targets rail ----------
 
-function feedItem(entry, onOpen) {
+const GROUPS = ['star', 'variable', 'solar', 'hypothetical', 'other'];
+
+function railItem(entry, onOpen) {
   const distance = entry.map ? formatDistance(entry.map.distance) : null;
   const source = entry.map?.distance?.source;
+  const status = isViewable(entry) || !entry.statusReasonKey
+    ? statusLabel(entry)
+    : t('data.unavailableBecause', { reason: tData(entry.statusReasonKey, 'explain.unknown') });
   const lines = [
-    el('p', { class: 'feed-kind', text: `${kindLabel(entry.kind)} · ${t(`role.${entry.role}`)}` }),
-    el('p', { text: distance ? t('feed.distance', { distance, source: source ?? '—' }) : t('feed.noDistance') }),
-    el('p', { text: `${statusLabel(entry)} · ${t('feed.prediction', { status: predictionLabel(entry) })}` }),
+    el('strong', { text: entryName(entry) }),
+    el('small', { text: `${kindLabel(entry.kind)} · ${t(`role.${entry.role}`)}` }),
+    el('small', { text: distance ? t('feed.distance', { distance, source: source ?? '—' }) : t('feed.noDistance') }),
+    el('small', { text: `${status} · ${t('feed.prediction', { status: predictionLabel(entry) })}` }),
   ];
-  const action = isViewable(entry)
-    ? el('button', { type: 'button', class: 'glow', onclick: () => onOpen(entry), text: t('feed.open'), 'aria-label': `${t('feed.open')}: ${entryName(entry)}` })
-    : el('p', { class: 'feed-off', text: entry.statusReasonKey
-      ? t('data.unavailableBecause', { reason: tData(entry.statusReasonKey, 'explain.unknown') })
-      : t('data.unavailable') });
-  return el('li', { class: `feed-item colour-${entry.colour}` }, [
-    el('h3', {}, [el('i', { class: 'dot', 'aria-hidden': 'true' }), entryName(entry)]),
-    ...lines,
-    action,
-  ]);
+  if (!isViewable(entry)) return el('li', {}, el('div', { class: `rail-item is-off colour-${entry.colour}` }, lines));
+  return el('li', {}, el('button', {
+    type: 'button',
+    class: `rail-item colour-${entry.colour}`,
+    onclick: () => onOpen(entry),
+  }, [...lines, el('span', { class: 'rail-go', text: t('feed.open') })]));
 }
 
-function renderFeed(entries, onOpen) {
-  $('feed-list').replaceChildren(...entries.map((entry) => feedItem(entry, onOpen)));
+/** The accessible target list: the same entries as the map, grouped by type. */
+function renderRail(entries, onOpen) {
+  const groups = GROUPS.map((colour) => ({ colour, members: entries.filter((entry) => entry.colour === colour) }))
+    .filter((group) => group.members.length);
+  $('feed-list').replaceChildren(...groups.map((group) => el('section', { class: `rail-group colour-${group.colour}` }, [
+    el('h3', {}, [el('i', { class: 'dot', 'aria-hidden': 'true' }), t(`rail.group.${group.colour}`)]),
+    el('ul', {}, group.members.map((entry) => railItem(entry, onOpen))),
+  ])));
+  $('rail-count').textContent = String(entries.length);
 }
 
-// ---------- Coordinate search ----------
+// ---------- Search ----------
 
 export function buildFovOptions(select, selected = DEFAULT_FOV) {
   select.replaceChildren(...FOV_CHOICES.map((fov) => el('option', {
@@ -257,26 +249,41 @@ export function buildFovOptions(select, selected = DEFAULT_FOV) {
   })));
 }
 
-export function bindCoordinateSearch(onSubmit) {
-  buildFovOptions($('coord-fov'));
-  $('coord-search').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const ra = parseRa($('coord-ra').value);
-    const dec = parseDec($('coord-dec').value);
-    const problems = [ra === null ? t('search.badRa') : null, dec === null ? t('search.badDec') : null].filter(Boolean);
-    $('coord-ra').setAttribute('aria-invalid', String(ra === null));
-    $('coord-dec').setAttribute('aria-invalid', String(dec === null));
-    $('coord-message').textContent = problems.join(' ');
-    if (problems.length) return;
-    onSubmit({ ra, dec, fov: Number($('coord-fov').value) });
-  });
+/** Puts a position into the search box, e.g. from a click on the real sky map. */
+export function fillCoordinates(ra, dec) {
+  $('search-input').value = `${ra.toFixed(4)} ${dec >= 0 ? '+' : ''}${dec.toFixed(4)}`;
+  $('search-message').textContent = t('sky.picked', { ra: ra.toFixed(4), dec: dec.toFixed(4) });
 }
 
-/** Fills the coordinate form, e.g. from a click on the real sky map. */
-export function fillCoordinates(ra, dec) {
-  $('coord-ra').value = ra.toFixed(4);
-  $('coord-dec').value = `${dec >= 0 ? '+' : ''}${dec.toFixed(4)}`;
-  $('coord-message').textContent = t('sky.picked', { ra: ra.toFixed(4), dec: dec.toFixed(4) });
+// ---------- Starfield ----------
+
+const STAR_AREA_PX = 2600;
+
+/** A still field of faint stars behind the console; same pattern on every load (seeded). */
+export function drawStarfield(canvas = $('starfield')) {
+  if (!canvas?.getContext) return;
+  const ratio = Math.min(2, globalThis.devicePixelRatio || 1);
+  const width = innerWidth;
+  const height = innerHeight;
+  canvas.width = Math.round(width * ratio);
+  canvas.height = Math.round(height * ratio);
+  const context = canvas.getContext('2d');
+  context.setTransform(ratio, 0, 0, ratio, 0, 0);
+  context.clearRect(0, 0, width, height);
+  let seed = 20261114;
+  const random = () => {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    return seed / 4294967296;
+  };
+  const tints = ['230, 237, 247', '200, 225, 255', '255, 236, 200'];
+  const count = Math.round((width * height) / STAR_AREA_PX);
+  for (let index = 0; index < count; index += 1) {
+    const size = random() ** 3 * 1.3 + 0.25;
+    context.fillStyle = `rgba(${tints[Math.floor(random() * tints.length)]}, ${(0.15 + random() * 0.6).toFixed(2)})`;
+    context.beginPath();
+    context.arc(random() * width, random() * height, size, 0, Math.PI * 2);
+    context.fill();
+  }
 }
 
 // ---------- Page ----------
@@ -285,5 +292,5 @@ export function fillCoordinates(ra, dec) {
 export function renderHome({ entries, indexLoaded, thumbsOf, onOpen }) {
   renderShortcuts(entries, thumbsOf, onOpen);
   renderMap(entries, indexLoaded, onOpen);
-  renderFeed(entries, onOpen);
+  renderRail(entries, onOpen);
 }

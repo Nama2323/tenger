@@ -13,15 +13,21 @@ const PORT = 9339;
 const [base, outDir, only] = process.argv.slice(2);
 mkdirSync(outDir, { recursive: true });
 
-const WIDTHS = [
-  { width: 360, height: 780, mobile: true },
-  { width: 390, height: 844, mobile: true },
-  { width: 768, height: 1024, mobile: true },
-  { width: 1280, height: 800, mobile: false },
-];
+const SIZES = {
+  360: { width: 360, height: 780, mobile: true },
+  390: { width: 390, height: 844, mobile: true },
+  768: { width: 768, height: 1024, mobile: true },
+  1280: { width: 1280, height: 800, mobile: false },
+  1440: { width: 1440, height: 900, mobile: false },
+};
+// WIDTHS=390,1440 picks sizes; PAGES=home,about picks pages by exact name; PREFIX=before- names the files.
+const WIDTHS = (process.env.WIDTHS ?? '360,390,768,1280').split(',').map((width) => SIZES[width.trim()]).filter(Boolean);
+const ONLY = process.env.PAGES ? new Set(process.env.PAGES.split(',').map((name) => name.trim())) : null;
+const PREFIX = process.env.PREFIX ?? '';
 const PAGES = [
-  { name: 'home', path: '/', ready: '#shortcut-list li' },
-  { name: 'home-fixtures-map', path: '/?fixtures=1', ready: '.map-marker', scrollTo: '.explore' },
+  { name: 'home', path: '/', ready: '.map-marker' },
+  { name: 'home-rail-open', path: '/', ready: '.map-marker', act: "(() => { const t = document.getElementById('rail-toggle'); if (t.getAttribute('aria-expanded') !== 'true') t.click(); })()" },
+  { name: 'home-fixtures-map', path: '/?fixtures=1', ready: '.map-marker' },
   { name: 'investigate-barnard', path: '/?target=barnard', ready: '#caption-body .caption-col' },
   { name: 'investigate-barnard-swipe', path: '/?target=barnard&mode=swipe', ready: '#caption-body .caption-col' },
   { name: 'investigate-rdra-side', path: '/?target=rdra&mode=side', ready: '#caption-body .caption-col' },
@@ -104,6 +110,7 @@ async function main() {
   const report = [];
   for (const page of PAGES) {
     if (only && !page.name.startsWith(only)) continue;
+    if (ONLY && !ONLY.has(page.name)) continue;
     for (const size of WIDTHS) {
       consoleErrors.length = 0;
       await send('Emulation.setDeviceMetricsOverride', { width: size.width, height: size.height, deviceScaleFactor: 1, mobile: size.mobile });
@@ -126,19 +133,19 @@ async function main() {
       }
       const audit = (await send('Runtime.evaluate', { expression: AUDIT, returnByValue: true })).result.result.value;
       const shot = await send('Page.captureScreenshot', { format: 'png' });
-      const file = `${page.name}-${size.width}.png`;
+      const file = `${PREFIX}${page.name}-${size.width}.png`;
       writeFileSync(join(outDir, file), Buffer.from(shot.result.data, 'base64'));
       if (process.env.FULL && size.width === Number(process.env.FULL)) {
         await send('Runtime.evaluate', { expression: 'scrollTo(0,0)' });
         const metrics = await send('Page.getLayoutMetrics');
         const height = Math.min(9000, Math.ceil(metrics.result.cssContentSize.height));
         const full = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip: { x: 0, y: 0, width: size.width, height, scale: 1 } });
-        writeFileSync(join(outDir, `${page.name}-${size.width}-full.png`), Buffer.from(full.result.data, 'base64'));
+        writeFileSync(join(outDir, `${PREFIX}${page.name}-${size.width}-full.png`), Buffer.from(full.result.data, 'base64'));
       }
       report.push({ page: page.name, requested: size.width, ready, ...audit, consoleErrors: [...consoleErrors] });
     }
   }
-  writeFileSync(join(outDir, 'viewport-report.json'), JSON.stringify(report, null, 2));
+  writeFileSync(join(outDir, `${PREFIX}viewport-report.json`), JSON.stringify(report, null, 2));
   for (const row of report) {
     const overflow = row.scrollWidth > row.clientWidth;
     console.log(`${row.page} @${row.requested}: inner ${row.innerWidth}x${row.innerHeight}, client ${row.clientWidth}, scroll ${row.scrollWidth}${overflow ? ' OVERFLOW' : ''}${row.ready ? '' : ' NOT-READY'}`);
