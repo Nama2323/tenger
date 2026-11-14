@@ -37,9 +37,29 @@ export const SOURCES = [
   { id: 'sesame', links: [['https://cds.unistra.fr/cgi-bin/Sesame', 'about.link.website']] },
   { id: 'vsx', links: [['https://www.aavso.org/vsx/', 'about.link.website']] },
   { id: 'horizons', links: [['https://ssd.jpl.nasa.gov/horizons/', 'about.link.website']] },
+  { id: 'most', links: [['https://irsa.ipac.caltech.edu/applications/MOST/', 'about.link.website']] },
   { id: 'sbdb', links: [['https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html', 'about.link.website']] },
   { id: 'standish', links: [['https://ssd.jpl.nasa.gov/planets/approx_pos.html', 'about.link.website']] },
   { id: 'aladin', ack: 'ack.aladin', links: [['https://aladin.cds.unistra.fr/AladinLite/', 'about.link.website']] },
+];
+
+/**
+ * Published values the site compares with or draws (Planet X Lab, 3D Home), with where they are used. Citations
+ * are proper names, so they live here; what each is used for is in the English resource.
+ */
+export const REFERENCES = [
+  { id: 'lm16', cite: 'Linder & Mordasini 2016, A&A 589, A134', links: [['https://doi.org/10.1051/0004-6361/201628350', 'doi:10.1051/0004-6361/201628350'], ['https://arxiv.org/abs/1602.07465', 'arXiv:1602.07465']] },
+  { id: 'f16', cite: 'Fortney et al. 2016, ApJL 824, L25', links: [['https://doi.org/10.3847/2041-8205/824/2/L25', 'doi:10.3847/2041-8205/824/2/L25'], ['https://arxiv.org/abs/1604.07424', 'arXiv:1604.07424']] },
+  { id: 'meisner18', cite: 'Meisner et al. 2018, AJ 155, 166', links: [['https://doi.org/10.3847/1538-3881/aaae70', 'doi:10.3847/1538-3881/aaae70'], ['https://arxiv.org/abs/1712.04950', 'arXiv:1712.04950']] },
+  { id: 'blanton07', cite: 'Blanton & Roweis 2007, AJ 133, 734', links: [['https://doi.org/10.1086/510127', 'doi:10.1086/510127']] },
+  { id: 'wiseSupplement', cite: 'Cutri et al. 2012, WISE All-Sky Release Explanatory Supplement, section IV.4.h', links: [['https://irsa.ipac.caltech.edu/data/WISE/docs/release/All-Sky/expsup/sec4_4h.html', 'irsa.ipac.caltech.edu']] },
+  { id: 'publicProducts', cite: 'SPHEREx team, Public-products: point-source sensitivity (pre-launch estimate)', links: [['https://github.com/SPHEREx/Public-products', 'github.com/SPHEREx/Public-products']] },
+  { id: 'crill25', cite: 'Crill et al. 2025, ApJS 281, 10 (SPHEREx Sky Simulator)', links: [['https://arxiv.org/abs/2505.24856', 'arXiv:2505.24856']] },
+  { id: 'bb16', cite: 'Batygin & Brown 2016, AJ 151, 22', links: [['https://doi.org/10.3847/0004-6256/151/2/22', 'doi:10.3847/0004-6256/151/2/22']], use: 'planetNine' },
+  { id: 'bb16b', cite: 'Brown & Batygin 2016, ApJL 824, L23', links: [['https://doi.org/10.3847/2041-8205/824/2/L23', 'doi:10.3847/2041-8205/824/2/L23']], use: 'planetNine' },
+  { id: 'babb19', cite: 'Batygin, Adams, Brown & Becker 2019, Physics Reports', links: [['https://doi.org/10.1016/j.physrep.2019.01.009', 'doi:10.1016/j.physrep.2019.01.009']], use: 'planetNine' },
+  { id: 'bb21', cite: 'Brown & Batygin 2021, AJ 162, 219', links: [['https://doi.org/10.3847/1538-3881/ac2056', 'doi:10.3847/1538-3881/ac2056']], use: 'planetNine' },
+  { id: 'bhb24', cite: 'Brown, Holman & Batygin 2024, arXiv:2401.17977', links: [['https://doi.org/10.48550/arXiv.2401.17977', 'doi:10.48550/arXiv.2401.17977']], use: 'planetNine' },
 ];
 
 /** Libraries and tools, with the licence of the version in use (Python: installed package metadata, 14 Nov 2026). */
@@ -118,6 +138,11 @@ export function renderAbout() {
     el('section', { class: 'limits-group cannot' }, [el('h3', { text: t('limits.cannotTitle') }), el('ul', {}, CANNOT_SEE.map((key) => el('li', { text: t(key) })))]),
   );
   $('about-data').replaceChildren(...SOURCES.map(sourceItem));
+  $('about-refs').replaceChildren(...REFERENCES.map((ref) => el('li', { class: 'source' }, [
+    el('h3', { text: ref.cite }),
+    el('p', { text: t('about.use', { text: t(`about.ref.${ref.use ?? ref.id}`) }) }),
+    el('p', { class: 'source-links' }, ref.links.map(([href, label]) => external(href, label))),
+  ])));
   $('about-software').replaceChildren(...SOFTWARE.map(softwareItem));
   $('about-packages').replaceChildren(
     el('thead', {}, el('tr', {}, [el('th', { scope: 'col', text: t('about.pkgName') }), el('th', { scope: 'col', text: t('about.pkgLicence') })])),

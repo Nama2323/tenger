@@ -1992,8 +1992,9 @@ function bindViewingTools() {
     document.body.classList.toggle('negative', $('negative').checked);
   });
   $('fullscreen').addEventListener('click', () => {
-    if (document.fullscreenElement) document.exitFullscreen();
-    else $('plates').requestFullscreen?.();
+    // The browser may refuse (an embed without allowfullscreen, or no user gesture): say so instead of failing.
+    const request = document.fullscreenElement ? document.exitFullscreen() : $('plates').requestFullscreen?.();
+    Promise.resolve(request).catch(() => addNotice('note.fullscreenRefused'));
   });
   $('save-image').addEventListener('click', savePlate);
 }

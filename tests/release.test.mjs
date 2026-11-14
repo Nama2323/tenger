@@ -29,7 +29,7 @@ test('About lists both SPHEREx DOIs and every service the code uses', () => {
   const links = about.SOURCES.flatMap((source) => source.links.map(([href]) => href));
   for (const doi of ['10.26131/IRSA678', '10.26131/IRSA679']) assert.ok(links.includes(`https://doi.org/${doi}`), doi);
   const ids = about.SOURCES.map((source) => source.id);
-  for (const id of ['spherex', 'irsa', 'wise', 'twomass', 'gaia', 'simbad', 'vizier', 'sesame', 'vsx', 'horizons', 'sbdb', 'standish', 'aladin']) {
+  for (const id of ['spherex', 'irsa', 'wise', 'twomass', 'gaia', 'simbad', 'vizier', 'sesame', 'vsx', 'horizons', 'most', 'sbdb', 'standish', 'aladin']) {
     assert.ok(ids.includes(id), id);
   }
   for (const source of about.SOURCES) {
@@ -39,6 +39,32 @@ test('About lists both SPHEREx DOIs and every service the code uses', () => {
       assert.match(href, /^https:\/\//);
       assert.ok(has(key), key);
     }
+  }
+});
+
+test('About links every DOI the published data cite, and the A8/A9 sources (B8)', () => {
+  const linked = [...about.SOURCES, ...about.REFERENCES].flatMap((item) => item.links.map(([href]) => href));
+  const dois = new Set();
+  const walk = (value) => {
+    if (Array.isArray(value)) value.forEach(walk);
+    else if (value && typeof value === 'object') {
+      if (typeof value.doi === 'string') dois.add(value.doi);
+      Object.values(value).forEach(walk);
+    }
+  };
+  for (const path of ['planetx/depth.json', 'scene3d.json']) {
+    try { walk(JSON.parse(readFileSync(`${ROOT}static/data/${path}`, 'utf8'))); } catch { /* not published here */ }
+  }
+  assert.ok(dois.size >= 4, 'the data cite DOIs');
+  for (const doi of dois) assert.ok(linked.includes(`https://doi.org/${doi}`), `About links doi:${doi}`);
+  for (const cite of ['Linder & Mordasini 2016', 'Fortney et al. 2016', 'Meisner et al. 2018', 'Blanton & Roweis 2007', 'WISE All-Sky Release Explanatory Supplement']) {
+    assert.ok(about.REFERENCES.some((ref) => ref.cite.includes(cite)), cite);
+  }
+  assert.ok(about.SOURCES.some((source) => source.id === 'most'), 'IRSA MOST (A9)');
+  assert.ok(about.SOURCES.some((source) => source.id === 'horizons'), 'JPL Horizons (A9)');
+  for (const ref of about.REFERENCES) {
+    assert.ok(has(`about.ref.${ref.use ?? ref.id}`), ref.id);
+    for (const [href] of ref.links) assert.match(href, /^https:\/\//);
   }
 });
 

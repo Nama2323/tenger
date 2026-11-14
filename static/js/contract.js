@@ -22,6 +22,15 @@ export function isSafePath(path) {
   return typeof path === 'string' && SAFE_PATH.test(path) && !path.split('/').includes('..');
 }
 
+/** Why a trial's verification file cannot exist yet ('insufficient_data' or 'open_forecast'), or null. */
+export function verificationNotDue(trial, prediction, now = Date.now()) {
+  if (prediction?.state === 'ok' && prediction.doc.prediction_status === 'insufficient_data') return 'insufficient_data';
+  const doc = trial?.state === 'ok' ? trial.doc : null;
+  const checkAfter = Date.parse(doc?.holdout?.check_after_utc ?? '');
+  if (doc?.open_forecast === true && Number.isFinite(checkAfter) && now < checkAfter) return 'open_forecast';
+  return null;
+}
+
 /**
  * Loads contract files. Every result is { state, path, doc?, example? } where state is one of
  * 'ok', 'missing' (404 or not listed), 'unsupported', 'invalid' or 'error' (network).
@@ -67,12 +76,16 @@ export function createSource({ fixtures = false, fetchImpl = (...args) => fetch(
     async trial(trialId) {
       if (!isKey(trialId)) return { id: trialId, trial: { state: 'invalid' } };
       const folder = `trials/${trialId}`;
-      const [trial, prediction, receipt, verification] = await Promise.all([
+      const [trial, prediction, receipt] = await Promise.all([
         load(`${folder}/trial.json`, 'trial'),
         load(`${folder}/prediction.json`, 'prediction'),
         load(`${folder}/receipt.json`, 'receipt'),
-        load(`${folder}/verification.json`, 'verification'),
       ]);
+      // A verification file cannot exist yet when there was nothing to predict (contract V5:
+      // prediction_status "insufficient_data") or for an open forecast before its check-after date; it is not
+      // requested then, so the page makes no failing request. Every other trial's file is read as before.
+      const notYet = verificationNotDue(trial, prediction);
+      const verification = notYet ? { state: 'missing', path: `${folder}/verification.json`, notDue: notYet } : await load(`${folder}/verification.json`, 'verification');
       return { id: trialId, trial, prediction, receipt, verification };
     },
     /** V5: the measured positions a position trial was fitted to (trials/<id>/training.json). */

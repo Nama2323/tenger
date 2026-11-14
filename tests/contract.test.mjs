@@ -107,3 +107,29 @@ test('fixture hashes chain: prediction refers to the trial bytes, the receipt to
   assert.equal(prediction.trial_ref.sha256, sha('trial.json'));
   assert.equal(receipt.prediction_sha256, sha('prediction.json'));
 });
+
+test('no request for a verification file that cannot exist yet (insufficient data, open forecast not due)', async () => {
+  const requested = [];
+  const files = {
+    'data/trials/a/trial.json': { schema_version: 'tenger.trial/1', trial_id: 'a', open_forecast: false },
+    'data/trials/a/prediction.json': { schema_version: 'tenger.prediction/1', trial_id: 'a', prediction_status: 'insufficient_data' },
+    'data/trials/b/trial.json': { schema_version: 'tenger.trial/1', trial_id: 'b', open_forecast: true, holdout: { check_after_utc: '2999-01-01' } },
+    'data/trials/b/prediction.json': { schema_version: 'tenger.prediction/1', trial_id: 'b', prediction_status: 'predicted' },
+    'data/trials/c/trial.json': { schema_version: 'tenger.trial/1', trial_id: 'c', open_forecast: true, holdout: { check_after_utc: '2020-01-01' } },
+    'data/trials/c/prediction.json': { schema_version: 'tenger.prediction/1', trial_id: 'c', prediction_status: 'predicted' },
+    'data/trials/c/verification.json': { schema_version: 'tenger.verification/1', trial_id: 'c', status: 'hit' },
+  };
+  const source = createSource({ fixtures: false, fetchImpl: async (url) => {
+    requested.push(url);
+    return url in files ? { ok: true, status: 200, json: async () => files[url] } : { ok: false, status: 404, json: async () => ({}) };
+  } });
+  const a = await source.trial('a');
+  const b = await source.trial('b');
+  const c = await source.trial('c');
+  assert.equal(a.verification.state, 'missing');
+  assert.equal(a.verification.notDue, 'insufficient_data');
+  assert.equal(b.verification.notDue, 'open_forecast');
+  assert.equal(c.verification.state, 'ok', 'an open forecast past its date is read as usual');
+  assert.ok(!requested.includes('data/trials/a/verification.json') && !requested.includes('data/trials/b/verification.json'));
+  assert.ok(requested.includes('data/trials/c/verification.json'));
+});
