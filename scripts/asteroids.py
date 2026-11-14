@@ -607,12 +607,23 @@ def static_reference_row(ra: float, dec: float, detector: int, t: float) -> dict
     return min(rows, key=lambda r: (abs(r["t_mjd"] - t), r["collection"])) if rows else None
 
 
+def intact_problems(tid: str) -> list[str]:
+    """verify.integrity_problems with the batch's own model-code check (its trial lists its code_files)."""
+    from scripts import asteroid_forecast, verify
+
+    problems = [p for p in verify.integrity_problems(tid) if p != "model code changed since the trial was frozen"]
+    trial = json.loads((TRIALS / tid / "trial.json").read_text())
+    if asteroid_forecast.code_sha256() != trial["model"]["code_sha256"]:
+        problems.append("asteroid model code changed since the freeze")
+    return problems
+
+
 def acquire_evaluation(number: str) -> list[dict]:
     """Open the evaluation exposures: cutouts centred on the frozen primary forecast, plus static references."""
     from scripts import verify
 
     tid = trial_id(number)
-    problems = verify.integrity_problems(tid)
+    problems = intact_problems(tid)
     if problems:
         raise RuntimeError(f"{tid}: not intact: {problems}")
     trial = json.loads((TRIALS / tid / "trial.json").read_text())
@@ -771,7 +782,12 @@ def verify_object(number: str) -> dict:
 
 
 def horizons_after_verdict(number: str) -> dict | None:
-    """JPL Horizons vs observed and vs the frozen forecasts, only after verification.json exists."""
+    """After the verdict only: JPL Horizons at every evaluation exposure, against the frozen forecasts.
+
+    Exploratory, never a status: per exposure, Horizons (geocentric, moved to the spacecraft with the FITS
+    header position) minus the frozen primary and secondary forecasts at that time and observer, and
+    D^2 = r' C_pred^-1 r with the frozen C_pred (no measurement term). Also observed minus Horizons when the
+    object was identified."""
     import numpy as np
 
     from backend import orbit
@@ -779,16 +795,18 @@ def horizons_after_verdict(number: str) -> dict | None:
     from backend.processing import load_product
 
     tid = trial_id(number)
-    verification_path = TRIALS / tid / "verification.json"
-    verification = json.loads(verification_path.read_text())
-    if not verification.get("observed"):
-        return None
+    verification = json.loads((TRIALS / tid / "verification.json").read_text())
     prediction = json.loads((TRIALS / tid / "prediction.json").read_text())
+    if prediction["prediction_status"] != "predicted":
+        return None
+    acquired = json.loads((WORK / number / "evaluation-acquired.json").read_text())
     rows = []
-    for key in verification["observed"]["obs_keys"]:
-        product = load_product((WORK / number / "eval" / f"{key}.fits").read_bytes())
+    for entry in acquired:
+        if entry["meta"].get("status") != "ok":
+            continue
+        product = load_product((WORK / number / "eval" / f"{entry['key']}.fits").read_bytes())
         t = float(product.info["MJD-AVG"])
-        rows.append((key, t, np.array([product.info["X_SC"], product.info["Y_SC"], product.info["Z_SC"]], float)))
+        rows.append((entry["key"], t, np.array([product.info["X_SC"], product.info["Y_SC"], product.info["Z_SC"]], float)))
     params = {"format": "json", "COMMAND": f"'{number};'", "EPHEM_TYPE": "OBSERVER", "CENTER": "'500@399'",
               "TLIST": " ".join(f"'{t + 2400000.5:.8f}'" for _, t, _ in rows), "TIME_TYPE": "UT",
               "QUANTITIES": "'1,20'", "ANG_FORMAT": "DEG", "EXTRA_PREC": "YES", "CSV_FORMAT": "YES"}
@@ -802,6 +820,8 @@ def horizons_after_verdict(number: str) -> dict | None:
     dec_col = next(index for name, index in columns.items() if name.startswith("DEC"))
     delta_col = columns["delta"]
     lines = [line for line in body.split("$$EOE")[0].strip().splitlines() if line.strip()]
+    c_primary = np.array(prediction["model"]["cov_arcsec2"])
+    c_secondary = np.array(prediction["secondary_model"]["cov_arcsec2"])
     per = []
     for (key, t, spacecraft), line in zip(rows, lines):
         fields = [field.strip() for field in line.split(",")]
@@ -812,17 +832,31 @@ def horizons_after_verdict(number: str) -> dict | None:
         s_au = spacecraft / orbit.KM_PER_AU
         shift = (-float(s_au @ east) / delta * orbit.ARCSEC_PER_RAD, -float(s_au @ north) / delta * orbit.ARCSEC_PER_RAD)
         ra_sc, dec_sc = tangent_to_sky(ra, dec, *shift)
-        per.append({"obs_key": key, "t_mjd": _r(t), "horizons_ra_deg": _r(ra_sc, 8), "horizons_dec_deg": _r(dec_sc, 8)})
-    h_ra = float(np.mean([row["horizons_ra_deg"] for row in per]))
-    h_dec = float(np.mean([row["horizons_dec_deg"] for row in per]))
-    observed = verification["observed"]
+        observer = orbit.observer_heliocentric_au(t, spacecraft)
+        row = {"obs_key": key, "t_mjd": _r(t), "horizons_ra_deg": _r(ra_sc, 8), "horizons_dec_deg": _r(dec_sc, 8)}
+        for name, state, cov in (("primary", "model_state", c_primary), ("secondary", "secondary_state", c_secondary)):
+            model = frozen_position(prediction, state, t, observer)
+            residual = np.array(tangent_offsets_arcsec(*model, ra_sc, dec_sc))
+            row[f"horizons_minus_{name}_arcsec"] = [_r(v, 3) for v in residual]
+            row[f"{name}_d2_vs_horizons"] = _r(float(residual @ np.linalg.inv(cov) @ residual), 4)
+        per.append(row)
     out = {"source": f"JPL Horizons API, COMMAND '{number};', geocentric astrometric RA/Dec moved to the spacecraft "
                      "with the FITS header position and Horizons delta", "queried_utc": _now(), "after_verdict": True,
-           "observed_minus_horizons_arcsec": [_r(v, 3) for v in tangent_offsets_arcsec(h_ra, h_dec, observed["ra_deg"], observed["dec_deg"])],
-           "note": "reported separately; it does not change the status", "per_exposure": per}
-    for name in ("model", "secondary", "baseline"):
-        reference = verification["residuals"][name]["reference"]
-        out[f"{name}_minus_horizons_arcsec"] = [_r(v, 3) for v in tangent_offsets_arcsec(h_ra, h_dec, reference["ra_deg"], reference["dec_deg"])]
+           "exploratory": True, "counts": False,
+           "note": "after the verdict; it does not change the status. D^2 uses the frozen C_pred only (no measurement "
+                   "term), so it asks whether the catalogue position lay inside the frozen 95% region.",
+           "per_exposure": per}
+    for name in ("primary", "secondary"):
+        d2 = [row[f"{name}_d2_vs_horizons"] for row in per]
+        errors = [math.hypot(*row[f"horizons_minus_{name}_arcsec"]) for row in per]
+        out[f"{name}_median_d2_vs_horizons"] = _r(float(np.median(d2)), 4)
+        out[f"{name}_median_error_vs_horizons_arcsec"] = _r(float(np.median(errors)), 3)
+        out[f"{name}_inside_95_vs_horizons"] = bool(np.median(d2) <= 5.991464547107979)
+    if verification.get("observed"):
+        h_ra = float(np.mean([row["horizons_ra_deg"] for row in per if row["obs_key"] in verification["observed"]["obs_keys"]]))
+        h_dec = float(np.mean([row["horizons_dec_deg"] for row in per if row["obs_key"] in verification["observed"]["obs_keys"]]))
+        observed = verification["observed"]
+        out["observed_minus_horizons_arcsec"] = [_r(v, 3) for v in tangent_offsets_arcsec(h_ra, h_dec, observed["ra_deg"], observed["dec_deg"])]
     return out
 
 
@@ -847,6 +881,18 @@ def calibration(rows: list[dict], key: str) -> dict:
             "interval": [round(exact[0], 4), round(exact[1], 4)], "interval_method": "clopper_pearson",
             "wilson_interval": [round(approx[0], 4), round(approx[1], 4)],
             "independence_note_key": "batch.independence"}
+
+
+def exploratory_coverage(rows: list[dict]) -> dict:
+    """After the verdicts, not counted: in how many forecasts did the JPL Horizons position lie inside the frozen
+    95% region (median over the evaluation exposures, C_pred only)."""
+    checked = [r for r in rows if r.get("exploratory_vs_horizons")]
+    out = {"exploratory": True, "counts": False, "note_key": "batch.exploratory-horizons"}
+    for name in ("primary", "secondary"):
+        k = sum(1 for r in checked if r["exploratory_vs_horizons"][f"{name}_inside_95"])
+        out[name] = {"n": len(checked), "k_inside": k,
+                     "interval": [round(v, 4) for v in clopper_pearson(k, len(checked))] if checked else None}
+    return out
 
 
 def build_batch(attempted: list[str]) -> dict:
@@ -884,7 +930,12 @@ def build_batch(attempted: list[str]) -> dict:
             row[f"{name}_inside"] = None if block.get("d2") is None else bool(block["d2"] <= 5.991464547107979)
         horizons = (verification or {}).get("horizons_after_verdict") or {}
         row["observed_minus_horizons_arcsec"] = horizons.get("observed_minus_horizons_arcsec")
-        row["model_minus_horizons_arcsec"] = horizons.get("model_minus_horizons_arcsec")
+        row["exploratory_vs_horizons"] = None if not horizons else {
+            "primary_median_error_arcsec": horizons.get("primary_median_error_vs_horizons_arcsec"),
+            "primary_median_d2": horizons.get("primary_median_d2_vs_horizons"),
+            "primary_inside_95": horizons.get("primary_inside_95_vs_horizons"),
+            "secondary_median_error_arcsec": horizons.get("secondary_median_error_vs_horizons_arcsec"),
+            "secondary_inside_95": horizons.get("secondary_inside_95_vs_horizons"), "counts": False}
         rows.append(row)
     not_attempted = [{"number": n, "trial_id": trial_id(n), "status": "not_attempted"}
                      for n in selection["selected"] if n not in attempted]
@@ -895,8 +946,9 @@ def build_batch(attempted: list[str]) -> dict:
                 "trial_ids": [r["trial_id"] for r in rows], "rows": rows, "not_attempted": not_attempted,
                 "calibration": calibration(rows, "model"), "secondary_calibration": calibration(rows, "secondary"),
                 "baseline_calibration": calibration(rows, "baseline"),
+                "exploratory_horizons_coverage": exploratory_coverage(rows),
                 "note_keys": ["batch.independence", "batch.small-n", "batch.model-error", "batch.ephemeris-guided-training",
-                              "batch.team-statement-pending"],
+                              "batch.team-statement-pending", "batch.outlier-flag"],
                 "generated_utc": _now()}
     path = ROOT / "static" / "data" / "batches" / f"{BATCH_ID}.json"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -991,8 +1043,11 @@ def main(argv: list[str]) -> int:
             if comparison:
                 document["horizons_after_verdict"] = comparison
                 path.write_bytes(predict.json_bytes(document))
-                print(number, "observed - Horizons", comparison["observed_minus_horizons_arcsec"],
-                      "model - Horizons", comparison["model_minus_horizons_arcsec"], flush=True)
+                print(number, document["status"], "Horizons-primary median error", comparison["primary_median_error_vs_horizons_arcsec"],
+                      "D2", comparison["primary_median_d2_vs_horizons"], "inside", comparison["primary_inside_95_vs_horizons"],
+                      "| secondary", comparison["secondary_median_error_vs_horizons_arcsec"],
+                      comparison["secondary_inside_95_vs_horizons"], "| observed-Horizons",
+                      comparison.get("observed_minus_horizons_arcsec"), flush=True)
         return 0
     if stage == "train":
         for number in argv[1:]:

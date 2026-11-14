@@ -67,7 +67,7 @@ def build(generated_utc: str | None = None) -> dict:
         else:
             status, reason = "waiting", None
         category = trial["category"]
-        residuals = (verification or {}).get("residuals", {})
+        residuals = (verification or {}).get("residuals") or {}
         if trial.get("batch_id"):
             batch_rows.append({
                 "trial_id": trial["trial_id"], "batch_id": trial["batch_id"], "target_name": trial.get("target_name"),

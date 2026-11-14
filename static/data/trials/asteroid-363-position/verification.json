@@ -1,0 +1,2625 @@
+{
+  "schema_version": "tenger.verification/1",
+  "contract_version": 13,
+  "trial_id": "asteroid-363-position",
+  "prediction_sha256": "e65fd4f5824f8f681d7d86c36a2636e3a1da21e4038d35c562b43fe54d796da8",
+  "revealed_utc": "2026-11-14T22:30:47Z",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "batch_id": "asteroids-2026a",
+  "target_name": "363 Padua (A893 FD)",
+  "confirmation_pending": true,
+  "team_statement_pending": true,
+  "status": "ambiguous",
+  "status_reason_key": "verify.motion-inconsistent",
+  "observed": null,
+  "residuals": null,
+  "identification": {
+    "method_key": "ident.frozen-model-search",
+    "search_radius_arcsec": 68.925,
+    "listing_radius_arcsec": 73.925,
+    "min_snr": 10.0,
+    "static_snr": 5.0,
+    "static_min_dt_days": 0.5,
+    "motion": {
+      "consistent": false,
+      "chi2": 4852.336,
+      "dof": 6,
+      "limit": 19.805,
+      "spread_arcsec": [
+        14.303,
+        5.248
+      ],
+      "systematic_allowance_arcsec": 0.3
+    },
+    "n_exposures_searched": 10,
+    "n_identified": 4,
+    "n_ambiguous": 0
+  },
+  "candidates": [
+    {
+      "obs_key": "2026W31_1B_0385_1_D2",
+      "t_mjd": 61250.03544,
+      "detector": 2,
+      "model": {
+        "ra_deg": 232.93739162,
+        "dec_deg": -20.52933424
+      },
+      "identification": "identified",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/2/level2_2026W31_1B_0385_1D2_spx_l2b-v27-2026-224.fits?center=232.936889,-20.529140&size=0.2266",
+      "source_sha256": "5bfb8f8a5fed49389a0282198c340e50f9245586e6640621c8774a1f5a5d4a77",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/2/level2_2026W31_1B_0508_1D2_spx_l2b-v27-2026-224.fits?center=232.936889,-20.529140&size=0.2266",
+        "status": "ok",
+        "source_sha256": "a001986e39078db34ff12511ee6de12f3de01baa92f05db6985b1f84b7aed690",
+        "source_bytes": 4230720,
+        "downloaded_utc": "2026-11-14T22:09:40Z",
+        "obs_id": "2026W31_1B_0508_1",
+        "t_mjd": 61250.646155
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.94889252,
+          "dec_deg": -20.53210914,
+          "snr": 0.0,
+          "peak_snr": 223.94,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 38.773,
+          "offset_north_arcsec": -9.991,
+          "distance_arcsec": 40.04,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93937493,
+          "dec_deg": -20.52963261,
+          "snr": 31.47,
+          "peak_snr": 72.05,
+          "fit_status": "measured",
+          "offset_east_arcsec": 6.686,
+          "offset_north_arcsec": -1.074,
+          "distance_arcsec": 6.772,
+          "static_check": {
+            "checked_against": "2026W31_1B_0508_1",
+            "static_source": false,
+            "probe_snr": 1.47
+          },
+          "passes": true
+        },
+        {
+          "ra_deg": 232.94200435,
+          "dec_deg": -20.5355551,
+          "snr": 16.93,
+          "peak_snr": 63.72,
+          "fit_status": "measured",
+          "offset_east_arcsec": 15.551,
+          "offset_north_arcsec": -22.395,
+          "distance_arcsec": 27.265,
+          "static_check": {
+            "checked_against": "2026W31_1B_0508_1",
+            "static_source": true,
+            "probe_snr": 17.38
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93040813,
+          "dec_deg": -20.52807231,
+          "snr": 22.59,
+          "peak_snr": 34.88,
+          "fit_status": "measured",
+          "offset_east_arcsec": -23.544,
+          "offset_north_arcsec": 4.542,
+          "distance_arcsec": 23.978,
+          "static_check": {
+            "checked_against": "2026W31_1B_0508_1",
+            "static_source": true,
+            "probe_snr": 28.59
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94154899,
+          "dec_deg": -20.51801355,
+          "snr": 0.0,
+          "peak_snr": 19.85,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 14.017,
+          "offset_north_arcsec": 40.754,
+          "distance_arcsec": 43.097,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94946568,
+          "dec_deg": -20.52341009,
+          "snr": 0.0,
+          "peak_snr": 9.27,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 40.708,
+          "offset_north_arcsec": 21.325,
+          "distance_arcsec": 45.955,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94915266,
+          "dec_deg": -20.54453832,
+          "snr": 0.0,
+          "peak_snr": 8.14,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 39.647,
+          "offset_north_arcsec": -54.736,
+          "distance_arcsec": 67.586,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95180953,
+          "dec_deg": -20.51512798,
+          "snr": 0.0,
+          "peak_snr": 8.13,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 48.613,
+          "offset_north_arcsec": 51.14,
+          "distance_arcsec": 70.559,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94607917,
+          "dec_deg": -20.54204811,
+          "snr": 0.0,
+          "peak_snr": 7.92,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 29.287,
+          "offset_north_arcsec": -45.771,
+          "distance_arcsec": 54.338,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94696599,
+          "dec_deg": -20.51222144,
+          "snr": 0.0,
+          "peak_snr": 7.77,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 32.282,
+          "offset_north_arcsec": 61.605,
+          "distance_arcsec": 69.551,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93592114,
+          "dec_deg": -20.53789072,
+          "snr": 0.0,
+          "peak_snr": 6.86,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -4.957,
+          "offset_north_arcsec": -30.803,
+          "distance_arcsec": 31.2,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.9283204,
+          "dec_deg": -20.51136727,
+          "snr": 0.0,
+          "peak_snr": 6.13,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -30.586,
+          "offset_north_arcsec": 64.68,
+          "distance_arcsec": 71.547,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.91987472,
+          "dec_deg": -20.54118223,
+          "snr": 0.0,
+          "peak_snr": 5.88,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -59.051,
+          "offset_north_arcsec": -42.656,
+          "distance_arcsec": 72.846,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94368408,
+          "dec_deg": -20.52381625,
+          "snr": 0.0,
+          "peak_snr": 5.86,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 21.215,
+          "offset_north_arcsec": 19.864,
+          "distance_arcsec": 29.063,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95608062,
+          "dec_deg": -20.52673363,
+          "snr": 0.0,
+          "peak_snr": 5.84,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 63.009,
+          "offset_north_arcsec": 9.359,
+          "distance_arcsec": 63.7,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.92774576,
+          "dec_deg": -20.5200657,
+          "snr": 0.0,
+          "peak_snr": 5.25,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -32.522,
+          "offset_north_arcsec": 33.366,
+          "distance_arcsec": 46.593,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93139295,
+          "dec_deg": -20.51385696,
+          "snr": 0.0,
+          "peak_snr": 5.09,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -20.226,
+          "offset_north_arcsec": 55.718,
+          "distance_arcsec": 59.275,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94014222,
+          "dec_deg": -20.52298276,
+          "snr": 0.0,
+          "peak_snr": 5.0,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 9.274,
+          "offset_north_arcsec": 22.865,
+          "distance_arcsec": 24.674,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W31_1B_0385_2_D5",
+      "t_mjd": 61250.036933,
+      "detector": 5,
+      "model": {
+        "ra_deg": 232.93753285,
+        "dec_deg": -20.52923019
+      },
+      "identification": "identified",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/5/level2_2026W31_1B_0385_2D5_spx_l2b-v27-2026-224.fits?center=232.937023,-20.529200&size=0.2266",
+      "source_sha256": "b767e3265ab6f61cdd7f0eed282cd83890fa6bbf7f7872d6cb84fd1dbc900a55",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/5/level2_2026W31_1B_0508_1D5_spx_l2b-v27-2026-224.fits?center=232.937023,-20.529200&size=0.2266",
+        "status": "ok",
+        "source_sha256": "a334c02cad2fa3217c4e65011d16bbd436062eb45af609560d9f63324199ee68",
+        "source_bytes": 4227840,
+        "downloaded_utc": "2026-11-14T22:11:18Z",
+        "obs_id": "2026W31_1B_0508_1",
+        "t_mjd": 61250.646155
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.9493107,
+          "dec_deg": -20.53287151,
+          "snr": 10.02,
+          "peak_snr": 69.6,
+          "fit_status": "measured",
+          "offset_east_arcsec": 39.707,
+          "offset_north_arcsec": -13.11,
+          "distance_arcsec": 41.815,
+          "static_check": {
+            "checked_against": "2026W31_1B_0508_1",
+            "static_source": false,
+            "probe_snr": 7.19
+          },
+          "passes": true
+        },
+        {
+          "ra_deg": 232.93927259,
+          "dec_deg": -20.53016347,
+          "snr": 0.0,
+          "peak_snr": 24.46,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 5.865,
+          "offset_north_arcsec": -3.36,
+          "distance_arcsec": 6.759,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94137981,
+          "dec_deg": -20.53597847,
+          "snr": 0.0,
+          "peak_snr": 12.58,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 12.969,
+          "offset_north_arcsec": -24.294,
+          "distance_arcsec": 27.539,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93042432,
+          "dec_deg": -20.52803875,
+          "snr": 0.0,
+          "peak_snr": 10.26,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -23.966,
+          "offset_north_arcsec": 4.289,
+          "distance_arcsec": 24.346,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94084454,
+          "dec_deg": -20.51815365,
+          "snr": 0.0,
+          "peak_snr": 5.86,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 11.166,
+          "offset_north_arcsec": 39.875,
+          "distance_arcsec": 41.409,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W31_1B_0385_2_D2",
+      "t_mjd": 61250.036933,
+      "detector": 2,
+      "model": {
+        "ra_deg": 232.93753285,
+        "dec_deg": -20.52923019
+      },
+      "identification": "identified",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/2/level2_2026W31_1B_0385_2D2_spx_l2b-v27-2026-224.fits?center=232.937023,-20.529200&size=0.2266",
+      "source_sha256": "6eef1a950772bd58cdf2561f38737d1d9c7c3bd7052e57333a3d2b07dcf214a5",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/2/level2_2026W31_1B_0508_1D2_spx_l2b-v27-2026-224.fits?center=232.937023,-20.529200&size=0.2266",
+        "status": "ok",
+        "source_sha256": "23aa985608b4ae62c0608d32be1348fd8b1041cc441ddf12935d4e2a3347a3de",
+        "source_bytes": 4230720,
+        "downloaded_utc": "2026-11-14T22:12:11Z",
+        "obs_id": "2026W31_1B_0508_1",
+        "t_mjd": 61250.646155
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.94905532,
+          "dec_deg": -20.53186234,
+          "snr": 0.0,
+          "peak_snr": 216.95,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 38.846,
+          "offset_north_arcsec": -9.477,
+          "distance_arcsec": 39.985,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93951191,
+          "dec_deg": -20.52948136,
+          "snr": 31.55,
+          "peak_snr": 77.9,
+          "fit_status": "measured",
+          "offset_east_arcsec": 6.672,
+          "offset_north_arcsec": -0.904,
+          "distance_arcsec": 6.733,
+          "static_check": {
+            "checked_against": "2026W31_1B_0508_1",
+            "static_source": false,
+            "probe_snr": 1.46
+          },
+          "passes": true
+        },
+        {
+          "ra_deg": 232.94198727,
+          "dec_deg": -20.5355245,
+          "snr": 14.63,
+          "peak_snr": 66.07,
+          "fit_status": "measured",
+          "offset_east_arcsec": 15.017,
+          "offset_north_arcsec": -22.66,
+          "distance_arcsec": 27.184,
+          "static_check": {
+            "checked_against": "2026W31_1B_0508_1",
+            "static_source": true,
+            "probe_snr": 17.38
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.9303737,
+          "dec_deg": -20.52802374,
+          "snr": 26.81,
+          "peak_snr": 29.92,
+          "fit_status": "measured",
+          "offset_east_arcsec": -24.136,
+          "offset_north_arcsec": 4.343,
+          "distance_arcsec": 24.524,
+          "static_check": {
+            "checked_against": "2026W31_1B_0508_1",
+            "static_source": true,
+            "probe_snr": 28.59
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94124602,
+          "dec_deg": -20.51942874,
+          "snr": 0.0,
+          "peak_snr": 18.79,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 12.519,
+          "offset_north_arcsec": 35.285,
+          "distance_arcsec": 37.44,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94785764,
+          "dec_deg": -20.52275103,
+          "snr": 0.0,
+          "peak_snr": 10.66,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 34.81,
+          "offset_north_arcsec": 23.324,
+          "distance_arcsec": 41.902,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94931606,
+          "dec_deg": -20.54428525,
+          "snr": 0.0,
+          "peak_snr": 7.99,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 39.722,
+          "offset_north_arcsec": -54.2,
+          "distance_arcsec": 67.197,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95566765,
+          "dec_deg": -20.53518496,
+          "snr": 0.0,
+          "peak_snr": 7.99,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 61.137,
+          "offset_north_arcsec": -21.441,
+          "distance_arcsec": 64.787,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95196991,
+          "dec_deg": -20.51489001,
+          "snr": 0.0,
+          "peak_snr": 7.56,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 48.677,
+          "offset_north_arcsec": 51.623,
+          "distance_arcsec": 70.953,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.92849215,
+          "dec_deg": -20.5111291,
+          "snr": 0.0,
+          "peak_snr": 7.27,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -30.483,
+          "offset_north_arcsec": 65.163,
+          "distance_arcsec": 71.941,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.9471286,
+          "dec_deg": -20.51198451,
+          "snr": 0.0,
+          "peak_snr": 6.97,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 32.355,
+          "offset_north_arcsec": 62.084,
+          "distance_arcsec": 70.008,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94624394,
+          "dec_deg": -20.54179603,
+          "snr": 0.0,
+          "peak_snr": 6.47,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 29.366,
+          "offset_north_arcsec": -45.238,
+          "distance_arcsec": 53.933,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.92921959,
+          "dec_deg": -20.52189526,
+          "snr": 0.0,
+          "peak_snr": 5.87,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -28.028,
+          "offset_north_arcsec": 26.405,
+          "distance_arcsec": 38.507,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93999554,
+          "dec_deg": -20.54385696,
+          "snr": 0.0,
+          "peak_snr": 5.78,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 8.302,
+          "offset_north_arcsec": -52.656,
+          "distance_arcsec": 53.307,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93609069,
+          "dec_deg": -20.53763986,
+          "snr": 0.0,
+          "peak_snr": 5.74,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -4.862,
+          "offset_north_arcsec": -30.275,
+          "distance_arcsec": 30.663,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93692353,
+          "dec_deg": -20.54136781,
+          "snr": 0.0,
+          "peak_snr": 5.69,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -2.054,
+          "offset_north_arcsec": -43.695,
+          "distance_arcsec": 43.744,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W31_1B_0385_3_D5",
+      "t_mjd": 61250.038425,
+      "detector": 5,
+      "model": {
+        "ra_deg": 232.93766557,
+        "dec_deg": -20.52912737
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/5/level2_2026W31_1B_0385_3D5_spx_l2b-v27-2026-224.fits?center=232.937157,-20.529260&size=0.2266",
+      "source_sha256": "c1cd6faa6b5f4ef1b6ef57273772bde070b1fc147537eafa63ce521c6466c8c0",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/5/level2_2026W31_1B_0508_1D5_spx_l2b-v27-2026-224.fits?center=232.937157,-20.529260&size=0.2266",
+        "status": "ok",
+        "source_sha256": "a334c02cad2fa3217c4e65011d16bbd436062eb45af609560d9f63324199ee68",
+        "source_bytes": 4227840,
+        "downloaded_utc": "2026-11-14T22:12:55Z",
+        "obs_id": "2026W31_1B_0508_1",
+        "t_mjd": 61250.646155
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.9491408,
+          "dec_deg": -20.5321336,
+          "snr": 0.0,
+          "peak_snr": 76.06,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 38.687,
+          "offset_north_arcsec": -10.824,
+          "distance_arcsec": 40.172,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94029779,
+          "dec_deg": -20.5300093,
+          "snr": 0.0,
+          "peak_snr": 23.7,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 8.874,
+          "offset_north_arcsec": -3.175,
+          "distance_arcsec": 9.425,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.9424038,
+          "dec_deg": -20.53582152,
+          "snr": 0.0,
+          "peak_snr": 14.38,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 15.974,
+          "offset_north_arcsec": -24.099,
+          "distance_arcsec": 28.912,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.94268308,
+          "dec_deg": -20.52173862,
+          "snr": 0.0,
+          "peak_snr": 7.56,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 16.917,
+          "offset_north_arcsec": 26.599,
+          "distance_arcsec": 31.523,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93145484,
+          "dec_deg": -20.52788511,
+          "snr": 0.0,
+          "peak_snr": 6.35,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -20.939,
+          "offset_north_arcsec": 4.472,
+          "distance_arcsec": 21.411,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.9405773,
+          "dec_deg": -20.51592669,
+          "snr": 0.0,
+          "peak_snr": 5.98,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 9.817,
+          "offset_north_arcsec": 47.522,
+          "distance_arcsec": 48.526,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W31_1B_0385_4_D5",
+      "t_mjd": 61250.039917,
+      "detector": 5,
+      "model": {
+        "ra_deg": 232.93778979,
+        "dec_deg": -20.52902632
+      },
+      "identification": "identified",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/5/level2_2026W31_1B_0385_4D5_spx_l2b-v27-2026-224.fits?center=232.937291,-20.529320&size=0.2266",
+      "source_sha256": "b0b6e67c9277c7ad68ac87d0d511bdfa2951cae714eed201c9b547e3c5f0d67c",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/5/level2_2026W31_1B_0508_1D5_spx_l2b-v27-2026-224.fits?center=232.937291,-20.529320&size=0.2266",
+        "status": "ok",
+        "source_sha256": "a334c02cad2fa3217c4e65011d16bbd436062eb45af609560d9f63324199ee68",
+        "source_bytes": 4227840,
+        "downloaded_utc": "2026-11-14T22:13:52Z",
+        "obs_id": "2026W31_1B_0508_1",
+        "t_mjd": 61250.646155
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.94956092,
+          "dec_deg": -20.53371269,
+          "snr": 0.0,
+          "peak_snr": 71.11,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 39.684,
+          "offset_north_arcsec": -16.872,
+          "distance_arcsec": 43.122,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.93976833,
+          "dec_deg": -20.52930268,
+          "snr": 24.5,
+          "peak_snr": 29.14,
+          "fit_status": "measured",
+          "offset_east_arcsec": 6.67,
+          "offset_north_arcsec": -0.995,
+          "distance_arcsec": 6.744,
+          "static_check": {
+            "checked_against": "2026W31_1B_0508_1",
+            "static_source": false,
+            "probe_snr": 0.59
+          },
+          "passes": true
+        },
+        {
+          "ra_deg": 232.94153533,
+          "dec_deg": -20.53532031,
+          "snr": 0.0,
+          "peak_snr": 12.89,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 12.627,
+          "offset_north_arcsec": -22.659,
+          "distance_arcsec": 25.939,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.9305908,
+          "dec_deg": -20.52738733,
+          "snr": 0.0,
+          "peak_snr": 8.22,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -24.271,
+          "offset_north_arcsec": 5.9,
+          "distance_arcsec": 24.978,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.940524,
+          "dec_deg": -20.51916658,
+          "snr": 0.0,
+          "peak_snr": 6.33,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 9.219,
+          "offset_north_arcsec": 35.495,
+          "distance_arcsec": 36.673,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W31_1B_0463_1_D4",
+      "t_mjd": 61250.444887,
+      "detector": 4,
+      "model": {
+        "ra_deg": 232.97463165,
+        "dec_deg": -20.54555981
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/4/level2_2026W31_1B_0463_1D4_spx_l2b-v27-2026-224.fits?center=232.974127,-20.545604&size=0.2265",
+      "source_sha256": "04c96b2c53c0d18a95e77270d0985707dd0cf8335824ad7b6f6cc6de2e77fce6",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/4/level2_2026W31_1B_0198_4D4_spx_l2b-v27-2026-224.fits?center=232.974127,-20.545604&size=0.2265",
+        "status": "ok",
+        "source_sha256": "1856d12b5c39e4c6fb14c689c9cbf27db8a370a9856d4433d8470126165939f6",
+        "source_bytes": 4227840,
+        "downloaded_utc": "2026-11-14T22:14:49Z",
+        "obs_id": "2026W31_1B_0198_4",
+        "t_mjd": 61249.021391
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.9682373,
+          "dec_deg": -20.56108479,
+          "snr": 16.31,
+          "peak_snr": 44.72,
+          "fit_status": "measured",
+          "offset_east_arcsec": -21.553,
+          "offset_north_arcsec": -55.89,
+          "distance_arcsec": 59.902,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 20.08
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.9598894,
+          "dec_deg": -20.55739662,
+          "snr": 22.07,
+          "peak_snr": 28.29,
+          "fit_status": "measured",
+          "offset_east_arcsec": -49.693,
+          "offset_north_arcsec": -42.615,
+          "distance_arcsec": 65.463,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 15.85
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98339166,
+          "dec_deg": -20.55662179,
+          "snr": 20.85,
+          "peak_snr": 27.79,
+          "fit_status": "measured",
+          "offset_east_arcsec": 29.528,
+          "offset_north_arcsec": -39.824,
+          "distance_arcsec": 49.577,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 16.49
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98777361,
+          "dec_deg": -20.54851603,
+          "snr": 12.94,
+          "peak_snr": 27.48,
+          "fit_status": "measured",
+          "offset_east_arcsec": 44.301,
+          "offset_north_arcsec": -10.644,
+          "distance_arcsec": 45.562,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 18.87
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95566632,
+          "dec_deg": -20.55356561,
+          "snr": 0.0,
+          "peak_snr": 23.08,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -63.929,
+          "offset_north_arcsec": -28.825,
+          "distance_arcsec": 70.127,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95357743,
+          "dec_deg": -20.54785911,
+          "snr": 0.0,
+          "peak_snr": 10.29,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -70.973,
+          "offset_north_arcsec": -8.282,
+          "distance_arcsec": 71.455,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.9903152,
+          "dec_deg": -20.5453535,
+          "snr": 0.0,
+          "peak_snr": 6.66,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 52.87,
+          "offset_north_arcsec": 0.74,
+          "distance_arcsec": 52.875,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98088514,
+          "dec_deg": -20.56430755,
+          "snr": 0.0,
+          "peak_snr": 6.4,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 21.078,
+          "offset_north_arcsec": -67.492,
+          "distance_arcsec": 70.707,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97670544,
+          "dec_deg": -20.55289395,
+          "snr": 0.0,
+          "peak_snr": 5.9,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 6.99,
+          "offset_north_arcsec": -26.403,
+          "distance_arcsec": 27.313,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97332627,
+          "dec_deg": -20.54515601,
+          "snr": 0.0,
+          "peak_snr": 5.44,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -4.4,
+          "offset_north_arcsec": 1.454,
+          "distance_arcsec": 4.634,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95891472,
+          "dec_deg": -20.54902097,
+          "snr": 0.0,
+          "peak_snr": 5.33,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -52.981,
+          "offset_north_arcsec": -12.463,
+          "distance_arcsec": 54.427,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97657347,
+          "dec_deg": -20.5406113,
+          "snr": 0.0,
+          "peak_snr": 5.09,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 6.546,
+          "offset_north_arcsec": 17.815,
+          "distance_arcsec": 18.979,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98542231,
+          "dec_deg": -20.56179408,
+          "snr": 0.0,
+          "peak_snr": 5.08,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 36.372,
+          "offset_north_arcsec": -58.445,
+          "distance_arcsec": 68.838,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W31_1B_0463_2_D1",
+      "t_mjd": 61250.446379,
+      "detector": 1,
+      "model": {
+        "ra_deg": 232.97476446,
+        "dec_deg": -20.5454577
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/1/level2_2026W31_1B_0463_2D1_spx_l2b-v27-2026-224.fits?center=232.974265,-20.545664&size=0.2265",
+      "source_sha256": "bed9abe09ada2c124e40c0d9761eea2ea64219d069ddcc617978f5e234f208e6",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/1/level2_2026W31_1B_0198_4D1_spx_l2b-v27-2026-224.fits?center=232.974265,-20.545664&size=0.2265",
+        "status": "ok",
+        "source_sha256": "e8f05eb7228c1a9767c5fa7cb80d8be963b71f9965216d7a5d68b4107a69eff3",
+        "source_bytes": 4230720,
+        "downloaded_utc": "2026-11-14T22:17:05Z",
+        "obs_id": "2026W31_1B_0198_4",
+        "t_mjd": 61249.021391
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.96813415,
+          "dec_deg": -20.56109166,
+          "snr": 19.83,
+          "peak_snr": 69.9,
+          "fit_status": "measured",
+          "offset_east_arcsec": -22.349,
+          "offset_north_arcsec": -56.283,
+          "distance_arcsec": 60.557,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 20.09
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98332089,
+          "dec_deg": -20.55659394,
+          "snr": 15.52,
+          "peak_snr": 49.38,
+          "fit_status": "measured",
+          "offset_east_arcsec": 28.842,
+          "offset_north_arcsec": -40.091,
+          "distance_arcsec": 49.388,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 14.54
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98770376,
+          "dec_deg": -20.54856447,
+          "snr": 15.55,
+          "peak_snr": 48.8,
+          "fit_status": "measured",
+          "offset_east_arcsec": 43.618,
+          "offset_north_arcsec": -11.186,
+          "distance_arcsec": 45.029,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 18.63
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95985254,
+          "dec_deg": -20.55743158,
+          "snr": 39.09,
+          "peak_snr": 44.26,
+          "fit_status": "measured",
+          "offset_east_arcsec": -50.264,
+          "offset_north_arcsec": -43.108,
+          "distance_arcsec": 66.218,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 37.25
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95628836,
+          "dec_deg": -20.55376257,
+          "snr": 0.0,
+          "peak_snr": 23.61,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -62.28,
+          "offset_north_arcsec": -29.901,
+          "distance_arcsec": 69.086,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.99476687,
+          "dec_deg": -20.55458253,
+          "snr": 17.22,
+          "peak_snr": 20.25,
+          "fit_status": "measured",
+          "offset_east_arcsec": 67.424,
+          "offset_north_arcsec": -32.854,
+          "distance_arcsec": 75.003,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 12.03
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98198131,
+          "dec_deg": -20.5628127,
+          "snr": 0.0,
+          "peak_snr": 13.3,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 24.325,
+          "offset_north_arcsec": -62.479,
+          "distance_arcsec": 67.047,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.96211237,
+          "dec_deg": -20.53404877,
+          "snr": 0.0,
+          "peak_snr": 6.21,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -42.654,
+          "offset_north_arcsec": 41.071,
+          "distance_arcsec": 59.212,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.99087087,
+          "dec_deg": -20.54550927,
+          "snr": 0.0,
+          "peak_snr": 6.07,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 54.295,
+          "offset_north_arcsec": -0.188,
+          "distance_arcsec": 54.295,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97341991,
+          "dec_deg": -20.54697963,
+          "snr": 0.0,
+          "peak_snr": 5.95,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -4.532,
+          "offset_north_arcsec": -5.479,
+          "distance_arcsec": 7.111,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.96566147,
+          "dec_deg": -20.55404112,
+          "snr": 0.0,
+          "peak_snr": 5.6,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -30.685,
+          "offset_north_arcsec": -30.901,
+          "distance_arcsec": 43.548,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95564584,
+          "dec_deg": -20.54313712,
+          "snr": 0.0,
+          "peak_snr": 5.58,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -64.45,
+          "offset_north_arcsec": 8.35,
+          "distance_arcsec": 64.989,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97503421,
+          "dec_deg": -20.55431965,
+          "snr": 0.0,
+          "peak_snr": 5.42,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 0.909,
+          "offset_north_arcsec": -31.903,
+          "distance_arcsec": 31.916,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W31_1B_0463_3_D4",
+      "t_mjd": 61250.447871,
+      "detector": 4,
+      "model": {
+        "ra_deg": 232.97488895,
+        "dec_deg": -20.54536005
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/4/level2_2026W31_1B_0463_3D4_spx_l2b-v27-2026-224.fits?center=232.974402,-20.545724&size=0.2265",
+      "source_sha256": "b5bc74942d4a1688253b1aaa426bc732caf93b969b79bc79fb186e73dd8d33ca",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/4/level2_2026W31_1B_0198_4D4_spx_l2b-v27-2026-224.fits?center=232.974402,-20.545724&size=0.2265",
+        "status": "ok",
+        "source_sha256": "1856d12b5c39e4c6fb14c689c9cbf27db8a370a9856d4433d8470126165939f6",
+        "source_bytes": 4227840,
+        "downloaded_utc": "2026-11-14T22:17:48Z",
+        "obs_id": "2026W31_1B_0198_4",
+        "t_mjd": 61249.021391
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.96818442,
+          "dec_deg": -20.56104973,
+          "snr": 17.23,
+          "peak_snr": 36.62,
+          "fit_status": "measured",
+          "offset_east_arcsec": -22.599,
+          "offset_north_arcsec": -56.483,
+          "distance_arcsec": 60.836,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 20.08
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98324066,
+          "dec_deg": -20.55669063,
+          "snr": 10.14,
+          "peak_snr": 26.05,
+          "fit_status": "measured",
+          "offset_east_arcsec": 28.152,
+          "offset_north_arcsec": -40.791,
+          "distance_arcsec": 49.562,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 16.49
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.959879,
+          "dec_deg": -20.55739326,
+          "snr": 14.96,
+          "peak_snr": 25.93,
+          "fit_status": "measured",
+          "offset_east_arcsec": -50.595,
+          "offset_north_arcsec": -43.322,
+          "distance_arcsec": 66.608,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 15.85
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95517599,
+          "dec_deg": -20.55378109,
+          "snr": 0.0,
+          "peak_snr": 21.19,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -66.449,
+          "offset_north_arcsec": -30.32,
+          "distance_arcsec": 73.04,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98703185,
+          "dec_deg": -20.54848755,
+          "snr": 0.0,
+          "peak_snr": 20.92,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 40.933,
+          "offset_north_arcsec": -11.261,
+          "distance_arcsec": 42.454,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95308855,
+          "dec_deg": -20.54807705,
+          "snr": 0.0,
+          "peak_snr": 10.11,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -73.488,
+          "offset_north_arcsec": -9.786,
+          "distance_arcsec": 74.137,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95842017,
+          "dec_deg": -20.54924067,
+          "snr": 0.0,
+          "peak_snr": 6.24,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -55.515,
+          "offset_north_arcsec": -13.973,
+          "distance_arcsec": 57.247,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98263477,
+          "dec_deg": -20.56327317,
+          "snr": 0.0,
+          "peak_snr": 6.17,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 26.108,
+          "offset_north_arcsec": -64.488,
+          "distance_arcsec": 69.572,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.9757033,
+          "dec_deg": -20.55476229,
+          "snr": 0.0,
+          "peak_snr": 5.48,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 2.745,
+          "offset_north_arcsec": -33.848,
+          "distance_arcsec": 33.959,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97765796,
+          "dec_deg": -20.54819103,
+          "snr": 0.0,
+          "peak_snr": 5.12,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 9.334,
+          "offset_north_arcsec": -10.192,
+          "distance_arcsec": 13.82,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W31_1B_0463_3_D1",
+      "t_mjd": 61250.447871,
+      "detector": 1,
+      "model": {
+        "ra_deg": 232.97488895,
+        "dec_deg": -20.54536005
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/1/level2_2026W31_1B_0463_3D1_spx_l2b-v27-2026-224.fits?center=232.974402,-20.545724&size=0.2265",
+      "source_sha256": "194707585b2503c0be8c8168e6cbc230d25a12c4718b354b173fcc1dd39212af",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/1/level2_2026W31_1B_0198_4D1_spx_l2b-v27-2026-224.fits?center=232.974402,-20.545724&size=0.2265",
+        "status": "ok",
+        "source_sha256": "e8f05eb7228c1a9767c5fa7cb80d8be963b71f9965216d7a5d68b4107a69eff3",
+        "source_bytes": 4230720,
+        "downloaded_utc": "2026-11-14T22:18:20Z",
+        "obs_id": "2026W31_1B_0198_4",
+        "t_mjd": 61249.021391
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.96811942,
+          "dec_deg": -20.56102595,
+          "snr": 21.03,
+          "peak_snr": 72.39,
+          "fit_status": "measured",
+          "offset_east_arcsec": -22.818,
+          "offset_north_arcsec": -56.398,
+          "distance_arcsec": 60.839,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 20.09
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98327929,
+          "dec_deg": -20.55661263,
+          "snr": 15.78,
+          "peak_snr": 60.23,
+          "fit_status": "measured",
+          "offset_east_arcsec": 28.282,
+          "offset_north_arcsec": -40.51,
+          "distance_arcsec": 49.406,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 15.31
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98785264,
+          "dec_deg": -20.54859104,
+          "snr": 19.95,
+          "peak_snr": 57.37,
+          "fit_status": "measured",
+          "offset_east_arcsec": 43.7,
+          "offset_north_arcsec": -11.633,
+          "distance_arcsec": 45.222,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 19.23
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95992307,
+          "dec_deg": -20.5574034,
+          "snr": 13.15,
+          "peak_snr": 55.42,
+          "fit_status": "measured",
+          "offset_east_arcsec": -50.446,
+          "offset_north_arcsec": -43.358,
+          "distance_arcsec": 66.519,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 35.94
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95462667,
+          "dec_deg": -20.55372513,
+          "snr": 0.0,
+          "peak_snr": 37.75,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -68.301,
+          "offset_north_arcsec": -30.119,
+          "distance_arcsec": 74.647,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.99435872,
+          "dec_deg": -20.553591,
+          "snr": 0.0,
+          "peak_snr": 36.9,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 65.629,
+          "offset_north_arcsec": -29.635,
+          "distance_arcsec": 72.01,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98208278,
+          "dec_deg": -20.56316417,
+          "snr": 0.0,
+          "peak_snr": 34.15,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 24.248,
+          "offset_north_arcsec": -64.095,
+          "distance_arcsec": 68.529,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95641055,
+          "dec_deg": -20.53489136,
+          "snr": 0.0,
+          "peak_snr": 30.7,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -62.295,
+          "offset_north_arcsec": 37.684,
+          "distance_arcsec": 72.806,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.99177515,
+          "dec_deg": -20.54953707,
+          "snr": 0.0,
+          "peak_snr": 30.25,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 56.922,
+          "offset_north_arcsec": -15.04,
+          "distance_arcsec": 58.876,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.974011,
+          "dec_deg": -20.54569091,
+          "snr": 0.0,
+          "peak_snr": 30.15,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -2.96,
+          "offset_north_arcsec": -1.191,
+          "distance_arcsec": 3.19,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.96642023,
+          "dec_deg": -20.54579473,
+          "snr": 0.0,
+          "peak_snr": 29.59,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -28.548,
+          "offset_north_arcsec": -1.566,
+          "distance_arcsec": 28.591,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95947823,
+          "dec_deg": -20.53730275,
+          "snr": 0.0,
+          "peak_snr": 29.49,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -51.953,
+          "offset_north_arcsec": 29.004,
+          "distance_arcsec": 59.5,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.96658376,
+          "dec_deg": -20.53884111,
+          "snr": 0.0,
+          "peak_snr": 29.48,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -27.998,
+          "offset_north_arcsec": 23.467,
+          "distance_arcsec": 36.532,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97029976,
+          "dec_deg": -20.53265671,
+          "snr": 0.0,
+          "peak_snr": 29.47,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -15.472,
+          "offset_north_arcsec": 45.732,
+          "distance_arcsec": 48.278,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97934028,
+          "dec_deg": -20.54684474,
+          "snr": 0.0,
+          "peak_snr": 29.34,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 15.005,
+          "offset_north_arcsec": -5.345,
+          "distance_arcsec": 15.929,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.96754814,
+          "dec_deg": -20.55477535,
+          "snr": 0.0,
+          "peak_snr": 29.32,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -24.744,
+          "offset_north_arcsec": -33.896,
+          "distance_arcsec": 41.967,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.96221835,
+          "dec_deg": -20.55362143,
+          "snr": 0.0,
+          "peak_snr": 29.25,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -42.711,
+          "offset_north_arcsec": -29.743,
+          "distance_arcsec": 52.046,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95834405,
+          "dec_deg": -20.54754077,
+          "snr": 0.0,
+          "peak_snr": 29.15,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -55.772,
+          "offset_north_arcsec": -7.853,
+          "distance_arcsec": 56.323,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97675713,
+          "dec_deg": -20.54279095,
+          "snr": 0.0,
+          "peak_snr": 29.13,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 6.298,
+          "offset_north_arcsec": 9.249,
+          "distance_arcsec": 11.189,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95979941,
+          "dec_deg": -20.54261404,
+          "snr": 0.0,
+          "peak_snr": 29.13,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -50.868,
+          "offset_north_arcsec": 9.883,
+          "distance_arcsec": 51.819,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.96222467,
+          "dec_deg": -20.53440288,
+          "snr": 0.0,
+          "peak_snr": 29.11,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -42.695,
+          "offset_north_arcsec": 39.444,
+          "distance_arcsec": 58.126,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97804456,
+          "dec_deg": -20.56403717,
+          "snr": 0.0,
+          "peak_snr": 29.11,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 10.636,
+          "offset_north_arcsec": -67.238,
+          "distance_arcsec": 68.074,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98790001,
+          "dec_deg": -20.54345627,
+          "snr": 0.0,
+          "peak_snr": 29.06,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 43.861,
+          "offset_north_arcsec": 6.852,
+          "distance_arcsec": 44.393,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98305573,
+          "dec_deg": -20.54066018,
+          "snr": 0.0,
+          "peak_snr": 29.06,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 27.531,
+          "offset_north_arcsec": 16.919,
+          "distance_arcsec": 32.314,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98014708,
+          "dec_deg": -20.55051397,
+          "snr": 0.0,
+          "peak_snr": 28.99,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 17.725,
+          "offset_north_arcsec": -18.554,
+          "distance_arcsec": 25.66,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97481766,
+          "dec_deg": -20.54936009,
+          "snr": 0.0,
+          "peak_snr": 28.99,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -0.24,
+          "offset_north_arcsec": -14.4,
+          "distance_arcsec": 14.402,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98015053,
+          "dec_deg": -20.53129505,
+          "snr": 0.0,
+          "peak_snr": 28.97,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 17.739,
+          "offset_north_arcsec": 50.634,
+          "distance_arcsec": 53.651,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98208625,
+          "dec_deg": -20.54394476,
+          "snr": 0.0,
+          "peak_snr": 28.91,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 24.262,
+          "offset_north_arcsec": 5.095,
+          "distance_arcsec": 24.792,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97513942,
+          "dec_deg": -20.55467162,
+          "snr": 0.0,
+          "peak_snr": 28.82,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 0.844,
+          "offset_north_arcsec": -33.522,
+          "distance_arcsec": 33.532,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98709302,
+          "dec_deg": -20.53978707,
+          "snr": 0.0,
+          "peak_snr": 28.76,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 41.142,
+          "offset_north_arcsec": 20.061,
+          "distance_arcsec": 45.772,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98499447,
+          "dec_deg": -20.53409103,
+          "snr": 0.0,
+          "peak_snr": 28.72,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 34.068,
+          "offset_north_arcsec": 40.567,
+          "distance_arcsec": 52.975,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97562856,
+          "dec_deg": -20.53381043,
+          "snr": 0.0,
+          "peak_snr": 28.71,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 2.493,
+          "offset_north_arcsec": 41.579,
+          "distance_arcsec": 41.653,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97595043,
+          "dec_deg": -20.5391218,
+          "snr": 0.0,
+          "peak_snr": 28.69,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 3.578,
+          "offset_north_arcsec": 22.458,
+          "distance_arcsec": 22.741,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97918107,
+          "dec_deg": -20.53457958,
+          "snr": 0.0,
+          "peak_snr": 28.68,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 14.47,
+          "offset_north_arcsec": 38.809,
+          "distance_arcsec": 41.419,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.96851821,
+          "dec_deg": -20.55149078,
+          "snr": 0.0,
+          "peak_snr": 28.62,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -21.475,
+          "offset_north_arcsec": -22.071,
+          "distance_arcsec": 30.795,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.96545587,
+          "dec_deg": -20.52986078,
+          "snr": 0.0,
+          "peak_snr": 28.6,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -31.802,
+          "offset_north_arcsec": 55.796,
+          "distance_arcsec": 64.223,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98596374,
+          "dec_deg": -20.53080648,
+          "snr": 0.0,
+          "peak_snr": 28.58,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 37.337,
+          "offset_north_arcsec": 52.392,
+          "distance_arcsec": 64.334,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.99129222,
+          "dec_deg": -20.53196017,
+          "snr": 0.0,
+          "peak_snr": 28.46,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 55.301,
+          "offset_north_arcsec": 48.237,
+          "distance_arcsec": 73.382,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.99112824,
+          "dec_deg": -20.55813341,
+          "snr": 0.0,
+          "peak_snr": 28.42,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 54.738,
+          "offset_north_arcsec": -45.987,
+          "distance_arcsec": 71.492,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97579144,
+          "dec_deg": -20.52685687,
+          "snr": 0.0,
+          "peak_snr": 28.22,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 3.043,
+          "offset_north_arcsec": 66.611,
+          "distance_arcsec": 66.681,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98111991,
+          "dec_deg": -20.52801053,
+          "snr": 0.0,
+          "peak_snr": 28.13,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 21.007,
+          "offset_north_arcsec": 62.458,
+          "distance_arcsec": 65.896,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W31_1B_0463_4_D4",
+      "t_mjd": 61250.449364,
+      "detector": 4,
+      "model": {
+        "ra_deg": 232.97500539,
+        "dec_deg": -20.54526986
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/4/level2_2026W31_1B_0463_4D4_spx_l2b-v27-2026-224.fits?center=232.974540,-20.545785&size=0.2265",
+      "source_sha256": "78f9af4bccdd4281b0ffb71a7ba59f4f216dcc32db736c66940ce50cfdfe9d3d",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W31_1B/l2b-v27-2026-224/4/level2_2026W31_1B_0198_4D4_spx_l2b-v27-2026-224.fits?center=232.974540,-20.545785&size=0.2265",
+        "status": "ok",
+        "source_sha256": "1856d12b5c39e4c6fb14c689c9cbf27db8a370a9856d4433d8470126165939f6",
+        "source_bytes": 4227840,
+        "downloaded_utc": "2026-11-14T22:18:57Z",
+        "obs_id": "2026W31_1B_0198_4",
+        "t_mjd": 61249.021391
+      },
+      "candidates": [
+        {
+          "ra_deg": 232.96827808,
+          "dec_deg": -20.56108838,
+          "snr": 17.67,
+          "peak_snr": 36.14,
+          "fit_status": "measured",
+          "offset_east_arcsec": -22.676,
+          "offset_north_arcsec": -56.947,
+          "distance_arcsec": 61.296,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 19.56
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95999838,
+          "dec_deg": -20.55737386,
+          "snr": 16.92,
+          "peak_snr": 28.91,
+          "fit_status": "measured",
+          "offset_east_arcsec": -50.585,
+          "offset_north_arcsec": -43.577,
+          "distance_arcsec": 66.767,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 15.85
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98340027,
+          "dec_deg": -20.55679629,
+          "snr": 14.39,
+          "peak_snr": 28.39,
+          "fit_status": "measured",
+          "offset_east_arcsec": 28.297,
+          "offset_north_arcsec": -41.496,
+          "distance_arcsec": 50.226,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 16.49
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98786725,
+          "dec_deg": -20.5486579,
+          "snr": 12.42,
+          "peak_snr": 22.86,
+          "fit_status": "measured",
+          "offset_east_arcsec": 43.357,
+          "offset_north_arcsec": -12.199,
+          "distance_arcsec": 45.04,
+          "static_check": {
+            "checked_against": "2026W31_1B_0198_4",
+            "static_source": true,
+            "probe_snr": 18.87
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95556161,
+          "dec_deg": -20.5541145,
+          "snr": 0.0,
+          "peak_snr": 19.4,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -65.542,
+          "offset_north_arcsec": -31.845,
+          "distance_arcsec": 72.868,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.95347504,
+          "dec_deg": -20.54841192,
+          "snr": 0.0,
+          "peak_snr": 10.59,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -72.578,
+          "offset_north_arcsec": -11.316,
+          "distance_arcsec": 73.455,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98300589,
+          "dec_deg": -20.56361146,
+          "snr": 0.0,
+          "peak_snr": 7.47,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 26.967,
+          "offset_north_arcsec": -66.03,
+          "distance_arcsec": 71.325,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.97949586,
+          "dec_deg": -20.5436072,
+          "snr": 0.0,
+          "peak_snr": 5.78,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 15.138,
+          "offset_north_arcsec": 5.985,
+          "distance_arcsec": 16.278,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 232.98029547,
+          "dec_deg": -20.54727956,
+          "snr": 0.0,
+          "peak_snr": 5.49,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 17.833,
+          "offset_north_arcsec": -7.235,
+          "distance_arcsec": 19.245,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    }
+  ],
+  "horizons_after_verdict": {
+    "source": "JPL Horizons API, COMMAND '363;', geocentric astrometric RA/Dec moved to the spacecraft with the FITS header position and Horizons delta",
+    "queried_utc": "2026-11-14T22:32:38Z",
+    "after_verdict": true,
+    "exploratory": true,
+    "counts": false,
+    "note": "after the verdict; it does not change the status. D^2 uses the frozen C_pred only (no measurement term), so it asks whether the catalogue position lay inside the frozen 95% region.",
+    "per_exposure": [
+      {
+        "obs_key": "2026W31_1B_0385_1_D2",
+        "t_mjd": 61250.03544,
+        "horizons_ra_deg": 232.93938633,
+        "horizons_dec_deg": -20.52955555,
+        "horizons_minus_primary_arcsec": [
+          6.725,
+          -0.797
+        ],
+        "primary_d2_vs_horizons": 0.3847,
+        "horizons_minus_secondary_arcsec": [
+          -53.263,
+          9.182
+        ],
+        "secondary_d2_vs_horizons": 0.3682
+      },
+      {
+        "obs_key": "2026W31_1B_0385_2_D5",
+        "t_mjd": 61250.036933,
+        "horizons_ra_deg": 232.93952757,
+        "horizons_dec_deg": -20.52945151,
+        "horizons_minus_primary_arcsec": [
+          6.725,
+          -0.797
+        ],
+        "primary_d2_vs_horizons": 0.3847,
+        "horizons_minus_secondary_arcsec": [
+          -53.262,
+          9.183
+        ],
+        "secondary_d2_vs_horizons": 0.3682
+      },
+      {
+        "obs_key": "2026W31_1B_0385_2_D2",
+        "t_mjd": 61250.036933,
+        "horizons_ra_deg": 232.93952757,
+        "horizons_dec_deg": -20.52945151,
+        "horizons_minus_primary_arcsec": [
+          6.725,
+          -0.797
+        ],
+        "primary_d2_vs_horizons": 0.3847,
+        "horizons_minus_secondary_arcsec": [
+          -53.262,
+          9.183
+        ],
+        "secondary_d2_vs_horizons": 0.3682
+      },
+      {
+        "obs_key": "2026W31_1B_0385_3_D5",
+        "t_mjd": 61250.038425,
+        "horizons_ra_deg": 232.9396603,
+        "horizons_dec_deg": -20.5293487,
+        "horizons_minus_primary_arcsec": [
+          6.725,
+          -0.797
+        ],
+        "primary_d2_vs_horizons": 0.3847,
+        "horizons_minus_secondary_arcsec": [
+          -53.262,
+          9.184
+        ],
+        "secondary_d2_vs_horizons": 0.3681
+      },
+      {
+        "obs_key": "2026W31_1B_0385_4_D5",
+        "t_mjd": 61250.039917,
+        "horizons_ra_deg": 232.93978454,
+        "horizons_dec_deg": -20.52924766,
+        "horizons_minus_primary_arcsec": [
+          6.725,
+          -0.797
+        ],
+        "primary_d2_vs_horizons": 0.3847,
+        "horizons_minus_secondary_arcsec": [
+          -53.262,
+          9.184
+        ],
+        "secondary_d2_vs_horizons": 0.3681
+      },
+      {
+        "obs_key": "2026W31_1B_0463_1_D4",
+        "t_mjd": 61250.444887,
+        "horizons_ra_deg": 232.97663054,
+        "horizons_dec_deg": -20.54578136,
+        "horizons_minus_primary_arcsec": [
+          6.738,
+          -0.798
+        ],
+        "primary_d2_vs_horizons": 0.3863,
+        "horizons_minus_secondary_arcsec": [
+          -53.146,
+          9.095
+        ],
+        "secondary_d2_vs_horizons": 0.3681
+      },
+      {
+        "obs_key": "2026W31_1B_0463_2_D1",
+        "t_mjd": 61250.446379,
+        "horizons_ra_deg": 232.97676336,
+        "horizons_dec_deg": -20.54567926,
+        "horizons_minus_primary_arcsec": [
+          6.738,
+          -0.798
+        ],
+        "primary_d2_vs_horizons": 0.3863,
+        "horizons_minus_secondary_arcsec": [
+          -53.146,
+          9.096
+        ],
+        "secondary_d2_vs_horizons": 0.3681
+      },
+      {
+        "obs_key": "2026W31_1B_0463_3_D4",
+        "t_mjd": 61250.447871,
+        "horizons_ra_deg": 232.97688786,
+        "horizons_dec_deg": -20.54558162,
+        "horizons_minus_primary_arcsec": [
+          6.738,
+          -0.798
+        ],
+        "primary_d2_vs_horizons": 0.3863,
+        "horizons_minus_secondary_arcsec": [
+          -53.145,
+          9.096
+        ],
+        "secondary_d2_vs_horizons": 0.3681
+      },
+      {
+        "obs_key": "2026W31_1B_0463_3_D1",
+        "t_mjd": 61250.447871,
+        "horizons_ra_deg": 232.97688786,
+        "horizons_dec_deg": -20.54558162,
+        "horizons_minus_primary_arcsec": [
+          6.738,
+          -0.798
+        ],
+        "primary_d2_vs_horizons": 0.3863,
+        "horizons_minus_secondary_arcsec": [
+          -53.145,
+          9.096
+        ],
+        "secondary_d2_vs_horizons": 0.3681
+      },
+      {
+        "obs_key": "2026W31_1B_0463_4_D4",
+        "t_mjd": 61250.449364,
+        "horizons_ra_deg": 232.97700432,
+        "horizons_dec_deg": -20.54549143,
+        "horizons_minus_primary_arcsec": [
+          6.738,
+          -0.798
+        ],
+        "primary_d2_vs_horizons": 0.3863,
+        "horizons_minus_secondary_arcsec": [
+          -53.145,
+          9.097
+        ],
+        "secondary_d2_vs_horizons": 0.3681
+      }
+    ],
+    "primary_median_d2_vs_horizons": 0.3855,
+    "primary_median_error_vs_horizons_arcsec": 6.779,
+    "primary_inside_95_vs_horizons": true,
+    "secondary_median_d2_vs_horizons": 0.3681,
+    "secondary_median_error_vs_horizons_arcsec": 53.983,
+    "secondary_inside_95_vs_horizons": true
+  }
+}

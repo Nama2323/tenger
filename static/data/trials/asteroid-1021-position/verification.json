@@ -1,0 +1,271 @@
+{
+  "schema_version": "tenger.verification/1",
+  "contract_version": 13,
+  "trial_id": "asteroid-1021-position",
+  "prediction_sha256": "2a0360d509026ea84e4f7efe54dcb2293c4a1e5ad4c3f76c6b89642aa43e93f6",
+  "revealed_utc": "2026-11-14T22:30:47Z",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "batch_id": "asteroids-2026a",
+  "target_name": "1021 Flammario (A924 EW)",
+  "confirmation_pending": true,
+  "team_statement_pending": true,
+  "status": "insufficient_data",
+  "status_reason_key": "verify.fewer-than-3",
+  "observed": null,
+  "residuals": null,
+  "identification": {
+    "method_key": "ident.frozen-model-search",
+    "search_radius_arcsec": 20.027,
+    "listing_radius_arcsec": 30.0,
+    "min_snr": 10.0,
+    "static_snr": 5.0,
+    "static_min_dt_days": 0.5,
+    "motion": {
+      "consistent": null,
+      "chi2": null,
+      "dof": null
+    },
+    "n_exposures_searched": 4,
+    "n_identified": 0,
+    "n_ambiguous": 0
+  },
+  "candidates": [
+    {
+      "obs_key": "2026W28_1A_0564_1_D6",
+      "t_mjd": 61229.366039,
+      "detector": 6,
+      "model": {
+        "ra_deg": 346.70059269,
+        "dec_deg": -16.49557482
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W28_1A/l2b-v27-2026-275/6/level2_2026W28_1A_0564_1D6_spx_l2b-v27-2026-275.fits?center=346.701221,-16.494876&size=0.127",
+      "source_sha256": "c079b7b8064e5bb1e3cf33b66c87639b86470eb94320e25decd2a9abc7b81070",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W23_2A/l2b-v27-2026-270/6/level2_2026W23_2A_0179_1D6_spx_l2b-v27-2026-270.fits?center=346.701221,-16.494876&size=0.127",
+        "status": "ok",
+        "source_sha256": "10d6cca44c689f079a2a1e8806714fda58e578ff1fd14211905e3cd00f8a7999",
+        "source_bytes": 4032000,
+        "downloaded_utc": "2026-11-14T22:10:40Z",
+        "obs_id": "2026W23_2A_0179_1",
+        "t_mjd": 61196.508635
+      },
+      "candidates": [
+        {
+          "ra_deg": 346.7016944,
+          "dec_deg": -16.50018976,
+          "snr": 0.0,
+          "peak_snr": 5.37,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 3.803,
+          "offset_north_arcsec": -16.614,
+          "distance_arcsec": 17.043,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 346.703683,
+          "dec_deg": -16.49579441,
+          "snr": 0.0,
+          "peak_snr": 5.11,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 10.667,
+          "offset_north_arcsec": -0.791,
+          "distance_arcsec": 10.696,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W28_1A_0564_1_D3",
+      "t_mjd": 61229.366039,
+      "detector": 3,
+      "model": {
+        "ra_deg": 346.70059269,
+        "dec_deg": -16.49557482
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W28_1A/l2b-v27-2026-275/3/level2_2026W28_1A_0564_1D3_spx_l2b-v27-2026-275.fits?center=346.701221,-16.494876&size=0.127",
+      "source_sha256": "ace8c60d0fd350b29c8a2c0ca605b6f9ad95a4a5c209304a4c3c5fa3d84685e5",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W23_2A/l2b-v27-2026-270/3/level2_2026W23_2A_0179_1D3_spx_l2b-v27-2026-270.fits?center=346.701221,-16.494876&size=0.127",
+        "status": "ok",
+        "source_sha256": "1be716ae078a65ab5a52ff12e7187b9fe33dded6dbb9cd1eb71eee14cc227258",
+        "source_bytes": 4118400,
+        "downloaded_utc": "2026-11-14T22:12:27Z",
+        "obs_id": "2026W23_2A_0179_1",
+        "t_mjd": 61196.508635
+      },
+      "candidates": []
+    },
+    {
+      "obs_key": "2026W28_1A_0601_1_D6",
+      "t_mjd": 61229.501799,
+      "detector": 6,
+      "model": {
+        "ra_deg": 346.71765689,
+        "dec_deg": -16.51197588
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W28_1A/l2b-v27-2026-275/6/level2_2026W28_1A_0601_1D6_spx_l2b-v27-2026-275.fits?center=346.718290,-16.511276&size=0.1272",
+      "source_sha256": "3726013817d2a4183e26d343e0d4ee354aefc460ecc3d83c0c3702f707cf193c",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W23_2A/l2b-v27-2026-270/6/level2_2026W23_2A_0179_1D6_spx_l2b-v27-2026-270.fits?center=346.718290,-16.511276&size=0.1272",
+        "status": "ok",
+        "source_sha256": "1be92f11052a8c4941a2952441d38fa3a80145c03699f83aeb7eb2b775f8e165",
+        "source_bytes": 4032000,
+        "downloaded_utc": "2026-11-14T22:13:19Z",
+        "obs_id": "2026W23_2A_0179_1",
+        "t_mjd": 61196.508635
+      },
+      "candidates": [
+        {
+          "ra_deg": 346.71920158,
+          "dec_deg": -16.51094185,
+          "snr": 0.0,
+          "peak_snr": 13.19,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": 5.332,
+          "offset_north_arcsec": 3.722,
+          "distance_arcsec": 6.503,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        },
+        {
+          "ra_deg": 346.71622085,
+          "dec_deg": -16.51753217,
+          "snr": 0.0,
+          "peak_snr": 5.12,
+          "fit_status": "insufficient_data",
+          "offset_east_arcsec": -4.956,
+          "offset_north_arcsec": -20.003,
+          "distance_arcsec": 20.608,
+          "static_check": {
+            "checked_against": null,
+            "static_source": null,
+            "probe_snr": null
+          },
+          "passes": false
+        }
+      ]
+    },
+    {
+      "obs_key": "2026W28_1A_0601_1_D3",
+      "t_mjd": 61229.501799,
+      "detector": 3,
+      "model": {
+        "ra_deg": 346.71765689,
+        "dec_deg": -16.51197588
+      },
+      "identification": "none",
+      "cutout_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W28_1A/l2b-v27-2026-275/3/level2_2026W28_1A_0601_1D3_spx_l2b-v27-2026-275.fits?center=346.718290,-16.511276&size=0.1272",
+      "source_sha256": "1a104deb0e9c3115b6eea25a69359c14b115d377131bf0921a4c8d5ffe9a65c6",
+      "static_reference": {
+        "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W23_2A/l2b-v27-2026-270/3/level2_2026W23_2A_0179_1D3_spx_l2b-v27-2026-270.fits?center=346.718290,-16.511276&size=0.1272",
+        "status": "ok",
+        "source_sha256": "5fc5d613281734f2be086e61b26139ba8c78eb82a2a1f06b3cf44429b452701f",
+        "source_bytes": 4118400,
+        "downloaded_utc": "2026-11-14T22:14:03Z",
+        "obs_id": "2026W23_2A_0179_1",
+        "t_mjd": 61196.508635
+      },
+      "candidates": []
+    }
+  ],
+  "horizons_after_verdict": {
+    "source": "JPL Horizons API, COMMAND '1021;', geocentric astrometric RA/Dec moved to the spacecraft with the FITS header position and Horizons delta",
+    "queried_utc": "2026-11-14T22:32:37Z",
+    "after_verdict": true,
+    "exploratory": true,
+    "counts": false,
+    "note": "after the verdict; it does not change the status. D^2 uses the frozen C_pred only (no measurement term), so it asks whether the catalogue position lay inside the frozen 95% region.",
+    "per_exposure": [
+      {
+        "obs_key": "2026W28_1A_0564_1_D6",
+        "t_mjd": 61229.366039,
+        "horizons_ra_deg": 346.69874865,
+        "horizons_dec_deg": -16.49597941,
+        "horizons_minus_primary_arcsec": [
+          -6.365,
+          -1.457
+        ],
+        "primary_d2_vs_horizons": 2.0094,
+        "horizons_minus_secondary_arcsec": [
+          73.092,
+          -16.752
+        ],
+        "secondary_d2_vs_horizons": 5.6753
+      },
+      {
+        "obs_key": "2026W28_1A_0564_1_D3",
+        "t_mjd": 61229.366039,
+        "horizons_ra_deg": 346.69874865,
+        "horizons_dec_deg": -16.49597941,
+        "horizons_minus_primary_arcsec": [
+          -6.365,
+          -1.457
+        ],
+        "primary_d2_vs_horizons": 2.0094,
+        "horizons_minus_secondary_arcsec": [
+          73.092,
+          -16.752
+        ],
+        "secondary_d2_vs_horizons": 5.6753
+      },
+      {
+        "obs_key": "2026W28_1A_0601_1_D6",
+        "t_mjd": 61229.501799,
+        "horizons_ra_deg": 346.71580543,
+        "horizons_dec_deg": -16.51238161,
+        "horizons_minus_primary_arcsec": [
+          -6.39,
+          -1.461
+        ],
+        "primary_d2_vs_horizons": 2.0247,
+        "horizons_minus_secondary_arcsec": [
+          73.345,
+          -16.904
+        ],
+        "secondary_d2_vs_horizons": 5.7133
+      },
+      {
+        "obs_key": "2026W28_1A_0601_1_D3",
+        "t_mjd": 61229.501799,
+        "horizons_ra_deg": 346.71580543,
+        "horizons_dec_deg": -16.51238161,
+        "horizons_minus_primary_arcsec": [
+          -6.39,
+          -1.461
+        ],
+        "primary_d2_vs_horizons": 2.0247,
+        "horizons_minus_secondary_arcsec": [
+          73.345,
+          -16.904
+        ],
+        "secondary_d2_vs_horizons": 5.7133
+      }
+    ],
+    "primary_median_d2_vs_horizons": 2.0171,
+    "primary_median_error_vs_horizons_arcsec": 6.542,
+    "primary_inside_95_vs_horizons": true,
+    "secondary_median_d2_vs_horizons": 5.6943,
+    "secondary_median_error_vs_horizons_arcsec": 75.127,
+    "secondary_inside_95_vs_horizons": true
+  }
+}

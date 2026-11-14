@@ -1,0 +1,19 @@
+{
+  "schema_version": "tenger.verification/1",
+  "contract_version": 13,
+  "trial_id": "asteroid-286-position",
+  "prediction_sha256": "7459694a0aa2672370554e9d70fb6992240f2d2531011392cb458c4e1da35689",
+  "revealed_utc": "2026-11-14T22:30:53Z",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "batch_id": "asteroids-2026a",
+  "target_name": "286 Iclea (A889 PB)",
+  "confirmation_pending": true,
+  "team_statement_pending": true,
+  "status": "insufficient_data",
+  "status_reason_key": "predict.fewer-than-2-visits",
+  "observed": null,
+  "residuals": null
+}

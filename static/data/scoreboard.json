@@ -1,7 +1,7 @@
 {
   "schema_version": "tenger.scoreboard/1",
   "contract_version": 13,
-  "generated_utc": "2026-11-14T22:03:50Z",
+  "generated_utc": "2026-11-14T22:33:34Z",
   "derived_from": [
     {
       "path": "trials/asteroid-1021-position/trial.json",
@@ -12,12 +12,20 @@
       "sha256": "2a0360d509026ea84e4f7efe54dcb2293c4a1e5ad4c3f76c6b89642aa43e93f6"
     },
     {
+      "path": "trials/asteroid-1021-position/verification.json",
+      "sha256": "7236c087100d364660d972f7a641b9f2f15d3dda26cefbc0dcd76ed2bd5ff7e5"
+    },
+    {
       "path": "trials/asteroid-162-position/trial.json",
       "sha256": "a49e662f9cd0398b91c2da4a1d781ada6e3df47bf0f6e20049cf7d53c6eacbc8"
     },
     {
       "path": "trials/asteroid-162-position/prediction.json",
       "sha256": "485e50743fbe7db489f1c00369e80268870cfd50ccded397b8be71c304345021"
+    },
+    {
+      "path": "trials/asteroid-162-position/verification.json",
+      "sha256": "8385e796a21f6120102a5a77d432b2b7b8ea6967012cb971253a47e8d594982b"
     },
     {
       "path": "trials/asteroid-286-position/trial.json",
@@ -28,12 +36,20 @@
       "sha256": "7459694a0aa2672370554e9d70fb6992240f2d2531011392cb458c4e1da35689"
     },
     {
+      "path": "trials/asteroid-286-position/verification.json",
+      "sha256": "c31ce460f700aaaeb104a3d8f63488596ca186b5dafff75cec82e6162124b312"
+    },
+    {
       "path": "trials/asteroid-345-position/trial.json",
       "sha256": "4c52ef033ebb02968a9d0a3748bbd4bf98adf8d040fcad65e1ca6b506c092fb9"
     },
     {
       "path": "trials/asteroid-345-position/prediction.json",
       "sha256": "75032dddb27d1d90c3f960b7194d8aae2d370e5ba4bc122f0d0f0c25b32456e5"
+    },
+    {
+      "path": "trials/asteroid-345-position/verification.json",
+      "sha256": "0867419f36a42aba0ee3bdebd62df2f9c1a7f597cbb38b605af069730b353253"
     },
     {
       "path": "trials/asteroid-363-position/trial.json",
@@ -44,12 +60,20 @@
       "sha256": "e65fd4f5824f8f681d7d86c36a2636e3a1da21e4038d35c562b43fe54d796da8"
     },
     {
+      "path": "trials/asteroid-363-position/verification.json",
+      "sha256": "ada8f0644ae08f0717526d596cd23640ba1acca641c6e1108567c880ffc27aaa"
+    },
+    {
       "path": "trials/asteroid-379-position/trial.json",
       "sha256": "f5e1c61c3212fd6fff43435163c06e7e34c4fbbd7b3087e9d1895f9beb314513"
     },
     {
       "path": "trials/asteroid-379-position/prediction.json",
       "sha256": "6b1135a9253f1ca0593dd761fa94f5068a2d13840d781074e291f878944cdbd5"
+    },
+    {
+      "path": "trials/asteroid-379-position/verification.json",
+      "sha256": "d134bfb39c55b227b427f66498ff05ebb5da30649e7922f98f9d422b6c6ccdb0"
     },
     {
       "path": "trials/asteroid-491-position/trial.json",
@@ -60,12 +84,20 @@
       "sha256": "cabd0d21fb3e638400fe5c6791aa71244c514a3ab736ed9f30f54fe66defb254"
     },
     {
+      "path": "trials/asteroid-491-position/verification.json",
+      "sha256": "46a1976d55ef9c5bbaa4c922ff082385826e57fc203165399e61634e4ca8ee3a"
+    },
+    {
       "path": "trials/asteroid-714-position/trial.json",
       "sha256": "0e1a04b8fb5d07a8bc04f3d2da113890f9e8f5b1aae74b1ba51ad3c5770e28bf"
     },
     {
       "path": "trials/asteroid-714-position/prediction.json",
       "sha256": "c1ba990b5d51ac278f11388f89de9f85bf13bed75f7069740bd770cc98099fac"
+    },
+    {
+      "path": "trials/asteroid-714-position/verification.json",
+      "sha256": "fef5c9a8361960a3c360048c6a0d81f88e39f647a32676788fee43109620f8f9"
     },
     {
       "path": "trials/barnard-position-2026b/trial.json",
@@ -351,26 +383,26 @@
     "category": "prospective_unexposed",
     "team_statement_pending": true,
     "counts": {
-      "waiting": 7,
-      "hit": 0,
+      "waiting": 0,
+      "hit": 1,
       "miss": 0,
-      "insufficient_data": 1,
-      "ambiguous": 0,
+      "insufficient_data": 3,
+      "ambiguous": 4,
       "invalid_comparison": 0
     },
     "calibration": {
       "model": "model",
-      "n": 0,
-      "k_inside": 0,
+      "n": 1,
+      "k_inside": 1,
       "level": 0.95,
-      "expected_inside": 0.0,
+      "expected_inside": 0.95,
       "interval": [
-        0.0,
+        0.025,
         1.0
       ],
       "interval_method": "clopper_pearson",
       "wilson_interval": [
-        0.0,
+        0.2065,
         1.0
       ],
       "independence_note_key": "batch.independence"
@@ -385,8 +417,8 @@
         "labels": [
           "prospective_unexposed"
         ],
-        "status": "waiting",
-        "status_reason_key": null,
+        "status": "insufficient_data",
+        "status_reason_key": "verify.fewer-than-3",
         "team_statement_pending": true,
         "model_d2": null,
         "secondary_d2": null,
@@ -403,8 +435,8 @@
         "labels": [
           "prospective_unexposed"
         ],
-        "status": "waiting",
-        "status_reason_key": null,
+        "status": "ambiguous",
+        "status_reason_key": "verify.multiple-candidates",
         "team_statement_pending": true,
         "model_d2": null,
         "secondary_d2": null,
@@ -439,15 +471,15 @@
         "labels": [
           "prospective_unexposed"
         ],
-        "status": "waiting",
+        "status": "hit",
         "status_reason_key": null,
         "team_statement_pending": true,
-        "model_d2": null,
-        "secondary_d2": null,
-        "baseline_d2": null,
-        "model_error_arcsec": null,
-        "secondary_error_arcsec": null,
-        "baseline_error_arcsec": null
+        "model_d2": 0.1185,
+        "secondary_d2": 0.3197,
+        "baseline_d2": 32.2913,
+        "model_error_arcsec": 6.5249,
+        "secondary_error_arcsec": 186.1713,
+        "baseline_error_arcsec": 11082.078
       },
       {
         "trial_id": "asteroid-363-position",
@@ -457,8 +489,8 @@
         "labels": [
           "prospective_unexposed"
         ],
-        "status": "waiting",
-        "status_reason_key": null,
+        "status": "ambiguous",
+        "status_reason_key": "verify.motion-inconsistent",
         "team_statement_pending": true,
         "model_d2": null,
         "secondary_d2": null,
@@ -475,8 +507,8 @@
         "labels": [
           "prospective_unexposed"
         ],
-        "status": "waiting",
-        "status_reason_key": null,
+        "status": "ambiguous",
+        "status_reason_key": "verify.multiple-candidates",
         "team_statement_pending": true,
         "model_d2": null,
         "secondary_d2": null,
@@ -493,8 +525,8 @@
         "labels": [
           "prospective_unexposed"
         ],
-        "status": "waiting",
-        "status_reason_key": null,
+        "status": "insufficient_data",
+        "status_reason_key": "verify.fewer-than-3",
         "team_statement_pending": true,
         "model_d2": null,
         "secondary_d2": null,
@@ -511,8 +543,8 @@
         "labels": [
           "prospective_unexposed"
         ],
-        "status": "waiting",
-        "status_reason_key": null,
+        "status": "ambiguous",
+        "status_reason_key": "verify.multiple-candidates",
         "team_statement_pending": true,
         "model_d2": null,
         "secondary_d2": null,

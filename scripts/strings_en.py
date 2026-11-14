@@ -171,6 +171,8 @@ STRINGS = {
     "batch.model-error": "A two-body orbit ignores Jupiter's and Saturn's pull. We measured that error on synthetic orbits and added it to every forecast region, so the regions are large.",
     "batch.ephemeris-guided-training": "JPL positions told us where to look in the training images (as for Pluto); they never entered the orbit fit or the forecast.",
     "batch.team-statement-pending": "Counted as prospective only after the team confirms nobody viewed these images.",
+    "batch.exploratory-horizons": "Checked after the verdicts, not counted: whether JPL's catalogue position lay inside each frozen 95% region.",
+    "batch.outlier-flag": "Why most objects were not scored: SPHEREx's pipeline often flags a moving asteroid's pixels as outliers (it appears in only one exposure of that patch of sky), and our frozen rules discard flagged pixels, so the asteroid vanished from several evaluation images.",
     "predict.fewer-than-2-visits": "Fewer than two training visits kept enough detections, so no orbit was fitted.",
     "train.l2-quality": "Exposure failed SPHEREx's own quality check.",
     "train.off-track": "Fitted source more than 3\u2033 from where the object should be: not used.",
