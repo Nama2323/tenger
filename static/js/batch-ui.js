@@ -59,9 +59,9 @@ function summary(batch) {
     verdict ? el('p', { text: t(`batch.${verdict}`) }) : null,
     el('p', { class: 'note', text: t('batch.expected', { expected: formatNumber(expected, 1), n: String(n) }) }),
     el('p', { class: 'note', text: t('batch.smallN') }),
-    el('p', { class: 'note', text: t('batch.independence') }),
+    // The file's own independence note when it has one, else ours (never both).
+    el('p', { class: 'note', text: noteKey ? note(noteKey) : t('batch.assumeIndependent') }),
     computed ? el('p', { class: 'note', text: t('batch.computed') }) : null,
-    noteKey ? el('p', { class: 'note', text: note(noteKey) }) : null,
   ]);
 }
 
@@ -262,7 +262,7 @@ export function lessonBatchSection(data) {
       ]))),
     ])),
     el('p', { class: 'worked-answer', text: t('lesson.sure.batchLesson', { k: String(k), n: String(n) }) }),
-    el('p', { class: 'note', text: t('batch.independence') }),
+    el('p', { class: 'note', text: batch.calibration.noteKey ? note(batch.calibration.noteKey) : t('batch.assumeIndependent') }),
     el('p', { class: 'note', text: t('lesson.sure.batchSource', { file: data.path ?? t('batch.title') }) }),
   ]);
 }

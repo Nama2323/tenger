@@ -135,7 +135,7 @@ test('the invented example never shows on the public page; a listed real batch s
 test('every visible label of the batch section and the lesson example exists in English', () => {
   for (const key of [
     'batch.title', 'batch.lead', 'batch.statementPending', 'batch.statementPendingNote', 'batch.exampleNote', 'batch.headline', 'batch.interval',
-    'batch.method.exact', 'batch.method.wilson', 'batch.expected', 'batch.fits', 'batch.tooSmall', 'batch.tooBig', 'batch.smallN', 'batch.independence',
+    'batch.method.exact', 'batch.method.wilson', 'batch.expected', 'batch.fits', 'batch.tooSmall', 'batch.tooBig', 'batch.smallN', 'batch.assumeIndependent',
     'batch.computed', 'batch.dTitle', 'batch.dLabel', 'batch.dAxis', 'batch.limitLine', 'batch.errorsTitle', 'batch.errorsSummary', 'batch.inside',
     'batch.outside', 'batch.notScored', 'batch.excluded', 'batch.f.forecast', 'batch.f.date', 'batch.f.region', 'batch.f.observed', 'batch.f.baseline', 'batch.frozen',
     'batch.frozenExample', 'batch.frozenNoLink', 'batch.plotLegend', 'batch.example.independence', 'batch.example.note',
