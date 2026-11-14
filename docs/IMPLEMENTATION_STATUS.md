@@ -73,6 +73,56 @@ prediction, receipt, verification, scoreboard, game round and lesson. Enums, pat
 `docs/exposure/SHA256SUMS`, `docs/DATA-CONTRACT.md`, `docs/IMPLEMENTATION_STATUS.md`,
 `scripts/exposure_inventory.py`, `tests/test_exposure_inventory.py`. No application file changed.
 
+### Task A7, 15 Nov 2026 (Pluto open forecast v2 with the post-mortem's lessons)
+
+**Method v2** (`scripts/forecast_v2.py`):
+- **Data:** all Pluto detections held, 50 training plus the 4 identified 2026 detections (re-measured
+  with the A3 fit), in 3 visits and 7 visit × array groups.
+- **Frame:** barycentric two-body with the solar-system mass, with light time; observer = Earth plus
+  the header spacecraft vector.
+- **Uncertainty:** the envelope, separately along and across the track, of a group Monte Carlo (300
+  draws; one offset per group with σ_g = max(group residual RMS 0.134″, 0.2″), exposures resampled
+  within groups) and a leave-one-group-out jackknife. σ_g² and the unknown spacecraft position are
+  then added.
+- **Fit:** χ²/dof 2.32.
+
+**Frozen v2 open forecasts** (never counted; v1 `pluto-position-open-2027a` unchanged).
+Order: manifests `ab61b6b` → predictions `fd758e5` ("predict: freeze pluto open forecast v2") →
+receipts `16ff3df`.
+
+| Trial | Reference | Position | 95% along × across |
+|---|---|---|---|
+| `pluto-position-open-2027a-v2b` | 2027-04-25 (MJD 61520) | RA 310.371228°, Dec −22.947119° | 26.4″ × 8.9″ |
+| `pluto-position-open-2027b-v2b` | 2027-09-29 (MJD 61677) | RA 308.018418°, Dec −23.798488° | 15.2″ × 11.5″ |
+
+v1 said 54.1″ × 1.06″ for April. v2 sits 13.1″ from v1 along the track and 0.9″ across it, with a
+cross-track size about 8 times larger.
+
+**Defect, handled openly.** The first v2 manifests (`33a4171`, ids `…-v2`) were frozen without the
+starting state and with the earlier uncertainty wording, because two edits to the freeze code had not
+applied. The frozen code could not predict them. They were **never predicted**; they stay untouched
+with an `abandoned.json` beside each (`6efcd3d`, reason, hash and replacement), and they are skipped by
+the index and listed separately on the scoreboard. The freeze → predict flow was then rehearsed end to
+end in a scratch copy before re-freezing as `…-v2b`.
+
+**Exploratory hindcast** (`trials/pluto/hindcast-v2.json`, never counted). Method v2 was trained on
+the two training visits only and compared with the 2026 observation:
+
+| Method | Error | 95% region | D² |
+|---|---|---|---|
+| v1 (frozen) | 5.90″ | 6.04″ × 2.49″ | 6.77 (miss) |
+| v2 (hindcast) | 5.27″ | 21.2″ × 15.6″ (along × across) | 0.40 (would have been a hit) |
+
+v2 would not have been more accurate, but it would have been honest about its uncertainty. It was
+designed after the miss, so it proves nothing on its own.
+
+**Index.** `index.json` statuses come from the verification files (since `d66b6f3`): Barnard hit,
+Eps Ind B hit, Pluto miss, matching `scoreboard.json`. Regenerated again here with the v2 forecasts.
+
+**Tests:** `tests/test_forecast_v2.py` covers frozen, open and intact forecasts; v1 unchanged; open
+forecasts not counted; abandoned manifests never predicted; prediction without network from its
+folder alone; no rewrite; tampered training refused; the hindcast labelled exploratory.
+
 ### Task A6, 14 Nov 2026 (data for the 3D views)
 
 `static/data/scene3d.json` (kind `tenger.scene3d/1`, contract V9), built by

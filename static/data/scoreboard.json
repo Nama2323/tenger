@@ -1,7 +1,7 @@
 {
   "schema_version": "tenger.scoreboard/1",
   "contract_version": 5,
-  "generated_utc": "2026-11-14T15:24:02Z",
+  "generated_utc": "2026-11-14T16:32:07Z",
   "derived_from": [
     {
       "path": "trials/barnard-position-2026b/trial.json",
@@ -64,6 +64,22 @@
       "sha256": "e80e2516e96a71f5cd7c5a451682418c3eb5b496b43ed4aadd3a29cbdf059acd"
     },
     {
+      "path": "trials/pluto-position-open-2027a-v2b/trial.json",
+      "sha256": "ca344847da8f273b458f9a58d2b09acb1a41cea7e24fb8f6a0fb0fa45485b0f8"
+    },
+    {
+      "path": "trials/pluto-position-open-2027a-v2b/prediction.json",
+      "sha256": "9277ba43155807959c77e95ee178a473383d2315e75f0c13aed989c950c1d4dc"
+    },
+    {
+      "path": "trials/pluto-position-open-2027b-v2b/trial.json",
+      "sha256": "c2d971e1f5f91f118f2eb43d653192b50424552fe337c3dda708c99df5cb9fba"
+    },
+    {
+      "path": "trials/pluto-position-open-2027b-v2b/prediction.json",
+      "sha256": "2c164de4038a80ade923f60c684708aad2d7d23e40f48c2d7b2f89b7f8e7603a"
+    },
+    {
       "path": "trials/rdra-brightness-2026a/trial.json",
       "sha256": "3ae1852a51149100e133d3fb466841032efdb4d6a3ff0195da8e53e654c4e704"
     },
@@ -111,7 +127,13 @@
   ],
   "open_forecasts": [
     "makemake-position-open-2027a",
-    "pluto-position-open-2027a"
+    "pluto-position-open-2027a",
+    "pluto-position-open-2027a-v2b",
+    "pluto-position-open-2027b-v2b"
+  ],
+  "abandoned_before_prediction": [
+    "pluto-position-open-2027a-v2",
+    "pluto-position-open-2027b-v2"
   ],
   "rows": [
     {

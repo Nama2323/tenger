@@ -1,0 +1,77 @@
+{
+  "schema_version": "tenger.hindcast/1",
+  "contract_version": 11,
+  "trial_id": "pluto-position-2026b",
+  "label": "exploratory hindcast, after the reveal: method v2 trained on the 2025-10 and 2026-04 visits only",
+  "label_key": "hindcast.v2-label",
+  "exploratory": true,
+  "counts": false,
+  "generated_utc": "2026-11-14T16:31:46Z",
+  "old_method": {
+    "name": "v1 (frozen): heliocentric two-body, per-exposure errors x sqrt(chi2)",
+    "error_arcsec": 5.8991,
+    "residual_arcsec": [
+      -5.3655,
+      -2.4517
+    ],
+    "c_pred_arcsec2": [
+      [
+        5.866457,
+        1.027688
+      ],
+      [
+        1.027688,
+        1.256226
+      ]
+    ],
+    "d2": 6.7728,
+    "result": "miss"
+  },
+  "new_method": {
+    "name": "v2: barycentric two-body, uncertainty from whole visit x array groups",
+    "ra_deg": 306.09634171,
+    "dec_deg": -23.71918191,
+    "residual_arcsec": [
+      -4.725,
+      -2.341
+    ],
+    "error_arcsec": 5.273,
+    "c_pred_arcsec2": [
+      [
+        74.233028,
+        5.408439
+      ],
+      [
+        5.408439,
+        41.492743
+      ]
+    ],
+    "uncertainty_basis": {
+      "along": "jackknife",
+      "cross": "jackknife"
+    },
+    "sigma_g_arcsec": 0.2,
+    "along_track_95_arcsec": 21.213,
+    "cross_track_95_arcsec": 15.601,
+    "motion_arcsec_per_day": 24.721,
+    "motion_position_angle_deg": 260.86,
+    "d2": 0.397,
+    "result_if_it_had_been_frozen": "hit"
+  },
+  "observed": {
+    "ra_deg": 306.09490812,
+    "dec_deg": -23.7198323,
+    "cov_arcsec2": [
+      [
+        0.089613,
+        0.056337
+      ],
+      [
+        0.056337,
+        0.063135
+      ]
+    ],
+    "t_mjd": 61314.164221
+  },
+  "note": "Designed after the miss, so it cannot count as a test; it shows whether the new method would have been honest about its uncertainty on the same data."
+}

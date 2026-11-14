@@ -2,7 +2,7 @@
   "schema_version": "tenger.site_index/1",
   "contract_version": 3,
   "dataset_version": "a3-2026-11-14",
-  "generated_utc": "2026-11-14T16:20:00Z",
+  "generated_utc": "2026-11-14T16:32:10Z",
   "targets": [
     {
       "key": "barnard",
@@ -343,7 +343,9 @@
           "pluto-position-2026b"
         ],
         "open_forecast_ids": [
-          "pluto-position-open-2027a"
+          "pluto-position-open-2027a",
+          "pluto-position-open-2027a-v2b",
+          "pluto-position-open-2027b-v2b"
         ]
       },
       "composites_path": "pluto/composites.json",
@@ -408,7 +410,9 @@
     "trials/makemake-position-2026a/trial.json",
     "trials/makemake-position-open-2027a/trial.json",
     "trials/pluto-position-2026b/trial.json",
+    "trials/pluto-position-open-2027a-v2b/trial.json",
     "trials/pluto-position-open-2027a/trial.json",
+    "trials/pluto-position-open-2027b-v2b/trial.json",
     "trials/rdra-brightness-2026a/trial.json",
     "trials/rwaur-brightness-2026a/trial.json",
     "trials/wise0855-position-2026a/trial.json"

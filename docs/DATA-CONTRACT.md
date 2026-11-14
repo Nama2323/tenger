@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 11 | 2026-11-15 | Additive (Task A7). Open forecast v2 fields, abandoned manifests, hindcast file, scoreboard `abandoned_before_prediction`. |
 | 10 | 2026-11-15 | Additive. Per-visit colour previews for moving targets; index `composites_path`; index `prediction.status` now reflects verification. |
 | 9 | 2026-11-14 | Additive (Task A6). `scene3d.json` for the 3D views. |
 | 8 | 2026-11-14 | Additive (Task A5b). Exploratory post-mortem file `trials/pluto/postmortem.json`. |
@@ -733,3 +734,37 @@ key: none (fixed path).
   `display_only: true`, `label_key`, `groups` (`r`: arrays 5–6, `g`: 3–4, `b`: 1–2), `epoch_ids` (the
   investigation's epochs of that visit), `t_start_mjd`, `t_end_mjd`, `n_exposures`. Each channel is a
   per-visit median with its own stretch, so colours are not comparable between visits or targets.
+
+---
+
+# Version 11 (additive, Task A7, 15 Nov 2026): Pluto open forecast v2, abandoned manifests, hindcast
+
+**Open forecast v2** (`trials/pluto-position-open-2027a-v2b`, `…-2027b-v2b`):
+- **`trial.json`** gains:
+  - `forecast_label_key` (`forecast.after-2026-miss`), `method_version: 2`, and `revises` (the v1 open
+    forecast, which stays valid and unchanged);
+  - `model.code_files` (the files whose bytes `model.code_sha256` covers);
+  - `model.start_state_bary_au_au_per_day` and `model.start_t0_mjd_utc` (starting values only), and
+    `model.uncertainty` (the rule).
+- **`prediction.json`:**
+  - `model` and every `track[]` point carry `along_track_95_arcsec`, `cross_track_95_arcsec` and
+    `uncertainty_basis` (`{"along", "cross"}`: `monte_carlo` or `jackknife`); track points also carry
+    `distance_au`, `motion_arcsec_per_day` and `motion_position_angle_deg`;
+  - `model_state.kind` is `barycentric_two_body`;
+  - `diagnostics` include `group_mean_residuals_arcsec`, `monte_carlo_draws` and `jackknife_groups`.
+- **`training.json`:** `source` lists both inputs (the v1 training file and the 2026 verification).
+  Points from the 2026 visit have `visit: 3`.
+
+**`trials/<id>/abandoned.json`** (kind `tenger.abandoned/1`): a manifest abandoned **before any
+prediction**. Fields: `predicted: false`, `replaced_by`, `reason_key`, `reason`, `trial_sha256` (the
+untouched manifest's hash). Readers skip such a trial. `index.json` does not list it, and
+`scoreboard.json` lists it only in `abandoned_before_prediction`.
+
+**`trials/pluto/hindcast-v2.json`** (kind `tenger.hindcast/1`): `exploratory: true`, `counts: false`,
+`label_key` (`hindcast.v2-label`).
+- `old_method` (the frozen v1 numbers: error, residual, C_pred, D², result).
+- `new_method` (v2 trained on the two training visits only: position, residual, error, C_pred,
+  along/cross 95% sizes, D², `result_if_it_had_been_frozen`).
+- `observed`.
+
+Never a trial and never counted.
