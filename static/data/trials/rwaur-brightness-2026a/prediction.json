@@ -1,0 +1,26 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "contract_version": 5,
+  "trial_id": "rwaur-brightness-2026a",
+  "trial_ref": {
+    "path": "trials/rwaur-brightness-2026a/trial.json",
+    "sha256": "60bd0843cb6065079290f370e807fbd373263d1d0c250970b92dcf48775ce15e"
+  },
+  "training_sha256": "3eed49872a4008df72cfef015103c3cea4496d6c05b7a3e2d8bbbc024c69168e",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout"
+  ],
+  "open_forecast": false,
+  "created_utc": "2026-11-14T14:49:57Z",
+  "prediction_status": "insufficient_data",
+  "status_reason_key": "predict.no-period-model",
+  "t_mjd": 61295.962793,
+  "model": null,
+  "baseline": null,
+  "track": null,
+  "diagnostics": {
+    "n_training_points": 15
+  },
+  "limitation_keys": []
+}
