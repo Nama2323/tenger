@@ -401,8 +401,9 @@ opt-in "Real sky" panel).
 Screenshots: `docs/screens/*.png` (all pages, four widths) and `docs/screens/redesign/` (before and after at 390
 and 1440 px, see its README).
 
-**Also in this task**: re-copied `strings.en.json` (77 keys, incl. Makemake and comet keys); contract V4
-brightness units in the game.
+**Also in this task**: re-copied `strings.en.json` (85 keys after rebasing on Session A's WISE 0855 commit
+`f07081a`); contract V4 brightness units in the game. WISE 0855 now opens with its own evidence file
+(available; motion insufficient because a neighbour contaminates it), checked at 390 and 1280 px.
 
 **Limits**: not checked on a real phone. The time bar shows evenly spaced epoch ticks (with dates) rather than a
 proportional time axis, so uneven gaps between visits are read from the labels. Preview mode shows previews

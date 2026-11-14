@@ -34,6 +34,7 @@ const PAGES = [
   { name: 'investigate-barnard-swipe', path: '/?target=barnard&mode=swipe', ready: '#caption-body .caption-col' },
   { name: 'investigate-rdra-side', path: '/?target=rdra&mode=side', ready: '#caption-body .caption-col' },
   { name: 'prediction-fixtures', path: '/?fixtures=1&target=barnard&panel=prediction', ready: '.trial' },
+  { name: 'investigate-wise0855', path: '/?target=wise0855&panel=changed', ready: '#caption-body .caption-col' },
   { name: 'investigate-makemake-preview', path: '/?target=makemake&mode=side', ready: '#caption-body .caption-col' },
   { name: 'pluto-unavailable', path: '/?target=pluto', ready: '#see-empty:not([hidden])' },
   { name: 'game', path: '/?page=game', ready: '#game-rounds p' },
