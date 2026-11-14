@@ -9,9 +9,59 @@ still open. Session A edits only "Science/data". Session B edits only "Web".
 
 ### Current phase
 
-**Phase H data checks done (Task H2): release candidate on `tenger-dev`, not on `main`, not deployed.**
+**Phase H data checks done (Task H2); Planet X depth measured (Task A8, contract V12).** Release candidate on
+`tenger-dev`, not on `main`, not deployed.
 `bake.yml` disabled on GitHub. Open: three teammates' confirmation for Pluto; updating `main`; making
 the repository public and enabling Pages (`docs/RELEASE.md`).
+
+### Task A8, 15 Nov 2026 ("Could SPHEREx see Planet X? We measured it."; contract V12)
+
+| Part | Files | Result |
+|---|---|---|
+| Injection-recovery library | `backend/injection.py` (new) | Reads the DR1/QR3 `EPSF` table (21 × 21 zones, 5× oversampled, "x-fast then y"). Picks the zone whose centre is nearest the source (parent pixel via `CRPIX1A/2A`, as in IRSA's tutorial). Injects unit-flux ePSF × F_ν ÷ pixel solid angle into an in-memory copy of IMAGE. Recovers with the site's `astrometry.fit_position` at S/N ≥ 5 within 1 px; the threshold is set only during the call, and the file is unchanged because its hash belongs to frozen forecasts. Also: ePSF photometry, Wilson intervals, isotonic completeness depths. The task's rule `iplane = y·11 + x + 1` (121 zones, 10×) describes the older QR1/QR2 PSF cube. It is the same x-fast ordering, with the DR1 grid size |
+| Measurement run | `scripts/planetx.py` (new) | 7 exposed fields (5 challenge fields, Pluto and Makemake training visits) × 3 bands (0.75–0.87 µm D1, 3.25–3.55 µm D4, 4.45–4.75 µm D6) × 6 exposures = 126. Re-downloaded with EPSF; all 126 SHA-256 equal the investigations' `source_sha256`. Catalogue exclusion uses Gaia DR3 + AllWISE within 15″ (VizieR CfA mirror; IRSA TAP gave 502 and timeouts). **40,066 injections and 2,135 blank controls**, deterministic (seed 20261115), about 30 s on 6 processes |
+| Outputs | `scripts/planetx_build.py` (new), `static/data/planetx/depth.json`, `planetx/hidden-planet.json`, `planetx/hidden/*.webp` | Curves with 95% Wilson intervals, 50%/90% depths per field and pooled, false-detection rates, ZODI per field, published comparison values with locations, motion from the observer's geometry, verdicts, and a stacked-depth *projection*. Four hidden-planet pairs. Everything is `"artificial": true`, `"counts": false` |
+| Published numbers | `docs/planetx-depth.md` | Read in the papers themselves:<br>• Linder & Mordasini 2016 (abstract, Sect. 4.2): I 21.0, W1 20.1, W2 20.1 at 700 AU, plus their 1/r⁴ rule for 280 and 1120 AU (no I/W1/W2 for other masses).<br>• Fortney et al. 2016, Table 2 (622 AU): W1/W2 for 40 and 50 K and three methane abundances; system not stated, read as Vega (labelled).<br>• Meisner et al. 2018: W1 < 16.7 (90%).<br>• WISE Vega→AB offsets +2.699 and +3.339; I +0.45 (Blanton & Roweis 2007, Table 1).<br>• SPHEREx pre-launch per-channel full-mission and single-visit values (Public-products file; Crill et al. 2025) |
+| Contract V12, strings | `docs/DATA-CONTRACT.md`, `scripts/strings_en.py` → `strings.en.json` (182 keys) | Artificial content is allowed only under `planetx/`. Every text key in the planetx files exists |
+| Validator | `scripts/validate_release.py` | Artificial nodes outside `planetx/` fail. Files under `planetx/` need top-level `artificial: true`. Every image there must be referenced. Curves must equal their counts (Wilson, fractions, depths). Models need reference, DOI or URL, and location. The stacked depth must be labelled a projection. String keys must exist |
+| Exposure record | `docs/EXPOSURE.md` | Nothing new opened (127 already-exposed exposures re-downloaded, identical bytes) |
+
+**Results (pooled 50% single-exposure depth, AB):**
+- 0.8 µm: **17.09** (17.01–17.18).
+- 3.4 µm: **17.48** (17.40–17.54).
+- 4.6 µm: **16.16** (16.11–16.20).
+- 90% depths: 15.40, 16.03 and 15.40.
+- False detections: 0 of 705, 0 of 713 and 0 of 717 blanks (≤ 0.5%).
+
+**Checks:**
+- **PSF mapping:** the nearest zone fits better than the swapped zone for 483 of 789 isolated stars
+  (61%, 95%: 58–65%), and for 75% at 0.8 µm. The zone choice moves the depth by ≤ 0.11 mag.
+- **Flux scale:** the median recovered flux is 97.0%, 96.6% and 99.5%.
+- **Realism:** the site's fit finds real stars like injections where both are bright.
+
+**Verdict:**
+- The nominal Planet Nine (Linder & Mordasini, 700 AU) is 4.4 / 5.3 / 7.3 mag too faint for one exposure.
+- Closest cases: the same planet at perihelion at 0.8 µm (0.4 mag) and Fortney's brightest 50 K
+  methane-poor case at 3.4 µm (1.3 mag).
+- One exposure is 1.9 mag shallower than the WISE + NEOWISE W1 limit.
+- Within one visit the planet moves 1–790″ (300–1000 AU), so only a shift-and-stack search could
+  reach deeper.
+
+**Checks run:**
+- `pytest tests/test_injection.py tests/test_validate_release.py`: 16 passed (PSF mapping on a real
+  fixture, inject-then-measure, faint non-recovery, blank controls on noise, Wilson values,
+  completeness, in-memory only, validator rules).
+- Full-suite results are in the commit report.
+
+**Limits:**
+- Single exposures in one channel each.
+- The site's Gaussian detector is about 1 mag shallower than an optimal ePSF fit.
+- The injected sources' photon noise was not added.
+- Six exposures per field and band.
+- Broad-band model magnitudes are compared with narrow channels (direction stated per band).
+- The new test fixture `tests/fixtures/spherex_spherex_dr1_2025W46_1A_0076_2_D6_epsf.fits.gz` is a real,
+  exposed WISE 0855 cutout. Its ePSF planes outside the 3 × 3 zones around it are zeroed (recorded in
+  its header).
 
 ### Task H2, 15 Nov 2026 (release checks for data and science; fix, don't add)
 

@@ -1,0 +1,369 @@
+{
+ "schema_version": "tenger.hidden_planet/1",
+ "contract_version": 12,
+ "generated_utc": "2026-11-14T18:24:56Z",
+ "artificial": true,
+ "counts": false,
+ "label_key": "planetx.game.label",
+ "rule_key": "planetx.game.rule",
+ "derived_from": [
+  {
+   "path": "planetx/depth.json",
+   "sha256": "57a47aa74ae9c9d9d3af48429e504999c2159cbc9e243be08bd401ce2739188f"
+  }
+ ],
+ "pairs": [
+  {
+   "id": "pair-1",
+   "field_key": "epsindib",
+   "band_id": "i",
+   "frames": [
+    {
+     "path": "planetx/hidden/pair-1-1.webp",
+     "t_mjd": 60958.849246,
+     "obs_key": "spherex_dr1:2025W41_2B_0301_1:D1",
+     "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W41_2B/l2b-v27-2026-242/1/level2_2025W41_2B_0301_1D1_spx_l2b-v27-2026-242.fits?center=331.09635,-56.80114&size=0.145",
+     "source_sha256": "9ecf784078859a934707ef05ed725beabf1f74e0a2fcfa6ed046671796740b3d",
+     "centre_um": 0.767413,
+     "pixel_arcsec": 3.0,
+     "width": 120,
+     "height": 120,
+     "north_up": true,
+     "east_left": true,
+     "artificial": true,
+     "content_type": "artificial",
+     "synthetic": true,
+     "display": "ZODI and median removed, asinh stretch per frame; not for measurement"
+    },
+    {
+     "path": "planetx/hidden/pair-1-2.webp",
+     "t_mjd": 60968.08586,
+     "obs_key": "spherex_dr1:2025W43_1A_0019_1:D1",
+     "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W43_1A/l2b-v27-2026-244/1/level2_2025W43_1A_0019_1D1_spx_l2b-v27-2026-244.fits?center=331.09635,-56.80114&size=0.145",
+     "source_sha256": "783137caebb96c774f05736c47630e3f61f9f7df50d7e1ada7587f063fa513c8",
+     "centre_um": 0.776025,
+     "pixel_arcsec": 3.0,
+     "width": 120,
+     "height": 120,
+     "north_up": true,
+     "east_left": true,
+     "artificial": true,
+     "content_type": "artificial",
+     "synthetic": true,
+     "display": "ZODI and median removed, asinh stretch per frame; not for measurement"
+    }
+   ],
+   "injected": [
+    {
+     "frame": 0,
+     "x": 21.77,
+     "y": 68.98,
+     "ra_deg": 331.153779,
+     "dec_deg": -56.809024
+    },
+    {
+     "frame": 1,
+     "x": 33.82,
+     "y": 59.59,
+     "ra_deg": 331.135433,
+     "dec_deg": -56.801213
+    }
+   ],
+   "injected_mag_ab": 15.25,
+   "mag_rule": "the field's 90% single-exposure depth in this band, rounded down to 0.25 mag less 0.25 (brighter), so it should usually be recoverable",
+   "distance_au": 500,
+   "dt_days": 9.237,
+   "motion_arcsec": {
+    "east": -36.16,
+    "north": 28.12,
+    "total": 45.81
+   },
+   "pipeline": {
+    "found": true,
+    "positions": [
+     {
+      "frame": 0,
+      "x": 21.75,
+      "y": 68.98,
+      "found": true,
+      "snr": 33.4
+     },
+     {
+      "frame": 1,
+      "x": 33.89,
+      "y": 59.61,
+      "found": true,
+      "snr": 32.3
+     }
+    ],
+    "rule_key": "planetx.rule.found",
+    "guided": true
+   },
+   "tolerance_px": 2.05
+  },
+  {
+   "id": "pair-2",
+   "field_key": "rwaur",
+   "band_id": "w1",
+   "frames": [
+    {
+     "path": "planetx/hidden/pair-2-1.webp",
+     "t_mjd": 61285.098662,
+     "obs_key": "spherex_qr3:2026W36_1A_0476_2:D4",
+     "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W36_1A/l2b-v27-2026-252/4/level2_2026W36_1A_0476_2D4_spx_l2b-v27-2026-252.fits?center=76.95647,30.40122&size=0.145",
+     "source_sha256": "a1afdc79d2c12d958e4e8edfc0835df42d36fdb5c17a0c7f5d7e2f8179be3079",
+     "centre_um": 3.406929,
+     "pixel_arcsec": 3.0,
+     "width": 120,
+     "height": 120,
+     "north_up": true,
+     "east_left": true,
+     "artificial": true,
+     "content_type": "artificial",
+     "synthetic": true,
+     "display": "ZODI and median removed, asinh stretch per frame; not for measurement"
+    },
+    {
+     "path": "planetx/hidden/pair-2-2.webp",
+     "t_mjd": 61292.904327,
+     "obs_key": "spherex_qr3:2026W37_1A_0524_1:D4",
+     "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W37_1A/l2b-v27-2026-255/4/level2_2026W37_1A_0524_1D4_spx_l2b-v27-2026-255.fits?center=76.95647,30.40122&size=0.145",
+     "source_sha256": "a044a0eb3b820de0a93741f5673f301a62dc0de9efdb835b981112586a8b312d",
+     "centre_um": 3.289302,
+     "pixel_arcsec": 3.0,
+     "width": 120,
+     "height": 120,
+     "north_up": true,
+     "east_left": true,
+     "artificial": true,
+     "content_type": "artificial",
+     "synthetic": true,
+     "display": "ZODI and median removed, asinh stretch per frame; not for measurement"
+    }
+   ],
+   "injected": [
+    {
+     "frame": 0,
+     "x": 80.18,
+     "y": 27.93,
+     "ra_deg": 76.936481,
+     "dec_deg": 30.42753
+    },
+    {
+     "frame": 1,
+     "x": 78.84,
+     "y": 25.41,
+     "ra_deg": 76.937783,
+     "dec_deg": 30.429623
+    }
+   ],
+   "injected_mag_ab": 15.75,
+   "mag_rule": "the field's 90% single-exposure depth in this band, rounded down to 0.25 mag less 0.25 (brighter), so it should usually be recoverable",
+   "distance_au": 500,
+   "dt_days": 7.806,
+   "motion_arcsec": {
+    "east": 4.04,
+    "north": 7.54,
+    "total": 8.55
+   },
+   "pipeline": {
+    "found": true,
+    "positions": [
+     {
+      "frame": 0,
+      "x": 80.19,
+      "y": 27.83,
+      "found": true,
+      "snr": 27.0
+     },
+     {
+      "frame": 1,
+      "x": 78.77,
+      "y": 25.36,
+      "found": true,
+      "snr": 15.3
+     }
+    ],
+    "rule_key": "planetx.rule.found",
+    "guided": true
+   },
+   "tolerance_px": 2.05
+  },
+  {
+   "id": "pair-3",
+   "field_key": "wise0855",
+   "band_id": "w2",
+   "frames": [
+    {
+     "path": "planetx/hidden/pair-3-1.webp",
+     "t_mjd": 60989.367761,
+     "obs_key": "spherex_dr1:2025W46_1A_0090_3:D6",
+     "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W46_1A/l2b-v27-2026-206/6/level2_2025W46_1A_0090_3D6_spx_l2b-v27-2026-206.fits?center=133.75953,-7.24222&size=0.145",
+     "source_sha256": "f1947a2ffa5f9a572d02620ad688cf4ad7063cab78002b68f34d57e295263df8",
+     "centre_um": 4.613045,
+     "pixel_arcsec": 3.0,
+     "width": 120,
+     "height": 120,
+     "north_up": true,
+     "east_left": true,
+     "artificial": true,
+     "content_type": "artificial",
+     "synthetic": true,
+     "display": "ZODI and median removed, asinh stretch per frame; not for measurement"
+    },
+    {
+     "path": "planetx/hidden/pair-3-2.webp",
+     "t_mjd": 60993.506601,
+     "obs_key": "spherex_dr1:2025W46_2A_0214_2:D6",
+     "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W46_2A/l2b-v27-2026-207/6/level2_2025W46_2A_0214_2D6_spx_l2b-v27-2026-207.fits?center=133.75953,-7.24222&size=0.145",
+     "source_sha256": "af45d33eb4275411efaafb18a156a3091d6a784873a1039eaa645876f7e6df9d",
+     "centre_um": 4.73603,
+     "pixel_arcsec": 3.0,
+     "width": 120,
+     "height": 120,
+     "north_up": true,
+     "east_left": true,
+     "artificial": true,
+     "content_type": "artificial",
+     "synthetic": true,
+     "display": "ZODI and median removed, asinh stretch per frame; not for measurement"
+    }
+   ],
+   "injected": [
+    {
+     "frame": 0,
+     "x": 45.92,
+     "y": 74.54,
+     "ra_deg": 133.770941,
+     "dec_deg": -7.254757
+    },
+    {
+     "frame": 1,
+     "x": 47.44,
+     "y": 78.22,
+     "ra_deg": 133.76966,
+     "dec_deg": -7.257816
+    }
+   ],
+   "injected_mag_ab": 15.25,
+   "mag_rule": "the field's 90% single-exposure depth in this band, rounded down to 0.25 mag less 0.25 (brighter), so it should usually be recoverable",
+   "distance_au": 500,
+   "dt_days": 4.139,
+   "motion_arcsec": {
+    "east": -4.57,
+    "north": -11.01,
+    "total": 11.92
+   },
+   "pipeline": {
+    "found": true,
+    "positions": [
+     {
+      "frame": 0,
+      "x": 45.87,
+      "y": 74.58,
+      "found": true,
+      "snr": 10.2
+     },
+     {
+      "frame": 1,
+      "x": 47.32,
+      "y": 78.35,
+      "found": true,
+      "snr": 10.5
+     }
+    ],
+    "rule_key": "planetx.rule.found",
+    "guided": true
+   },
+   "tolerance_px": 2.05
+  },
+  {
+   "id": "pair-4",
+   "field_key": "rdra",
+   "band_id": "w2",
+   "frames": [
+    {
+     "path": "planetx/hidden/pair-4-1.webp",
+     "t_mjd": 61116.895729,
+     "obs_key": "spherex_dr1_deep:2026W12_1A_0349_3:D6",
+     "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W12_1A/l2b-v27-2026-235/6/level2_2026W12_1A_0349_3D6_spx_l2b-v27-2026-235.fits?center=248.16723,66.75513&size=0.145",
+     "source_sha256": "bcf38a5877dbefb62836662d5f6fb3d19ed11bffe464740ce11f8a15f0e1fa74",
+     "centre_um": 4.520841,
+     "pixel_arcsec": 3.0,
+     "width": 120,
+     "height": 120,
+     "north_up": true,
+     "east_left": true,
+     "artificial": true,
+     "content_type": "artificial",
+     "synthetic": true,
+     "display": "ZODI and median removed, asinh stretch per frame; not for measurement"
+    },
+    {
+     "path": "planetx/hidden/pair-4-2.webp",
+     "t_mjd": 61126.873138,
+     "obs_key": "spherex_dr1_deep:2026W13_2A_0281_2:D6",
+     "url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W13_2A/l2b-v27-2026-237/6/level2_2026W13_2A_0281_2D6_spx_l2b-v27-2026-237.fits?center=248.16723,66.75513&size=0.145",
+     "source_sha256": "602c722a557f6b5dda509cc38b8d177a121563169685b167f4ee3906b922d2bd",
+     "centre_um": 4.472914,
+     "pixel_arcsec": 3.0,
+     "width": 120,
+     "height": 120,
+     "north_up": true,
+     "east_left": true,
+     "artificial": true,
+     "content_type": "artificial",
+     "synthetic": true,
+     "display": "ZODI and median removed, asinh stretch per frame; not for measurement"
+    }
+   ],
+   "injected": [
+    {
+     "frame": 0,
+     "x": 82.37,
+     "y": 99.61,
+     "ra_deg": 248.119014,
+     "dec_deg": 66.721694
+    },
+    {
+     "frame": 1,
+     "x": 90.72,
+     "y": 77.49,
+     "ra_deg": 248.101341,
+     "dec_deg": 66.740127
+    }
+   ],
+   "injected_mag_ab": 13.75,
+   "mag_rule": "the field's 90% single-exposure depth in this band, rounded down to 0.25 mag less 0.25 (brighter), so it should usually be recoverable",
+   "distance_au": 500,
+   "dt_days": 9.977,
+   "motion_arcsec": {
+    "east": -25.12,
+    "north": 66.36,
+    "total": 70.96
+   },
+   "pipeline": {
+    "found": true,
+    "positions": [
+     {
+      "frame": 0,
+      "x": 82.35,
+      "y": 99.62,
+      "found": true,
+      "snr": 15.9
+     },
+     {
+      "frame": 1,
+      "x": 90.6,
+      "y": 77.53,
+      "found": true,
+      "snr": 8.1
+     }
+    ],
+    "rule_key": "planetx.rule.found",
+    "guided": true
+   },
+   "tolerance_px": 2.05
+  }
+ ]
+}

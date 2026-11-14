@@ -14,3 +14,10 @@ from never-opened observations.
 
 **Credit.** SPHEREx data from the NASA/IPAC Infrared Science Archive (IRSA), Caltech/JPL. Cite the
 SPHEREx DR1 DOI listed by IRSA when these data appear in results.
+
+## Task A8 fixture
+
+| File | What it is | Source |
+|---|---|---|
+| `spherex_spherex_dr1_2025W46_1A_0076_2_D6_epsf.fits.gz` | 85 × 85 pixel SPHEREx DR1 cutout of the WISE 0855 field (detector 6), gzip, 183 kB. It keeps every extension, including the full 441-row `EPSF` table with its real BINX/BINY/XCENTER/YCENTER columns. Only the ePSF planes of the 3 × 3 zones around the cutout (BINX 8–10, BINY 17–19) are kept; the others are zeroed so the file compresses. The primary header records `TGRSRC` (SHA-256 of the original download) and `TGREPSF`. | `https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W46_1A/l2b-v27-2026-206/6/level2_2025W46_1A_0076_2D6_spx_l2b-v27-2026-206.fits?center=133.75953,-7.24222&size=0.145`, 15 Nov 2026. Original 4,066,560 bytes, SHA-256 `83b9b0486bebe4c43b5c503fd44764147ee40347773a6b9a8bc151e10003f4a7` (equal to the WISE 0855 investigation's `source_sha256`; already exposed). |
+

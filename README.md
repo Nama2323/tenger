@@ -40,6 +40,16 @@ region. A smaller part came from fitting around the Sun instead of the solar sys
 - Pluto, September/October 2027: v2.
 - Makemake: frozen as insufficient data.
 
+**Could SPHEREx see Planet X? We measured it** (`docs/planetx-depth.md`). We added 40,000 artificial
+sources to 126 real exposures of already-opened fields, then ran the site's own detection on them.
+- One exposure finds half of them at AB 17.1 (0.8 µm), 17.5 (3.4 µm) and 16.2 (4.6 µm). It never
+  produced a false detection in 2,135 blank tests.
+- The nominal Planet Nine of Linder & Mordasini (2016) would be 4.4–7.3 magnitudes fainter.
+- A real search must stack many exposures along the planet's path; the WISE + NEOWISE search
+  (Meisner et al. 2018) already goes deeper.
+
+The game's "hidden planet" rounds use these artificial sources and are labelled as such.
+
 ## Run it locally
 
 ```

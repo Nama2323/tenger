@@ -768,3 +768,60 @@ untouched manifest's hash). Readers skip such a trial. `index.json` does not lis
 - `observed`.
 
 Never a trial and never counted.
+
+# Version 12 (additive, Task A8, 15 Nov 2026): Planet X depth and the hidden-planet game
+
+**Artificial content lives only under `static/data/planetx/`.** Every file there carries top-level
+`"artificial": true` and `"counts": false`. A node with `"artificial": true` or `content_type:
+"artificial"` anywhere else is invalid (`scripts/validate_release.py`). Nothing under `planetx/` is a
+detection, a trial or a scoreboard entry.
+
+**`planetx/depth.json`** (kind `tenger.planetx_depth/1`): single-exposure depth measured by
+injection-recovery on real exposed fields.
+- `method`: `single_exposure: true`, `injection`, `psf_source`, `detection_rule` (`fit`, `snr_min` 5,
+  `max_offset_px` 1, `site_snr_min` 10, `rule_key`), `positions` (per exposure, blanks, `exclusion`),
+  `mag_step` 0.25, `interval_method` `"wilson"`, `confidence` 0.95, `depth_interval_method`, `seed`.
+- `bands[]`: `id` (`"i"` ≈ 0.8 µm on D1, `"w1"` ≈ 3.4 µm on D4, `"w2"` ≈ 4.6 µm on D6), `detector`,
+  `wavelength_um` [lo, hi] (the selection window), `centres_used_um`, `published_band`, `nominal_um`,
+  `magnitudes` (the grid), `pooled` and `fields[]`. Each of `pooled` and `fields[]` has:
+  - `curve[]`: `{mag_ab, injected, recovered, fraction, interval: [lo, hi]}` (95% Wilson);
+  - `depth_50_ab`, `depth_90_ab`: `{value, interval: [bright, faint]}` or `null` when the curve never
+    crosses the level;
+  - `site_threshold` (the same at S/N ≥ 10), `false_detection` (`blanks`, `false`, `rate`, `interval`),
+    `grid_spans_full_range`, `bright_fraction`, `faint_fraction`.
+  - Fields also have `field_key`, `field_role`, `n_exposures`, `zodi_mjy_sr` (`median`, `min`, `max`)
+    and `exposures[]` (`obs_key`, `t_mjd`, `centre_um`, `url`, `source_sha256`, `zodi_mjy_sr`,
+    `psf_fwhm_arcsec`, `epsf_calibration`).
+- `photometry_check`: inject-then-measure flux test (`median_mag_out_minus_in`, `rms_mag`,
+  `median_abs_pull`). `psf_mapping_test`: ePSF zone mapping on bright isolated stars (`stars`,
+  `nearest_better`, `fraction`, `interval`, `by_band`, `tables`).
+- `models[]`: published Planet Nine magnitudes in the same bands only: `id`, `reference`, `doi`, `url`,
+  `band_id`, `scenario_key`, `mag_published` (`value`, `system`), `vega_to_ab` (`offset`, `reference`),
+  `mag_ab`, `location` (table, section, page), optional `derived` (the paper's own rule used),
+  `distance_au`, `mass_earth`, `note_key`, `system_note_key`.
+- `wise_limit`: `band_id`, `mag_vega`, `mag_ab`, `completeness`, `mag_vega_50`, `mag_ab_50`,
+  `reference`, `doi`, `url`, `location`, `region`, `data`, `vega_to_ab`, `note_key`.
+- `mission_sensitivity`: `per_channel_after_all_surveys: true`, `full_mission` and
+  `single_visit_prelaunch` (each with `reference`, `url`, `sigma`, `values`).
+- `motion[]` (one per challenge field): `visits[]` and `by_distance[]` (`distance_au`,
+  `within_visit_arcsec[]`, `between_visits_arcsec[]`, `rate_arcsec_per_day` [min, max],
+  `orbital_rate_bound_arcsec_per_day`), from the observer's real geometry.
+- `verdicts[]`: `band_id`, `model_id` (or `"wise-limit"`), `model_mag_ab`, `depth_50_ab`, `gap_mag`
+  (`value` = model − depth, positive = too faint; `sigma`), `factor_in_flux`, `verdict_key`.
+- `stacked_projection`: `projection: true`, `measured: false`, `note_key`, `assumptions_key`, `rows[]`
+  (`band_id`, `exposures_stacked`, `projected_depth_50_ab`). Never shown as a measurement.
+- `verdict_key`, `verdict_summary` (`key`, `values` for the placeholders, `text`), `limitation_keys`,
+  `credits_keys`.
+
+**`planetx/hidden-planet.json`** (kind `tenger.hidden_planet/1`): game pairs with one injected moving
+source. `label_key`, `rule_key`, `derived_from`, and `pairs[]`:
+- `id`, `field_key`, `band_id`, `injected_mag_ab`, `mag_rule`, `distance_au`, `dt_days`,
+  `motion_arcsec` (`east`, `north`, `total`), `tolerance_px` (1 native pixel in plate pixels);
+- `frames[2]`: `path` (`planetx/hidden/<id>-<n>.webp`), `t_mjd`, `obs_key`, `url`, `source_sha256`,
+  `centre_um`, `pixel_arcsec`, `width`, `height`, `north_up: true`, `east_left: true`,
+  `artificial: true`, `content_type: "artificial"`, `synthetic: true`, `display`. The real exposure is
+  reprojected onto a common 3″ grid after the source is injected into its native pixels.
+- `injected[]`: `{frame, x, y, ra_deg, dec_deg}`, plate pixels, origin top-left, pixel centres at
+  integers;
+- `pipeline`: `found` (both frames), `positions[]` (`frame`, `x`, `y`, `found`, `snr`), `rule_key`,
+  `guided: true` (the fit starts at the injected position).

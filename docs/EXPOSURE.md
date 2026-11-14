@@ -177,6 +177,20 @@ were committed and pushed (`486e723`) before any prediction, then each predictio
 `static/data/reserved.json` (`until_key: reserved.until-verified`) until Task A5's pre-registered
 verification opens them.
 
+## Task A8 (15 Nov 2026, 02:00–05:30 UB): nothing new opened
+
+Task A8 (Planet X depth) re-downloaded **127 exposures that were already opened**, this time with
+their EPSF extension, into `cache/planetx/source/`:
+- 126 planned exposures: six per field and band on the five challenge-target fields, and on Pluto's
+  and Makemake's training visits (`role: training` only);
+- 1 more R Dra field exposure for a game pair.
+
+Every file's SHA-256 equals the `source_sha256` that its investigation recorded when it was first
+opened, so these are the same bytes that were opened before. Nothing was taken from Pluto's 2026
+evaluation visit, from Makemake's 2026 evaluation visit or from the reserved 3I/ATLAS path.
+Artificial sources were added only in memory. The derived files under `static/data/planetx/` are
+labelled `"artificial": true` and never count as observations.
+
 ## Who has seen what
 
 - **Teammates** have viewed the bundled frames, thumbnails and results of the five challenge targets

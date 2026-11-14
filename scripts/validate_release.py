@@ -11,7 +11,10 @@ Checks every published data file:
 - displayed numbers equal their source records (index, scoreboard, game, lessons, post-mortem, hindcast,
   3D scene), and derived files equal a fresh regeneration.
 Legacy viewer files (targets.json, results.json, <key>/meta.json) are listed, not validated as contract files.
-Development fixtures under static/dev-fixtures/ ship with the site (opened only with ?fixtures=1), so each
+Artificial content (injected sources, Task A8) is allowed only under static/data/planetx/: every file
+there carries top-level "artificial": true, every artificial node elsewhere fails, every image there is
+referenced by a planetx file, and the depth curves agree with their own counts (Wilson intervals, 50%/90%
+depths). Development fixtures under static/dev-fixtures/ ship with the site (opened only with ?fixtures=1), so each
 fixture JSON must carry "example": true at the top level and must not appear under static/data.
 """
 import hashlib
@@ -26,10 +29,13 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "static" / "data"
 FIXTURES = ROOT / "static" / "dev-fixtures"
-LATEST_CONTRACT = 11
-MIN_CONTRACT = {"postmortem": 8, "scene3d": 9, "composites": 10, "abandoned": 11, "hindcast": 11}
+LATEST_CONTRACT = 12
+MIN_CONTRACT = {"postmortem": 8, "scene3d": 9, "composites": 10, "abandoned": 11, "hindcast": 11,
+                "planetx_depth": 12, "hidden_planet": 12}
 KINDS = {"site_index", "investigation", "trial", "prediction", "receipt", "verification", "scoreboard", "game_round",
-         "lesson", "training", "reserved", "strings", "postmortem", "hindcast", "scene3d", "composites", "abandoned"}
+         "lesson", "training", "reserved", "strings", "postmortem", "hindcast", "scene3d", "composites", "abandoned",
+         "planetx_depth", "hidden_planet"}
+ARTIFICIAL_DIR = "planetx/"
 LEGACY = ("targets.json", "results.json")
 CONTENT_TYPES = {"measured", "catalogue", "modeled", "interpreted", "processed", "artificial"}
 
@@ -96,9 +102,16 @@ def check_schema_and_flags(report: Report) -> dict:
             report.fail(name, f"contract_version {contract} out of range for {kind}")
         if kind in MIN_CONTRACT and contract is None:
             report.fail(name, f"{kind} needs contract_version >= {MIN_CONTRACT[kind]}")
+        in_artificial_dir = name.startswith(ARTIFICIAL_DIR)
+        if in_artificial_dir and not (isinstance(doc, dict) and doc.get("artificial") is True):
+            report.fail(name, 'file under planetx/ without top-level "artificial": true')
+        if kind in ("planetx_depth", "hidden_planet") and not in_artificial_dir:
+            report.fail(name, f"{kind} outside planetx/")
 
         def visit(node, trail):
             if isinstance(node, dict):
+                if not in_artificial_dir and (node.get("artificial") is True or node.get("content_type") == "artificial"):
+                    report.fail(name, f"artificial content outside planetx/ at {'/'.join(map(str, trail)) or 'top'}")
                 if node.get("example") is True:
                     report.fail(name, f"example content at {'/'.join(map(str, trail)) or 'top'}")
                 content = node.get("content_type")
@@ -296,6 +309,86 @@ def check_numbers(report: Report) -> None:
         report.fail("scene3d.json", "our Pluto orbit not labelled ours/modeled")
 
 
+def check_planetx(report: Report, documents: dict) -> None:
+    """Artificial files: images referenced, curves consistent with their counts, sources and citations present."""
+    from backend import injection
+
+    referenced = set()
+    strings_path = DATA / "strings.en.json"
+    strings = load(strings_path).get("strings", {}) if strings_path.exists() else {}
+    identifiers = {"obs_key", "field_key", "target_key"}
+
+    def text_keys(node, found):
+        if isinstance(node, dict):
+            for key, value in node.items():
+                if key.endswith("_key") and key not in identifiers and isinstance(value, str):
+                    found.add(value)
+                elif key.endswith("_keys") and isinstance(value, list):
+                    found.update(v for v in value if isinstance(v, str))
+                else:
+                    text_keys(value, found)
+        elif isinstance(node, list):
+            for item in node:
+                text_keys(item, found)
+        return found
+
+    for name, (kind, doc) in documents.items():
+        if kind in ("planetx_depth", "hidden_planet"):
+            for key in sorted(text_keys(doc, set()) - set(strings)):
+                report.fail(name, f"string key {key} missing from strings.en.json")
+        if kind == "hidden_planet":
+            if doc.get("counts") is not False:
+                report.fail(name, "hidden-planet pairs must say counts: false")
+            for pair in doc.get("pairs", []):
+                for frame in pair.get("frames", []):
+                    path = DATA / frame.get("path", "")
+                    referenced.add(frame.get("path"))
+                    if not path.exists():
+                        report.fail(name, f"missing frame {frame.get('path')}")
+                    if frame.get("artificial") is not True:
+                        report.fail(name, f"frame {frame.get('path')} not labelled artificial")
+                    if not frame.get("source_sha256") or not frame.get("url"):
+                        report.fail(name, f"frame {frame.get('path')} lacks its real source")
+                if not pair.get("injected"):
+                    report.fail(name, f"pair {pair.get('id')} lacks injected positions")
+        if kind != "planetx_depth":
+            continue
+        if doc.get("counts") is not False:
+            report.fail(name, "depth must say counts: false")
+        for model in doc.get("models", []):
+            if not model.get("reference") or not (model.get("doi") or model.get("url")) or not model.get("location"):
+                report.fail(name, f"model {model.get('id')} lacks reference, DOI or location")
+        limit = doc.get("wise_limit")
+        if limit and not (limit.get("reference") and limit.get("doi") and limit.get("location")):
+            report.fail(name, "wise_limit lacks reference, DOI or location")
+        if not (doc.get("stacked_projection") or {}).get("projection") is True:
+            report.fail(name, "stacked depth not labelled a projection")
+        for band in doc.get("bands", []):
+            for scope, entry in [("pooled", band.get("pooled"))] + [(f["field_key"], f) for f in band.get("fields", [])]:
+                where = f"{band.get('id')}/{scope}"
+                points = entry.get("curve", [])
+                for point in points:
+                    low, high = injection.wilson(point["recovered"], point["injected"])
+                    if not (close(point["interval"][0], low, 1e-3) and close(point["interval"][1], high, 1e-3)):
+                        report.fail(name, f"{where}: Wilson interval at {point['mag_ab']} disagrees with its counts")
+                    if not close(point["fraction"], point["recovered"] / point["injected"], 1e-3):
+                        report.fail(name, f"{where}: fraction at {point['mag_ab']} disagrees with its counts")
+                for level, field in ((0.5, "depth_50_ab"), (0.9, "depth_90_ab")):
+                    if entry.get(field) != injection.completeness(points, level):
+                        report.fail(name, f"{where}: {field} differs from its curve")
+                for exposure in entry.get("exposures", []):
+                    if not exposure.get("source_sha256") or not exposure.get("url"):
+                        report.fail(name, f"{where}: exposure without source")
+            if band.get("pooled"):
+                pooled = sum(p["injected"] for p in band["pooled"]["curve"])
+                fields = sum(p["injected"] for f in band.get("fields", []) for p in f["curve"])
+                if pooled != fields:
+                    report.fail(name, f"{band.get('id')}: pooled injections {pooled} != sum over fields {fields}")
+    for image in sorted((DATA / ARTIFICIAL_DIR).rglob("*")) if (DATA / ARTIFICIAL_DIR).exists() else []:
+        if image.is_file() and image.suffix != ".json" and rel(image) not in referenced:
+            report.fail(rel(image), "image under planetx/ not referenced by a planetx file")
+
+
 def check_fixtures(report: Report) -> None:
     """Fixtures are published with static/, so every one must say it is an example."""
     for path in sorted(FIXTURES.rglob("*.json")):
@@ -310,6 +403,7 @@ def run(quiet: bool = False) -> Report:
     check_sources(report, documents)
     check_hash_chains(report)
     check_numbers(report)
+    check_planetx(report, documents)
     check_fixtures(report)
     if not quiet:
         for line in report.failures:
