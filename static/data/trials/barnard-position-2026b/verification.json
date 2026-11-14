@@ -1,0 +1,472 @@
+{
+  "schema_version": "tenger.verification/1",
+  "contract_version": 6,
+  "trial_id": "barnard-position-2026b",
+  "prediction_sha256": "27ba83c378a541dde37aaff1dfbbade8784beed07a5eb9de4f715426910a979b",
+  "revealed_utc": "2026-11-14T15:16:40Z",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "t_mjd": 61273.417815,
+  "observed": {
+    "ra_deg": 269.44586533,
+    "dec_deg": 4.77005447,
+    "cov_arcsec2": [
+      [
+        0.004881,
+        -0.001582
+      ],
+      [
+        -0.001582,
+        0.004162
+      ]
+    ],
+    "obs_keys": [
+      "spherex_qr3:2026W33_2A_0594_4:D6",
+      "spherex_qr3:2026W34_1A_0007_1:D6",
+      "spherex_qr3:2026W34_1A_0007_2:D6",
+      "spherex_qr3:2026W34_1A_0007_3:D6",
+      "spherex_qr3:2026W34_1A_0007_4:D6",
+      "spherex_qr3:2026W34_1A_0176_2:D6",
+      "spherex_qr3:2026W34_1A_0238_1:D6",
+      "spherex_qr3:2026W34_1A_0308_3:D6",
+      "spherex_qr3:2026W34_1A_0308_4:D6",
+      "spherex_qr3:2026W34_1A_0363_1:D5",
+      "spherex_qr3:2026W34_1A_0363_2:D5",
+      "spherex_qr3:2026W34_1A_0363_3:D5",
+      "spherex_qr3:2026W34_1A_0431_2:D6",
+      "spherex_qr3:2026W34_1A_0456_1:D5",
+      "spherex_qr3:2026W34_2A_0081_1:D6",
+      "spherex_qr3:2026W34_2A_0206_1:D5",
+      "spherex_qr3:2026W34_2A_0233_1:D5",
+      "spherex_qr3:2026W34_2A_0233_3:D5",
+      "spherex_qr3:2026W34_2A_0233_4:D5",
+      "spherex_qr3:2026W34_2A_0249_1:D5",
+      "spherex_qr3:2026W34_2A_0249_2:D5",
+      "spherex_qr3:2026W34_2A_0249_3:D5",
+      "spherex_qr3:2026W34_2A_0264_1:D5",
+      "spherex_qr3:2026W34_2A_0264_2:D5",
+      "spherex_qr3:2026W35_1A_0038_1:D5",
+      "spherex_qr3:2026W35_1A_0092_1:D5",
+      "spherex_qr3:2026W35_2A_0126_1:D5",
+      "spherex_qr3:2026W39_1A_0371_1:D5"
+    ],
+    "n_exposures": 28,
+    "content_type": "measured",
+    "image": {
+      "path": "barnard/epochs/v2-d5.webp",
+      "content_type": "processed",
+      "epoch_id": "v2-d5",
+      "centre_ra_deg": 269.44648,
+      "centre_dec_deg": 4.768669,
+      "scale_arcsec_px": 1.5,
+      "width_px": 240,
+      "height_px": 240,
+      "north_up": true,
+      "east_left": true
+    }
+  },
+  "residuals": {
+    "model": {
+      "reference": {
+        "ra_deg": 269.44622936,
+        "dec_deg": 4.77026983,
+        "t_mjd": 61273.417815
+      },
+      "c_pred_arcsec2": [
+        [
+          0.882432,
+          -0.008637
+        ],
+        [
+          -0.008637,
+          0.894369
+        ]
+      ],
+      "east_arcsec": -1.306,
+      "north_arcsec": -0.7753,
+      "d2": 2.6175,
+      "error_arcsec": 1.5188,
+      "status": "hit",
+      "c_obs_basis": "sample"
+    },
+    "baseline": {
+      "reference": {
+        "ra_deg": 269.44671888,
+        "dec_deg": 4.77020608,
+        "t_mjd": 61273.417815
+      },
+      "c_pred_arcsec2": [
+        [
+          0.008311,
+          -0.000248
+        ],
+        [
+          -0.000248,
+          0.00835
+        ]
+      ],
+      "east_arcsec": -3.0589,
+      "north_arcsec": -0.5465,
+      "d2": 774.3831,
+      "error_arcsec": 3.1073,
+      "status": "miss",
+      "c_obs_basis": "sample"
+    }
+  },
+  "per_exposure": [
+    {
+      "obs_key": "spherex_qr3:2026W33_2A_0594_4:D6",
+      "t_mjd": 61268.631478,
+      "model_residual_arcsec": [
+        -1.2471,
+        -0.6971
+      ],
+      "baseline_residual_arcsec": [
+        -2.9555,
+        -0.4529
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0007_1:D6",
+      "t_mjd": 61269.034085,
+      "model_residual_arcsec": [
+        -1.4742,
+        -0.6601
+      ],
+      "baseline_residual_arcsec": [
+        -3.1868,
+        -0.4171
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0007_2:D6",
+      "t_mjd": 61269.035577,
+      "model_residual_arcsec": [
+        -2.1789,
+        -0.3658
+      ],
+      "baseline_residual_arcsec": [
+        -3.8916,
+        -0.1228
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0007_3:D6",
+      "t_mjd": 61269.037069,
+      "model_residual_arcsec": [
+        -1.9663,
+        -0.3338
+      ],
+      "baseline_residual_arcsec": [
+        -3.679,
+        -0.0908
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0007_4:D6",
+      "t_mjd": 61269.038561,
+      "model_residual_arcsec": [
+        -0.9525,
+        -0.2699
+      ],
+      "baseline_residual_arcsec": [
+        -2.6651,
+        -0.0269
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0176_2:D6",
+      "t_mjd": 61269.851609,
+      "model_residual_arcsec": [
+        -1.1381,
+        -0.2162
+      ],
+      "baseline_residual_arcsec": [
+        -2.8591,
+        0.0244
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0238_1:D6",
+      "t_mjd": 61270.189303,
+      "model_residual_arcsec": [
+        -0.8824,
+        -0.6117
+      ],
+      "baseline_residual_arcsec": [
+        -2.6067,
+        -0.3721
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0308_3:D6",
+      "t_mjd": 61270.59843,
+      "model_residual_arcsec": [
+        -2.0492,
+        -0.5286
+      ],
+      "baseline_residual_arcsec": [
+        -3.7776,
+        -0.2903
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0308_4:D6",
+      "t_mjd": 61270.599922,
+      "model_residual_arcsec": [
+        -1.5884,
+        -0.5107
+      ],
+      "baseline_residual_arcsec": [
+        -3.3168,
+        -0.2725
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0363_1:D5",
+      "t_mjd": 61270.867782,
+      "model_residual_arcsec": [
+        -0.9332,
+        -1.06
+      ],
+      "baseline_residual_arcsec": [
+        -2.6643,
+        -0.8226
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0363_2:D5",
+      "t_mjd": 61270.869274,
+      "model_residual_arcsec": [
+        -0.9618,
+        -0.6814
+      ],
+      "baseline_residual_arcsec": [
+        -2.693,
+        -0.444
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0363_3:D5",
+      "t_mjd": 61270.870766,
+      "model_residual_arcsec": [
+        -1.0544,
+        -0.7402
+      ],
+      "baseline_residual_arcsec": [
+        -2.7856,
+        -0.5028
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0431_2:D6",
+      "t_mjd": 61271.208229,
+      "model_residual_arcsec": [
+        -0.6337,
+        -1.9358
+      ],
+      "baseline_residual_arcsec": [
+        -2.3683,
+        -1.6994
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0456_1:D5",
+      "t_mjd": 61271.342727,
+      "model_residual_arcsec": [
+        -0.9364,
+        -0.6571
+      ],
+      "baseline_residual_arcsec": [
+        -2.6723,
+        -0.4211
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0081_1:D6",
+      "t_mjd": 61272.906841,
+      "model_residual_arcsec": [
+        -1.2139,
+        -0.7631
+      ],
+      "baseline_residual_arcsec": [
+        -2.9651,
+        -0.532
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0206_1:D5",
+      "t_mjd": 61273.514029,
+      "model_residual_arcsec": [
+        -1.5122,
+        -0.8889
+      ],
+      "baseline_residual_arcsec": [
+        -3.2693,
+        -0.6597
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0233_1:D5",
+      "t_mjd": 61273.649984,
+      "model_residual_arcsec": [
+        -1.3653,
+        -0.9345
+      ],
+      "baseline_residual_arcsec": [
+        -3.1236,
+        -0.7057
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0233_3:D5",
+      "t_mjd": 61273.652969,
+      "model_residual_arcsec": [
+        -1.7407,
+        -1.2567
+      ],
+      "baseline_residual_arcsec": [
+        -3.4991,
+        -1.028
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0233_4:D5",
+      "t_mjd": 61273.654461,
+      "model_residual_arcsec": [
+        -1.6883,
+        -0.7394
+      ],
+      "baseline_residual_arcsec": [
+        -3.4467,
+        -0.5107
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0249_1:D5",
+      "t_mjd": 61273.720351,
+      "model_residual_arcsec": [
+        -1.2296,
+        -0.9491
+      ],
+      "baseline_residual_arcsec": [
+        -2.9887,
+        -0.7206
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0249_2:D5",
+      "t_mjd": 61273.721843,
+      "model_residual_arcsec": [
+        -1.281,
+        -1.2233
+      ],
+      "baseline_residual_arcsec": [
+        -3.0401,
+        -0.9948
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0249_3:D5",
+      "t_mjd": 61273.723336,
+      "model_residual_arcsec": [
+        -1.0869,
+        -0.7748
+      ],
+      "baseline_residual_arcsec": [
+        -2.846,
+        -0.5463
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0264_1:D5",
+      "t_mjd": 61273.788888,
+      "model_residual_arcsec": [
+        -1.1623,
+        -0.8208
+      ],
+      "baseline_residual_arcsec": [
+        -2.922,
+        -0.5925
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_2A_0264_2:D5",
+      "t_mjd": 61273.790381,
+      "model_residual_arcsec": [
+        -1.1398,
+        -1.036
+      ],
+      "baseline_residual_arcsec": [
+        -2.8995,
+        -0.8077
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W35_1A_0038_1:D5",
+      "t_mjd": 61276.166956,
+      "model_residual_arcsec": [
+        -1.3554,
+        -0.7702
+      ],
+      "baseline_residual_arcsec": [
+        -3.1375,
+        -0.5496
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W35_1A_0092_1:D5",
+      "t_mjd": 61276.438351,
+      "model_residual_arcsec": [
+        -1.3595,
+        -0.7418
+      ],
+      "baseline_residual_arcsec": [
+        -3.1441,
+        -0.522
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W35_2A_0126_1:D5",
+      "t_mjd": 61280.166928,
+      "model_residual_arcsec": [
+        -1.0266,
+        -0.6882
+      ],
+      "baseline_residual_arcsec": [
+        -2.8446,
+        -0.4809
+      ]
+    },
+    {
+      "obs_key": "spherex_qr3:2026W39_1A_0371_1:D5",
+      "t_mjd": 61305.628687,
+      "model_residual_arcsec": [
+        -1.4096,
+        -0.8531
+      ],
+      "baseline_residual_arcsec": [
+        -3.4,
+        -0.7399
+      ]
+    }
+  ],
+  "status": "hit",
+  "status_reason_key": null,
+  "measurement_source": {
+    "path": "barnard/investigation.json",
+    "sha256": "d59974ade26e2cd57d24987ede45367eb1efd439aab37e06aec6ff7929168a93",
+    "excluded": {
+      "measure.low-snr": 78,
+      "measure.fit-singular": 9,
+      "measure.too-few-good-pixels": 1,
+      "measure.fit-failed": 1
+    }
+  },
+  "identification": {
+    "method_key": "ident.catalogue-gate"
+  }
+}
