@@ -20,8 +20,25 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def batch_block(batch_rows: list[dict]) -> dict | None:
+    """The asteroid batch (contract V13): its own block, never mixed into the per-category counts."""
+    if not batch_rows:
+        return None
+    batch_id = batch_rows[0]["batch_id"]
+    summary_path = DATA / "batches" / f"{batch_id}.json"
+    summary = json.loads(summary_path.read_text()) if summary_path.exists() else {}
+    counts = {name: 0 for name in STATUSES}
+    for row in batch_rows:
+        counts[row["status"]] += 1
+    return {"batch_id": batch_id, "path": f"batches/{batch_id}.json" if summary_path.exists() else None,
+            "category": batch_rows[0]["category"],
+            "team_statement_pending": any(row["team_statement_pending"] for row in batch_rows),
+            "counts": counts, "calibration": summary.get("calibration"),
+            "not_attempted": summary.get("not_attempted", []), "rows": batch_rows}
+
+
 def build(generated_utc: str | None = None) -> dict:
-    rows, counts, open_forecasts, derived, abandoned = [], {}, [], [], []
+    rows, counts, open_forecasts, derived, abandoned, batch_rows = [], {}, [], [], [], []
     for folder in sorted((DATA / "trials").iterdir()):
         trial_path = folder / "trial.json"
         if not trial_path.exists():
@@ -50,8 +67,21 @@ def build(generated_utc: str | None = None) -> dict:
         else:
             status, reason = "waiting", None
         category = trial["category"]
-        counts.setdefault(category, {name: 0 for name in STATUSES})[status] += 1
         residuals = (verification or {}).get("residuals", {})
+        if trial.get("batch_id"):
+            batch_rows.append({
+                "trial_id": trial["trial_id"], "batch_id": trial["batch_id"], "target_name": trial.get("target_name"),
+                "category": category, "labels": trial.get("labels", [category]), "status": status,
+                "status_reason_key": reason, "team_statement_pending": trial.get("team_statement_pending", False),
+                "model_d2": (residuals.get("model") or {}).get("d2"),
+                "secondary_d2": (residuals.get("secondary") or {}).get("d2"),
+                "baseline_d2": (residuals.get("baseline") or {}).get("d2"),
+                "model_error_arcsec": (residuals.get("model") or {}).get("error_arcsec"),
+                "secondary_error_arcsec": (residuals.get("secondary") or {}).get("error_arcsec"),
+                "baseline_error_arcsec": (residuals.get("baseline") or {}).get("error_arcsec"),
+            })
+            continue
+        counts.setdefault(category, {name: 0 for name in STATUSES})[status] += 1
         rows.append({
             "trial_id": trial["trial_id"], "target_key": trial["target_key"], "quantity": trial["quantity"],
             "category": category, "labels": trial.get("labels", [category]), "status": status,
@@ -70,7 +100,7 @@ def build(generated_utc: str | None = None) -> dict:
         })
     return {
         "schema_version": "tenger.scoreboard/1",
-        "contract_version": 5,
+        "contract_version": 13 if batch_rows else 5,
         "generated_utc": generated_utc or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "derived_from": derived,
         "counts": counts,
@@ -78,6 +108,7 @@ def build(generated_utc: str | None = None) -> dict:
         "open_forecasts": open_forecasts,
         "abandoned_before_prediction": abandoned,
         "rows": rows,
+        **({"asteroid_batch": batch_block(batch_rows)} if batch_rows else {}),
     }
 
 

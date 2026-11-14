@@ -29,12 +29,12 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "static" / "data"
 FIXTURES = ROOT / "static" / "dev-fixtures"
-LATEST_CONTRACT = 12
+LATEST_CONTRACT = 13
 MIN_CONTRACT = {"postmortem": 8, "scene3d": 9, "composites": 10, "abandoned": 11, "hindcast": 11,
-                "planetx_depth": 12, "hidden_planet": 12}
+                "planetx_depth": 12, "hidden_planet": 12, "batch": 13}
 KINDS = {"site_index", "investigation", "trial", "prediction", "receipt", "verification", "scoreboard", "game_round",
          "lesson", "training", "reserved", "strings", "postmortem", "hindcast", "scene3d", "composites", "abandoned",
-         "planetx_depth", "hidden_planet"}
+         "planetx_depth", "hidden_planet", "batch"}
 ARTIFICIAL_DIR = "planetx/"
 LEGACY = ("targets.json", "results.json")
 CONTENT_TYPES = {"measured", "catalogue", "modeled", "interpreted", "processed", "artificial"}
@@ -189,6 +189,14 @@ def check_sources(report: Report, documents: dict) -> None:
                 report.fail(name, "exploratory file not labelled exploratory / counts false")
 
 
+def code_hash(files: list[str]) -> str:
+    """The same digest as forecast_v2.code_sha256 / asteroid_forecast.code_sha256, over the trial's own list."""
+    digest = hashlib.sha256()
+    for file_name in files:
+        digest.update(file_name.encode() + b"\0" + (ROOT / file_name).read_bytes())
+    return digest.hexdigest()
+
+
 def check_hash_chains(report: Report) -> None:
     from scripts import forecast_v2, predict
 
@@ -214,7 +222,7 @@ def check_hash_chains(report: Report) -> None:
         if committed.returncode != 0 or committed.stdout != (folder / "prediction.json").read_bytes():
             report.fail(name, "prediction.json differs from the receipt's commit")
         files = trial["model"].get("code_files")
-        expected = forecast_v2.code_sha256() if files else predict.model_code_sha256()
+        expected = code_hash(files) if files else predict.model_code_sha256()
         if expected != trial["model"]["code_sha256"]:
             report.fail(name, "model code changed since the freeze")
         verification_path = folder / "verification.json"

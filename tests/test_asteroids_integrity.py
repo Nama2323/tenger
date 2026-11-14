@@ -54,10 +54,10 @@ def test_training_files_hold_training_rows_only():
 def test_nothing_committed_before_the_freeze_holds_evaluation_ephemeris():
     """After the freeze, the raw MOST tables are saved; no evaluation RA/Dec may occur in the freeze commit."""
     raw_dir = asteroids.OUT / "raw"
-    receipt = ROOT / "static" / "data" / "batches" / "asteroids-2026a" / "receipt.json"
-    if not raw_dir.exists() or not receipt.exists():
+    if not raw_dir.exists() or not list(raw_dir.glob("*.json")):
         pytest.skip("batch not frozen yet")
-    commit = json.loads(receipt.read_text())["commit"]
+    first = sorted(raw_dir.glob("*.json"))[0]
+    commit = json.loads(first.read_text())["after_freeze_commit"]
     patterns = set()
     for path in raw_dir.glob("*.json"):
         raw = json.loads(path.read_text())

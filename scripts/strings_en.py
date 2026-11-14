@@ -164,6 +164,18 @@ STRINGS = {
     "reserved.released-verified": "Released: the frozen forecast has been checked against these data.",
     "reserved.released-nothing-to-verify": "Released: the trial was frozen as insufficient data, so nothing is left to protect.",
     "reserved.see-only": "See-only target: live loading is paused along its path.",
+    # Asteroid batch (Task A9, contract V13)
+    "batch.asteroids.title": "Blind asteroid forecasts: how often does the truth land inside our 95% regions?",
+    "batch.independence": "The interval assumes the forecasts are independent. They share one method, one estimate of the two-body model error and SPHEREx's systematic errors, so the true uncertainty is larger than the interval shows.",
+    "batch.small-n": "A handful of forecasts cannot prove that the 95% regions are calibrated; the interval shows how loosely they constrain it.",
+    "batch.model-error": "A two-body orbit ignores Jupiter's and Saturn's pull. We measured that error on synthetic orbits and added it to every forecast region, so the regions are large.",
+    "batch.ephemeris-guided-training": "JPL positions told us where to look in the training images (as for Pluto); they never entered the orbit fit or the forecast.",
+    "batch.team-statement-pending": "Counted as prospective only after the team confirms nobody viewed these images.",
+    "predict.fewer-than-2-visits": "Fewer than two training visits kept enough detections, so no orbit was fitted.",
+    "train.l2-quality": "Exposure failed SPHEREx's own quality check.",
+    "train.off-track": "Fitted source more than 3\u2033 from where the object should be: not used.",
+    "train.blended-gaia": "A catalogued star lies within 12\u2033: the position could be blended, not used.",
+    "train.download-failed": "The cutout could not be downloaded.",
     # Planet X depth (Task A8, contract V12)
     "planetx.title": "Could SPHEREx see Planet X? We measured it.",
     "planetx.rule.found": "Found means the site's own fit measures a source at S/N of at least 5 within 1 pixel (6.15\u2033) of where the artificial source was added.",

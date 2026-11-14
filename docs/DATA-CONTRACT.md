@@ -825,3 +825,40 @@ source. `label_key`, `rule_key`, `derived_from`, and `pairs[]`:
   integers;
 - `pipeline`: `found` (both frames), `positions[]` (`frame`, `x`, `y`, `found`, `snr`), `rule_key`,
   `guided: true` (the fit starts at the injected position).
+
+# Version 13 (additive, Task A9, 15 Nov 2026): the asteroid batch
+
+**Batch trials** (`trials/asteroid-<number>-position/`) are normal position trials (trial, training,
+prediction, receipt, verification).
+- **`trial.json`** adds:
+  - `target_name` (asteroids are not index targets), `batch_id` (`asteroids-2026a`),
+    `team_statement_pending` and `selection` (`rule`, `record`, `H`, `order`);
+  - `holdout.obs[]` (`obs_id`, `detector`, `t_mjd`, `uri`): the evaluation exposures, identifiers and
+    times only;
+  - `model.primary_frame` / `model.secondary_frame` and `model.code_files`.
+- **`prediction.json`** adds:
+  - `secondary_model`, `secondary_track` and `secondary_state` (the pre-registered heliocentric
+    forecast, scored separately);
+  - for both frames, `c_fit_arcsec2` and `c_model_arcsec2` (the synthetic two-body model error) next to
+    `cov_arcsec2` (their sum, C_pred), and `model_state.model_error` (the synthetic-orbit summary).
+- **`verification.json`** adds `residuals.secondary` and `per_exposure[].secondary_residual_arcsec`,
+  candidate lists with each `static_reference`, and `horizons_after_verdict` (after the verdict only).
+
+**`batches/asteroids-2026a.json`** (kind `tenger.batch/1`):
+- Header fields: `batch_id`, `title_key`, `category`, `labels`, `team_statement_pending`,
+  `frozen_utc`, `receipt` (`commit_sha`, `frozen_utc`), `rules`, `selection` and `trial_ids[]`.
+- `rows[]`, one per attempted object:
+  - `trial_id`, `number`, `name`, `H`, `status`, `status_reason_key`;
+  - the 95% along- and across-track sizes;
+  - for each of `model`, `secondary` and `baseline`: `_d2`, `_d`, `_error_arcsec` and `_inside`;
+  - `observed_minus_horizons_arcsec`, `model_minus_horizons_arcsec` and `excluded_reason_key`.
+- `not_attempted[]`: selected objects that were never started (never partial).
+- `calibration`, `secondary_calibration` and `baseline_calibration`: `n`, `k_inside`, `level`,
+  `expected_inside`, `interval` (Clopper–Pearson), `wilson_interval` and `independence_note_key`.
+- `note_keys[]`.
+
+**`scoreboard.json`** (contract 13 once a batch exists) adds `asteroid_batch`: `batch_id`, `path`,
+`category`, `team_statement_pending`, `counts`, `calibration`, `not_attempted` and `rows`. Batch trials
+are **not** included in the per-category `counts` or in `rows`.
+
+**`index.json`** adds `batch_paths[]` (for example `["batches/asteroids-2026a.json"]`).
