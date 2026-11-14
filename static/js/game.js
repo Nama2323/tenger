@@ -92,31 +92,92 @@ export const physicsLost = (result) => Number.isFinite(result.errors.model) && N
   && result.errors.baseline + TIE_TOLERANCE < result.errors.model;
 
 // ---------- Plot geometry (shared by the page and the tests) ----------
+//
+// The round files measure every position from the frozen model at the reveal time, so the file's (0, 0) is the
+// model's answer. Before the reveal nothing on screen may depend on the model, the baseline or the actual
+// position: the page shows offsets from the last training measurement, and its view comes only from the training
+// points and their own average speed. Scoring still uses the file's frame.
 
-const MIN_SPAN_SCALES = 4;
-const MARGIN_SPANS = 1;
+const VIEW_PADDING = 0.08;
+const byTime = (round) => [...round.training_points].sort((a, b) => a.t_mjd - b.t_mjd);
+
+/** The latest training measurement: before the reveal every offset on screen is measured from it. */
+export function lastMeasurement(round) {
+  const last = byTime(round).at(-1);
+  return { east_arcsec: last.east_arcsec, north_arcsec: last.north_arcsec, t_mjd: last.t_mjd };
+}
+
+/** A file-frame position as an offset (arcsec) from the origin, and back. */
+export const toOffset = (origin, point) => ({ east: point.east_arcsec - origin.east_arcsec, north: point.north_arcsec - origin.north_arcsec });
+export const fromOffset = (origin, offset) => ({ east_arcsec: offset.east + origin.east_arcsec, north_arcsec: offset.north + origin.north_arcsec });
+
+/** Days from the last training measurement to the target date (from the round file). */
+export const daysToTarget = (round) => round.reveal_t_mjd - lastMeasurement(round).t_mjd;
 
 /**
- * The square area shown before the reveal, from the training points only, so the axes do not hint at the
- * answer: the training box widened by its own size on every side, and at least four score scales wide.
- * extra points (revealed later) widen it. Returns { east: [min, max], north: [min, max] } in arcsec.
+ * The training points' own straight-line motion: a least-squares fit of east and north against time, in arcsec
+ * per day, and its speed. Null when all points share one date.
  */
-export function positionView(round, extra = []) {
-  const points = [...round.training_points, ...extra.filter(isPosition)];
-  const easts = points.map((point) => point.east_arcsec);
-  const norths = points.map((point) => point.north_arcsec);
-  const trainingSpan = Math.max(
-    Math.max(...round.training_points.map((point) => point.east_arcsec)) - Math.min(...round.training_points.map((point) => point.east_arcsec)),
-    Math.max(...round.training_points.map((point) => point.north_arcsec)) - Math.min(...round.training_points.map((point) => point.north_arcsec)),
-  );
-  const scaleArcsec = (Number.isFinite(round.scoring?.scale) && round.scoring.scale > 0 ? round.scoring.scale : 1)
-    / (FROM_ARCSEC[round.units] ?? 1);
-  const margin = Math.max(trainingSpan * MARGIN_SPANS, (MIN_SPAN_SCALES * scaleArcsec) / 2);
-  const east = [Math.min(...easts) - margin, Math.max(...easts) + margin];
-  const north = [Math.min(...norths) - margin, Math.max(...norths) + margin];
-  const span = Math.max(east[1] - east[0], north[1] - north[0]);
+export function trainingMotion(round) {
+  const points = round.training_points;
+  const mean = (values) => values.reduce((sum, value) => sum + value, 0) / values.length;
+  const tMean = mean(points.map((point) => point.t_mjd));
+  const variance = points.reduce((sum, point) => sum + (point.t_mjd - tMean) ** 2, 0);
+  if (!(variance > 0)) return null;
+  const slope = (key) => {
+    const valueMean = mean(points.map((point) => point[key]));
+    return points.reduce((sum, point) => sum + (point.t_mjd - tMean) * (point[key] - valueMean), 0) / variance;
+  };
+  const east = slope('east_arcsec');
+  const north = slope('north_arcsec');
+  return { east, north, speed: Math.hypot(east, north) };
+}
+
+/** A square around a box of offsets, padded on every side. */
+function squareAround(easts, norths, minimumSpan) {
+  const east = [Math.min(...easts), Math.max(...easts)];
+  const north = [Math.min(...norths), Math.max(...norths)];
+  const span = Math.max(east[1] - east[0], north[1] - north[0], minimumSpan) * (1 + 2 * VIEW_PADDING);
   const centre = { east: (east[0] + east[1]) / 2, north: (north[0] + north[1]) / 2 };
   return { east: [centre.east - span / 2, centre.east + span / 2], north: [centre.north - span / 2, centre.north + span / 2] };
+}
+
+/**
+ * The square shown before the reveal, in offsets (arcsec) from the last measurement: the training points, and
+ * around the last measurement the distance their own average speed covers by the target date, in every
+ * direction. Reads only the training points and the target date.
+ */
+export function guessView(round) {
+  const origin = lastMeasurement(round);
+  const offsets = round.training_points.map((point) => toOffset(origin, point));
+  const motion = trainingMotion(round);
+  const reach = motion ? motion.speed * Math.max(0, daysToTarget(round)) : 0;
+  const fallback = Math.max(1e-6, ...offsets.flatMap((offset) => [Math.abs(offset.east), Math.abs(offset.north)])) || 1;
+  return squareAround([...offsets.map((offset) => offset.east), -reach, reach], [...offsets.map((offset) => offset.north), -reach, reach], reach > 0 ? 0 : fallback);
+}
+
+/** After the reveal the view may widen to hold the revealed points (same origin); it never shrinks. */
+export function revealView(round, extra = []) {
+  const view = guessView(round);
+  const origin = lastMeasurement(round);
+  const offsets = extra.filter(isPosition).map((point) => toOffset(origin, point));
+  const inside = (offset) => offset.east >= view.east[0] && offset.east <= view.east[1] && offset.north >= view.north[0] && offset.north <= view.north[1];
+  if (offsets.every(inside)) return view;
+  return squareAround([...view.east, ...offsets.map((offset) => offset.east)], [...view.north, ...offsets.map((offset) => offset.north)], 0);
+}
+
+/**
+ * Everything the page draws or prints for a position round before the reveal, as plain numbers (for the leak
+ * test): the view, the training points as offsets with their dates, the motion and the days to the target.
+ */
+export function preRevealState(round) {
+  const origin = lastMeasurement(round);
+  return {
+    view: guessView(round),
+    training: byTime(round).map((point) => ({ ...toOffset(origin, point), t_mjd: point.t_mjd })),
+    motion: trainingMotion(round),
+    daysToTarget: daysToTarget(round),
+  };
 }
 
 /** Time and value ranges for a scalar round: training points to the reveal date; values padded the same way. */

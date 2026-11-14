@@ -4,7 +4,8 @@
 import { covarianceEllipse } from './coords.js';
 import { $, chip, dataTable, el, formatNumber, formatUtc, withUnit } from './dom.js';
 import {
-  checkRound, errorUnit, isMagnitude, physicsLost, positionView, readBest, roundKind, saveBest, scalarView, scoreRound, ticks,
+  checkRound, errorUnit, fromOffset, isMagnitude, lastMeasurement, physicsLost, readBest, revealView, roundKind, saveBest, scalarView, scoreRound, ticks,
+  toOffset,
 } from './game.js';
 import { has, t } from './i18n.js';
 import { categoryChip, categoryNote, exampleChip, prospectiveChip, trialStatusChip } from './labels.js';
@@ -71,20 +72,30 @@ function revealedParts() {
   return ['baseline', 'model', 'actual'].filter((part) => index >= STAGES.indexOf(part));
 }
 
+/**
+ * Position rounds are drawn in offsets from the last training measurement (east left, north up). Before the reveal
+ * the view comes only from the training points (game.js guessView); afterwards it may widen to show everything.
+ */
 function positionGeometry() {
   const { round } = play;
-  const view = positionView(round, revealedParts().map((part) => round[part]));
+  const origin = lastMeasurement(round);
+  const shown = revealedParts().map((part) => round[part]);
+  if (play.stage !== 'guess' && play.guess) shown.push(play.guess);
+  const view = revealView(round, shown);
   const span = view.east[1] - view.east[0];
+  const offsetToPlot = (offset) => ({
+    x: PAD + ((view.east[1] - offset.east) / span) * INNER,
+    y: PAD + ((view.north[1] - offset.north) / span) * INNER,
+  });
   return {
     view,
     span,
-    toPlot: (point) => ({
-      x: PAD + ((view.east[1] - point.east_arcsec) / span) * INNER,
-      y: PAD + ((view.north[1] - point.north_arcsec) / span) * INNER,
-    }),
-    fromPlot: (x, y) => ({
-      east_arcsec: view.east[1] - ((x - PAD) / INNER) * span,
-      north_arcsec: view.north[1] - ((y - PAD) / INNER) * span,
+    origin,
+    offsetToPlot,
+    toPlot: (point) => offsetToPlot(toOffset(origin, point)),
+    fromPlot: (x, y) => fromOffset(origin, {
+      east: view.east[1] - ((x - PAD) / INNER) * span,
+      north: view.north[1] - ((y - PAD) / INNER) * span,
     }),
   };
 }
@@ -119,12 +130,12 @@ function drawAxes(plot, geo) {
   const factor = displayFactor(round);
   if (play.kind === 'position') {
     for (const tick of ticks(geo.view.east[0] * factor, geo.view.east[1] * factor)) {
-      const { x } = geo.toPlot({ east_arcsec: tick / factor, north_arcsec: geo.view.north[0] });
+      const { x } = geo.offsetToPlot({ east: tick / factor, north: geo.view.north[0] });
       plot.append(svg('line', { x1: x, x2: x, y1: PAD, y2: SIZE - PAD, class: 'grid' }));
       plot.append(svg('text', { x, y: SIZE - PAD + 16, class: 'tick', 'text-anchor': 'middle' }, formatNumber(tick, tick % 1 ? 1 : 0)));
     }
     for (const tick of ticks(geo.view.north[0] * factor, geo.view.north[1] * factor)) {
-      const { y } = geo.toPlot({ east_arcsec: geo.view.east[0], north_arcsec: tick / factor });
+      const { y } = geo.offsetToPlot({ east: geo.view.east[0], north: tick / factor });
       plot.append(svg('line', { x1: PAD, x2: SIZE - PAD, y1: y, y2: y, class: 'grid' }));
       plot.append(svg('text', { x: PAD - 6, y: y + 4, class: 'tick', 'text-anchor': 'end' }, formatNumber(tick, tick % 1 ? 1 : 0)));
     }
@@ -239,9 +250,8 @@ function guessText() {
   const factor = displayFactor(play.round);
   const unit = errorUnit(play.round);
   if (play.kind === 'position') {
-    return t('game.guessPosition', {
-      east: withUnit(play.guess.east_arcsec * factor, unit), north: withUnit(play.guess.north_arcsec * factor, unit),
-    });
+    const offset = toOffset(lastMeasurement(play.round), play.guess);
+    return t('game.guessPosition', { east: withUnit(offset.east * factor, unit), north: withUnit(offset.north * factor, unit) });
   }
   return t('game.guessValue', { value: withUnit(play.guess.value, play.round.units) });
 }
@@ -285,8 +295,9 @@ function nudge(east, north, times = 1, focusPlot = false) {
 function syncInputs() {
   const factor = displayFactor(play.round);
   if (play.kind === 'position') {
-    $('guess-east').value = play.guess ? (play.guess.east_arcsec * factor).toFixed(2) : '';
-    $('guess-north').value = play.guess ? (play.guess.north_arcsec * factor).toFixed(2) : '';
+    const offset = play.guess ? toOffset(lastMeasurement(play.round), play.guess) : null;
+    $('guess-east').value = offset ? (offset.east * factor).toFixed(2) : '';
+    $('guess-north').value = offset ? (offset.north * factor).toFixed(2) : '';
   } else {
     $('guess-value').value = play.guess ? play.guess.value.toFixed(2) : '';
   }
@@ -298,7 +309,7 @@ function readInputs() {
     const east = Number($('guess-east').value);
     const north = Number($('guess-north').value);
     if ($('guess-east').value === '' || $('guess-north').value === '' || !Number.isFinite(east) || !Number.isFinite(north)) return;
-    setGuess({ east_arcsec: east / factor, north_arcsec: north / factor });
+    setGuess(fromOffset(lastMeasurement(play.round), { east: east / factor, north: north / factor }));
   } else {
     const value = Number($('guess-value').value);
     if ($('guess-value').value === '' || !Number.isFinite(value)) return;
@@ -443,10 +454,11 @@ function trainingTable() {
   const columns = play.kind === 'position'
     ? [t('table.date'), t('game.inputEast', { unit: t(`unit.${unit}`) }), t('game.inputNorth', { unit: t(`unit.${unit}`) }), t('col.kind')]
     : [t('table.date'), t('game.inputValue', { unit: t(`unit.${unit}`) }), t('col.kind')];
+  const origin = play.kind === 'position' ? lastMeasurement(round) : null;
   const rows = [...round.training_points].sort((a, b) => a.t_mjd - b.t_mjd).map((point) => [
     dateOf(point.t_mjd),
     ...(play.kind === 'position'
-      ? [formatNumber(point.east_arcsec * factor, 2), formatNumber(point.north_arcsec * factor, 2)]
+      ? [formatNumber(toOffset(origin, point).east * factor, 2), formatNumber(toOffset(origin, point).north * factor, 2)]
       : [formatNumber(point.value, 2)]),
     has(`content.${point.content_type}`) ? t(`content.${point.content_type}`) : '—',
   ]);

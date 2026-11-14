@@ -1,14 +1,28 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import {
-  checkRound, expDecayScore, isMagnitude, physicsLost, pointError, positionView, readBest, saveBest, scalarView, scoreRound, ticks,
+  checkRound, daysToTarget, expDecayScore, fromOffset, guessView, isMagnitude, lastMeasurement, physicsLost, pointError, preRevealState,
+  readBest, revealView, roundKind, saveBest, scalarView, scoreRound, ticks, toOffset, trainingMotion,
 } from '../static/js/game.js';
 
 const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const barnard = read('../static/dev-fixtures/game/barnard-position-example.json');
 const makemake = read('../static/dev-fixtures/game/makemake-position-example.json');
 const rdra = read('../static/dev-fixtures/game/rdra-brightness-example.json');
+/** Every round the page can play: Session A's real rounds and the examples. */
+const ROUNDS = ['../static/data/game/', '../static/dev-fixtures/game/'].flatMap((folder) => readdirSync(new URL(folder, import.meta.url))
+  .filter((name) => name.endsWith('.json')).map((name) => [`${folder.includes('dev-') ? 'example' : 'real'} ${name}`, read(`${folder}${name}`)]));
+const POSITION_ROUNDS = ROUNDS.filter(([, round]) => roundKind(round) === 'position');
+/** Every number pair in a value, wherever it sits (for the leak test). */
+function pairs(value, found = []) {
+  if (Array.isArray(value)) value.forEach((item) => pairs(item, found));
+  else if (value && typeof value === 'object') {
+    if (Number.isFinite(value.east) && Number.isFinite(value.north)) found.push([value.east, value.north]);
+    Object.values(value).forEach((item) => pairs(item, found));
+  }
+  return found;
+}
 
 test('exp_decay_v1: a perfect guess scores 100 and scores fall towards 0, never below', () => {
   assert.equal(expDecayScore(0, 2), 100);
@@ -94,16 +108,66 @@ test('broken rounds are refused, not guessed', () => {
   for (const round of [barnard, makemake, rdra]) assert.equal(checkRound(round).ok, true, round.round_id);
 });
 
-test('before the reveal, the view comes from the training points only', () => {
-  const before = positionView(barnard);
-  const moved = positionView({ ...barnard, actual: { east_arcsec: 500, north_arcsec: 500 }, baseline: { east_arcsec: -900, north_arcsec: 0 } });
-  assert.deepEqual(before, moved, 'the hidden answer does not change the axes');
-  assert.ok(Math.abs((before.east[1] - before.east[0]) - (before.north[1] - before.north[0])) < 1e-9, 'square: same scale east and north');
-  const after = positionView(barnard, [{ east_arcsec: 500, north_arcsec: 0 }]);
-  assert.ok(after.east[1] >= 500, 'a revealed point widens the view');
+test('answer leak: before the reveal nothing on screen depends on the model, the baseline or the actual position', () => {
+  assert.ok(POSITION_ROUNDS.some(([name]) => name.startsWith('real')), 'the real rounds are checked');
+  for (const [name, round] of POSITION_ROUNDS) {
+    const state = preRevealState(round);
+    // Move the three hidden answers far away: the state must not change at all.
+    const moved = preRevealState({
+      ...round,
+      model: { ...round.model, east_arcsec: 123456, north_arcsec: -654321 },
+      baseline: { ...round.baseline, east_arcsec: -98765, north_arcsec: 4321 },
+      actual: { ...round.actual, east_arcsec: 777, north_arcsec: -888 },
+    });
+    assert.deepEqual(moved, state, `${name}: the hidden answers do not change what is shown`);
+    // No coordinate shown equals an answer. Everything on screen is an offset from the last measurement, so the
+    // answers are compared as offsets from the same point (nothing is shown in the file's frame).
+    const origin = lastMeasurement(round);
+    const answers = ['model', 'baseline', 'actual'].map((part) => [part, toOffset(origin, round[part]).east, toOffset(origin, round[part]).north]);
+    const shown = [...pairs(state), [state.view.east[0], state.view.north[0]], [state.view.east[1], state.view.north[1]],
+      [(state.view.east[0] + state.view.east[1]) / 2, (state.view.north[0] + state.view.north[1]) / 2]];
+    for (const [part, east, north] of answers) {
+      for (const [x, y] of shown) assert.ok(Math.hypot(x - east, y - north) > 1e-6, `${name}: ${part} shown at (${x}, ${y})`);
+    }
+    // The origin is the last measurement, so the zero gridlines cross there, not at the model.
+    const last = state.training.at(-1);
+    assert.deepEqual([last.east, last.north], [0, 0], `${name}: offsets start at the last measurement`);
+    const model = toOffset(origin, round.model);
+    assert.ok(Math.hypot(model.east, model.north) > 1e-6, `${name}: the screen's 0,0 is not the model`);
+    assert.equal(state.daysToTarget, round.reveal_t_mjd - last.t_mjd);
+  }
+});
+
+test('the view before the reveal holds the training points and their speed times the days to the target', () => {
+  for (const [name, round] of POSITION_ROUNDS) {
+    const view = guessView(round);
+    const reach = trainingMotion(round).speed * daysToTarget(round);
+    assert.ok(Math.abs((view.east[1] - view.east[0]) - (view.north[1] - view.north[0])) < 1e-9, `${name}: square`);
+    for (const [east, north] of [[reach, 0], [-reach, 0], [0, reach], [0, -reach]]) {
+      assert.ok(east >= view.east[0] && east <= view.east[1] && north >= view.north[0] && north <= view.north[1], `${name}: ${reach.toFixed(3)} in every direction`);
+    }
+    for (const point of preRevealState(round).training) assert.ok(point.east >= view.east[0] && point.east <= view.east[1], `${name}: training inside`);
+    // After the reveal the view may widen to show everything, never shrink.
+    const after = revealView(round, [round.baseline, round.model, round.actual]);
+    assert.ok(after.east[0] <= view.east[0] && after.east[1] >= view.east[1], `${name}: widens only`);
+    for (const part of ['baseline', 'model', 'actual']) {
+      const offset = toOffset(lastMeasurement(round), round[part]);
+      assert.ok(offset.east >= after.east[0] && offset.east <= after.east[1] && offset.north >= after.north[0] && offset.north <= after.north[1], `${name}: ${part} shown after the reveal`);
+    }
+  }
   const scalar = scalarView(rdra);
   assert.ok(scalar.time[1] > rdra.reveal_t_mjd && scalar.time[0] < rdra.training_points[0].t_mjd);
-  assert.deepEqual(scalarView({ ...rdra, actual: { value: 99 } }), scalar);
+  assert.deepEqual(scalarView({ ...rdra, actual: { value: 99 }, model: { value: -5 }, baseline: { value: 40 } }), scalar);
+});
+
+test('typed offsets are relative to the last measurement; scoring stays in the file\'s frame', () => {
+  for (const [name, round] of POSITION_ROUNDS) {
+    const origin = lastMeasurement(round);
+    const guess = fromOffset(origin, { east: 1.5, north: -2 });
+    assert.deepEqual(toOffset(origin, guess), { east: 1.5, north: -2 }, name);
+    const atActual = fromOffset(origin, toOffset(origin, round.actual));
+    assert.ok(scoreRound(round, atActual).errors.player < 1e-9, `${name}: a guess typed at the actual offset scores as the actual`);
+  }
 });
 
 test('contract V4 brightness units: only magnitudes count smaller as brighter', () => {

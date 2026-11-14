@@ -1107,3 +1107,23 @@ batch is visible on the public site; not checked on a real phone.
 | Strings | `js/i18n.js` | Session A's `strings.en.json` re-copied (V12: 168 keys not already defined here). |
 
 **Checks**: `node --test tests/` **185 passed, 0 failed**. Captures `learn-lab-measured`, new `learn-lab-measured-w1`, `game-hidden`, `game-hidden-revealed`, `learn-lesson-brightness-planetx` at 360/390/768/1280 with the real files: report 249 entries, no horizontal scroll, no control under 44 px, every page ready, no console errors other than 404s. Session A's validator: 79 contract files, 0 failures.
+
+### Task B7 part 0, 15 Nov 2026 (Beat the physics: answer leak fixed)
+
+**The leak**: every round file measures positions from "the frozen model at the reveal time", and the page drew
+them in that frame, so before the reveal the chart's 0,0 (where the zero gridlines cross), the typed offsets and the
+training table were all measured from the model's answer. Tapping the crossing tied the model every time.
+
+**Fix** (`js/game.js`, `js/game-ui.js`, `js/i18n.js`; data files unchanged): before the reveal everything on screen
+is an offset from the **last training measurement** (axes, typed offsets, status line and training table say so).
+The view comes only from the training points plus, around the last measurement, their own least-squares speed ×
+the days to the target in every direction (`guessView`); after the reveal it may widen to show everything
+(`revealView`). Guesses are stored and scored in the file's frame, so scores are unchanged. Scalar rounds were
+not affected (their axis is the measured value).
+
+**Checks**: `node --test tests/` 187 passed. New tests on every real and example position round: the pre-reveal
+state is identical when the model, baseline and actual are moved anywhere; no coordinate shown equals any of them
+(as offsets from the last measurement); the screen's 0,0 is the last measurement, not the model; the view holds the
+training points and speed × days in every direction; it only widens after the reveal and then shows all three;
+a typed offset at the actual's offset scores as the actual. In the browser (real Barnard, ε Indi B, Pluto rounds):
+the zero gridlines cross on the last dot, typing 0, 0 puts the guess there, the axis labels fit.
