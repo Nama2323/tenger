@@ -1,0 +1,305 @@
+{
+  "schema_version": "tenger.trial/1",
+  "contract_version": 5,
+  "trial_id": "pluto-position-open-2027a",
+  "target_key": "pluto",
+  "quantity": "position",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "open_forecast": true,
+  "frozen_utc": "2026-11-14T14:49:13Z",
+  "exposure": {
+    "status": "unexposed",
+    "why": "future visit, not yet observed or released",
+    "inventory_ref": {
+      "path": "docs/exposure/pluto.json",
+      "sha256": "b40d2b9412ed1e7f9456c5c264db53d124e050328a501846589c68e942962954"
+    },
+    "team_statement": {
+      "path": "docs/EXPOSURE.md",
+      "section": "Team confirmation for Task A4",
+      "other_teammates": "not answered yet"
+    }
+  },
+  "training": {
+    "path": "trials/pluto-position-open-2027a/training.json",
+    "measurements_sha256": "1eba19025ad795b0f6c107f0a602eb52003e87f8ab02ced20125b2da4e29d791",
+    "n_points": 50,
+    "visits": [
+      1,
+      2
+    ],
+    "obs": [
+      {
+        "obs_key": "spherex_dr1:2025W39_1A_0574_2:D3",
+        "source_sha256": "73d4be46a018183ae5d24f1764eb500481ce9b28461f2ac7fd89e696ba4ba622"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W39_1A_0574_3:D3",
+        "source_sha256": "6dca2da93867d21b0994367fb39f2b160e4bca7b10892a21a9fb6d330e5699e5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W39_1A_0574_4:D3",
+        "source_sha256": "b8e1e2b335aeb9e09d8eb224580b04b0c358be1dc1e8799c1c1ec30d3186083f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W39_2A_0219_2:D3",
+        "source_sha256": "d1384248c9204342eaab51b59b3918562c29b7bb2aab9a6f04796b85fe3c6d07"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W39_2A_0219_4:D3",
+        "source_sha256": "f65b95f1bf84cc92387dd8ed0e2912b5bed9762adcd6c350396154f21fd69cac"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0346_4:D3",
+        "source_sha256": "8d388b297555f1884f573fb4babdcad4b1e8490a9c60f9d92ffbdfae0c5bda46"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0362_1:D3",
+        "source_sha256": "6b1ab34662a6b7893aff22ae30fc25ae89d6ee2d3e1c118be9aaeac8b6f88373"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0362_2:D3",
+        "source_sha256": "e1fc07dbb579445c1719d3fcf20c8d0cfeb3306c5b4a8353c60d2f8bd5e2cb0b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0362_3:D3",
+        "source_sha256": "6f54e95efa9b335cede1793473b76bc8eae23090d5e1899583f8ed1b4bc1136d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0362_4:D3",
+        "source_sha256": "83be7e0354a67f57ed91ebf7575086b1bc5cedf1437b5563b96931f3819989a5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0390_1:D2",
+        "source_sha256": "96f230a5cbf1c483c53759970c99d915010d54e77d26e2cd2236e2185097cdd8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0390_2:D2",
+        "source_sha256": "accbb2ead8ca6448fbb4a22b9b87926dd2d8eddebecce538877c883e706cefad"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0390_3:D2",
+        "source_sha256": "4d4e60e9d4bb054447b781b79fbf22d074d22b126a54fd5a760866b6983227e5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0455_3:D2",
+        "source_sha256": "f6ded9ad125481bb126a010662894f72003d59eb203b29121dd75a7f31f76b8d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0455_4:D2",
+        "source_sha256": "6cb15a6be2b84a4e402bd631692f851dc833057e10a648d1e89f7d67a52a7d7e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0122_1:D2",
+        "source_sha256": "f52fe32a384651e537cb1c42845619a84b618dc970969d9b7313af7693ff9e2b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0122_2:D2",
+        "source_sha256": "732dc19108764912676ceeb078e29b581cabed7820c9e3872fda343ce1fa80e8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0122_3:D2",
+        "source_sha256": "904b9462474609daf2d8be1a5004af634fbbce5cd3e9a15a85ce01e5e46a4d72"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0136_1:D1",
+        "source_sha256": "3a49f3a9c637fcb2dfac2a69b0fb4e7145818005215a4f6994c9576230331789"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0136_2:D1",
+        "source_sha256": "e0884fcf54a83f035f5f8abd157847b3a25c287f07fbf35b266300711fe1d1c3"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0136_3:D1",
+        "source_sha256": "f5a77fb6f73468e80ca38381f6d8bf51e50b8b83131f7834417c5efbb38f29f6"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0356_1:D1",
+        "source_sha256": "7ce6f20b986d623bf6bb978414e60b1c5a6fa9c177944e52e47812560fa5d610"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0356_2:D1",
+        "source_sha256": "7c9c098e0db4a1a1fe1e3a885c8c43303beee5bf9a44243e78ec92cdf8a45d13"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0356_2:D4",
+        "source_sha256": "d285df6bf1a87860f2dd932706bb96ec1144a8c8c4ddb91345553237da588a3f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0526_1:D2",
+        "source_sha256": "d41a43697c811fa628e1e44df509058e6b9169800aba99667b676a1a7d62981c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0526_3:D2",
+        "source_sha256": "8abbed667948fbe302065608210bc364b580bb77ace301a63515c792ccc176a9"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0526_4:D2",
+        "source_sha256": "9a234056487958b76582320fd0ef379277bb7030cf17d7408e20c3d91db0b872"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0355_1:D1",
+        "source_sha256": "0ac8a43a25e339cc16d700bd4b4f81c5943ae8670ac4b42f0c8e6910cb3a2324"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0355_2:D1",
+        "source_sha256": "f11c86865d02523ac2d8aaf25cf00097ad4493c07c1d12ba10c77de2f88e7ab1"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0355_3:D1",
+        "source_sha256": "53bbd257104bbcac62c8aa00e06a2fe2dba8c550d51285f420f6fb1d18f6d0d3"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0355_4:D1",
+        "source_sha256": "743939de016c84afa844ae331cf5b41d4eca2cc4762f2b926e57728f214b25a5"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0553_1:D1",
+        "source_sha256": "85aee9b8516cc923c0368545d17ebad21935983b10554c5d87281b6032f52090"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0553_2:D1",
+        "source_sha256": "fe76f8fe1346d04d17bc19eda36a4f0ca56af9fa7c470283ff7a59dc53b3738a"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0553_3:D1",
+        "source_sha256": "0cf9b6de6e95645b70841848955e64b2911ceff2ff475514d5ab5eef26b65d64"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0553_4:D1",
+        "source_sha256": "887050ba5d94186fb7e64ddf48b0d24a7ba79eccdce9a016c6cac29ee9beaae4"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0650_3:D1",
+        "source_sha256": "346e013cd0dc41a83cccbee5b191b1c8285156a85c9cb7fb7ba0637266e78006"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0650_3:D4",
+        "source_sha256": "494ea625c486e1344311b803130d659696ab047237c1b10b24c3aed506c20188"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0650_4:D1",
+        "source_sha256": "a4ffd0916877fd16e7134d0f5e0be26372a20997403009d6fb4e9e7b25b3eb7e"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0650_4:D4",
+        "source_sha256": "8912d6ac8830767652d10763aa3ede6f51adf66632484c2babd05b4bb733a88a"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0666_3:D1",
+        "source_sha256": "abf868bcd874e3a157b19fac7a39fbc438b0012d0e984e9c470df2cf13e56c5f"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0666_4:D1",
+        "source_sha256": "c215cc4b617965c3b70aef13183ee79aa2f2f14b689c37b413508277b5784849"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0740_1:D1",
+        "source_sha256": "dab55144ace8887745a5a39feb7115d8161c6718046a65438938a2ddedfab633"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0015_1:D1",
+        "source_sha256": "11d6f301b20e6f3c8186154c0c5e4525b90747aa03c5068efa07967c4187153b"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0015_2:D1",
+        "source_sha256": "30f4674c8af642e6f48ff4db5f57e9fdc8997c2fef48d9da18b6594408efe7fc"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0015_2:D4",
+        "source_sha256": "7d99530fd45a65b679f68b63d5ae4e7033986780d6d0648f38267819b90be3bb"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0198_1:D1",
+        "source_sha256": "0a3775a40cc387ddc30546060a19093742ceeb73d9f3e56b1c06994b87b4c1bb"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0198_1:D4",
+        "source_sha256": "f8c07fd14ef69ed251f812ab977560c18e776ffcb43fc162342d5a8be1083394"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0212_1:D1",
+        "source_sha256": "77a484f03edb9bd08c8c73c053bb169c48b19e3b6be8bfa2bd25fa55bca5d347"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0212_2:D1",
+        "source_sha256": "966574a51095bc8746411069286265dff61b902e9a2a66808b1572bc4129f6a0"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0212_3:D1",
+        "source_sha256": "3deeaf5cafc2acfb41fb9970e362bf5c1db7a9d82df3ccf8e0abfe5ce6c14046"
+      }
+    ]
+  },
+  "holdout": {
+    "visit": null,
+    "window_mjd": [
+      61490.0,
+      61550.0
+    ],
+    "obs": [],
+    "t_mjd": 61520.0,
+    "data_state": "not_released",
+    "check_after_utc": "2027-05-15",
+    "selection_rule_key": "holdout.next-visit-forecast",
+    "cadence_note": "Pluto visits so far start near 04-25 and 09-25 each year"
+  },
+  "permitted_inputs": [
+    {
+      "name": "observer position: Earth (astropy built-in ephemeris) plus spacecraft header position",
+      "content_type": "catalogue",
+      "used_for": "observer geometry"
+    },
+    {
+      "name": "GM_sun and the speed of light",
+      "content_type": "catalogue",
+      "used_for": "physics"
+    }
+  ],
+  "model": {
+    "id": "heliocentric-two-body",
+    "version": "a4-2026-11-14",
+    "code_sha256": "18f77dc55fd7f8995333a8f25698e72a15e0dca90661e0e500f8b11d8d2561a2",
+    "uncertainty": "parameter covariance x max(1, reduced chi-square); for stars the larger of the exposure-level and the visit-level (per visit and array means) fit; plus sigma_sys from the scatter of per-visit-and-array mean residuals",
+    "notes": null
+  },
+  "baseline": {
+    "id": "linear-tangent-plane",
+    "description": "straight-line motion in RA and Dec fitted to the same training positions, no parallax and no orbit"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "frame": "tangent plane at the predicted position, east/north arcsec",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "threshold_radius": 2.4477468306808166,
+    "covariance": "S = C_pred + C_obs",
+    "observed": "mean over identified holdout exposures of r_i = observed_i - model(t_i, observer_i), east/north arcsec in the tangent plane at the model position",
+    "c_obs": "sample covariance of the r_i divided by N (N >= 3), never smaller than the mean per-exposure fit covariance divided by N",
+    "c_pred": "frozen model covariance at the mean holdout time (parameter covariance scaled by max(1, reduced chi-square)) plus sigma_sys^2 per axis for the new visit's own offset",
+    "model_evaluation": "the frozen model is evaluated at each identified holdout exposure's time and observer position (Earth plus the FITS header spacecraft position)"
+  },
+  "identification": {
+    "method_key": "ident.frozen-model-search",
+    "rules": [
+      "holdout cutouts are centred on the frozen model position at each exposure time (no ephemeris query)",
+      "native Gaussian fit (A3), S/N >= 10, within max(15 arcsec, 3 x sqrt(largest C_pred eigenvalue)) of the model",
+      "static-source check: the fitted sky position must be empty (S/N < 5) in another holdout exposure of the same array taken when the model position had moved more than 30 arcsec",
+      "two or more distinct sources passing these rules in one exposure -> ambiguous",
+      "fewer than 3 identified exposures -> insufficient_data"
+    ],
+    "alternatives_kept": true
+  },
+  "exclusion_rules_keys": [
+    "exclude.quality-gate",
+    "exclude.flagged-pixels",
+    "exclude.identification",
+    "exclude.contaminated",
+    "exclude.fewer-than-3"
+  ],
+  "exploratory": false,
+  "revises": null
+}

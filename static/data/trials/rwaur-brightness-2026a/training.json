@@ -1,0 +1,163 @@
+{
+  "schema_version": "tenger.training/1",
+  "contract_version": 5,
+  "trial_id": "rwaur-brightness-2026a",
+  "target_key": "rwaur",
+  "source": {
+    "path": "rwaur/investigation.json",
+    "sha256": "bc527a8a7b0041d8a1606188eafc52a8252a58540450d798131e506621e3cce4"
+  },
+  "selection": "measured single-exposure fluxes outside the holdout visit",
+  "points": [
+    {
+      "t_mjd": 60919.420313,
+      "flux_ujy": 150933.6719,
+      "sigma_ujy": 412.1144,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0095_1:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60919.421805,
+      "flux_ujy": 160461.1824,
+      "sigma_ujy": 428.7135,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0095_2:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60920.030805,
+      "flux_ujy": 70844.4422,
+      "sigma_ujy": 292.3867,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0233_2:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60920.032297,
+      "flux_ujy": 73679.0721,
+      "sigma_ujy": 297.9926,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0233_3:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60920.978031,
+      "flux_ujy": 88594.0454,
+      "sigma_ujy": 332.6204,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0446_1:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60920.981016,
+      "flux_ujy": 103041.5304,
+      "sigma_ujy": 344.3814,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0446_3:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60920.982508,
+      "flux_ujy": 71774.3118,
+      "sigma_ujy": 305.3521,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0446_4:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60921.726042,
+      "flux_ujy": 148032.696,
+      "sigma_ujy": 405.5465,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0606_2:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60921.997667,
+      "flux_ujy": 177706.3884,
+      "sigma_ujy": 446.0671,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0663_2:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60922.067199,
+      "flux_ujy": 155706.7038,
+      "sigma_ujy": 413.8944,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0677_1:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60922.068692,
+      "flux_ujy": 163625.6603,
+      "sigma_ujy": 424.6758,
+      "obs_keys": [
+        "spherex_dr1:2025W36_1A_0677_2:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61103.331765,
+      "flux_ujy": 161936.9072,
+      "sigma_ujy": 425.0456,
+      "obs_keys": [
+        "spherex_dr1:2026W10_1A_0445_2:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61107.676269,
+      "flux_ujy": 115103.3844,
+      "sigma_ujy": 370.8353,
+      "obs_keys": [
+        "spherex_dr1:2026W10_2B_0591_3:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61107.677761,
+      "flux_ujy": 124295.2483,
+      "sigma_ujy": 385.5936,
+      "obs_keys": [
+        "spherex_dr1:2026W10_2B_0591_4:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61109.440078,
+      "flux_ujy": 124730.2726,
+      "sigma_ujy": 388.6553,
+      "obs_keys": [
+        "spherex_dr1:2026W11_1A_0285_1:D1"
+      ],
+      "detector": 1,
+      "content_type": "measured"
+    }
+  ]
+}

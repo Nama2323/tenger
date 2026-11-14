@@ -1,0 +1,12 @@
+{
+  "schema_version": "tenger.training/1",
+  "contract_version": 5,
+  "trial_id": "makemake-position-open-2027a",
+  "target_key": "makemake",
+  "source": {
+    "path": "makemake/investigation.json",
+    "sha256": "91dd13fd4c0ad4f404dc306697257e1fc57dcb7f8aabbf65c9fa9b38be930cf6"
+  },
+  "selection": "identified single-exposure detections before the holdout window",
+  "points": []
+}

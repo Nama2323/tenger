@@ -1,0 +1,692 @@
+{
+  "schema_version": "tenger.trial/1",
+  "contract_version": 5,
+  "trial_id": "rwaur-brightness-2026a",
+  "target_key": "rwaur",
+  "quantity": "brightness",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout"
+  ],
+  "open_forecast": false,
+  "frozen_utc": "2026-11-14T14:49:13Z",
+  "exposure": {
+    "status": "exposed",
+    "why": "all current exposures opened in A3 (and bundled earlier)",
+    "inventory_ref": {
+      "path": "docs/exposure/rwaur.json",
+      "sha256": "95ed95de0a1da8603649949aafc07929fba3cb40a8635e5c9c8e570894fe7848"
+    },
+    "team_statement": {
+      "path": "docs/EXPOSURE.md",
+      "section": "Team confirmation for Task A4",
+      "other_teammates": "not answered yet"
+    }
+  },
+  "training": {
+    "path": "trials/rwaur-brightness-2026a/training.json",
+    "measurements_sha256": "3eed49872a4008df72cfef015103c3cea4496d6c05b7a3e2d8bbbc024c69168e",
+    "n_points": 15,
+    "visits": [],
+    "obs": [
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0095_1:D1",
+        "source_sha256": "49119911ee2aec5dad0c5f781abbeea40fc6fb6b323285d67db69bb677965061"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0095_2:D1",
+        "source_sha256": "9af56b5fc97ca682b9515fad6ce2e5eb1c07f73928f4ec9d7cb91e867f8ace2f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0233_2:D1",
+        "source_sha256": "897bcf07df0df3156545ab5be371f166dd897998ae5338dc9c21d819716e20ae"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0233_3:D1",
+        "source_sha256": "1c4e7b44b437fc6d6f33a66268911facdc1c007b9a92d54660c0e9e28cc8add6"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0446_1:D1",
+        "source_sha256": "e7eb4a11da7519f57a1f277a408a66886721813c6469719712101a755fba673c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0446_3:D1",
+        "source_sha256": "5eb6717c94a715af128d69fda1659bffc29a204385ccee6dbf6f3feed467aa7a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0446_4:D1",
+        "source_sha256": "67e2e6d9bbd7c10d52faa443ae7755815d1ae0b2c92f0311155bf2d610ca5ed3"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0606_2:D1",
+        "source_sha256": "e1f426846a6ee87019779da424fb6f6ee0b7883f7a36aa185e9b6f585bc452cb"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0663_2:D1",
+        "source_sha256": "5cb159e8a01a61521c0fa7ceee7bb2025d9038166ca1f4a80c9087bbba4be4d6"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0677_1:D1",
+        "source_sha256": "5db4bd9e0185acfced865d76d1bb4f920419d83b20474a72ec707ae67b22f0b1"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W36_1A_0677_2:D1",
+        "source_sha256": "466d20d7167716b468dae2534e8374e7f9e10f11645254f927cd4f6d3c553fc2"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W10_1A_0445_2:D1",
+        "source_sha256": "47a6801d2af5073a9262a53c2f905064ecb106d036af53bfe60bcacd972d8d0c"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W10_2B_0591_3:D1",
+        "source_sha256": "d93f36d34326c3aca1f8abba503da13154dc441aeaa1579010277e6141e99caa"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W10_2B_0591_4:D1",
+        "source_sha256": "fc3e790244a6ea4063aab6152a0c5f9d0e2111e5d9bcf260434927669636326c"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W11_1A_0285_1:D1",
+        "source_sha256": "1738d93e442f91d75a93d66c35c8fd5c1aa4994a0d1896ae6252a9e9301bffe9"
+      }
+    ]
+  },
+  "holdout": {
+    "visit": 2,
+    "window_mjd": [
+      61285.097169,
+      61299.895897
+    ],
+    "obs": [
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0476_1:D1",
+        "t_start_mjd": 61285.097169,
+        "t_end_mjd": 61285.098502
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0476_1:D4",
+        "t_start_mjd": 61285.097169,
+        "t_end_mjd": 61285.098502
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0476_2:D1",
+        "t_start_mjd": 61285.098662,
+        "t_end_mjd": 61285.099994
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0476_2:D4",
+        "t_start_mjd": 61285.098662,
+        "t_end_mjd": 61285.099994
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0476_3:D1",
+        "t_start_mjd": 61285.100154,
+        "t_end_mjd": 61285.101486
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0476_3:D4",
+        "t_start_mjd": 61285.100154,
+        "t_end_mjd": 61285.101486
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0476_4:D1",
+        "t_start_mjd": 61285.101646,
+        "t_end_mjd": 61285.102978
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0476_4:D4",
+        "t_start_mjd": 61285.101646,
+        "t_end_mjd": 61285.102978
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0493_1:D1",
+        "t_start_mjd": 61285.169579,
+        "t_end_mjd": 61285.170912
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0493_1:D4",
+        "t_start_mjd": 61285.169579,
+        "t_end_mjd": 61285.170912
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0506_1:D1",
+        "t_start_mjd": 61285.237228,
+        "t_end_mjd": 61285.238561
+      },
+      {
+        "obs_key": "spherex_qr3:2026W36_1A_0506_1:D4",
+        "t_start_mjd": 61285.237228,
+        "t_end_mjd": 61285.238561
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0234_2:D1",
+        "t_start_mjd": 61291.275158,
+        "t_end_mjd": 61291.27649
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0234_2:D4",
+        "t_start_mjd": 61291.275158,
+        "t_end_mjd": 61291.27649
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0234_3:D1",
+        "t_start_mjd": 61291.27665,
+        "t_end_mjd": 61291.277983
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0234_3:D4",
+        "t_start_mjd": 61291.27665,
+        "t_end_mjd": 61291.277983
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0234_4:D1",
+        "t_start_mjd": 61291.278142,
+        "t_end_mjd": 61291.279475
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0234_4:D4",
+        "t_start_mjd": 61291.278142,
+        "t_end_mjd": 61291.279475
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0331_1:D1",
+        "t_start_mjd": 61291.817397,
+        "t_end_mjd": 61291.81873
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0331_1:D4",
+        "t_start_mjd": 61291.817397,
+        "t_end_mjd": 61291.81873
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0331_2:D1",
+        "t_start_mjd": 61291.818889,
+        "t_end_mjd": 61291.820222
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0331_2:D4",
+        "t_start_mjd": 61291.818889,
+        "t_end_mjd": 61291.820222
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0331_3:D1",
+        "t_start_mjd": 61291.820382,
+        "t_end_mjd": 61291.821714
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0331_3:D4",
+        "t_start_mjd": 61291.820382,
+        "t_end_mjd": 61291.821714
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0331_4:D1",
+        "t_start_mjd": 61291.821874,
+        "t_end_mjd": 61291.823206
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0331_4:D4",
+        "t_start_mjd": 61291.821874,
+        "t_end_mjd": 61291.823206
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0365_1:D1",
+        "t_start_mjd": 61292.021872,
+        "t_end_mjd": 61292.023204
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0365_1:D4",
+        "t_start_mjd": 61292.021872,
+        "t_end_mjd": 61292.023204
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0365_2:D1",
+        "t_start_mjd": 61292.023364,
+        "t_end_mjd": 61292.024696
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0365_2:D4",
+        "t_start_mjd": 61292.023364,
+        "t_end_mjd": 61292.024696
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0365_3:D1",
+        "t_start_mjd": 61292.024856,
+        "t_end_mjd": 61292.026189
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0365_3:D4",
+        "t_start_mjd": 61292.024856,
+        "t_end_mjd": 61292.026189
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0365_4:D1",
+        "t_start_mjd": 61292.026366,
+        "t_end_mjd": 61292.027699
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0365_4:D4",
+        "t_start_mjd": 61292.026366,
+        "t_end_mjd": 61292.027699
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0524_1:D1",
+        "t_start_mjd": 61292.904327,
+        "t_end_mjd": 61292.90566
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0524_1:D4",
+        "t_start_mjd": 61292.904327,
+        "t_end_mjd": 61292.90566
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0615_1:D2",
+        "t_start_mjd": 61293.378474,
+        "t_end_mjd": 61293.379806
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0615_1:D5",
+        "t_start_mjd": 61293.378474,
+        "t_end_mjd": 61293.379806
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0615_2:D2",
+        "t_start_mjd": 61293.379966,
+        "t_end_mjd": 61293.381298
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0615_2:D5",
+        "t_start_mjd": 61293.379966,
+        "t_end_mjd": 61293.381298
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0615_3:D2",
+        "t_start_mjd": 61293.381458,
+        "t_end_mjd": 61293.38279
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0615_3:D5",
+        "t_start_mjd": 61293.381458,
+        "t_end_mjd": 61293.38279
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0615_4:D2",
+        "t_start_mjd": 61293.38295,
+        "t_end_mjd": 61293.384283
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_1A_0615_4:D5",
+        "t_start_mjd": 61293.38295,
+        "t_end_mjd": 61293.384283
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0287_3:D5",
+        "t_start_mjd": 61294.874566,
+        "t_end_mjd": 61294.875898
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0287_4:D2",
+        "t_start_mjd": 61294.876058,
+        "t_end_mjd": 61294.87739
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0287_4:D5",
+        "t_start_mjd": 61294.876058,
+        "t_end_mjd": 61294.87739
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0516_1:D2",
+        "t_start_mjd": 61295.958316,
+        "t_end_mjd": 61295.959648
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0516_1:D5",
+        "t_start_mjd": 61295.958316,
+        "t_end_mjd": 61295.959648
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0516_2:D2",
+        "t_start_mjd": 61295.959808,
+        "t_end_mjd": 61295.96114
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0516_2:D5",
+        "t_start_mjd": 61295.959808,
+        "t_end_mjd": 61295.96114
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0516_3:D2",
+        "t_start_mjd": 61295.9613,
+        "t_end_mjd": 61295.962633
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0516_3:D5",
+        "t_start_mjd": 61295.9613,
+        "t_end_mjd": 61295.962633
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0516_4:D2",
+        "t_start_mjd": 61295.962793,
+        "t_end_mjd": 61295.964125
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0516_4:D5",
+        "t_start_mjd": 61295.962793,
+        "t_end_mjd": 61295.964125
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0581_1:D3",
+        "t_start_mjd": 61296.297591,
+        "t_end_mjd": 61296.298923
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0581_1:D6",
+        "t_start_mjd": 61296.297591,
+        "t_end_mjd": 61296.298923
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0581_2:D3",
+        "t_start_mjd": 61296.299083,
+        "t_end_mjd": 61296.300415
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0581_2:D6",
+        "t_start_mjd": 61296.299083,
+        "t_end_mjd": 61296.300415
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0581_3:D3",
+        "t_start_mjd": 61296.300575,
+        "t_end_mjd": 61296.301907
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0581_3:D6",
+        "t_start_mjd": 61296.300575,
+        "t_end_mjd": 61296.301907
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0581_4:D3",
+        "t_start_mjd": 61296.302067,
+        "t_end_mjd": 61296.3034
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0581_4:D6",
+        "t_start_mjd": 61296.302067,
+        "t_end_mjd": 61296.3034
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0630_1:D2",
+        "t_start_mjd": 61296.569501,
+        "t_end_mjd": 61296.570833
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0630_1:D5",
+        "t_start_mjd": 61296.569501,
+        "t_end_mjd": 61296.570833
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0630_2:D2",
+        "t_start_mjd": 61296.570993,
+        "t_end_mjd": 61296.572325
+      },
+      {
+        "obs_key": "spherex_qr3:2026W37_2A_0630_2:D5",
+        "t_start_mjd": 61296.570993,
+        "t_end_mjd": 61296.572325
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0064_1:D2",
+        "t_start_mjd": 61297.316303,
+        "t_end_mjd": 61297.317636
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0064_1:D5",
+        "t_start_mjd": 61297.316303,
+        "t_end_mjd": 61297.317636
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0064_2:D2",
+        "t_start_mjd": 61297.317795,
+        "t_end_mjd": 61297.319128
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0064_2:D5",
+        "t_start_mjd": 61297.317795,
+        "t_end_mjd": 61297.319128
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0064_3:D2",
+        "t_start_mjd": 61297.319305,
+        "t_end_mjd": 61297.320638
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0064_3:D5",
+        "t_start_mjd": 61297.319305,
+        "t_end_mjd": 61297.320638
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0064_4:D2",
+        "t_start_mjd": 61297.320798,
+        "t_end_mjd": 61297.32213
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0064_4:D5",
+        "t_start_mjd": 61297.320798,
+        "t_end_mjd": 61297.32213
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0162_1:D3",
+        "t_start_mjd": 61297.855434,
+        "t_end_mjd": 61297.856766
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0162_1:D6",
+        "t_start_mjd": 61297.855434,
+        "t_end_mjd": 61297.856766
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0162_2:D3",
+        "t_start_mjd": 61297.856926,
+        "t_end_mjd": 61297.858258
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0162_2:D6",
+        "t_start_mjd": 61297.856926,
+        "t_end_mjd": 61297.858258
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0162_3:D3",
+        "t_start_mjd": 61297.858418,
+        "t_end_mjd": 61297.85975
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0162_3:D6",
+        "t_start_mjd": 61297.858418,
+        "t_end_mjd": 61297.85975
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0162_4:D3",
+        "t_start_mjd": 61297.85991,
+        "t_end_mjd": 61297.861243
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0162_4:D6",
+        "t_start_mjd": 61297.85991,
+        "t_end_mjd": 61297.861243
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0213_1:D3",
+        "t_start_mjd": 61298.129191,
+        "t_end_mjd": 61298.130524
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0213_1:D6",
+        "t_start_mjd": 61298.129191,
+        "t_end_mjd": 61298.130524
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0254_1:D2",
+        "t_start_mjd": 61298.333666,
+        "t_end_mjd": 61298.334998
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0254_1:D5",
+        "t_start_mjd": 61298.333666,
+        "t_end_mjd": 61298.334998
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0254_2:D2",
+        "t_start_mjd": 61298.335158,
+        "t_end_mjd": 61298.33649
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0254_2:D5",
+        "t_start_mjd": 61298.335158,
+        "t_end_mjd": 61298.33649
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0254_3:D2",
+        "t_start_mjd": 61298.33665,
+        "t_end_mjd": 61298.337983
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0254_3:D5",
+        "t_start_mjd": 61298.33665,
+        "t_end_mjd": 61298.337983
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0359_1:D3",
+        "t_start_mjd": 61298.876811,
+        "t_end_mjd": 61298.878143
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0359_1:D6",
+        "t_start_mjd": 61298.876811,
+        "t_end_mjd": 61298.878143
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0359_2:D3",
+        "t_start_mjd": 61298.878303,
+        "t_end_mjd": 61298.879636
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0359_2:D6",
+        "t_start_mjd": 61298.878303,
+        "t_end_mjd": 61298.879636
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0359_3:D3",
+        "t_start_mjd": 61298.879796,
+        "t_end_mjd": 61298.881128
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0359_3:D6",
+        "t_start_mjd": 61298.879796,
+        "t_end_mjd": 61298.881128
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0359_4:D3",
+        "t_start_mjd": 61298.881306,
+        "t_end_mjd": 61298.882638
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0359_4:D6",
+        "t_start_mjd": 61298.881306,
+        "t_end_mjd": 61298.882638
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0435_1:D3",
+        "t_start_mjd": 61299.283575,
+        "t_end_mjd": 61299.284907
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0435_1:D6",
+        "t_start_mjd": 61299.283575,
+        "t_end_mjd": 61299.284907
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0435_2:D3",
+        "t_start_mjd": 61299.285067,
+        "t_end_mjd": 61299.286399
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0435_2:D6",
+        "t_start_mjd": 61299.285067,
+        "t_end_mjd": 61299.286399
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0435_3:D3",
+        "t_start_mjd": 61299.286559,
+        "t_end_mjd": 61299.287892
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0435_3:D6",
+        "t_start_mjd": 61299.286559,
+        "t_end_mjd": 61299.287892
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0435_4:D3",
+        "t_start_mjd": 61299.288052,
+        "t_end_mjd": 61299.289384
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0435_4:D6",
+        "t_start_mjd": 61299.288052,
+        "t_end_mjd": 61299.289384
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0565_1:D3",
+        "t_start_mjd": 61299.895897,
+        "t_end_mjd": 61299.897229
+      },
+      {
+        "obs_key": "spherex_qr3:2026W38_1A_0565_1:D6",
+        "t_start_mjd": 61299.895897,
+        "t_end_mjd": 61299.897229
+      }
+    ],
+    "t_mjd": 61295.962793,
+    "data_state": "released",
+    "check_after_utc": null,
+    "selection_rule_key": "holdout.newest-visit"
+  },
+  "permitted_inputs": [
+    {
+      "name": "observer position: Earth (astropy built-in ephemeris) plus spacecraft header position",
+      "content_type": "catalogue",
+      "used_for": "observer geometry"
+    },
+    {
+      "name": "GM_sun and the speed of light",
+      "content_type": "catalogue",
+      "used_for": "physics"
+    }
+  ],
+  "model": {
+    "id": "none",
+    "version": "a4-2026-11-14",
+    "code_sha256": "18f77dc55fd7f8995333a8f25698e72a15e0dca90661e0e500f8b11d8d2561a2",
+    "uncertainty": "parameter covariance x max(1, reduced chi-square); for stars the larger of the exposure-level and the visit-level (per visit and array means) fit; plus sigma_sys from the scatter of per-visit-and-array mean residuals",
+    "notes": "unresolved 1.2 arcsec binary: at most an exploratory range"
+  },
+  "baseline": {
+    "id": "constant-flux",
+    "description": "the training mean flux"
+  },
+  "scoring": {
+    "kind": "scalar_1d_gaussian",
+    "coverage": 0.95,
+    "z_max": 1.959963984540054,
+    "observed": "wavelength-matched flux ratio of the holdout visit to the training reference, differential to field stars (A3 photometry rules)",
+    "covariance": "sigma^2 = sigma_pred^2 + sigma_obs^2"
+  },
+  "identification": null,
+  "exclusion_rules_keys": [
+    "exclude.quality-gate",
+    "exclude.flagged-pixels",
+    "exclude.identification",
+    "exclude.contaminated",
+    "exclude.fewer-than-3"
+  ],
+  "exploratory": true,
+  "revises": null
+}

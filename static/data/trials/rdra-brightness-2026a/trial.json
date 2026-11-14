@@ -1,0 +1,402 @@
+{
+  "schema_version": "tenger.trial/1",
+  "contract_version": 5,
+  "trial_id": "rdra-brightness-2026a",
+  "target_key": "rdra",
+  "quantity": "brightness",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "open_forecast": false,
+  "frozen_utc": "2026-11-14T14:49:13Z",
+  "exposure": {
+    "status": "exposed",
+    "why": "the evaluation visit shares frames opened in A3",
+    "inventory_ref": {
+      "path": "docs/exposure/rdra.json",
+      "sha256": "ce3c679a0507bd69a04f37a4c335f662c739d7c5c34d60a83bf96bce96ce8578"
+    },
+    "team_statement": {
+      "path": "docs/EXPOSURE.md",
+      "section": "Team confirmation for Task A4",
+      "other_teammates": "not answered yet"
+    }
+  },
+  "training": {
+    "path": "trials/rdra-brightness-2026a/training.json",
+    "measurements_sha256": "8f1c2cdb741e0494092bde06aa498990914a1978aa7ecfb1cac6c19ec1ce6643",
+    "n_points": 0,
+    "visits": [],
+    "obs": []
+  },
+  "holdout": {
+    "visit": 6,
+    "window_mjd": [
+      61246.630283,
+      61310.291175
+    ],
+    "obs": [
+      {
+        "obs_key": "spherex_qr3_deep:2026W30_2A_0469_4:D1",
+        "t_start_mjd": 61246.630283,
+        "t_end_mjd": 61246.631616
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W30_2A_0561_3:D4",
+        "t_start_mjd": 61247.1018,
+        "t_end_mjd": 61247.103133
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W31_1B_0505_1:D1",
+        "t_start_mjd": 61250.630628,
+        "t_end_mjd": 61250.63196
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W31_1B_0505_4:D4",
+        "t_start_mjd": 61250.635105,
+        "t_end_mjd": 61250.636437
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W31_2A_0217_1:D1",
+        "t_start_mjd": 61252.732558,
+        "t_end_mjd": 61252.733891
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W31_2A_0217_4:D4",
+        "t_start_mjd": 61252.737053,
+        "t_end_mjd": 61252.738385
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W32_1A_0052_4:D1",
+        "t_start_mjd": 61255.249779,
+        "t_end_mjd": 61255.251112
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W32_1A_0081_2:D4",
+        "t_start_mjd": 61255.384526,
+        "t_end_mjd": 61255.385859
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W32_1A_0312_4:D1",
+        "t_start_mjd": 61256.541504,
+        "t_end_mjd": 61256.542836
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W32_1A_0627_2:D4",
+        "t_start_mjd": 61257.828112,
+        "t_end_mjd": 61257.829444
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W32_2A_0001_4:D1",
+        "t_start_mjd": 61258.506963,
+        "t_end_mjd": 61258.508296
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W32_2A_0205_4:D4",
+        "t_start_mjd": 61259.324488,
+        "t_end_mjd": 61259.32582
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W33_1A_0007_2:D1",
+        "t_start_mjd": 61262.034139,
+        "t_end_mjd": 61262.035471
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W33_1A_0007_4:D4",
+        "t_start_mjd": 61262.037123,
+        "t_end_mjd": 61262.038456
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W33_1A_0092_2:D1",
+        "t_start_mjd": 61262.443141,
+        "t_end_mjd": 61262.444473
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W33_1A_0092_4:D4",
+        "t_start_mjd": 61262.446125,
+        "t_end_mjd": 61262.447458
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W33_1A_0474_4:D1",
+        "t_start_mjd": 61264.413006,
+        "t_end_mjd": 61264.414339
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W33_1A_0588_2:D4",
+        "t_start_mjd": 61265.02277,
+        "t_end_mjd": 61265.024103
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_1A_0020_2:D1",
+        "t_start_mjd": 61269.095791,
+        "t_end_mjd": 61269.097124
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_1A_0020_3:D4",
+        "t_start_mjd": 61269.097283,
+        "t_end_mjd": 61269.098616
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_1A_0296_4:D1",
+        "t_start_mjd": 61270.52379,
+        "t_end_mjd": 61270.525123
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_1A_0296_4:D4",
+        "t_start_mjd": 61270.52379,
+        "t_end_mjd": 61270.525123
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_2A_0012_1:D1",
+        "t_start_mjd": 61272.552369,
+        "t_end_mjd": 61272.553701
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_2A_0012_1:D4",
+        "t_start_mjd": 61272.552369,
+        "t_end_mjd": 61272.553701
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_2A_0177_3:D1",
+        "t_start_mjd": 61273.374619,
+        "t_end_mjd": 61273.375951
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_2A_0177_3:D4",
+        "t_start_mjd": 61273.374619,
+        "t_end_mjd": 61273.375951
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_2A_0262_2:D1",
+        "t_start_mjd": 61273.77632,
+        "t_end_mjd": 61273.777652
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_2A_0262_2:D4",
+        "t_start_mjd": 61273.77632,
+        "t_end_mjd": 61273.777652
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_2A_0694_3:D1",
+        "t_start_mjd": 61275.682018,
+        "t_end_mjd": 61275.68335
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W34_2A_0694_3:D4",
+        "t_start_mjd": 61275.682018,
+        "t_end_mjd": 61275.68335
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_1A_0248_3:D4",
+        "t_start_mjd": 61277.243147,
+        "t_end_mjd": 61277.24448
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_1A_0248_4:D1",
+        "t_start_mjd": 61277.244639,
+        "t_end_mjd": 61277.245972
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_1A_0342_3:D4",
+        "t_start_mjd": 61277.650195,
+        "t_end_mjd": 61277.651528
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_1A_0342_4:D1",
+        "t_start_mjd": 61277.651688,
+        "t_end_mjd": 61277.65302
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_2A_0026_2:D4",
+        "t_start_mjd": 61279.613399,
+        "t_end_mjd": 61279.614731
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_2A_0026_3:D1",
+        "t_start_mjd": 61279.614891,
+        "t_end_mjd": 61279.616223
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_2A_0102_3:D4",
+        "t_start_mjd": 61280.02535,
+        "t_end_mjd": 61280.026682
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_2A_0102_4:D1",
+        "t_start_mjd": 61280.026842,
+        "t_end_mjd": 61280.028175
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_2A_0382_4:D4",
+        "t_start_mjd": 61281.518742,
+        "t_end_mjd": 61281.520074
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W35_2A_0618_2:D1",
+        "t_start_mjd": 61282.738181,
+        "t_end_mjd": 61282.739513
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_1A_0051_1:D4",
+        "t_start_mjd": 61283.210302,
+        "t_end_mjd": 61283.211634
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_1A_0051_2:D1",
+        "t_start_mjd": 61283.211812,
+        "t_end_mjd": 61283.213144
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_1A_0309_4:D4",
+        "t_start_mjd": 61284.370281,
+        "t_end_mjd": 61284.371614
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_1A_0326_1:D1",
+        "t_start_mjd": 61284.433542,
+        "t_end_mjd": 61284.434875
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_2A_0048_1:D4",
+        "t_start_mjd": 61286.674962,
+        "t_end_mjd": 61286.676295
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_2A_0048_2:D1",
+        "t_start_mjd": 61286.676455,
+        "t_end_mjd": 61286.677787
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_2A_0218_3:D4",
+        "t_start_mjd": 61287.353459,
+        "t_end_mjd": 61287.354791
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_2A_0218_4:D1",
+        "t_start_mjd": 61287.354951,
+        "t_end_mjd": 61287.356283
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_2A_0510_3:D4",
+        "t_start_mjd": 61288.372189,
+        "t_end_mjd": 61288.373522
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W36_2A_0510_4:D1",
+        "t_start_mjd": 61288.373681,
+        "t_end_mjd": 61288.375014
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W37_1A_0453_3:D4",
+        "t_start_mjd": 61292.51492,
+        "t_end_mjd": 61292.516252
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W37_1A_0453_4:D1",
+        "t_start_mjd": 61292.516412,
+        "t_end_mjd": 61292.517744
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W37_2A_0207_3:D4",
+        "t_start_mjd": 61294.48022,
+        "t_end_mjd": 61294.481552
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W37_2A_0207_4:D1",
+        "t_start_mjd": 61294.481712,
+        "t_end_mjd": 61294.483044
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W38_1A_0091_3:D4",
+        "t_start_mjd": 61297.47013,
+        "t_end_mjd": 61297.471462
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W38_1A_0091_4:D1",
+        "t_start_mjd": 61297.471622,
+        "t_end_mjd": 61297.472954
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W38_1A_0525_1:D4",
+        "t_start_mjd": 61299.704231,
+        "t_end_mjd": 61299.705563
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W38_1A_0525_2:D1",
+        "t_start_mjd": 61299.705723,
+        "t_end_mjd": 61299.707055
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W39_1A_0174_2:D4",
+        "t_start_mjd": 61304.795467,
+        "t_end_mjd": 61304.796799
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W39_1A_0174_3:D1",
+        "t_start_mjd": 61304.796959,
+        "t_end_mjd": 61304.798291
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W39_2A_0207_1:D4",
+        "t_start_mjd": 61308.461884,
+        "t_end_mjd": 61308.463216
+      },
+      {
+        "obs_key": "spherex_qr3_deep:2026W39_2A_0591_1:D1",
+        "t_start_mjd": 61310.291175,
+        "t_end_mjd": 61310.292508
+      }
+    ],
+    "t_mjd": 61277.243893,
+    "data_state": "released",
+    "check_after_utc": null,
+    "selection_rule_key": "holdout.newest-visit"
+  },
+  "permitted_inputs": [
+    {
+      "name": "AAVSO VSX period of R Dra",
+      "content_type": "catalogue",
+      "used_for": "would phase a period model"
+    },
+    {
+      "name": "observer position: Earth (astropy built-in ephemeris) plus spacecraft header position",
+      "content_type": "catalogue",
+      "used_for": "observer geometry"
+    },
+    {
+      "name": "GM_sun and the speed of light",
+      "content_type": "catalogue",
+      "used_for": "physics"
+    }
+  ],
+  "model": {
+    "id": "none",
+    "version": "a4-2026-11-14",
+    "code_sha256": "18f77dc55fd7f8995333a8f25698e72a15e0dca90661e0e500f8b11d8d2561a2",
+    "uncertainty": "parameter covariance x max(1, reduced chi-square); for stars the larger of the exposure-level and the visit-level (per visit and array means) fit; plus sigma_sys from the scatter of per-visit-and-array mean residuals",
+    "notes": null
+  },
+  "baseline": {
+    "id": "constant-flux",
+    "description": "the training mean flux"
+  },
+  "scoring": {
+    "kind": "scalar_1d_gaussian",
+    "coverage": 0.95,
+    "z_max": 1.959963984540054,
+    "observed": "wavelength-matched flux ratio of the holdout visit to the training reference, differential to field stars (A3 photometry rules)",
+    "covariance": "sigma^2 = sigma_pred^2 + sigma_obs^2"
+  },
+  "identification": null,
+  "exclusion_rules_keys": [
+    "exclude.quality-gate",
+    "exclude.flagged-pixels",
+    "exclude.identification",
+    "exclude.contaminated",
+    "exclude.fewer-than-3"
+  ],
+  "exploratory": false,
+  "revises": null
+}

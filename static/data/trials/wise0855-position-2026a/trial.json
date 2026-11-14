@@ -1,0 +1,605 @@
+{
+  "schema_version": "tenger.trial/1",
+  "contract_version": 5,
+  "trial_id": "wise0855-position-2026a",
+  "target_key": "wise0855",
+  "quantity": "position",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "open_forecast": false,
+  "frozen_utc": "2026-11-14T14:49:13Z",
+  "exposure": {
+    "status": "exposed",
+    "why": "all current exposures opened in A3 (and bundled earlier)",
+    "inventory_ref": {
+      "path": "docs/exposure/wise0855.json",
+      "sha256": "0d13f3d95c48bbfa3230caee51b384560173101e69ec6ef756196de980ae196f"
+    },
+    "team_statement": {
+      "path": "docs/EXPOSURE.md",
+      "section": "Team confirmation for Task A4",
+      "other_teammates": "not answered yet"
+    }
+  },
+  "training": {
+    "path": "trials/wise0855-position-2026a/training.json",
+    "measurements_sha256": "24d08a7de3922a63c01214305e0498497e90fc7424efba169e7b13195845c71b",
+    "n_points": 0,
+    "visits": [],
+    "obs": []
+  },
+  "holdout": {
+    "visit": 2,
+    "window_mjd": [
+      61151.197933,
+      61174.287218
+    ],
+    "obs": [
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0227_2:D3",
+        "t_start_mjd": 61151.197933,
+        "t_end_mjd": 61151.199266
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0227_2:D6",
+        "t_start_mjd": 61151.197933,
+        "t_end_mjd": 61151.199266
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0227_3:D3",
+        "t_start_mjd": 61151.199425,
+        "t_end_mjd": 61151.200758
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0227_3:D6",
+        "t_start_mjd": 61151.199425,
+        "t_end_mjd": 61151.200758
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0227_4:D3",
+        "t_start_mjd": 61151.200918,
+        "t_end_mjd": 61151.20225
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0227_4:D6",
+        "t_start_mjd": 61151.200918,
+        "t_end_mjd": 61151.20225
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0507_1:D3",
+        "t_start_mjd": 61152.757304,
+        "t_end_mjd": 61152.758636
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0507_1:D6",
+        "t_start_mjd": 61152.757304,
+        "t_end_mjd": 61152.758636
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0507_2:D3",
+        "t_start_mjd": 61152.758796,
+        "t_end_mjd": 61152.760128
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0507_2:D6",
+        "t_start_mjd": 61152.758796,
+        "t_end_mjd": 61152.760128
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0507_3:D3",
+        "t_start_mjd": 61152.760288,
+        "t_end_mjd": 61152.76162
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0507_3:D6",
+        "t_start_mjd": 61152.760288,
+        "t_end_mjd": 61152.76162
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0634_1:D3",
+        "t_start_mjd": 61153.436457,
+        "t_end_mjd": 61153.437789
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0634_1:D6",
+        "t_start_mjd": 61153.436457,
+        "t_end_mjd": 61153.437789
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0634_2:D3",
+        "t_start_mjd": 61153.437949,
+        "t_end_mjd": 61153.439282
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0634_2:D6",
+        "t_start_mjd": 61153.437949,
+        "t_end_mjd": 61153.439282
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0634_3:D3",
+        "t_start_mjd": 61153.439442,
+        "t_end_mjd": 61153.440774
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0634_3:D6",
+        "t_start_mjd": 61153.439442,
+        "t_end_mjd": 61153.440774
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0634_4:D3",
+        "t_start_mjd": 61153.440934,
+        "t_end_mjd": 61153.442266
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0634_4:D6",
+        "t_start_mjd": 61153.440934,
+        "t_end_mjd": 61153.442266
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0591_1:D3",
+        "t_start_mjd": 61156.085511,
+        "t_end_mjd": 61156.086843
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0591_1:D6",
+        "t_start_mjd": 61156.085511,
+        "t_end_mjd": 61156.086843
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0609_1:D3",
+        "t_start_mjd": 61156.152716,
+        "t_end_mjd": 61156.154048
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0609_1:D6",
+        "t_start_mjd": 61156.152716,
+        "t_end_mjd": 61156.154048
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0609_2:D3",
+        "t_start_mjd": 61156.154226,
+        "t_end_mjd": 61156.155558
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0609_2:D6",
+        "t_start_mjd": 61156.154226,
+        "t_end_mjd": 61156.155558
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0692_1:D3",
+        "t_start_mjd": 61156.493181,
+        "t_end_mjd": 61156.494513
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0692_1:D6",
+        "t_start_mjd": 61156.493181,
+        "t_end_mjd": 61156.494513
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0692_2:D3",
+        "t_start_mjd": 61156.494673,
+        "t_end_mjd": 61156.496005
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0692_2:D6",
+        "t_start_mjd": 61156.494673,
+        "t_end_mjd": 61156.496005
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0065_1:D3",
+        "t_start_mjd": 61160.770817,
+        "t_end_mjd": 61160.77215
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0065_1:D6",
+        "t_start_mjd": 61160.770817,
+        "t_end_mjd": 61160.77215
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0247_1:D2",
+        "t_start_mjd": 61161.586867,
+        "t_end_mjd": 61161.5882
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0247_1:D5",
+        "t_start_mjd": 61161.586867,
+        "t_end_mjd": 61161.5882
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0247_2:D2",
+        "t_start_mjd": 61161.58836,
+        "t_end_mjd": 61161.589692
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0247_2:D5",
+        "t_start_mjd": 61161.58836,
+        "t_end_mjd": 61161.589692
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0247_3:D2",
+        "t_start_mjd": 61161.589852,
+        "t_end_mjd": 61161.591184
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0247_3:D5",
+        "t_start_mjd": 61161.589852,
+        "t_end_mjd": 61161.591184
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0247_4:D2",
+        "t_start_mjd": 61161.591344,
+        "t_end_mjd": 61161.592677
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0247_4:D5",
+        "t_start_mjd": 61161.591344,
+        "t_end_mjd": 61161.592677
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0264_1:D1",
+        "t_start_mjd": 61161.655174,
+        "t_end_mjd": 61161.656506
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0264_1:D4",
+        "t_start_mjd": 61161.655174,
+        "t_end_mjd": 61161.656506
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0424_2:D1",
+        "t_start_mjd": 61162.333972,
+        "t_end_mjd": 61162.335304
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0424_2:D4",
+        "t_start_mjd": 61162.333972,
+        "t_end_mjd": 61162.335304
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0424_3:D1",
+        "t_start_mjd": 61162.335464,
+        "t_end_mjd": 61162.336796
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0424_3:D4",
+        "t_start_mjd": 61162.335464,
+        "t_end_mjd": 61162.336796
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0424_4:D1",
+        "t_start_mjd": 61162.336956,
+        "t_end_mjd": 61162.338289
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0424_4:D4",
+        "t_start_mjd": 61162.336956,
+        "t_end_mjd": 61162.338289
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0441_1:D2",
+        "t_start_mjd": 61162.401532,
+        "t_end_mjd": 61162.402864
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0441_1:D5",
+        "t_start_mjd": 61162.401532,
+        "t_end_mjd": 61162.402864
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0441_2:D2",
+        "t_start_mjd": 61162.403024,
+        "t_end_mjd": 61162.404356
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0441_2:D5",
+        "t_start_mjd": 61162.403024,
+        "t_end_mjd": 61162.404356
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0519_1:D2",
+        "t_start_mjd": 61162.673655,
+        "t_end_mjd": 61162.674987
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0519_1:D5",
+        "t_start_mjd": 61162.673655,
+        "t_end_mjd": 61162.674987
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0519_2:D2",
+        "t_start_mjd": 61162.675147,
+        "t_end_mjd": 61162.67648
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0519_2:D5",
+        "t_start_mjd": 61162.675147,
+        "t_end_mjd": 61162.67648
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0663_1:D2",
+        "t_start_mjd": 61163.215717,
+        "t_end_mjd": 61163.217049
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0663_1:D5",
+        "t_start_mjd": 61163.215717,
+        "t_end_mjd": 61163.217049
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0663_2:D2",
+        "t_start_mjd": 61163.217209,
+        "t_end_mjd": 61163.218541
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0663_2:D5",
+        "t_start_mjd": 61163.217209,
+        "t_end_mjd": 61163.218541
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0684_1:D1",
+        "t_start_mjd": 61163.28333,
+        "t_end_mjd": 61163.284662
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0684_1:D4",
+        "t_start_mjd": 61163.28333,
+        "t_end_mjd": 61163.284662
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0684_2:D1",
+        "t_start_mjd": 61163.284822,
+        "t_end_mjd": 61163.286155
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0684_2:D4",
+        "t_start_mjd": 61163.284822,
+        "t_end_mjd": 61163.286155
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0684_3:D1",
+        "t_start_mjd": 61163.286314,
+        "t_end_mjd": 61163.287647
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0684_3:D4",
+        "t_start_mjd": 61163.286314,
+        "t_end_mjd": 61163.287647
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0684_4:D1",
+        "t_start_mjd": 61163.287807,
+        "t_end_mjd": 61163.289139
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0684_4:D4",
+        "t_start_mjd": 61163.287807,
+        "t_end_mjd": 61163.289139
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0201_1:D1",
+        "t_start_mjd": 61164.570098,
+        "t_end_mjd": 61164.57143
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0201_1:D4",
+        "t_start_mjd": 61164.570098,
+        "t_end_mjd": 61164.57143
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0227_1:D1",
+        "t_start_mjd": 61164.63899,
+        "t_end_mjd": 61164.640323
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0227_1:D4",
+        "t_start_mjd": 61164.63899,
+        "t_end_mjd": 61164.640323
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0227_2:D1",
+        "t_start_mjd": 61164.640482,
+        "t_end_mjd": 61164.641815
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0227_2:D4",
+        "t_start_mjd": 61164.640482,
+        "t_end_mjd": 61164.641815
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0493_1:D1",
+        "t_start_mjd": 61165.320205,
+        "t_end_mjd": 61165.321537
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0493_1:D4",
+        "t_start_mjd": 61165.320205,
+        "t_end_mjd": 61165.321537
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0594_1:D1",
+        "t_start_mjd": 61165.588651,
+        "t_end_mjd": 61165.589983
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0594_1:D4",
+        "t_start_mjd": 61165.588651,
+        "t_end_mjd": 61165.589983
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0594_2:D1",
+        "t_start_mjd": 61165.590143,
+        "t_end_mjd": 61165.591475
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0594_2:D4",
+        "t_start_mjd": 61165.590143,
+        "t_end_mjd": 61165.591475
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_2A_0568_1:D3",
+        "t_start_mjd": 61168.984738,
+        "t_end_mjd": 61168.986071
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_2A_0568_1:D6",
+        "t_start_mjd": 61168.984738,
+        "t_end_mjd": 61168.986071
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_2A_0651_1:D3",
+        "t_start_mjd": 61169.194223,
+        "t_end_mjd": 61169.195555
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_2A_0651_1:D6",
+        "t_start_mjd": 61169.194223,
+        "t_end_mjd": 61169.195555
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_2A_0782_1:D3",
+        "t_start_mjd": 61169.527653,
+        "t_end_mjd": 61169.528985
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_2A_0782_1:D6",
+        "t_start_mjd": 61169.527653,
+        "t_end_mjd": 61169.528985
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_2A_0952_1:D3",
+        "t_start_mjd": 61169.933208,
+        "t_end_mjd": 61169.934541
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_2A_0952_1:D6",
+        "t_start_mjd": 61169.933208,
+        "t_end_mjd": 61169.934541
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0033_1:D3",
+        "t_start_mjd": 61171.09635,
+        "t_end_mjd": 61171.097683
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0033_1:D6",
+        "t_start_mjd": 61171.09635,
+        "t_end_mjd": 61171.097683
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0214_1:D2",
+        "t_start_mjd": 61171.567192,
+        "t_end_mjd": 61171.568525
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0214_1:D5",
+        "t_start_mjd": 61171.567192,
+        "t_end_mjd": 61171.568525
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0455_1:D2",
+        "t_start_mjd": 61172.175304,
+        "t_end_mjd": 61172.176636
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0455_1:D5",
+        "t_start_mjd": 61172.175304,
+        "t_end_mjd": 61172.176636
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0728_1:D2",
+        "t_start_mjd": 61173.064066,
+        "t_end_mjd": 61173.065398
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0728_1:D5",
+        "t_start_mjd": 61173.064066,
+        "t_end_mjd": 61173.065398
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0939_1:D2",
+        "t_start_mjd": 61173.676175,
+        "t_end_mjd": 61173.677507
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_0939_1:D5",
+        "t_start_mjd": 61173.676175,
+        "t_end_mjd": 61173.677507
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_1166_1:D2",
+        "t_start_mjd": 61174.287218,
+        "t_end_mjd": 61174.28855
+      },
+      {
+        "obs_key": "spherex_dr1:2026W20_1A_1166_1:D5",
+        "t_start_mjd": 61174.287218,
+        "t_end_mjd": 61174.28855
+      }
+    ],
+    "t_mjd": 61162.402278,
+    "data_state": "released",
+    "check_after_utc": null,
+    "selection_rule_key": "holdout.newest-visit"
+  },
+  "permitted_inputs": [
+    {
+      "name": "SIMBAD parallax 439.0 mas (Kirkpatrick et al. 2021)",
+      "value_mas": 439.0,
+      "content_type": "catalogue",
+      "used_for": "would fix the parallax"
+    },
+    {
+      "name": "observer position: Earth (astropy built-in ephemeris) plus spacecraft header position",
+      "content_type": "catalogue",
+      "used_for": "observer geometry"
+    },
+    {
+      "name": "GM_sun and the speed of light",
+      "content_type": "catalogue",
+      "used_for": "physics"
+    }
+  ],
+  "model": {
+    "id": "linear-pm-fixed-parallax",
+    "version": "a4-2026-11-14",
+    "code_sha256": "18f77dc55fd7f8995333a8f25698e72a15e0dca90661e0e500f8b11d8d2561a2",
+    "uncertainty": "parameter covariance x max(1, reduced chi-square); for stars the larger of the exposure-level and the visit-level (per visit and array means) fit; plus sigma_sys from the scatter of per-visit-and-array mean residuals",
+    "notes": null
+  },
+  "baseline": {
+    "id": "linear-tangent-plane",
+    "description": "straight-line motion in RA and Dec fitted to the same training positions, no parallax and no orbit"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "frame": "tangent plane at the predicted position, east/north arcsec",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "threshold_radius": 2.4477468306808166,
+    "covariance": "S = C_pred + C_obs",
+    "observed": "mean over identified holdout exposures of r_i = observed_i - model(t_i, observer_i), east/north arcsec in the tangent plane at the model position",
+    "c_obs": "sample covariance of the r_i divided by N (N >= 3), never smaller than the mean per-exposure fit covariance divided by N",
+    "c_pred": "frozen model covariance at the mean holdout time (parameter covariance scaled by max(1, reduced chi-square)) plus sigma_sys^2 per axis for the new visit's own offset",
+    "model_evaluation": "the frozen model is evaluated at each identified holdout exposure's time and observer position (Earth plus the FITS header spacecraft position)"
+  },
+  "identification": {
+    "method_key": "ident.catalogue-gate",
+    "rules": [
+      "A3 rules: quality gate; fit within 3 arcsec of the catalogue track; no other Gaia source within 12 arcsec",
+      "fewer than 3 identified exposures -> insufficient_data"
+    ],
+    "alternatives_kept": true
+  },
+  "exclusion_rules_keys": [
+    "exclude.quality-gate",
+    "exclude.flagged-pixels",
+    "exclude.identification",
+    "exclude.contaminated",
+    "exclude.fewer-than-3"
+  ],
+  "exploratory": false,
+  "revises": null
+}

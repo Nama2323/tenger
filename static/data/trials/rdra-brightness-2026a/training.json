@@ -1,0 +1,12 @@
+{
+  "schema_version": "tenger.training/1",
+  "contract_version": 5,
+  "trial_id": "rdra-brightness-2026a",
+  "target_key": "rdra",
+  "source": {
+    "path": "rdra/investigation.json",
+    "sha256": "7aa4fad4cde2c363ef0614dcb64956430cdcb43af0f88fa608de66a91f8f37d5"
+  },
+  "selection": "measured single-exposure fluxes outside the holdout visit",
+  "points": []
+}

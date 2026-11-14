@@ -1,0 +1,1954 @@
+{
+  "schema_version": "tenger.trial/1",
+  "contract_version": 5,
+  "trial_id": "epsindib-position-2026b",
+  "target_key": "epsindib",
+  "quantity": "position",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "open_forecast": false,
+  "frozen_utc": "2026-11-14T14:49:13Z",
+  "exposure": {
+    "status": "exposed",
+    "why": "all current exposures opened in A3 (and bundled earlier)",
+    "inventory_ref": {
+      "path": "docs/exposure/epsindib.json",
+      "sha256": "7c81cee8b53c4d376f00e2ca8b302623f890cee975bd481cea8aa201903b036b"
+    },
+    "team_statement": {
+      "path": "docs/EXPOSURE.md",
+      "section": "Team confirmation for Task A4",
+      "other_teammates": "not answered yet"
+    }
+  },
+  "training": {
+    "path": "trials/epsindib-position-2026b/training.json",
+    "measurements_sha256": "bb7494eda1c49e276e4870753137ae24ed6a3b4afd71d4296343cb53999cb5be",
+    "n_points": 308,
+    "visits": [
+      0,
+      1,
+      2
+    ],
+    "obs": [
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0017_1:D2",
+        "source_sha256": "01443aae30b7f735a246c9684d66ba461b13eca2916b79194c92eaf785cfb558"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0017_1:D5",
+        "source_sha256": "91f15f418deae2e5a36d0479f553c585304195bb6408888bec4a1248594d322e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0017_2:D2",
+        "source_sha256": "337ac5601e3bdef9f216fddcfd778f57254fc6d4ee22e446b088fdb495c004fb"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0017_2:D5",
+        "source_sha256": "9a8fa53795610c837a404c54e0325fdfcf3f37aa828f4de83f0e490c61489de4"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0027_3:D2",
+        "source_sha256": "34a4457b6cbdde5e97b9fc0d01c90630102b6dd9a7ee518a1f06c2de20f091b7"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0027_3:D5",
+        "source_sha256": "6537a4c163fe2b305a72166c50f510e9ad8e6a0cdccafbeaaebdad6d3d5a36ed"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0027_4:D2",
+        "source_sha256": "5e12d581181f9a1e2974e04dec2c09eb562841a981092194abe4a9f4b6550c3c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0027_4:D5",
+        "source_sha256": "699da17741ce5a0c531ef8bc7d672e06bb4e0530ffd18554442b1ed504a2607d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0077_3:D4",
+        "source_sha256": "2849afdf849d60ebd6950e6ea0d8e4be9757e0f513357785b4c45443724dd31c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0202_1:D2",
+        "source_sha256": "f07d4c62010ce36bbdad17d985a94ed9b392d4ecafd925f011a3e976b0a3448d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0202_1:D5",
+        "source_sha256": "f181f4f03dd170daaba88cfa767fa88d5d72ecb59d3d504a76c0c4e87600623b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0222_1:D2",
+        "source_sha256": "eed5d5fe02d11370fdd41185c8ff86d0757214a6da3719395605cbfb3aa37adb"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0222_2:D2",
+        "source_sha256": "f440277acf90168892324cb78d6140f366311e7f1484614572de68badf41134e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0222_2:D5",
+        "source_sha256": "a71353cea18a53a1136221dadb48920c9378993b5be7cb84abc21b360c54e579"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0222_3:D2",
+        "source_sha256": "006c013596c3069634fbf715ddfbb5fdd0c3927d18c9d1c43b38e92ec31a27d4"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0222_3:D5",
+        "source_sha256": "76b2f61e4dc219ef09155c5d2cafa9ccb0ce0ab6b1a18efd11dc8f1f5b2b4704"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0222_4:D2",
+        "source_sha256": "465f2d987c59309fede0ed0b6a564efd1ed692b5afbf35311c6bf82e14e2443a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0315_1:D2",
+        "source_sha256": "cf5a21bceefc3eebcfaae6c96be20cb0815bcaa42d2fab89769b264665dbbf8c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0315_1:D5",
+        "source_sha256": "f6b3c4b44ccf8adf00990c73fce2b88dbcec1d4c038c6bb493f8e68e2d15392f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0315_2:D2",
+        "source_sha256": "065e3cd16480ba22ba287854a10f3afcd20b81268d03b880e8657de333149c67"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0315_2:D5",
+        "source_sha256": "dddae811caad417c99eb9ae0f78c809c94a6e666f240c56cd8bce9e6915b90b1"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0315_3:D2",
+        "source_sha256": "f1a45f345e83ab86d41bad7ba011679ccfd5716489588ec2c051757c0da9e101"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0315_3:D5",
+        "source_sha256": "a1d4a07df6ec1c7b8a5d5885a3b25bbf9c8a2100aed7ebc213f7efde1595e8f0"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0447_1:D2",
+        "source_sha256": "491da9852ec4098e9e2e949004a90cc5370c8dcd5f2ca15452e9a7129361d336"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0447_1:D5",
+        "source_sha256": "e34bf6d8b5a90839966ff5b1bada85bfa728ba790eb82b4d857a148be92ca775"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0447_2:D2",
+        "source_sha256": "017cfbf71a9fc7c014398b1a0f1188bebce66b3f9f2774ad8230d10bd1ccac5b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0447_2:D5",
+        "source_sha256": "92867844dc27567d72d74a8e9fa5a239c4037c0f528b79a2c316142eb3237e99"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0447_3:D2",
+        "source_sha256": "b1e456529b7b09bf3360ee827419312ebc84227da9e6d7b4947649cdd9a39662"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0447_3:D5",
+        "source_sha256": "e1509c67f4ba808dcfe39be0030d67383d7e09f291dd3b262148a595ef4ff6d3"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0447_4:D2",
+        "source_sha256": "1750f0d731947b36b4d5d3ff3ebd54d59cfbba8db7b778ccb6ef98b8faac6457"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0447_4:D5",
+        "source_sha256": "07de09fcdd9d81bca28f356fa13bbf84329de56ee6c1e6099b7458142ac629b2"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0468_1:D1",
+        "source_sha256": "f7e72aff6bb50297982bfb634834fcca14ad7f951fe512177ae4c83e14998ecd"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0468_1:D4",
+        "source_sha256": "c4f4947e2094756b14eb8d8f6ec52c20591e1b502bbdcf18fec96cbc9221b7e4"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0468_2:D1",
+        "source_sha256": "9211a77f51f94f6d6d72cf66a125a70a88cbe10b7c915ab31e71f55b53c9644d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W17_4B_0468_2:D4",
+        "source_sha256": "620821121ea8d8840b5aa23f87bd9dc0facc3d2eb3e5290b561e6b9ffa8ca64c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0081_2:D3",
+        "source_sha256": "3eceacc538458b4ba399a261a32193e348d168bf9eaf3483a7a40e00cd965604"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0081_2:D6",
+        "source_sha256": "7162087c7f9315f42e1cd1a709e8f7b2bb35ff924abba0845070c89eaa7d7ef0"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0081_3:D3",
+        "source_sha256": "00658cdbf7a3d82ca893eb97ad2a0acee2deb78f523788c59dbda04bced64749"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0081_3:D6",
+        "source_sha256": "f3f227b9a7a33472ff1f8315f70593b0552e5bc3afc25e7f4e1b49bb4844dbf0"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0081_4:D3",
+        "source_sha256": "198f5445b6f3f3eb113c4d582aa8a431740cc80938254a2e2b99fe9080e0da67"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0081_4:D6",
+        "source_sha256": "1ea429d9472d330624c5ae6178838c2cbac66a76372ef78c5ab415f6af1537df"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0091_1:D3",
+        "source_sha256": "d52844737cc68afa62231a6a319b1a105a46c5cb4f46f1e65f3ecdc96a6bf966"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0091_1:D6",
+        "source_sha256": "300cc8333a9e406b615c9137b53b0fe7994546458e1aaaf622dc901ab58e4ac4"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0091_2:D3",
+        "source_sha256": "73985a3d09ea2d2cc78d678449417a80ae340dedf2dd36f4499e4e9a119092d2"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0091_2:D6",
+        "source_sha256": "109a06979dcba575352120b29f0106be2b78154d5cb59f189c894aa7b38bfd0d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0091_3:D3",
+        "source_sha256": "0bb0ecd69fce5fd7b78db41ea94c285608586a7a50f8daeec0f473fbe942801c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0091_3:D6",
+        "source_sha256": "d48b367417af6e85b93a4ec49a50d637f3aabc6acccae7be09e91547ed750723"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0091_4:D3",
+        "source_sha256": "48a4be846433303ae7ab771174fce467e0dba6e54729eb7ae830e210a1edb111"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0091_4:D6",
+        "source_sha256": "dd6c8e6c5438f8ae59a680e4ab3acce2cdc2e98ec7f3eca51a48f62c86c43b97"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0175_1:D3",
+        "source_sha256": "27bc250fc195361b05e9106545dd61413bfbc27ca954fd150d58f47ece74f239"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0175_1:D6",
+        "source_sha256": "47d578e334acdc1e7a3a8f42a8c32578e10785f7e510bc74265f000ffded2bff"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0175_2:D3",
+        "source_sha256": "536252a39ba8fe236d9d4ab705b5f4f9fdacb980bba1e8cf9e19970b842b2bc3"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0175_2:D6",
+        "source_sha256": "487aeb9a9a7f4fbf55ae53ea9daad8afb2ed736ede61fb96095b7994e569b3f5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0238_1:D3",
+        "source_sha256": "f302fd07be331d7e33a452765ea73ac0349d87e9d79c134699cc62a4aa37a886"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0238_1:D6",
+        "source_sha256": "c9e1b94fb9ca9bfffff1df31493a2e95656f17d20752bb527053b4abbefa6809"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0238_2:D3",
+        "source_sha256": "303e8cb5d747272faa34981edf0b1bba2cbee114a3721a312b339f3b4e002fc5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0238_3:D3",
+        "source_sha256": "9e5615fc99d806ccdf5142a7ed19675ee9c6bbe071a9f5c3d07b2fce951a898e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0238_3:D6",
+        "source_sha256": "d0cfff5ea25eca3eef87f189967ffd3076fabec2beca4cf2a6c49354ffbd2c81"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0238_4:D3",
+        "source_sha256": "2d0912d2a543eb07e6b94158ba9512bee482a8d556d502e375001904652f98f4"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0238_4:D6",
+        "source_sha256": "95162c53f893e090a6e02d496b5b6c50419d5edcd2c7e3f0eeb714c631e0980a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0363_1:D3",
+        "source_sha256": "d00c31376c603a4e27e99baae125de702ff8f6547f521f6d58472f3a848e17a1"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_1B_0363_1:D6",
+        "source_sha256": "e7a4e013028ec0d6462e9076fb5e96ab9994dc8087e618fed37c4e794a499fd4"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0011_2:D3",
+        "source_sha256": "c3de8f823bb730eff66038307914fbf220f1173a4a3f107196b82f1765693968"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0011_2:D6",
+        "source_sha256": "a097c87939b13df6feee5d3442ac0a4576514eb6a93e40f69a0cf3dd6a2e9e0e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0011_3:D3",
+        "source_sha256": "55e3ff02e911266c5ea8471e987448f972b91dcfc42dffd8f90de8662383e8fe"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0011_3:D6",
+        "source_sha256": "3b7dedd04971ef60d3647f9fdd5a6cbcd207febd309bb69d2cac7dd5c0e8feb5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0011_4:D3",
+        "source_sha256": "0fd3fb6fccb868912837271b8f0d66bfd464a424528a3f58e94a9fa5bb377033"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0011_4:D6",
+        "source_sha256": "a02a978dee600c7395e9e108764b02a70afec8e87e37a6b51af8376797090caa"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0042_1:D3",
+        "source_sha256": "40705b64421d093c673370b33f38590ab58a5c3a88066664dc848b607c545739"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0489_1:D2",
+        "source_sha256": "49fdfe39f0d3e1a86e91128273dc50ef935088c206d99bbf71205858c25548fe"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0489_2:D2",
+        "source_sha256": "7063e99827fa92cc3114e792d2d151c5cb1d1b41dbd974161395be07b266c346"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0489_2:D5",
+        "source_sha256": "c34db5284dd19f21e7c4bf55d0a819c6c55e73597dd7b147aaac6bfa8ac68bbb"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0489_3:D2",
+        "source_sha256": "918c9d22cc1e28aca96b682ef08c1b085cf60cc194d91a8992549f49abf8b30a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W18_2B_0489_3:D5",
+        "source_sha256": "950e8fe87f66ae43983a57855ddd8c3f2f1a014a6179551a490a7baaad7bafb6"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W19_1B_0274_1:D3",
+        "source_sha256": "9431bee26e8033f7009c7cef9488aa8ca74819e30229bc67e6db1073a027c96d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W19_1B_0274_1:D6",
+        "source_sha256": "e4d18c872abb9fcf2fc96f0a501672b9012b2cbbbb878b51b5a628495d8ecbb5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W19_1B_0344_3:D3",
+        "source_sha256": "43926936c32112912ba85af075799c132007cd8680b0dee55b1cce63fe7fbc55"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W19_1B_0344_3:D6",
+        "source_sha256": "777a33aa9e52464845301da8c6682b92de83f6c191da7d19d4c97c8d24e146f6"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W19_1B_0344_4:D3",
+        "source_sha256": "6cac1496d8f6ca89d94cc3ae09976fa24d2857170f9128fbd5d3527eda739853"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W19_1B_0344_4:D6",
+        "source_sha256": "c0668a4aac06b03ae74f19ffd597bfa6867f36dfd4ec482ad8810affe16d3306"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W21_1B_0227_1:D3",
+        "source_sha256": "4c54157c70cbddb9dcbdf4b295280adf8aaaf7e51d66b36a2fa3cdb33869be01"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W21_1B_0227_1:D6",
+        "source_sha256": "8fd219517c1655f245cc552e81761919cbed6e78a8730bf422fa49b7a893cfe8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0241_2:D2",
+        "source_sha256": "3e7ab371993d60f9e6a7ecef73aa46fa3b6af01235a5896fd3d5fdfc6018de54"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0241_3:D2",
+        "source_sha256": "57ce99ad31a435a43882c7319057a550c6ac70f62afea3f1bb4d901f15db39d2"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0241_3:D5",
+        "source_sha256": "343ad21ca0dcc0614b307358a008900aa121fcc8291981db1955886ce8a1c904"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0241_4:D2",
+        "source_sha256": "ba338adde1384dd7dbe2933a8e5c79d02d3f537731f97f12bcb89465b4014e89"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0241_4:D5",
+        "source_sha256": "d8ce4d896950b18801070a9f1b068f558f9733197900c4154540fe9b4ede56d8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0258_1:D2",
+        "source_sha256": "89e3968c212373d7d218362b6213ac6ff89b07a490c0cbfba290deaa5c0621b9"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0258_1:D5",
+        "source_sha256": "944b374070faf0301df383a47e6281e5d75b3f5d15d5eca2480ed4d9682ada64"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0258_2:D2",
+        "source_sha256": "a8ec2f7142596915a36a46d6d3c4693f7b70338d0a760c27e7bf6089fb0af2f3"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0258_2:D5",
+        "source_sha256": "af344da19a755711f78f292bf32c948923ce8ae17a23beaddff6fec584d2f2e7"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0258_3:D2",
+        "source_sha256": "0f4fc7f5dc58961602773746ae1034dfcaa8d0a012670b64cc9bc6e409af1d63"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0258_3:D5",
+        "source_sha256": "5bb9a8aec8c206c434791b65b902871611035c99ea9d8c81bcdfdf57af14ae8e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0258_4:D2",
+        "source_sha256": "5768d9eaef1936c4b7676db624e6efff3a4d5d38beac646c9ae59c7baf530f5f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0258_4:D5",
+        "source_sha256": "ffbdfd26108295281c3d5e5664606bc2c391a3ebc0e5937dc007227d2cfed23e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0285_1:D2",
+        "source_sha256": "7f10f0b8dda87b289b7ee7fd58290aaecb487e5e660d4ca0747b407fb5ae12e8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0285_1:D5",
+        "source_sha256": "c1bfb409003b878018a0b701ec731868388c0fb96fafbada8f94cb39b08bf4ce"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0285_2:D2",
+        "source_sha256": "60c44333db49b28cf1a69c8c0979e6bf399f755443bec6d414c8b8a8ce13427b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0285_2:D5",
+        "source_sha256": "f9191bbae4b1207f0a11135732bd84fee4a4693084f9cd840848f3858cc869b6"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0285_3:D2",
+        "source_sha256": "642bf31897197f2d54b81b51940281bf7cd59ded22a5541038cce638ac7ca0e5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0285_3:D5",
+        "source_sha256": "ebeb093afa796fcf851705416c9389c6b4ecaebe2f93d7d28f93a5ce985ae7c7"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0441_2:D2",
+        "source_sha256": "09be02b7cabd06d7538645e6b0a7efb734c67bf3738ee1e9682ce075d2592a26"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0441_2:D5",
+        "source_sha256": "f5570412a42c6cd5ddaf00ee19f639f18d54e1c969f4685ddbe537a2f664e872"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0441_3:D2",
+        "source_sha256": "d5ff1d8c49ab81f4377455a4677c38001f15937f653c7db0941964d32fd87162"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0441_3:D5",
+        "source_sha256": "a0dafbcd06c48eac89bdd0ade66805b47f64e940d8d2ad55cc7a81806a608f80"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0441_4:D2",
+        "source_sha256": "134351af8592777e144078edee490e07cfffa738b58b4cec823d40afdad3077f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W23_2B_0441_4:D5",
+        "source_sha256": "386f01c24e16beedda3c1bec20344b8c0910a5236bd4fab789e365700f066cf2"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W24_1A_0245_2:D3",
+        "source_sha256": "8b5d9c13b6170a2e6a7f0c82a0ff5ae95444b3f0e39b8cc35907fc6b6c2272df"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W24_1A_0245_2:D6",
+        "source_sha256": "0d39f75f1a7597a57176e9916a034690791e21eb3ea7bf4cacbc3ee213af144b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W24_1A_0245_3:D3",
+        "source_sha256": "16f480980033284ebcf78d56942b0fb2d65184e63d6133a60745fd35148605d5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W24_1A_0245_3:D6",
+        "source_sha256": "e309ba9bed4ebe527d8cae845942f3d02ef93a0fdf1cdc6ada1517cc7dd75b06"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W24_1A_0245_4:D3",
+        "source_sha256": "095c4aabeee447b225d3355628d11e4a95af1e4fd21d6ac9afa0ae5b2979a93b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W24_1A_0245_4:D6",
+        "source_sha256": "33d719bf0f830f64e205f6c308514e3fb505c5ef479fc53fabb1ce34fa7d895a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W39_2A_0693_3:D3",
+        "source_sha256": "b80c4a34a46385cdc4677d06feb6ffc7eff38da2c80cb731ef39455731e952cd"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W39_2A_0693_3:D6",
+        "source_sha256": "e4508f031d57f9decdf600ebf2b45703456fadb20f91c89a9b99c7dd92d2e138"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W39_2A_0693_4:D3",
+        "source_sha256": "31cf1274162a6cd5ecf185d584d887feb618453731db840396bc555e15ccf905"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W39_2A_0693_4:D6",
+        "source_sha256": "1ae35c75fa72f3e582cbedf6b27ecd1cab9016a737a3964a8c8a00402a75bb8d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0067_1:D3",
+        "source_sha256": "aac578e00facc96ee682612d8a767a736101eab4192995b99341da36c6aac0c0"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0067_1:D6",
+        "source_sha256": "088009f04eb5757fe6a0c85c979a698515abd1578d54bd9213fff7830027e2b6"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0067_2:D3",
+        "source_sha256": "3314def8abd548c482c9c40f2c83c0e74733564e8ae02e8e24dcc1166e234233"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0067_2:D6",
+        "source_sha256": "c7d9b1b86f64f87c94d03db1f1098930a58e0a07cea20adc1428167813350d04"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0067_3:D3",
+        "source_sha256": "5e15267d1036c333663d1e3baee87f1bebf47d96d2a4b497ace6e33f5cb08ed8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0067_3:D6",
+        "source_sha256": "8f58c3d4ce8006d3419bd3a507cd6134be0f825982db059ccde99b215b083537"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0067_4:D3",
+        "source_sha256": "6170223f8aad4401e551332c6d70211296e2c1c54949dbff9b07b7cea63be7cb"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0067_4:D6",
+        "source_sha256": "18821dae9d242dfde96e9307997bd50e72e9b39f507d29a7d9255ca335bf4aaa"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0125_1:D3",
+        "source_sha256": "1eab39c33cc87ba75d1a937492edeb6c7b3781926884337ca9b39bfd785e859f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0125_1:D6",
+        "source_sha256": "ed5aac329aa4446d4ceba31993e7cd379af88e3791036edb99a7c412ec421ec0"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0125_2:D3",
+        "source_sha256": "af5dba2f1752f86d3861908037a771565b7bc4f22e793d96a0a8c68c6be284ed"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0125_2:D6",
+        "source_sha256": "9d3eaff10fdf977929a2ebf0533d0cf3294e87e5fc23daeac810b4503ba64086"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0125_3:D3",
+        "source_sha256": "b798bac02fb72b1857510f9641d501c8607b302c75b036536140ce38860e994a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0125_3:D6",
+        "source_sha256": "a22ea3f2c5fc27bd08153770a378ba15ca3da42b6b8dc98da0eb663d481fda1f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0125_4:D3",
+        "source_sha256": "18b80472e0ccb7c049fe3ceeadc8645b57ddea0e54c33d769856b3a34098aa79"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0125_4:D6",
+        "source_sha256": "99ecf51de0f4770622dee26ea903bfc153d288bd6d51d58f90ecff164cf92b61"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0444_1:D3",
+        "source_sha256": "a831e061bff7ee3f8c2564d0cf0b0f19b763c1b14098aacde9d9fdeed612945a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0444_1:D6",
+        "source_sha256": "97a82e59fce6dbb017789820d73aa68814faf23985979d9446640faec174b728"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0444_2:D3",
+        "source_sha256": "ce3431527e3142517d512960e4199cf506e585e2ff0fe248915160b6fd7991d8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0444_3:D3",
+        "source_sha256": "7bdedb7d00b700e9558e9e5604cd2530cd86a45e7a53b1aaa75eec4d004b160d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0444_3:D6",
+        "source_sha256": "612426a2ab0a98dad103ea8f4621db5b9893e4301de067c78c579a08398aae04"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0444_4:D3",
+        "source_sha256": "eae7c11eae2c62457700201ac4e7109c015dfff66d8667ec094de45087e5422e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0444_4:D6",
+        "source_sha256": "d8b292bd85de95a2b51371ba112f9b75c50f39a92ab188451dc987abf95ae522"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0473_1:D3",
+        "source_sha256": "0b5b54b5df1cad668404b3a82c556559af4129c60f065abd79d58db77aa2ec44"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0473_1:D6",
+        "source_sha256": "93076c117c10c05ec03ddf7a2d5acfca130e101533f637c6bda05085fbd00c12"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0489_1:D3",
+        "source_sha256": "37466606688b5c738c6988180abc98ecd0d5bcb8a6d313c3fce9e8caec57c118"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0489_1:D6",
+        "source_sha256": "0103e41827beb133e476a784971394fca2263d269d6055b7d8048d5936bdfa45"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0489_2:D3",
+        "source_sha256": "639025c1b7c476522df1bea5143bfe56316e43d2aa3fb37c4d8efda626a838f5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0489_2:D6",
+        "source_sha256": "aba7dad1714265dd197b9b35055425d8ac3494ab2b5f96c6b6b9c0fa6a9c7f1c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0559_1:D3",
+        "source_sha256": "c6c1ac43231d6856d8ba9736ff50fa55841d48ba0a31e24c5fe45c174d47483a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0559_1:D6",
+        "source_sha256": "50de49367ecf168d64ac721edf6cb1f9d04a73e174fe4e2f43ec284660ef3aee"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0603_1:D2",
+        "source_sha256": "caf7b7b629275e02e35c67c7f1d3293eae1bc78bb55a0750bd1ac7c62a98419c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0661_1:D5",
+        "source_sha256": "c40a6d4a4c477d84e2c14945ca2464abbdf01bc13c5c28e5a089ad25fd4d6a6a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0661_3:D2",
+        "source_sha256": "4e31582a075d15e6f8fcc03df6578c222ae0d136d638d726563eccfdbc1498b6"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0661_3:D5",
+        "source_sha256": "5cb2f4a45ef2dc2eb74a603120e0146c465cb54a93900e143faf8d7083fe86a7"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0661_4:D2",
+        "source_sha256": "5fc8eac2c797f771c22017527d31d7ba0ee5827909242e342b4e19fdfc92f72c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0661_4:D5",
+        "source_sha256": "93e78db6a1fd346853f70171c58c260689e436ed6ccc25ec9dac46cab20f8f19"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0675_1:D2",
+        "source_sha256": "a73bc1f1e70647fd03cf5b117a6a3d53770857b63089d869f6f47d8b37082654"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0675_2:D5",
+        "source_sha256": "c2f9c861ed3b6d9df322549d8e83a26a30707d1ef9a4d2d746755ca1e963be4e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0675_3:D2",
+        "source_sha256": "706cfa9dd6793aa8a0daa7c19e66538c970101e50ce448489746b9cda02a37f1"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0675_3:D5",
+        "source_sha256": "78d84323eb4a72ef1e57a733db5cbf06fe95025fb691bcf244d430a8e6c26c16"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_1A_0675_4:D5",
+        "source_sha256": "f5a03856f3317a5e591df3ee3a5dee5d480b02b768d6fd9d4a717e5e4b89acbe"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0093_1:D2",
+        "source_sha256": "8e56c120ad908a79aa99c9c0265c34da68f8b3e915615793b7308f2531b6a8d4"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0093_1:D5",
+        "source_sha256": "e51207bbd81789ca014d1d05028154be08b50f2f1bb11454128a1fe4a3e566c5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0093_3:D2",
+        "source_sha256": "f13cf930684564839f44e3dde4c47d696858076b4ed5b604f587ee53aaa65535"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0093_3:D5",
+        "source_sha256": "aa92356e991507bb1fbed8726bcc22dae17fa49ecf3f5319118be67649d7fe3c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0107_1:D2",
+        "source_sha256": "1ecb6039ae267f47d8133340e0a2ea873bba50d62c0a5e7cd320c7bb3d82f0f8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0107_1:D5",
+        "source_sha256": "ab2bce03fefe17a48ad9553b308f1eead6d7299b9d18e276965d7af1f040bb8e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0289_2:D1",
+        "source_sha256": "5f4f9006772783ac6398fb55da6b40dce100e537e5517603bb47b56990d0cddb"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0289_3:D1",
+        "source_sha256": "1c6a74df02582d36b61c14d652768410f6f38e3d9b297ff359f7eba4dc4c45be"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0289_3:D4",
+        "source_sha256": "399e6339916b2f2596711152df7a478afb36a2c8a68656d22df5b1313bcaad2b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0304_1:D2",
+        "source_sha256": "ed179cbda992118f6ef3bb50b035c3bb8c5941156d3f74588b972e0074f18c4b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0304_3:D2",
+        "source_sha256": "c4fa0685d18f2412d27e304c9bf7991d4e1a418e5d9f01ec994553893370a7c1"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0659_1:D1",
+        "source_sha256": "02b0f6a6846067a2f7f893b442f81e1adc16133b207f0b1ec28f4b5a5d12ff5b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0659_1:D4",
+        "source_sha256": "fbdcd75c883e86a6c7f16823ae16b71a53715e123516adfce6026c389d8eba71"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0659_2:D1",
+        "source_sha256": "9db387fc768bbd2921a1afcadb54d152d522b57abc458e7687a0bc03107c9044"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0659_2:D4",
+        "source_sha256": "8172857dff80ed6c15877ef27d13a26c5e34a2816e38aa1aea9a98b0578470c0"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0659_3:D1",
+        "source_sha256": "ad5aad20fc82a4c702aeac0cfbb4651ba0c6fafaae9556fd9fff40653ea46be8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W40_2B_0659_3:D4",
+        "source_sha256": "96c69e25996cdc81767403aebf89ced61ca3cf7844d29da12ff7ea70a0ec0dfe"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0052_1:D3",
+        "source_sha256": "b45e623b3b494362a5ddfa4d886973c2a833f28d18cb9be1e22646a77f6fc62c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0052_1:D6",
+        "source_sha256": "345b6bfdc38003080d67e63eccf603dd1fae7264715178f6d20d3381bb07a7f5"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0067_1:D2",
+        "source_sha256": "3b411082dcc399ca4cfeee0965f7db233201f200b3e6cce4e6bd0fa091845493"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0067_1:D5",
+        "source_sha256": "788bc3cc2d96cc1f4b70b261bff8bf86eb3d79ef797aaf4e7dfdec5d6041ea0e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0067_2:D2",
+        "source_sha256": "07d9fc9dda0548c70b65a278c98e54fd56102e345f7682f880e20c09934f1450"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0067_2:D5",
+        "source_sha256": "b02a1f3e2cbe126c5302543738f7716b04d43b3bf2acfe34858a36c374d80a39"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0081_1:D2",
+        "source_sha256": "ea1c0a12292fc1aa1fb4dc72daaa57120512d9001a210da8199485da2f017fff"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0081_1:D5",
+        "source_sha256": "d7cd654098da1058f34e28a94f7b11e04dea06ef04b792589e0c588fbaa1bcfb"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0108_1:D2",
+        "source_sha256": "b3e62a730d92b07b22bb67092109b6ebada8a1ec65c44f2bf57a2e57272af452"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0108_1:D5",
+        "source_sha256": "db5a9d3a60c8f3d050e99ff7bda27d375dd054965fc30872e6536cdc61692e66"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0242_2:D4",
+        "source_sha256": "743bd555774731bd6b17bfc24d6717ac7e620288c73d0100acbbf45b5999814a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0242_3:D4",
+        "source_sha256": "de0dde5ba2abfc1e807b7676cfe59a9b028c4cda34d5f19c2d722b2ed7103048"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0373_1:D4",
+        "source_sha256": "38bd245630c4ea87e29338737adc94d0867598d8d8808d410ad5ab77ba377f72"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0417_1:D1",
+        "source_sha256": "1ebeb0f2de568d145ca027748341fe2d3c977f0aef1f5fde223a37a516844d54"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0417_1:D4",
+        "source_sha256": "609e7a8f60b0d34fde9fc6080d2f4cdb8de36720f5008fc10a6b0edb867af2d1"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0513_1:D1",
+        "source_sha256": "1f719a28a1c0293d0ead163a3742318ee0e5c9d28872c37831aadab4f4980542"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0513_1:D4",
+        "source_sha256": "68bab55b78e4a3931723e3a3205999d8450ee5f4d3dd03ec2446649650de1b1d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0513_2:D1",
+        "source_sha256": "8634c1945d91011eb766d7a2b77057c7a6313f3eea7f7cc20fb413ef991ce94d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_1A_0513_2:D4",
+        "source_sha256": "e243eb7f6ca09149a6b167589f4dc858a78ed554913df11a15441d01b4675d21"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0083_1:D2",
+        "source_sha256": "4d764912a21519a2942799630202d1d281eb6f8031adc213f02aa18d67331a27"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0083_1:D5",
+        "source_sha256": "6fb1d18f0e804b45e371cd59e482e9c936ce2882e4327c40f75f6f67da36c87d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0112_1:D2",
+        "source_sha256": "a5834534cc728b0372b6e85a0e0b5efcde101ab9d09fc15a0c517ca5de588edc"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0112_1:D5",
+        "source_sha256": "e6c8be15c0e68db676f335a1e87bfa2c2c06be93963e036c5fff6ae9ed41e76f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0173_1:D2",
+        "source_sha256": "54291c71ac9dc4b78492b3ca50e194373116f8dd71f9dd3dda867e4f81f318fb"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0173_1:D5",
+        "source_sha256": "c54e440a270f09f731cf1e20d92df01f94f74f14556537af58f1f81ee8a4e915"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0173_2:D2",
+        "source_sha256": "10f6fbe09006eeff7378658482d5bf3cac75ca940a44f6427f29b5e184ca019e"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0173_2:D5",
+        "source_sha256": "aef8a258573cf05fb9c866f5b09437babf87250e0ef7dd6290501cc3642f88c2"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0173_3:D2",
+        "source_sha256": "d0c1a7b13d1bc379c70e1d974d24df81f99039107e1e96739b757f635480098c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0173_3:D5",
+        "source_sha256": "4dfcc8abc57eae5ba361a51b3a40ff2ddc4590c48f8a08866fe8c858a6a5d4a7"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0200_1:D1",
+        "source_sha256": "2cc29c7c1e582d95e5040f02e9e9f2f8bf1245c2d1627ce47cb4a319d9b26ec2"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0200_1:D4",
+        "source_sha256": "fc706dcedb013a87281bd2c2afb075818fa0f404bc7f04b6ce18d4601fa72341"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0200_2:D1",
+        "source_sha256": "8f8aa7514407b48e18524271589434f050952d2c97ebebb86fdd04f4776629ec"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0200_2:D4",
+        "source_sha256": "5011bc48b53aca4777228f42ce46f81f8bf3661fb49a25b693b972fb1cb8b0ee"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0301_1:D4",
+        "source_sha256": "4fb9da3a22db6cad6404e507d418f233ec462abb87eb551549762e087c95ea71"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W41_2B_0356_2:D4",
+        "source_sha256": "5ba247af074380406a17e4494c69ae5e4708169d438278ebab4594a5ed913b75"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W42_1A_0124_1:D1",
+        "source_sha256": "93a0b8a512dac1342745084614f935493f79a5c880bcef8bd8c53e7c08ce7d96"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W42_1A_0124_1:D4",
+        "source_sha256": "e12f0868325ddbafe9a7adf1286c23a425ebcbe6ce538ca72932226f660d7b73"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W42_1A_0259_1:D1",
+        "source_sha256": "7ae40d2537f20b236d414097eeb6f44a456a6f980e414bc4638b3f5f494bf555"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W42_1A_0259_1:D4",
+        "source_sha256": "5b6cbde61e86cf02e6a5e32762f61088cb1bbabf9c704df7147301c60f670ddf"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W42_2A_0033_2:D2",
+        "source_sha256": "0abcd74c286f0dd9ad7c29ec274da392521ee7fff622f954960121c3e68b102d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W42_2A_0059_1:D4",
+        "source_sha256": "251321c63c71350cdf0322e1aa27a180d7924ddaa589099d9db88cde377670c4"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W43_2A_0023_1:D2",
+        "source_sha256": "feccdf3f16e0777d6d2dc99b5afac4d3e7ad07e641079441dcd668ee842d76cc"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W43_2A_0023_1:D5",
+        "source_sha256": "a12d462f44f14a676f33a410a975754b445a6232c6b34d75c947e60480528fbe"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W43_2A_0023_2:D2",
+        "source_sha256": "a7ad68685a04db95ebcacc6fbfd2b1270eb5491cb9e1506da8a7e89754a1f085"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W43_2A_0023_2:D5",
+        "source_sha256": "9dd661f675073c05dc574e184b5a656c695dc59144f6d92070a29e9c9febde6a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W44_2B_0494_1:D3",
+        "source_sha256": "ebf6c62eab9a334187c05d7bbf5fcbab843919979f98190f289792b82ba28854"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W44_2B_0494_1:D6",
+        "source_sha256": "d8f181935318da6eb2a09f71e59a71ea21bce8a9aad2038ebe5b29b6f4c48211"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_1A_0003_1:D3",
+        "source_sha256": "e25c7572552605977af1bf821a375319353ec0a0cc7b7e46357003b05bbc06df"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_1A_0003_1:D6",
+        "source_sha256": "26e4bbe8eabec222572ad0a7174b8b9c2d9d9cb56eafe4eee090ac8c34afbe5c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_1A_0251_1:D3",
+        "source_sha256": "5971fd7b481628531ba75b57f85f6d9894af0a335559509dffe084ea29d6ccdd"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_1A_0251_1:D6",
+        "source_sha256": "9720267ee15ce6cc4f950650b01e13afda5823bf4eefe8aaf0d80b4ed355a40b"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_1A_0327_1:D3",
+        "source_sha256": "3c8e6f14b22e0d05357b5cbe85b41507553ab2be527d14c85092890af1260efc"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_1A_0327_1:D6",
+        "source_sha256": "c39c96deccbe610625310dace39ff7f4718aab9364da59f2961a87562b037a8f"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_2A_0041_1:D2",
+        "source_sha256": "d6efd87eb2ea008692fc76e2ccaffff81206d89f1595e92ffe795361a6f9562a"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_2A_0041_1:D5",
+        "source_sha256": "cf4a829bec7acf267187aa4887229adc31e99194a7ac2ab354bb6357f0064ecf"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_2A_0214_1:D2",
+        "source_sha256": "92b602ac22d198ee4e24cfb17c7da9e1b017e507d49f1564fd6595a0a5bdba3d"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_2A_0214_1:D5",
+        "source_sha256": "7a23b25f2015955960f073a0aef169106a6318e39a3d348e93beb50f19caa9b8"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_2A_0315_1:D5",
+        "source_sha256": "884db361695006294f7ccb4900d25a39211ac4d1c777f5418057bbf4661b9efc"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_2A_0404_1:D2",
+        "source_sha256": "1f15536429a69f33981037283d9ad6d34eb1dbbc0b0e4c3cfb0c101307607426"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W45_2A_0404_1:D5",
+        "source_sha256": "1d26d5df9e28116766babe5e09745065a42c03824d07d734f75f90a80be327cc"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W46_1A_0287_1:D4",
+        "source_sha256": "fa255ef2d96961ef910798a8b647987a71f1d7cf0fc5ca0938dc7a47232d9086"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W46_1A_0348_1:D4",
+        "source_sha256": "fcef6c838da67fa0076feec8f59e0180c7ec7ae01315b1d2cc512978a9052cce"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W46_1A_0693_1:D4",
+        "source_sha256": "58ec8a21923817e281b173820c6c86a797291449f2f18e469804af5adc6dc07c"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W46_1A_0811_1:D1",
+        "source_sha256": "27b8257a7945256d2e317aad370a50c2cfcd909670d1ef31effe7cd5d17a6f59"
+      },
+      {
+        "obs_key": "spherex_dr1:2025W46_1A_0811_1:D4",
+        "source_sha256": "8be72e8587c05e2dae3472266da12c7ea39f03677e98aa716466f343f03e3919"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W16_2A_0434_1:D1",
+        "source_sha256": "f7392902f6b998bebae48bc138f526d9ee8ccefb896b77d0351c9e459ea4a999"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W16_2A_0434_1:D4",
+        "source_sha256": "91c0f7c7ac00294cb1a06bcaa5d1b8eaa054b8c92b4aa3f5b79d1aaf250c20a5"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W16_2A_0434_2:D1",
+        "source_sha256": "fc251c0fe6d4b04a5510c1e0f799a3d26a5c2ef8d555dc3ae37d9f4f240d69dc"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W16_2A_0434_2:D4",
+        "source_sha256": "1d86612240ec38a340ba74d963a573800802be5fdbc23cfcb49f818bd6fa41d6"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0162_3:D4",
+        "source_sha256": "67b088389485ab2cad0ba1f4ea17afd44d5ecb40efd91e9ebb44122aadf9d50e"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0162_4:D4",
+        "source_sha256": "1455fcdf7a672d7538a8082f54aa3cff729eaf9a44a1aac263b014aec69c7d5f"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0184_1:D4",
+        "source_sha256": "7ebf569e0ceaef67134eeaae15fae3cb000f4ca9cf24f698a771260a04f93f33"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0184_2:D4",
+        "source_sha256": "c1a846579208356956bc75f9ab8ffb4c5011255776babccc5f35059fc679f039"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0184_3:D4",
+        "source_sha256": "6c87e8fe35f067e2323c4aff67d5c645566db827a9aa050e920ec3f9416a6ff5"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0184_4:D1",
+        "source_sha256": "d47379330f154a34ed0a6d7d0a731e15de0c878fce16b47b2cc1c1c839650623"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0184_4:D4",
+        "source_sha256": "bd55544c0eeec6324d792118dfcd59ffc31518d8d2ef46dd8df3c0069179cbf0"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0241_1:D1",
+        "source_sha256": "ce4bebd931f63fd80a105121382a96f2a57d755a146bab051eee81e350bc1b73"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0241_2:D1",
+        "source_sha256": "6544ef372355717baa0f19671c0b9ca2c9ac2b525b6e4d2d199ad655efe03451"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0241_3:D1",
+        "source_sha256": "7d315edb6bf5ac45a05b210e6bd422a43e19f371ac40080528f9a7584972705f"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0241_3:D4",
+        "source_sha256": "70f3a90518813f60c432c2e36430e6c6d17b50efabb72693264fb8219c59e207"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0337_1:D1",
+        "source_sha256": "6abc69a3dabdc861cc5c986a24fc50499c1f1237519f00a81eb6a3b5c7a40c86"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0337_1:D4",
+        "source_sha256": "41561cc9c0d841d2c60eee4807d1dd73c74994a0ec20412f9d8723e128e9dacc"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0337_2:D1",
+        "source_sha256": "d1083db58c319deebbad57ca4e7d1d4a0a8814fd2b91f32a837dfd0375654ba1"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0337_2:D4",
+        "source_sha256": "f4978c798e6712e696e6bf5196bd9cb18584a64d8dda3dc0e94aa5a992ba132e"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0337_3:D1",
+        "source_sha256": "de8730d909cd102f36efad882a07076adcfc8969e2ff95f23f02296726727cf8"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0337_3:D4",
+        "source_sha256": "a662b046d679f2f0e5b6684896035065e08d9899a452e03db61bc1505bdad95b"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0337_4:D1",
+        "source_sha256": "45eaa112fdf3e0b6b9c613576e194a978423db2c61f15659fbef4d37ced7b2ac"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0337_4:D4",
+        "source_sha256": "3bbca4da3fd182386301eeba69d934a063a9fa61e048184e80643b8a5b4f6a0f"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0351_1:D1",
+        "source_sha256": "10a13f47e186f04d04a35f6bff683621b15ef0d1226c84636a259002b1de321d"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0351_1:D4",
+        "source_sha256": "81429b0f3af704d159c20c1e7d5962a895f41ced7241e00e39b858b4dafceabc"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0351_2:D1",
+        "source_sha256": "de2f7a99a7850c6d94973651619101b2c3dd0e75e780c7e6c90bae6c588c2df7"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_1B_0351_2:D4",
+        "source_sha256": "859b279f59112fef82bf3d0a6072ff1397097a45fe5f76d41307c3dc077225cb"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0308_3:D2",
+        "source_sha256": "0f3c362ff0069700796a059681b16e7b07f1c43b2f8694b1aa8a2529045a1945"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0308_3:D5",
+        "source_sha256": "593d2925afb163c4f34319138f513de9f41dea08f6c6998f2e168b8b9f3e70f5"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0355_1:D2",
+        "source_sha256": "7f531565509c1d2efd9a3fe495ea32b58474e6fc1ad56a334165d7a83c7200c1"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0355_1:D5",
+        "source_sha256": "9b5103026a3214840cb235f5f15df8a3e798822bef9d09364dcc4d1c85d8e973"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0355_2:D2",
+        "source_sha256": "f078b764db9165c2390b25301363e120331486b42e2b793f572b185199a555a5"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0355_2:D5",
+        "source_sha256": "d4a7b77900b6d5b62809add6380fe81e3a49bb14ce28a31aadce8613adc14102"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0355_3:D2",
+        "source_sha256": "54112928a7c5348ea7562be92710f2930d2785b289cb6c90d94ec91dcb7d1374"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0355_3:D5",
+        "source_sha256": "04b20536615580d3e03942b5dac4820ddf129f5b32acaece32c87cbe623db573"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0355_4:D2",
+        "source_sha256": "6037157d42da7d57e4f0534b0e1736df1e3f4b47beb3ceb0d5c697d35ce38922"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0355_4:D5",
+        "source_sha256": "b36e58b74f3161fba28e72d6473ca80653b8529ee05181aeec74e5629940fae7"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W17_2A_0403_1:D2",
+        "source_sha256": "d0537a1ad9a841e156d7d3b3e403aae91a6c93a359c26ffabc7f93917b65bb1b"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0032_1:D1",
+        "source_sha256": "e3e02bcae4a465ba84d071d8203b270769adca60c37294cf324027dd6883e09f"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0032_1:D4",
+        "source_sha256": "6e8babcd34dafa4960ed2ceb50e7ef47f86955a7cb22398686d4f1dd79cbff7c"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0444_1:D3",
+        "source_sha256": "a72fc5fbac1920e88c09f4dd26f9da7085e580fad5b30f40a4a1a0a802802615"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0444_1:D6",
+        "source_sha256": "e7cdd855f0d7bf638b8627c2b5c579e8ca3e5feb044d417339e8962bbafccc67"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0457_1:D3",
+        "source_sha256": "81ae27155fca64993058d624ca4959bdc28c7850c8b6b9b9b7e3783cbb0af2b8"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0457_2:D3",
+        "source_sha256": "322ebe312ecb0e4b65cc49244a5ed538fee7729f8f9f727dfb601a5f5eebe99c"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0457_2:D6",
+        "source_sha256": "553fe453612ee50851611f58ca4df5fe9ea49d1d859175f81bea3072ed72a270"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0475_1:D3",
+        "source_sha256": "01c972436adae47b69c5229a63982ef46abd195efd6c5a4fcc455eebfda27c98"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0475_1:D6",
+        "source_sha256": "6ff81b7038a80bef45cb493294732e5dd14d6c076268da219a4e3dd263600ee6"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0475_2:D3",
+        "source_sha256": "c02ed91b711df1a7a99315a5f84be0bf4f0d46a6da0038002da5f46fccf86a20"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0475_2:D6",
+        "source_sha256": "821ee1a29cf06d96b50925d496c6f3c6e7fc55eb956c4aa4e7833727909c9082"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0490_1:D3",
+        "source_sha256": "a08b63c25cbff298ca7823712a98a68d6b5db34957f9fa961267d9f5cdc59c2e"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0490_1:D6",
+        "source_sha256": "c03437320bd33b799b94c69be585765e3e2449e8de6a5d0a5649b0f41823795c"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0490_2:D3",
+        "source_sha256": "275426a7d63ab31685e955b2d94204828578dcd3c7567482f3d2090b8316ecf6"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0490_2:D6",
+        "source_sha256": "893587ccab6b1d52a145df613cfb2331f7dc71a0dfb9ab6bee104b48a0296e23"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0502_1:D3",
+        "source_sha256": "87ab99549b027eef0aeef73d27b7edee43548456d8c0c2c4b7aef1440f195862"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0502_1:D6",
+        "source_sha256": "26773d94b88f3824a29b760afa397f9e54ddb4d6ed37496d9da41e860a775f02"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0516_1:D3",
+        "source_sha256": "0b04993ef2f53ccdef4f24c1712a63fe1d437babc425363a7b72e7339760456d"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0516_1:D6",
+        "source_sha256": "fcd7516cb4d7c3e99b6f51dd161667407ed941468399db1c5824270d75633706"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0529_1:D3",
+        "source_sha256": "36a618395b3ca588f9a06ce5e78ce6dc4870f1c814c2d5fb09a795ea04d1aa01"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_1A_0529_1:D6",
+        "source_sha256": "100d17aaa0876350607b64e0f2a049da8bb5eba640e1117db4d147823b3a42e7"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0023_1:D2",
+        "source_sha256": "0cbaeddfe90ea6991160e66a7f6d43104817e9b662150d99facf16baf55710c4"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0023_1:D5",
+        "source_sha256": "39100475d03c95827747817c64bf21d7c5e9a32cc44cf0ddfa2d1f9b6583db63"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0174_2:D3",
+        "source_sha256": "7c0bb5e8b3b50cef45be0f22e191bc34e7478547bd77800e6fe9b30abfafbcaa"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0174_2:D6",
+        "source_sha256": "cc8a979d8f518f0782c6efcd33d659880e95d66ee371c78553a2fec52a94e1e2"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0819_1:D1",
+        "source_sha256": "778d132b3c4f2e5da859c5a60fe946fa98bf51c60df3342703ebef5f23c0cee6"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W18_2A_0819_1:D4",
+        "source_sha256": "d944bff10a9659a92657fcdf4016565c6f6c6d22ff2aa747a9e532266442b3ea"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0041_1:D3",
+        "source_sha256": "2d5d029412c2794096ec04044c248a9bb71f65eabe9aa00b679f283e13532e8f"
+      },
+      {
+        "obs_key": "spherex_dr1:2026W19_1A_0041_1:D6",
+        "source_sha256": "f7245a4750a6b918f624d1c4a83f6c4652307035d8f7e8e71f16d4b8ad48950d"
+      }
+    ]
+  },
+  "holdout": {
+    "visit": 3,
+    "window_mjd": [
+      61305.226906,
+      61315.478076
+    ],
+    "obs": [
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0276_1:D3",
+        "t_start_mjd": 61305.226906,
+        "t_end_mjd": 61305.228238
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0276_1:D6",
+        "t_start_mjd": 61305.226906,
+        "t_end_mjd": 61305.228238
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0276_2:D3",
+        "t_start_mjd": 61305.228398,
+        "t_end_mjd": 61305.229731
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0276_2:D6",
+        "t_start_mjd": 61305.228398,
+        "t_end_mjd": 61305.229731
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0276_3:D3",
+        "t_start_mjd": 61305.229891,
+        "t_end_mjd": 61305.231223
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0276_3:D6",
+        "t_start_mjd": 61305.229891,
+        "t_end_mjd": 61305.231223
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0276_4:D3",
+        "t_start_mjd": 61305.231383,
+        "t_end_mjd": 61305.232715
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0276_4:D6",
+        "t_start_mjd": 61305.231383,
+        "t_end_mjd": 61305.232715
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0434_3:D3",
+        "t_start_mjd": 61305.908565,
+        "t_end_mjd": 61305.909897
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0434_3:D6",
+        "t_start_mjd": 61305.908565,
+        "t_end_mjd": 61305.909897
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0434_4:D3",
+        "t_start_mjd": 61305.910057,
+        "t_end_mjd": 61305.911389
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0434_4:D6",
+        "t_start_mjd": 61305.910057,
+        "t_end_mjd": 61305.911389
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0578_1:D3",
+        "t_start_mjd": 61306.7198,
+        "t_end_mjd": 61306.721133
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0578_1:D6",
+        "t_start_mjd": 61306.7198,
+        "t_end_mjd": 61306.721133
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0578_2:D3",
+        "t_start_mjd": 61306.721293,
+        "t_end_mjd": 61306.722625
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0578_2:D6",
+        "t_start_mjd": 61306.721293,
+        "t_end_mjd": 61306.722625
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0578_3:D3",
+        "t_start_mjd": 61306.722785,
+        "t_end_mjd": 61306.724117
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0578_3:D6",
+        "t_start_mjd": 61306.722785,
+        "t_end_mjd": 61306.724117
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0578_4:D3",
+        "t_start_mjd": 61306.724295,
+        "t_end_mjd": 61306.725627
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_1A_0578_4:D6",
+        "t_start_mjd": 61306.724295,
+        "t_end_mjd": 61306.725627
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0155_1:D3",
+        "t_start_mjd": 61308.214471,
+        "t_end_mjd": 61308.215804
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0155_1:D6",
+        "t_start_mjd": 61308.214471,
+        "t_end_mjd": 61308.215804
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0155_2:D3",
+        "t_start_mjd": 61308.215964,
+        "t_end_mjd": 61308.217296
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0155_2:D6",
+        "t_start_mjd": 61308.215964,
+        "t_end_mjd": 61308.217296
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0155_3:D3",
+        "t_start_mjd": 61308.217456,
+        "t_end_mjd": 61308.218788
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0155_3:D6",
+        "t_start_mjd": 61308.217456,
+        "t_end_mjd": 61308.218788
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0155_4:D3",
+        "t_start_mjd": 61308.218948,
+        "t_end_mjd": 61308.220281
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0155_4:D6",
+        "t_start_mjd": 61308.218948,
+        "t_end_mjd": 61308.220281
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0169_1:D3",
+        "t_start_mjd": 61308.281268,
+        "t_end_mjd": 61308.2826
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0169_1:D6",
+        "t_start_mjd": 61308.281268,
+        "t_end_mjd": 61308.2826
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0169_2:D3",
+        "t_start_mjd": 61308.282778,
+        "t_end_mjd": 61308.28411
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0169_2:D6",
+        "t_start_mjd": 61308.282778,
+        "t_end_mjd": 61308.28411
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0312_3:D3",
+        "t_start_mjd": 61308.962695,
+        "t_end_mjd": 61308.964028
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0312_3:D6",
+        "t_start_mjd": 61308.962695,
+        "t_end_mjd": 61308.964028
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0312_4:D3",
+        "t_start_mjd": 61308.964187,
+        "t_end_mjd": 61308.96552
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0312_4:D6",
+        "t_start_mjd": 61308.964187,
+        "t_end_mjd": 61308.96552
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0398_1:D3",
+        "t_start_mjd": 61309.367274,
+        "t_end_mjd": 61309.368606
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0398_1:D6",
+        "t_start_mjd": 61309.367274,
+        "t_end_mjd": 61309.368606
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0398_2:D3",
+        "t_start_mjd": 61309.368766,
+        "t_end_mjd": 61309.370099
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0398_2:D6",
+        "t_start_mjd": 61309.368766,
+        "t_end_mjd": 61309.370099
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0398_3:D3",
+        "t_start_mjd": 61309.370258,
+        "t_end_mjd": 61309.371591
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0398_3:D6",
+        "t_start_mjd": 61309.370258,
+        "t_end_mjd": 61309.371591
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0398_4:D3",
+        "t_start_mjd": 61309.371751,
+        "t_end_mjd": 61309.373083
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0398_4:D6",
+        "t_start_mjd": 61309.371751,
+        "t_end_mjd": 61309.373083
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0581_1:D3",
+        "t_start_mjd": 61310.248752,
+        "t_end_mjd": 61310.250085
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0581_1:D6",
+        "t_start_mjd": 61310.248752,
+        "t_end_mjd": 61310.250085
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0597_1:D3",
+        "t_start_mjd": 61310.317361,
+        "t_end_mjd": 61310.318693
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0597_1:D6",
+        "t_start_mjd": 61310.317361,
+        "t_end_mjd": 61310.318693
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0597_2:D3",
+        "t_start_mjd": 61310.318853,
+        "t_end_mjd": 61310.320185
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0597_2:D6",
+        "t_start_mjd": 61310.318853,
+        "t_end_mjd": 61310.320185
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0597_3:D3",
+        "t_start_mjd": 61310.320345,
+        "t_end_mjd": 61310.321678
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0597_3:D6",
+        "t_start_mjd": 61310.320345,
+        "t_end_mjd": 61310.321678
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0597_4:D3",
+        "t_start_mjd": 61310.321837,
+        "t_end_mjd": 61310.32317
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0597_4:D6",
+        "t_start_mjd": 61310.321837,
+        "t_end_mjd": 61310.32317
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0647_1:D3",
+        "t_start_mjd": 61310.58872,
+        "t_end_mjd": 61310.590052
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0647_1:D6",
+        "t_start_mjd": 61310.58872,
+        "t_end_mjd": 61310.590052
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0659_1:D3",
+        "t_start_mjd": 61310.657204,
+        "t_end_mjd": 61310.658536
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0659_1:D6",
+        "t_start_mjd": 61310.657204,
+        "t_end_mjd": 61310.658536
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0659_2:D3",
+        "t_start_mjd": 61310.658696,
+        "t_end_mjd": 61310.660029
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0659_2:D6",
+        "t_start_mjd": 61310.658696,
+        "t_end_mjd": 61310.660029
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0682_1:D3",
+        "t_start_mjd": 61310.792377,
+        "t_end_mjd": 61310.79371
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0682_1:D6",
+        "t_start_mjd": 61310.792377,
+        "t_end_mjd": 61310.79371
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0682_2:D3",
+        "t_start_mjd": 61310.79387,
+        "t_end_mjd": 61310.795202
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0682_2:D6",
+        "t_start_mjd": 61310.79387,
+        "t_end_mjd": 61310.795202
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0682_3:D3",
+        "t_start_mjd": 61310.795362,
+        "t_end_mjd": 61310.796694
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0682_3:D6",
+        "t_start_mjd": 61310.795362,
+        "t_end_mjd": 61310.796694
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0682_4:D3",
+        "t_start_mjd": 61310.796854,
+        "t_end_mjd": 61310.798187
+      },
+      {
+        "obs_key": "spherex_qr3:2026W39_2A_0682_4:D6",
+        "t_start_mjd": 61310.796854,
+        "t_end_mjd": 61310.798187
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0031_1:D2",
+        "t_start_mjd": 61311.132505,
+        "t_end_mjd": 61311.133837
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0031_1:D5",
+        "t_start_mjd": 61311.132505,
+        "t_end_mjd": 61311.133837
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0070_1:D3",
+        "t_start_mjd": 61311.335132,
+        "t_end_mjd": 61311.336464
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0070_1:D6",
+        "t_start_mjd": 61311.335132,
+        "t_end_mjd": 61311.336464
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0070_2:D3",
+        "t_start_mjd": 61311.336624,
+        "t_end_mjd": 61311.337956
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0070_2:D6",
+        "t_start_mjd": 61311.336624,
+        "t_end_mjd": 61311.337956
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0407_1:D2",
+        "t_start_mjd": 61312.829856,
+        "t_end_mjd": 61312.831188
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0407_1:D5",
+        "t_start_mjd": 61312.829856,
+        "t_end_mjd": 61312.831188
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0407_2:D2",
+        "t_start_mjd": 61312.831348,
+        "t_end_mjd": 61312.832681
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0407_2:D5",
+        "t_start_mjd": 61312.831348,
+        "t_end_mjd": 61312.832681
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0407_3:D2",
+        "t_start_mjd": 61312.832841,
+        "t_end_mjd": 61312.834173
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0407_3:D5",
+        "t_start_mjd": 61312.832841,
+        "t_end_mjd": 61312.834173
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0435_3:D2",
+        "t_start_mjd": 61312.968174,
+        "t_end_mjd": 61312.969506
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0435_3:D5",
+        "t_start_mjd": 61312.968174,
+        "t_end_mjd": 61312.969506
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0453_1:D2",
+        "t_start_mjd": 61313.033353,
+        "t_end_mjd": 61313.034686
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0453_1:D5",
+        "t_start_mjd": 61313.033353,
+        "t_end_mjd": 61313.034686
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0518_1:D2",
+        "t_start_mjd": 61313.307093,
+        "t_end_mjd": 61313.308426
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0518_1:D5",
+        "t_start_mjd": 61313.307093,
+        "t_end_mjd": 61313.308426
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0569_1:D2",
+        "t_start_mjd": 61313.507286,
+        "t_end_mjd": 61313.508619
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0569_1:D5",
+        "t_start_mjd": 61313.507286,
+        "t_end_mjd": 61313.508619
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0569_2:D2",
+        "t_start_mjd": 61313.508779,
+        "t_end_mjd": 61313.510111
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0569_2:D5",
+        "t_start_mjd": 61313.508779,
+        "t_end_mjd": 61313.510111
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0613_1:D2",
+        "t_start_mjd": 61313.714852,
+        "t_end_mjd": 61313.716184
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0613_1:D5",
+        "t_start_mjd": 61313.714852,
+        "t_end_mjd": 61313.716184
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0692_1:D2",
+        "t_start_mjd": 61314.052386,
+        "t_end_mjd": 61314.053718
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0692_1:D5",
+        "t_start_mjd": 61314.052386,
+        "t_end_mjd": 61314.053718
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0721_1:D2",
+        "t_start_mjd": 61314.186955,
+        "t_end_mjd": 61314.188288
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0721_1:D5",
+        "t_start_mjd": 61314.186955,
+        "t_end_mjd": 61314.188288
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0721_2:D2",
+        "t_start_mjd": 61314.188448,
+        "t_end_mjd": 61314.18978
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0721_2:D5",
+        "t_start_mjd": 61314.188448,
+        "t_end_mjd": 61314.18978
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0721_3:D2",
+        "t_start_mjd": 61314.18994,
+        "t_end_mjd": 61314.191272
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0721_3:D5",
+        "t_start_mjd": 61314.18994,
+        "t_end_mjd": 61314.191272
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0734_1:D2",
+        "t_start_mjd": 61314.254284,
+        "t_end_mjd": 61314.255617
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0734_1:D5",
+        "t_start_mjd": 61314.254284,
+        "t_end_mjd": 61314.255617
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0734_2:D2",
+        "t_start_mjd": 61314.255777,
+        "t_end_mjd": 61314.257109
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0734_2:D5",
+        "t_start_mjd": 61314.255777,
+        "t_end_mjd": 61314.257109
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0734_3:D2",
+        "t_start_mjd": 61314.257269,
+        "t_end_mjd": 61314.258601
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_1A_0734_3:D5",
+        "t_start_mjd": 61314.257269,
+        "t_end_mjd": 61314.258601
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0143_1:D2",
+        "t_start_mjd": 61315.136989,
+        "t_end_mjd": 61315.138321
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0143_1:D5",
+        "t_start_mjd": 61315.136989,
+        "t_end_mjd": 61315.138321
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0143_2:D2",
+        "t_start_mjd": 61315.138481,
+        "t_end_mjd": 61315.139813
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0143_2:D5",
+        "t_start_mjd": 61315.138481,
+        "t_end_mjd": 61315.139813
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0143_3:D2",
+        "t_start_mjd": 61315.139973,
+        "t_end_mjd": 61315.141306
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0143_3:D5",
+        "t_start_mjd": 61315.139973,
+        "t_end_mjd": 61315.141306
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0172_1:D2",
+        "t_start_mjd": 61315.272144,
+        "t_end_mjd": 61315.273477
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0172_1:D5",
+        "t_start_mjd": 61315.272144,
+        "t_end_mjd": 61315.273477
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0172_2:D2",
+        "t_start_mjd": 61315.273637,
+        "t_end_mjd": 61315.274969
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0172_2:D5",
+        "t_start_mjd": 61315.273637,
+        "t_end_mjd": 61315.274969
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0216_1:D2",
+        "t_start_mjd": 61315.476583,
+        "t_end_mjd": 61315.477916
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0216_1:D5",
+        "t_start_mjd": 61315.476583,
+        "t_end_mjd": 61315.477916
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0216_2:D2",
+        "t_start_mjd": 61315.478076,
+        "t_end_mjd": 61315.479408
+      },
+      {
+        "obs_key": "spherex_qr3:2026W40_2A_0216_2:D5",
+        "t_start_mjd": 61315.478076,
+        "t_end_mjd": 61315.479408
+      }
+    ],
+    "t_mjd": 61310.725537,
+    "data_state": "released",
+    "check_after_utc": null,
+    "selection_rule_key": "holdout.newest-visit"
+  },
+  "permitted_inputs": [
+    {
+      "name": "SIMBAD parallax 270.658 mas (Gaia EDR3, 2020yCat.1350....0G)",
+      "value_mas": 270.658,
+      "content_type": "catalogue",
+      "used_for": "fixed parallax"
+    },
+    {
+      "name": "SIMBAD proper motion +3981.977, -2466.832 mas/yr (Gaia EDR3)",
+      "pmra_mas_yr": 3981.977,
+      "pmdec_mas_yr": -2466.832,
+      "content_type": "catalogue",
+      "used_for": "visit-level systematic estimate (not a model input)"
+    },
+    {
+      "name": "SIMBAD position and motion",
+      "content_type": "catalogue",
+      "used_for": "identification gate and tangent-plane reference only"
+    },
+    {
+      "name": "observer position: Earth (astropy built-in ephemeris) plus spacecraft header position",
+      "content_type": "catalogue",
+      "used_for": "observer geometry"
+    },
+    {
+      "name": "GM_sun and the speed of light",
+      "content_type": "catalogue",
+      "used_for": "physics"
+    }
+  ],
+  "model": {
+    "id": "linear-pm-fixed-parallax",
+    "version": "a4-2026-11-14",
+    "code_sha256": "18f77dc55fd7f8995333a8f25698e72a15e0dca90661e0e500f8b11d8d2561a2",
+    "uncertainty": "parameter covariance x max(1, reduced chi-square); for stars the larger of the exposure-level and the visit-level (per visit and array means) fit; plus sigma_sys from the scatter of per-visit-and-array mean residuals",
+    "notes": "free parallax from SPHEREx alone was 0.369 +/- 0.014 arcsec vs 0.271 (A3, z = 7): visit-level systematics, so the catalogue value is fixed"
+  },
+  "baseline": {
+    "id": "linear-tangent-plane",
+    "description": "straight-line motion in RA and Dec fitted to the same training positions, no parallax and no orbit"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "frame": "tangent plane at the predicted position, east/north arcsec",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "threshold_radius": 2.4477468306808166,
+    "covariance": "S = C_pred + C_obs",
+    "observed": "mean over identified holdout exposures of r_i = observed_i - model(t_i, observer_i), east/north arcsec in the tangent plane at the model position",
+    "c_obs": "sample covariance of the r_i divided by N (N >= 3), never smaller than the mean per-exposure fit covariance divided by N",
+    "c_pred": "frozen model covariance at the mean holdout time (parameter covariance scaled by max(1, reduced chi-square)) plus sigma_sys^2 per axis for the new visit's own offset",
+    "model_evaluation": "the frozen model is evaluated at each identified holdout exposure's time and observer position (Earth plus the FITS header spacecraft position)"
+  },
+  "identification": {
+    "method_key": "ident.catalogue-gate",
+    "rules": [
+      "A3 rules: quality gate; fit within 3 arcsec of the catalogue track; no other Gaia source within 12 arcsec",
+      "fewer than 3 identified exposures -> insufficient_data"
+    ],
+    "alternatives_kept": true
+  },
+  "exclusion_rules_keys": [
+    "exclude.quality-gate",
+    "exclude.flagged-pixels",
+    "exclude.identification",
+    "exclude.contaminated",
+    "exclude.fewer-than-3"
+  ],
+  "exploratory": false,
+  "revises": null
+}

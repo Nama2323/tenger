@@ -1,0 +1,737 @@
+{
+  "schema_version": "tenger.trial/1",
+  "contract_version": 5,
+  "trial_id": "makemake-position-2026a",
+  "target_key": "makemake",
+  "quantity": "position",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout"
+  ],
+  "open_forecast": false,
+  "frozen_utc": "2026-11-14T14:49:13Z",
+  "exposure": {
+    "status": "exposed",
+    "why": "a teammate inspected cutouts on 2026-06-09 and 06-12 (evaluation visit)",
+    "inventory_ref": {
+      "path": "docs/exposure/makemake.json",
+      "sha256": "48ff090c2e182358cfd31a7132f4f20fd5530d4a0615ce2b9062ebe6b5755e81"
+    },
+    "team_statement": {
+      "path": "docs/EXPOSURE.md",
+      "section": "Team confirmation for Task A4",
+      "other_teammates": "not answered yet"
+    }
+  },
+  "training": {
+    "path": "trials/makemake-position-2026a/training.json",
+    "measurements_sha256": "526ce40149684f5c4e1fc43f52590ede6fe20e9222a7af833b1b74df42e4b910",
+    "n_points": 0,
+    "visits": [],
+    "obs": []
+  },
+  "holdout": {
+    "visit": null,
+    "window_mjd": [
+      61190.0,
+      61205.0
+    ],
+    "obs": [
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0398_1:D3",
+        "t_start_mjd": 61190.765461,
+        "t_end_mjd": 61190.766793
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0398_1:D6",
+        "t_start_mjd": 61190.765461,
+        "t_end_mjd": 61190.766793
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0398_2:D3",
+        "t_start_mjd": 61190.766953,
+        "t_end_mjd": 61190.768286
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0398_2:D6",
+        "t_start_mjd": 61190.766953,
+        "t_end_mjd": 61190.768286
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0398_3:D3",
+        "t_start_mjd": 61190.768445,
+        "t_end_mjd": 61190.769778
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0398_4:D3",
+        "t_start_mjd": 61190.769938,
+        "t_end_mjd": 61190.77127
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0398_4:D6",
+        "t_start_mjd": 61190.769938,
+        "t_end_mjd": 61190.77127
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0421_1:D3",
+        "t_start_mjd": 61190.900901,
+        "t_end_mjd": 61190.902233
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0421_1:D6",
+        "t_start_mjd": 61190.900901,
+        "t_end_mjd": 61190.902233
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0421_2:D3",
+        "t_start_mjd": 61190.902393,
+        "t_end_mjd": 61190.903725
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0421_2:D6",
+        "t_start_mjd": 61190.902393,
+        "t_end_mjd": 61190.903725
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0421_3:D3",
+        "t_start_mjd": 61190.903885,
+        "t_end_mjd": 61190.905218
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0421_3:D6",
+        "t_start_mjd": 61190.903885,
+        "t_end_mjd": 61190.905218
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0421_4:D3",
+        "t_start_mjd": 61190.905378,
+        "t_end_mjd": 61190.90671
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0421_4:D6",
+        "t_start_mjd": 61190.905378,
+        "t_end_mjd": 61190.90671
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0521_1:D3",
+        "t_start_mjd": 61191.44497,
+        "t_end_mjd": 61191.446302
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0521_1:D6",
+        "t_start_mjd": 61191.44497,
+        "t_end_mjd": 61191.446302
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0615_3:D3",
+        "t_start_mjd": 61191.990318,
+        "t_end_mjd": 61191.99165
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0615_4:D3",
+        "t_start_mjd": 61191.99181,
+        "t_end_mjd": 61191.993143
+      },
+      {
+        "obs_key": "spherex_qr3:2026W22_2A_0615_4:D6",
+        "t_start_mjd": 61191.99181,
+        "t_end_mjd": 61191.993143
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0033_1:D3",
+        "t_start_mjd": 61192.190991,
+        "t_end_mjd": 61192.192323
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0033_1:D6",
+        "t_start_mjd": 61192.190991,
+        "t_end_mjd": 61192.192323
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0033_2:D3",
+        "t_start_mjd": 61192.192483,
+        "t_end_mjd": 61192.193815
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0033_2:D6",
+        "t_start_mjd": 61192.192483,
+        "t_end_mjd": 61192.193815
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0033_3:D3",
+        "t_start_mjd": 61192.193975,
+        "t_end_mjd": 61192.195308
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0033_3:D6",
+        "t_start_mjd": 61192.193975,
+        "t_end_mjd": 61192.195308
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0033_4:D3",
+        "t_start_mjd": 61192.195468,
+        "t_end_mjd": 61192.1968
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0033_4:D6",
+        "t_start_mjd": 61192.195468,
+        "t_end_mjd": 61192.1968
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0139_1:D3",
+        "t_start_mjd": 61192.802727,
+        "t_end_mjd": 61192.804059
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0139_1:D6",
+        "t_start_mjd": 61192.802727,
+        "t_end_mjd": 61192.804059
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0139_2:D3",
+        "t_start_mjd": 61192.804219,
+        "t_end_mjd": 61192.805551
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0139_2:D6",
+        "t_start_mjd": 61192.804219,
+        "t_end_mjd": 61192.805551
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0186_1:D3",
+        "t_start_mjd": 61193.07366,
+        "t_end_mjd": 61193.074992
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_1A_0186_1:D6",
+        "t_start_mjd": 61193.07366,
+        "t_end_mjd": 61193.074992
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0027_1:D2",
+        "t_start_mjd": 61195.653182,
+        "t_end_mjd": 61195.654515
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0027_1:D5",
+        "t_start_mjd": 61195.653182,
+        "t_end_mjd": 61195.654515
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0027_2:D2",
+        "t_start_mjd": 61195.654675,
+        "t_end_mjd": 61195.656007
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0027_2:D5",
+        "t_start_mjd": 61195.654675,
+        "t_end_mjd": 61195.656007
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0027_3:D2",
+        "t_start_mjd": 61195.656167,
+        "t_end_mjd": 61195.657499
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0027_3:D5",
+        "t_start_mjd": 61195.656167,
+        "t_end_mjd": 61195.657499
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0027_4:D2",
+        "t_start_mjd": 61195.657659,
+        "t_end_mjd": 61195.658991
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0027_4:D5",
+        "t_start_mjd": 61195.657659,
+        "t_end_mjd": 61195.658991
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0040_4:D2",
+        "t_start_mjd": 61195.725308,
+        "t_end_mjd": 61195.72664
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0040_4:D5",
+        "t_start_mjd": 61195.725308,
+        "t_end_mjd": 61195.72664
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0063_1:D2",
+        "t_start_mjd": 61195.856573,
+        "t_end_mjd": 61195.857906
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0063_1:D5",
+        "t_start_mjd": 61195.856573,
+        "t_end_mjd": 61195.857906
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0063_2:D2",
+        "t_start_mjd": 61195.858065,
+        "t_end_mjd": 61195.859398
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0063_2:D5",
+        "t_start_mjd": 61195.858065,
+        "t_end_mjd": 61195.859398
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0063_3:D2",
+        "t_start_mjd": 61195.859558,
+        "t_end_mjd": 61195.86089
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0063_3:D5",
+        "t_start_mjd": 61195.859558,
+        "t_end_mjd": 61195.86089
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0063_4:D2",
+        "t_start_mjd": 61195.86105,
+        "t_end_mjd": 61195.862382
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0063_4:D5",
+        "t_start_mjd": 61195.86105,
+        "t_end_mjd": 61195.862382
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0126_1:D2",
+        "t_start_mjd": 61196.196239,
+        "t_end_mjd": 61196.197571
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0126_1:D5",
+        "t_start_mjd": 61196.196239,
+        "t_end_mjd": 61196.197571
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0126_2:D2",
+        "t_start_mjd": 61196.197731,
+        "t_end_mjd": 61196.199063
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0126_2:D5",
+        "t_start_mjd": 61196.197731,
+        "t_end_mjd": 61196.199063
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0126_3:D2",
+        "t_start_mjd": 61196.199223,
+        "t_end_mjd": 61196.200556
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0126_3:D5",
+        "t_start_mjd": 61196.199223,
+        "t_end_mjd": 61196.200556
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0126_4:D2",
+        "t_start_mjd": 61196.200716,
+        "t_end_mjd": 61196.202048
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0126_4:D5",
+        "t_start_mjd": 61196.200716,
+        "t_end_mjd": 61196.202048
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0209_1:D2",
+        "t_start_mjd": 61196.671451,
+        "t_end_mjd": 61196.672783
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0209_1:D5",
+        "t_start_mjd": 61196.671451,
+        "t_end_mjd": 61196.672783
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0497_1:D2",
+        "t_start_mjd": 61198.165163,
+        "t_end_mjd": 61198.166495
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0497_1:D5",
+        "t_start_mjd": 61198.165163,
+        "t_end_mjd": 61198.166495
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0497_2:D2",
+        "t_start_mjd": 61198.166655,
+        "t_end_mjd": 61198.167987
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0497_2:D5",
+        "t_start_mjd": 61198.166655,
+        "t_end_mjd": 61198.167987
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0497_3:D2",
+        "t_start_mjd": 61198.168147,
+        "t_end_mjd": 61198.16948
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0497_3:D5",
+        "t_start_mjd": 61198.168147,
+        "t_end_mjd": 61198.16948
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0497_4:D2",
+        "t_start_mjd": 61198.169639,
+        "t_end_mjd": 61198.170972
+      },
+      {
+        "obs_key": "spherex_qr3:2026W23_2A_0497_4:D5",
+        "t_start_mjd": 61198.169639,
+        "t_end_mjd": 61198.170972
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0310_4:D4",
+        "t_start_mjd": 61200.342167,
+        "t_end_mjd": 61200.3435
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0324_1:D1",
+        "t_start_mjd": 61200.40573,
+        "t_end_mjd": 61200.407063
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0324_1:D4",
+        "t_start_mjd": 61200.40573,
+        "t_end_mjd": 61200.407063
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0324_2:D1",
+        "t_start_mjd": 61200.407223,
+        "t_end_mjd": 61200.408555
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0324_2:D4",
+        "t_start_mjd": 61200.407223,
+        "t_end_mjd": 61200.408555
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0324_3:D1",
+        "t_start_mjd": 61200.408715,
+        "t_end_mjd": 61200.410047
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0324_3:D4",
+        "t_start_mjd": 61200.408715,
+        "t_end_mjd": 61200.410047
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0324_4:D1",
+        "t_start_mjd": 61200.410207,
+        "t_end_mjd": 61200.411539
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0324_4:D4",
+        "t_start_mjd": 61200.410207,
+        "t_end_mjd": 61200.411539
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0364_1:D2",
+        "t_start_mjd": 61200.608695,
+        "t_end_mjd": 61200.610027
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0364_1:D5",
+        "t_start_mjd": 61200.608695,
+        "t_end_mjd": 61200.610027
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0415_1:D1",
+        "t_start_mjd": 61200.880925,
+        "t_end_mjd": 61200.882257
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0415_1:D4",
+        "t_start_mjd": 61200.880925,
+        "t_end_mjd": 61200.882257
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0415_2:D1",
+        "t_start_mjd": 61200.882417,
+        "t_end_mjd": 61200.883749
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0415_2:D4",
+        "t_start_mjd": 61200.882417,
+        "t_end_mjd": 61200.883749
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0415_3:D1",
+        "t_start_mjd": 61200.883909,
+        "t_end_mjd": 61200.885242
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0415_3:D4",
+        "t_start_mjd": 61200.883909,
+        "t_end_mjd": 61200.885242
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0415_4:D1",
+        "t_start_mjd": 61200.885401,
+        "t_end_mjd": 61200.886734
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0415_4:D4",
+        "t_start_mjd": 61200.885401,
+        "t_end_mjd": 61200.886734
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0514_1:D1",
+        "t_start_mjd": 61201.355924,
+        "t_end_mjd": 61201.357256
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_1A_0514_1:D4",
+        "t_start_mjd": 61201.355924,
+        "t_end_mjd": 61201.357256
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0037_1:D1",
+        "t_start_mjd": 61202.713432,
+        "t_end_mjd": 61202.714764
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0037_1:D4",
+        "t_start_mjd": 61202.713432,
+        "t_end_mjd": 61202.714764
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0037_2:D1",
+        "t_start_mjd": 61202.714924,
+        "t_end_mjd": 61202.716256
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0037_2:D4",
+        "t_start_mjd": 61202.714924,
+        "t_end_mjd": 61202.716256
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0037_3:D1",
+        "t_start_mjd": 61202.716416,
+        "t_end_mjd": 61202.717748
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0037_3:D4",
+        "t_start_mjd": 61202.716416,
+        "t_end_mjd": 61202.717748
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0037_4:D1",
+        "t_start_mjd": 61202.717908,
+        "t_end_mjd": 61202.719241
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0037_4:D4",
+        "t_start_mjd": 61202.717908,
+        "t_end_mjd": 61202.719241
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0122_1:D1",
+        "t_start_mjd": 61203.189372,
+        "t_end_mjd": 61203.190704
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0122_1:D4",
+        "t_start_mjd": 61203.189372,
+        "t_end_mjd": 61203.190704
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0122_2:D1",
+        "t_start_mjd": 61203.190864,
+        "t_end_mjd": 61203.192197
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0122_2:D4",
+        "t_start_mjd": 61203.190864,
+        "t_end_mjd": 61203.192197
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0122_3:D1",
+        "t_start_mjd": 61203.192357,
+        "t_end_mjd": 61203.193689
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0122_3:D4",
+        "t_start_mjd": 61203.192357,
+        "t_end_mjd": 61203.193689
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0122_4:D1",
+        "t_start_mjd": 61203.193849,
+        "t_end_mjd": 61203.195181
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0122_4:D4",
+        "t_start_mjd": 61203.193849,
+        "t_end_mjd": 61203.195181
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0194_4:D1",
+        "t_start_mjd": 61203.599831,
+        "t_end_mjd": 61203.601163
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0194_4:D4",
+        "t_start_mjd": 61203.599831,
+        "t_end_mjd": 61203.601163
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0206_1:D1",
+        "t_start_mjd": 61203.663589,
+        "t_end_mjd": 61203.664922
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0206_1:D4",
+        "t_start_mjd": 61203.663589,
+        "t_end_mjd": 61203.664922
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0206_2:D1",
+        "t_start_mjd": 61203.665082,
+        "t_end_mjd": 61203.666414
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0206_2:D4",
+        "t_start_mjd": 61203.665082,
+        "t_end_mjd": 61203.666414
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0206_3:D1",
+        "t_start_mjd": 61203.666574,
+        "t_end_mjd": 61203.667906
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0206_3:D4",
+        "t_start_mjd": 61203.666574,
+        "t_end_mjd": 61203.667906
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0206_4:D1",
+        "t_start_mjd": 61203.668066,
+        "t_end_mjd": 61203.669399
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0206_4:D4",
+        "t_start_mjd": 61203.668066,
+        "t_end_mjd": 61203.669399
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0293_1:D1",
+        "t_start_mjd": 61204.13969,
+        "t_end_mjd": 61204.141022
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0293_1:D4",
+        "t_start_mjd": 61204.13969,
+        "t_end_mjd": 61204.141022
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0293_2:D1",
+        "t_start_mjd": 61204.141182,
+        "t_end_mjd": 61204.142514
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0293_2:D4",
+        "t_start_mjd": 61204.141182,
+        "t_end_mjd": 61204.142514
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0293_3:D1",
+        "t_start_mjd": 61204.142692,
+        "t_end_mjd": 61204.144024
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0293_3:D4",
+        "t_start_mjd": 61204.142692,
+        "t_end_mjd": 61204.144024
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0293_4:D1",
+        "t_start_mjd": 61204.144184,
+        "t_end_mjd": 61204.145517
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0293_4:D4",
+        "t_start_mjd": 61204.144184,
+        "t_end_mjd": 61204.145517
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0355_1:D1",
+        "t_start_mjd": 61204.478805,
+        "t_end_mjd": 61204.480137
+      },
+      {
+        "obs_key": "spherex_qr3:2026W24_2B_0355_1:D4",
+        "t_start_mjd": 61204.478805,
+        "t_end_mjd": 61204.480137
+      }
+    ],
+    "t_mjd": 61198.165163,
+    "data_state": "released",
+    "check_after_utc": null,
+    "selection_rule_key": "holdout.newest-visit-window"
+  },
+  "permitted_inputs": [
+    {
+      "name": "observer position: Earth (astropy built-in ephemeris) plus spacecraft header position",
+      "content_type": "catalogue",
+      "used_for": "observer geometry"
+    },
+    {
+      "name": "GM_sun and the speed of light",
+      "content_type": "catalogue",
+      "used_for": "physics"
+    }
+  ],
+  "model": {
+    "id": "heliocentric-two-body",
+    "version": "a4-2026-11-14",
+    "code_sha256": "18f77dc55fd7f8995333a8f25698e72a15e0dca90661e0e500f8b11d8d2561a2",
+    "uncertainty": "parameter covariance x max(1, reduced chi-square); for stars the larger of the exposure-level and the visit-level (per visit and array means) fit; plus sigma_sys from the scatter of per-visit-and-array mean residuals",
+    "notes": "JPL Horizons (A1 inventory) centred the training cutouts"
+  },
+  "baseline": {
+    "id": "linear-tangent-plane",
+    "description": "straight-line motion in RA and Dec fitted to the same training positions, no parallax and no orbit"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "frame": "tangent plane at the predicted position, east/north arcsec",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "threshold_radius": 2.4477468306808166,
+    "covariance": "S = C_pred + C_obs",
+    "observed": "mean over identified holdout exposures of r_i = observed_i - model(t_i, observer_i), east/north arcsec in the tangent plane at the model position",
+    "c_obs": "sample covariance of the r_i divided by N (N >= 3), never smaller than the mean per-exposure fit covariance divided by N",
+    "c_pred": "frozen model covariance at the mean holdout time (parameter covariance scaled by max(1, reduced chi-square)) plus sigma_sys^2 per axis for the new visit's own offset",
+    "model_evaluation": "the frozen model is evaluated at each identified holdout exposure's time and observer position (Earth plus the FITS header spacecraft position)"
+  },
+  "identification": {
+    "method_key": "ident.frozen-model-search",
+    "rules": [
+      "holdout cutouts are centred on the frozen model position at each exposure time (no ephemeris query)",
+      "native Gaussian fit (A3), S/N >= 10, within max(15 arcsec, 3 x sqrt(largest C_pred eigenvalue)) of the model",
+      "static-source check: the fitted sky position must be empty (S/N < 5) in another holdout exposure of the same array taken when the model position had moved more than 30 arcsec",
+      "two or more distinct sources passing these rules in one exposure -> ambiguous",
+      "fewer than 3 identified exposures -> insufficient_data"
+    ],
+    "alternatives_kept": true
+  },
+  "exclusion_rules_keys": [
+    "exclude.quality-gate",
+    "exclude.flagged-pixels",
+    "exclude.identification",
+    "exclude.contaminated",
+    "exclude.fewer-than-3"
+  ],
+  "exploratory": false,
+  "revises": null,
+  "ephemeris_use": "JPL Horizons (A1 inventory) centred the training cutouts"
+}

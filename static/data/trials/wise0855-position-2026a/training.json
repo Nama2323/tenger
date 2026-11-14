@@ -1,0 +1,12 @@
+{
+  "schema_version": "tenger.training/1",
+  "contract_version": 5,
+  "trial_id": "wise0855-position-2026a",
+  "target_key": "wise0855",
+  "source": {
+    "path": "wise0855/investigation.json",
+    "sha256": "5b9e9c3166705f5d4b225ea33301557e6d3812f5cd51583a877f8aeba481d3d5"
+  },
+  "selection": "identified single-exposure positions outside the holdout visit",
+  "points": []
+}
