@@ -1,11 +1,11 @@
 name: Bake frames
 
 # Prepares the challenge targets from the IRSA archive and stores the frames in the repository.
-# Running it weekly also picks up new SPHEREx releases.
+# Manual runs only: the weekly schedule was removed so no automatic rebake can overwrite static/data
+# (the TENGER investigations, trials and scoreboard) during judging. A manual run still rebuilds
+# static/data with the older SPHEREx Blink pipeline; see docs/RELEASE.md before running it.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "17 4 * * 1"
 
 permissions:
   contents: write

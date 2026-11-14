@@ -9,8 +9,30 @@ still open. Session A edits only "Science/data". Session B edits only "Web".
 
 ### Current phase
 
-**Phase F done (Tasks A4–A5), Pluto post-mortem (A5b) and 3D-view data (A6) published.** Open:
-teammates' confirmation for Pluto; the 2027 open forecast; release prep (README).
+**Phase H data checks done (Task H2): release candidate on `tenger-dev`, not on `main`, not deployed.**
+Open: three teammates' confirmation for Pluto; updating `main` (it still has the weekly bake schedule);
+making the repository public and enabling Pages (`docs/RELEASE.md`).
+
+### Task H2, 15 Nov 2026 (release checks for data and science; fix, don't add)
+
+| Part | Files | Result |
+|---|---|---|
+| Production validator | `scripts/validate_release.py` (new), `tests/test_validate_release.py` (new, 4 tests) | Runs on `static/data`. It checks known kinds, major version 1 and a contract version not older than the kind (stale files fail), and rejects any `"example": true`. Artificial content must be `synthetic`, and real lesson inputs need a source. It requires source metadata (observation URLs and SHA-256, measurement method/value/σ, catalogue sources, sourced index distances, `derived_from` hashes, scene sources and Planet Nine references). Hash chains: `predict.check`, each `prediction.json` byte-equal to the copy in its receipt commit, model code hashes (v1 files; v2 trials use `forecast_v2.code_sha256`) and verification → prediction hashes. Every JSON in `static/dev-fixtures` must carry `"example": true`, because fixtures ship with `static/`. Legacy viewer files (`targets.json`, `results.json`, `meta.json`, `sky/`, `gaia/`) are listed, not validated. **Result: 77 contract files, 0 failures** |
+| What it found | `static/data/lessons/how-sure.json` | `derived_from` still held the scoreboard hash from before A7's rebuild. Regenerated with `python -m scripts.build_records`; only the hash changed |
+| Numbers on the site against their sources | validator `check_numbers` | The scoreboard equals a fresh `build_scoreboard.build` run. Game rounds and lessons equal a fresh `build_records` run. Index statuses follow the verifications, and index distances equal 1000/parallax. Post-mortem and hindcast numbers match the frozen verification. In `scene3d.json`, the frozen forecast, observed position, training count, star distances and our-orbit labels match their files. Session B's hard-coded figures in `js/i18n.js` (Gaia 10.4″, pixel 6.2″) agree with the data. **No mismatches** |
+| README | `README.md` | Rewritten for TENGER: See/Predict/Learn; results (2 retrospective catalogue-assisted hits, the prospective Pluto miss and its post-mortem cause, 4 insufficient-data trials, open forecasts never counted); how to run and check; limitations; data credits and DOIs (matching the About page); team; SPHEREx Blink base (MIT); AI disclosure |
+| No automatic rebake | `.github/workflows/bake.yml` | `schedule` removed, `workflow_dispatch` kept. Scheduled workflows run from the default branch, so **`main` keeps the weekly schedule until it is updated**. Next run: Mon 16 Nov 04:17 UTC (12:17 UB). `docs/RELEASE.md` step 0 gives the commands |
+| Pages check | `.github/workflows/pages.yml` (unchanged) | Uploads `static/` on a push to `main` that touches `static/**`, or on manual dispatch. `static/` is 139 MB, 1,461 files, none over 50 MB, no symlinks, only relative paths. Simulated by serving a copy of `static/` alone from `/tenger/` with no backend: Home (3D), Barnard's Star in See, Predictions and the scoreboard load. The only 404s are the expected `verification.json` files of unverified trials. On `*.github.io`, live search calls the Render service, whose CORS allows only `pythonhack000.github.io` (not changed: team decision 6). Repository private, Pages not enabled (API 404) |
+| Release notes | `docs/RELEASE.md` (new) | Acceptance matrix, known limits, local run command, and the exact steps for the team to make the repository public and deploy Pages (not done here) |
+
+**Checks (after rebasing on Session B's `16da115`):** `pytest` 179 passed, 2 skipped (network);
+`node --test tests/*.mjs` 152 passed, 0 failed; `python -m scripts.validate_release` 0 failures;
+`python -m scripts.predict check` 13 of 13 intact.
+
+**Not done (by instruction or outside this task):** nothing pushed to `main`, no tag, no deploy, no
+repository setting changed. Session B's request to add `n_exposures`/`n_visits` to `postmortem.json`
+was declined in H2. `scripts/postmortem.py` is part of the code hash of the frozen v2 open forecasts,
+so changing it would break their hash chain, and H2 is fix-only.
 
 ### Task A1, 14 Nov 2026 (git base `58f993b`, branch `tenger-dev`)
 
@@ -523,8 +545,9 @@ neutral position (0, 0). Bake and live jobs were not run.
 - Collect the three remaining teammates' statements on Pluto's evaluation visit. When all four
   confirm, regenerate `scoreboard.json` so the Pluto row counts as prospective. Never edit the trial
   files.
-- Release preparation (phase H): check the published files against the contract, credits and
-  licences, and a final rebuild-and-compare.
+- Before Mon 16 Nov 04:17 UTC: update `main` or disable `bake.yml` there (`docs/RELEASE.md`, step 0).
+- After Sunday 14:00: the team makes the repository public, enables Pages and fast-forwards `main`
+  (`docs/RELEASE.md`). Run `python -m scripts.validate_release` before every data commit.
 - When IRSA releases Pluto's spring-2027 visit, check `pluto-position-open-2027a` with the same
   verifier.
 
