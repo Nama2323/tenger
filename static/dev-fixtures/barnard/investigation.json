@@ -1,0 +1,156 @@
+{
+  "schema_version": "tenger.investigation/1",
+  "example": true,
+  "target_key": "barnard",
+  "dataset_version": "example-2026-11-14",
+  "pipeline": {
+    "version": "0.0.0-example",
+    "config_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "request": {
+    "ra_deg": 269.44648,
+    "dec_deg": 4.76867,
+    "fov_deg": 0.1,
+    "position_epoch_mjd": 61100.0
+  },
+  "coverage": {
+    "available_fov_deg": 0.1,
+    "observations_listed": 2,
+    "observations_used": 2
+  },
+  "observations": [
+    {
+      "obs_key": "spherex_dr1:EXAMPLE_0001_1:D3",
+      "obs_id": "EXAMPLE_0001_1",
+      "detector": 3,
+      "collection": "spherex_dr1",
+      "t_start_mjd": 61000.0,
+      "t_end_mjd": 61000.001,
+      "time_scale": "UTC",
+      "t_start_utc": "2026-02-25T00:00:00Z",
+      "response": {
+        "centre_um": 2.0,
+        "width_um": 0.02,
+        "source": "CWAVE/CBAND"
+      },
+      "file": "level2_EXAMPLE_0001_1D3_spx_example.fits",
+      "url": null,
+      "source_sha256": null,
+      "flag_schema": "MSKN/MSKM",
+      "flagged_fraction": 0.01
+    },
+    {
+      "obs_key": "spherex_qr3:EXAMPLE_0002_1:D3",
+      "obs_id": "EXAMPLE_0002_1",
+      "detector": 3,
+      "collection": "spherex_qr3",
+      "t_start_mjd": 61200.0,
+      "t_end_mjd": 61200.001,
+      "time_scale": "UTC",
+      "t_start_utc": "2026-09-13T00:00:00Z",
+      "response": {
+        "centre_um": 2.0,
+        "width_um": 0.02,
+        "source": "CWAVE/CBAND"
+      },
+      "file": "level2_EXAMPLE_0002_1D3_spx_example.fits",
+      "url": null,
+      "source_sha256": null,
+      "flag_schema": "MSKN/MSKM",
+      "flagged_fraction": 0.02
+    }
+  ],
+  "epochs": [
+    {
+      "id": "e1",
+      "obs_keys": [
+        "spherex_dr1:EXAMPLE_0001_1:D3"
+      ],
+      "t_start_mjd": 61000.0,
+      "t_end_mjd": 61000.001,
+      "combine": "single",
+      "assets": {
+        "preview": null
+      }
+    },
+    {
+      "id": "e2",
+      "obs_keys": [
+        "spherex_qr3:EXAMPLE_0002_1:D3"
+      ],
+      "t_start_mjd": 61200.0,
+      "t_end_mjd": 61200.001,
+      "combine": "single",
+      "assets": {
+        "preview": null
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "id": "c1",
+      "a": "e1",
+      "b": "e2",
+      "grade": "qualitative",
+      "modes": [
+        "blink",
+        "side_by_side",
+        "swipe"
+      ],
+      "checks": {
+        "response": "pass",
+        "registration": "pass",
+        "psf": "not_checked",
+        "background": "pass"
+      },
+      "reason_keys": []
+    }
+  ],
+  "measurements": [
+    {
+      "id": "m1",
+      "quantity": "proper_motion_total_arcsec_yr",
+      "content_type": "measured",
+      "status": "insufficient_data",
+      "value": null,
+      "sigma": null,
+      "method": "example",
+      "inputs": [
+        "e1",
+        "e2"
+      ],
+      "limitation_keys": [
+        "limit.example"
+      ]
+    }
+  ],
+  "explanation": [
+    {
+      "key": "explain.example",
+      "params": {
+        "measurement": "m1"
+      }
+    }
+  ],
+  "capabilities": {
+    "modes": [
+      "blink",
+      "side_by_side",
+      "swipe"
+    ],
+    "difference": false,
+    "spectrum": false,
+    "light_curve": false
+  },
+  "legacy": {
+    "meta": "barnard/meta.json",
+    "frames": "barnard/frames.bin.gz",
+    "status": "unvalidated"
+  },
+  "data_status": "available",
+  "measurement_status": "insufficient_data",
+  "credits_keys": [
+    "credit.irsa",
+    "credit.spherex"
+  ]
+}

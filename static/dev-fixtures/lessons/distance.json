@@ -1,0 +1,29 @@
+{
+  "schema_version": "tenger.lesson/1",
+  "example": true,
+  "lesson_id": "distance",
+  "title_key": "lesson.distance.title",
+  "grade_band": "8-11",
+  "investigation_key": "barnard",
+  "formula_key": "lesson.distance.formula",
+  "worked_example": {
+    "inputs": [
+      {
+        "name": "baseline_au",
+        "value": 2.0,
+        "unit": "au",
+        "content_type": "artificial",
+        "synthetic": true,
+        "source_ref": null
+      }
+    ],
+    "answer": {
+      "value": 1.0,
+      "unit": "arcsec",
+      "derived_by": "example"
+    }
+  },
+  "exercises": [],
+  "teacher_note_key": "lesson.distance.teacher",
+  "derived_from": []
+}

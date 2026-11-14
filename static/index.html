@@ -3,181 +3,329 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SPHEREx Blink</title>
-  <meta name="description" content="Compare NASA SPHEREx images of any patch of sky across dates and see what moved.">
+  <title>TENGER</title>
+  <meta name="description" content="See real changes in the infrared sky. Make a prediction. Check it against NASA SPHEREx observations.">
+  <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;500;600&family=Unbounded:wght@400;600;800&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=final">
+  <link rel="stylesheet" href="css/style.css?v=tenger-b1">
 </head>
-<body data-view="sky">
-  <div id="sky" class="sky"></div>
+<body data-page="home">
+  <a class="skip" href="#main" data-t="site.skip"></a>
   <canvas id="ambient" class="ambient" width="48" height="27" aria-hidden="true"></canvas>
-  <div id="spectrum-line" class="spectrum-line" aria-hidden="true"></div>
 
   <header class="top">
-    <button id="back-to-sky" type="button" class="logo">SPHEREx<span>Blink</span></button>
-    <form id="search" class="search">
-      <input id="search-input" type="text" autocomplete="off" spellcheck="false" data-t-label="searchLabel" data-t-placeholder="searchPlaceholder">
-      <button type="submit" data-t="open"></button>
-      <button id="top-places" type="button" class="glow" data-t="topPlaces"></button>
-      <div id="search-list" class="search-list" hidden></div>
-    </form>
-    <button id="tour" type="button" class="ghost" data-t="tour"></button>
-    <button id="language" type="button" class="ghost" aria-label="Language">RU</button>
+    <a id="logo" class="logo" href="./" data-page-link="home" data-t="site.title"></a>
+    <nav class="nav" data-t-label="nav.label">
+      <button type="button" data-page-link="home" data-t="nav.home"></button>
+      <button type="button" data-page-link="game" data-t="nav.game"></button>
+      <button type="button" data-page-link="learn" data-t="nav.learn"></button>
+      <button type="button" data-page-link="about" data-t="nav.about"></button>
+    </nav>
   </header>
 
+  <div id="example-banner" class="example-banner" role="note" hidden>
+    <p data-t="example.banner"></p>
+    <a id="example-exit" href="./" data-t="example.exit"></a>
+  </div>
   <p id="caption" class="caption" hidden aria-live="polite"></p>
 
-  <section id="hero" class="hero">
-    <div class="hero-main">
-      <div class="hero-words">
-        <h1 data-t="heroTitle"></h1>
-        <p class="hero-sub" data-t="heroSub"></p>
-        <p class="hero-help" data-t="heroHelp"></p>
-        <div class="hero-actions">
-          <button id="hero-tour" type="button" class="glow big" data-t="heroTour"></button>
-          <button id="open-here" type="button" class="ghost big" hidden data-t="openHere"></button>
-        </div>
+  <main id="main" tabindex="-1">
+    <div id="notices" class="notices" aria-live="polite"></div>
+    <!-- ======================= Home / Investigate ======================= -->
+    <section id="page-home" class="page" aria-labelledby="home-title">
+      <div class="home-intro">
+        <h1 id="home-title" tabindex="-1" data-t="home.title"></h1>
+        <p class="lead" data-t="site.tagline"></p>
+        <p data-t="home.lead"></p>
       </div>
-      <figure id="proof" class="proof" hidden>
-        <div id="proof-plate"></div>
-        <figcaption data-t="proofCaption"></figcaption>
-      </figure>
-    </div>
-    <h2 class="presets-title" data-t="presetsTitle"></h2>
-    <nav id="presets" class="presets" aria-label="Targets"></nav>
-  </section>
 
-  <section id="about" class="about">
-    <h2 data-t="resultsTitle"></h2>
-    <p class="lead" data-t="resultsLead"></p>
-    <div class="table-wrap">
-      <table class="results">
-        <thead><tr>
-          <th data-t="colTarget"></th><th data-t="colFrames"></th><th data-t="colDates"></th>
-          <th data-t="colMeasured"></th><th data-t="colCatalogue"></th><th data-t="colField"></th><th data-t="colBrightness"></th>
-        </tr></thead>
-        <tbody id="results-body"></tbody>
-      </table>
-    </div>
-    <div class="columns">
-      <article><h3 data-t="doTitle"></h3><p data-t="doText"></p></article>
-      <article><h3 data-t="howTitle"></h3><p data-t="howText"></p></article>
-      <article><h3 data-t="limitsTitle"></h3><p data-t="limitsText"></p></article>
-    </div>
-    <p class="note" data-t="credit"></p>
-  </section>
+      <div class="search-panel">
+        <form id="coord-search" class="coord-search" novalidate aria-labelledby="coord-title">
+          <h2 id="coord-title" data-t="search.coordsTitle"></h2>
+          <div class="fields">
+            <label class="field"><span data-t="search.ra"></span>
+              <input id="coord-ra" type="text" autocomplete="off" spellcheck="false" aria-describedby="coord-help coord-message" data-t-placeholder="search.raPlaceholder">
+            </label>
+            <label class="field"><span data-t="search.dec"></span>
+              <input id="coord-dec" type="text" autocomplete="off" spellcheck="false" aria-describedby="coord-help coord-message" data-t-placeholder="search.decPlaceholder">
+            </label>
+            <label class="field field-fov"><span data-t="search.fov"></span>
+              <select id="coord-fov"></select>
+            </label>
+            <button type="submit" class="glow" data-t="search.go"></button>
+          </div>
+          <p id="coord-help" class="hint" data-t="search.help"></p>
+          <p id="coord-message" class="form-message" aria-live="polite"></p>
+        </form>
 
-  <main id="observatory" class="observatory" hidden>
-    <section class="plate-wrap">
-      <div class="plates">
-        <div class="plate-frame">
-          <canvas id="plate" width="1600" height="1600" tabindex="0"></canvas>
-          <p id="plate-date" class="plate-date"></p>
-          <p id="lock" class="lock" hidden></p>
-          <p id="plate-empty" class="plate-empty" hidden></p>
-          <p class="plate-hint" data-t="zoomHint"></p>
-        </div>
-        <div id="second-frame" class="plate-frame" hidden>
-          <canvas id="plate-b" width="1600" height="1600"></canvas>
-          <p id="plate-date-b" class="plate-date"></p>
-        </div>
+        <form id="search" class="search" aria-labelledby="name-title">
+          <h2 id="name-title" data-t="search.nameTitle"></h2>
+          <div class="search-line">
+            <input id="search-input" type="text" autocomplete="off" spellcheck="false" data-t-label="searchLabel" data-t-placeholder="searchPlaceholder">
+            <button type="submit" data-t="open"></button>
+            <button id="top-places" type="button" data-t="topPlaces"></button>
+          </div>
+          <div id="search-list" class="search-list" hidden></div>
+          <p id="search-message" class="form-message" aria-live="polite"></p>
+        </form>
       </div>
-      <div id="arrays" class="arrays" role="group"></div>
-    </section>
 
-    <aside class="side">
-      <header class="object">
-        <p id="object-kind" class="object-kind"></p>
-        <h2 id="object-name"></h2>
-        <p id="object-coords" class="note"></p>
-        <p id="progress" class="progress" role="status"></p>
-      </header>
-
-      <div id="motion-result" class="motion-result"></div>
-      <button id="measure" type="button" class="glow" data-t="measure"></button>
-
-      <section class="measure">
-        <div class="segment" role="group" id="chart-kind">
-          <button type="button" data-chart="spectrum" data-t="spectrum"></button>
-          <button type="button" data-chart="curve" data-t="lightCurve"></button>
+      <section class="shortcuts" aria-labelledby="shortcuts-title">
+        <h2 id="shortcuts-title" data-t="shortcuts.title"></h2>
+        <p class="note" data-t="shortcuts.lead"></p>
+        <ul id="shortcut-list" class="cards"></ul>
+        <div id="planned">
+          <h2 data-t="shortcuts.planned"></h2>
+          <p class="note" data-t="shortcuts.plannedLead"></p>
+          <ul id="planned-list" class="cards"></ul>
         </div>
-        <div id="chart" class="chart"></div>
-        <p id="chart-note" class="note"></p>
       </section>
 
-      <div class="tools">
-        <div class="segment" role="group" id="modes">
-          <button type="button" data-mode="video" data-t="modeVideo"></button>
-          <button type="button" data-mode="sum" data-t="modeSum"></button>
-          <button type="button" data-mode="diff" data-t="modeDiff"></button>
-        </div>
-        <label class="tool"><span data-t="fieldOfView"></span>
-          <select id="fov">
-            <option value="0.05">3′</option>
-            <option value="0.1">6′</option>
-            <option value="0.2">12′</option>
-            <option value="0.5">30′</option>
-          </select>
-        </label>
-        <label class="tool"><span data-t="toolSpeed"></span>
-          <select id="speed">
-            <option value="1500" data-t="speedSlow"></option>
-            <option value="900" selected data-t="speedNormal"></option>
-            <option value="350" data-t="speedFast"></option>
-          </select>
-        </label>
-        <label class="tool wide"><span data-t="toolContrast"></span>
-          <input id="contrast" type="range" min="0.4" max="4" step="0.1" value="1">
-        </label>
-        <label class="tool"><input id="negative" type="checkbox"><span data-t="toolNegative"></span></label>
-        <label class="tool"><input id="gaia" type="checkbox"><span data-t="gaia"></span></label>
-        <label class="tool"><input id="wise" type="checkbox"><span data-t="wise"></span></label>
-        <label class="tool"><input id="flags" type="checkbox"><span data-t="excludeFlags"></span></label>
-      </div>
-      <p class="note"><span id="plate-info"></span> <span data-t="credit"></span></p>
+      <div class="explore">
+        <section class="map-figure" aria-labelledby="map-title">
+          <h2 id="map-title" data-t="map.title"></h2>
+          <p class="map-caption" data-t="map.caption"></p>
+          <p id="map-waiting" class="panel-note" data-t="map.waiting"></p>
+          <div id="map-canvas" class="map-canvas" role="group" data-t-label="map.label" hidden></div>
+          <div class="map-notes">
+            <p class="note" data-t="map.scale"></p>
+            <div id="map-notes" class="note"></div>
+            <ul id="map-legend" class="legend" data-t-label="map.legend" hidden>
+              <li class="colour-star"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.star"></span></li>
+              <li class="colour-variable"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.variable"></span></li>
+              <li class="colour-solar"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.solar"></span></li>
+              <li class="colour-hypothetical"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.hypothetical"></span></li>
+            </ul>
+          </div>
+        </section>
 
-    </aside>
+        <section class="feed-wrap" aria-labelledby="feed-title">
+          <h2 id="feed-title" data-t="feed.title"></h2>
+          <p class="note" data-t="feed.lead"></p>
+          <ul id="feed-list" class="feed"></ul>
+        </section>
+      </div>
 
-    <footer class="deck">
-      <div class="guide">
-        <p id="explain" class="explain" aria-live="polite"></p>
-        <div class="try">
-          <button id="follow" type="button" class="try-main" aria-pressed="false"></button>
-          <button id="try-compare" type="button" data-t="tryCompare"></button>
-          <button id="fullscreen" type="button" data-t="toolFullscreen"></button>
-          <button id="save-image" type="button" data-t="toolSave"></button>
+      <details id="sky-details" class="sky-details">
+        <summary data-t="sky.title"></summary>
+        <p class="note" data-t="sky.lead"></p>
+        <div id="sky" class="sky"></div>
+        <p id="sky-message" class="form-message" aria-live="polite"></p>
+        <p class="note" data-t="credit.aladin"></p>
+      </details>
+    </section>
+
+    <!-- ======================= Investigation ======================= -->
+    <section id="page-investigate" class="page" hidden aria-labelledby="object-name">
+      <header class="inv-head">
+        <button id="inv-back" type="button" class="ghost" data-t="inv.back"></button>
+        <div class="object">
+          <p id="object-kind" class="object-kind"></p>
+          <h1 id="object-name" tabindex="-1"></h1>
+          <p id="object-coords" class="note"></p>
+          <p id="object-status" class="stamps"></p>
         </div>
-      </div>
-      <div id="chooser" class="chooser" hidden>
-        <strong data-t="chooseTitle"></strong>
-        <div id="chooser-list" class="chooser-list"></div>
-        <button id="chooser-close" type="button" class="ghost" data-t="cancel"></button>
-      </div>
-      <div class="timeline">
-        <button id="play" type="button" class="glow"></button>
-        <div id="dates" class="film" role="group"></div>
-        <div class="range">
-          <label><span data-t="rangeFrom"></span><select id="range-from"></select></label>
-          <label><span data-t="rangeTo"></span><select id="range-to"></select></label>
-          <button id="endpoints" type="button" data-t="rangeEnds"></button>
+        <div class="share">
+          <button id="share" type="button" data-t="inv.share"></button>
+          <span id="share-status" class="note" role="status"></span>
         </div>
-        <div class="segment" role="group" id="views">
-          <button type="button" data-view="one" data-t="viewOne"></button>
-          <button type="button" data-view="compare" data-t="viewCompare"></button>
+      </header>
+
+      <nav class="panel-nav" data-t-label="panel.nav">
+        <button type="button" data-panel="see" data-t="panel.see"></button>
+        <button type="button" data-panel="changed" data-t="panel.changed"></button>
+        <button type="button" data-panel="prediction" data-t="panel.prediction"></button>
+        <button type="button" data-panel="evidence" data-t="panel.evidence"></button>
+        <button type="button" data-panel="spectrum" data-t="panel.spectrum"></button>
+      </nav>
+
+      <section id="panel-see" class="panel panel-see" aria-labelledby="h-see">
+        <h2 id="h-see" class="sr-only" data-t="panel.see"></h2>
+        <p id="progress" class="progress" role="status"></p>
+        <p id="see-empty" class="panel-note" hidden></p>
+        <div id="observatory" class="observatory">
+          <section class="plate-wrap" data-t-label="viewer.label">
+            <div id="plates" class="plates" data-mode="blink">
+              <div id="frame-a" class="plate-frame">
+                <canvas id="plate" width="1600" height="1600" tabindex="0" data-t-label="viewer.label"></canvas>
+                <p id="plate-date" class="plate-date"></p>
+                <p id="lock" class="lock" hidden></p>
+                <p id="plate-empty" class="plate-empty" hidden></p>
+                <p class="plate-hint" data-t="zoomHint"></p>
+              </div>
+              <div id="second-frame" class="plate-frame plate-b" hidden>
+                <canvas id="plate-b" width="1600" height="1600"></canvas>
+                <p id="plate-date-b" class="plate-date"></p>
+                <i id="swipe-line" class="swipe-line" aria-hidden="true"></i>
+              </div>
+            </div>
+            <label id="swipe-control" class="swipe-control" hidden><span data-t="swipe.label"></span>
+              <input id="swipe" type="range" min="0" max="100" step="1" value="50">
+            </label>
+            <div id="arrays" class="arrays" role="group"></div>
+          </section>
+
+          <div class="side-col">
+          <section id="caption-strip" class="caption-strip" aria-labelledby="caption-title">
+            <h3 id="caption-title" data-t="caption.title"></h3>
+            <div id="caption-body"></div>
+          </section>
+
+          <aside class="side">
+            <div class="segment" role="group" id="modes" data-t-label="mode.label">
+              <button type="button" data-mode="blink" data-t="mode.blink"></button>
+              <button type="button" data-mode="side" data-t="mode.side"></button>
+              <button type="button" data-mode="swipe" data-t="mode.swipe"></button>
+              <button type="button" data-mode="diff" data-t="mode.diff"></button>
+            </div>
+            <p id="diff-note" class="note warn" hidden data-t="mode.diffOff"></p>
+            <div class="ab" role="group" data-t-label="ab.label">
+              <label class="ab-pick"><span class="ab-letter" data-t="ab.a"></span><select id="range-from"></select></label>
+              <label class="ab-pick"><span class="ab-letter" data-t="ab.b"></span><select id="range-to"></select></label>
+              <div class="ab-buttons">
+                <button id="swap" type="button" data-t="ab.swap"></button>
+                <button id="endpoints" type="button" data-t="ab.only"></button>
+              </div>
+            </div>
+            <details id="more" class="more">
+              <summary data-t="viewer.more"></summary>
+              <div class="tools">
+                <label class="tool"><span data-t="fieldOfView"></span><select id="fov"></select></label>
+                <label class="tool"><span data-t="toolSpeed"></span>
+                  <select id="speed">
+                    <option value="1500" data-t="speedSlow"></option>
+                    <option value="900" selected data-t="speedNormal"></option>
+                    <option value="350" data-t="speedFast"></option>
+                  </select>
+                </label>
+                <label class="tool wide"><span data-t="toolContrast"></span>
+                  <input id="contrast" type="range" min="0.4" max="4" step="0.1" value="1">
+                </label>
+                <label class="tool check"><input id="negative" type="checkbox"><span data-t="toolNegative"></span></label>
+                <label class="tool check"><input id="gaia" type="checkbox"><span data-t="gaia"></span></label>
+                <label class="tool check"><input id="wise" type="checkbox"><span data-t="wise"></span></label>
+                <label class="tool check"><input id="flags" type="checkbox"><span data-t="excludeFlags"></span></label>
+              </div>
+              <div class="try">
+                <button id="follow" type="button" class="try-main" aria-pressed="false"></button>
+                <button id="fullscreen" type="button" data-t="toolFullscreen"></button>
+                <button id="save-image" type="button" data-t="toolSave"></button>
+              </div>
+              <div id="chooser" class="chooser" hidden>
+                <strong data-t="chooseTitle"></strong>
+                <div id="chooser-list" class="chooser-list"></div>
+                <button id="chooser-close" type="button" class="ghost" data-t="cancel"></button>
+              </div>
+            </details>
+            <p class="note" data-t="viewer.keys"></p>
+            <p class="note"><span id="plate-info"></span></p>
+          </aside>
+          </div>
+
+          <div class="deck">
+            <p id="explain" class="explain" aria-live="polite"></p>
+            <div class="timeline">
+              <button id="play" type="button" class="glow"></button>
+              <div id="dates" class="film" role="group" data-t-label="caption.time"></div>
+            </div>
+            <div class="bands">
+              <button id="composite" type="button" data-t="composite"></button>
+              <div class="band-track">
+                <div id="band-scale" class="band-scale" aria-hidden="true"></div>
+                <input id="band" type="range" min="0" max="101" step="1" value="0" data-t-label="bandSlider">
+              </div>
+              <output id="band-label"></output>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="bands">
-        <button id="composite" type="button" data-t="composite"></button>
-        <div class="band-track">
-          <div id="band-scale" class="band-scale" aria-hidden="true"></div>
-          <input id="band" type="range" min="0" max="101" step="1" value="0" data-t-label="bandSlider">
-        </div>
-        <output id="band-label"></output>
-      </div>
-    </footer>
+      </section>
+
+      <section id="panel-changed" class="panel" aria-labelledby="h-changed">
+        <h2 id="h-changed" data-t="panel.changed"></h2>
+        <p class="lead" data-t="changed.lead"></p>
+        <div id="changed-validated"></div>
+        <section id="explore-box" class="explore-box" aria-labelledby="h-explore">
+          <h3 id="h-explore" data-t="changed.explore"></h3>
+          <p class="note" data-t="changed.exploreLead"></p>
+          <div class="explore-grid">
+            <div>
+              <h4 data-t="changed.motionTitle"></h4>
+              <div id="motion-result" class="motion-result"></div>
+              <button id="measure" type="button" data-t="measure"></button>
+            </div>
+            <div>
+              <h4 data-t="changed.curveTitle"></h4>
+              <div id="curve-chart" class="chart"></div>
+              <p id="curve-note" class="note"></p>
+              <div id="curve-table"></div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section id="panel-prediction" class="panel" aria-labelledby="h-prediction">
+        <h2 id="h-prediction" data-t="panel.prediction"></h2>
+        <p class="lead" data-t="pred.lead"></p>
+        <div id="prediction-body"></div>
+      </section>
+
+      <section id="panel-evidence" class="panel" aria-labelledby="h-evidence">
+        <h2 id="h-evidence" data-t="panel.evidence"></h2>
+        <p class="lead" data-t="evidence.lead"></p>
+        <div id="evidence-body"></div>
+      </section>
+
+      <section id="panel-spectrum" class="panel" aria-labelledby="h-spectrum">
+        <h2 id="h-spectrum" data-t="panel.spectrumOptional"></h2>
+        <p class="lead" data-t="spectrum.lead"></p>
+        <div id="spectrum-note"></div>
+        <div id="chart" class="chart"></div>
+        <p id="chart-note" class="note"></p>
+        <p class="note" data-t="spectrum.features"></p>
+        <div id="spectrum-table"></div>
+      </section>
+    </section>
+
+    <!-- ======================= Beat the physics ======================= -->
+    <section id="page-game" class="page page-text" hidden aria-labelledby="game-title">
+      <h1 id="game-title" tabindex="-1" data-t="game.title"></h1>
+      <p class="lead" data-t="game.lead"></p>
+      <p data-t="game.scoring"></p>
+      <div id="game-rounds"></div>
+    </section>
+
+    <!-- ======================= Learn ======================= -->
+    <section id="page-learn" class="page page-text" hidden aria-labelledby="learn-title">
+      <h1 id="learn-title" tabindex="-1" data-t="learn.title"></h1>
+      <p class="lead" data-t="learn.lead"></p>
+      <ul id="lesson-list" class="cards-list"></ul>
+      <article id="lab" class="page-card lab" aria-labelledby="lab-title">
+        <h2 id="lab-title" data-t="lab.title"></h2>
+        <p data-t="lab.text"></p>
+        <p class="panel-note" data-t="lab.preparing"></p>
+      </article>
+    </section>
+
+    <!-- ======================= About ======================= -->
+    <section id="page-about" class="page page-text" hidden aria-labelledby="about-title">
+      <h1 id="about-title" tabindex="-1" data-t="about.title"></h1>
+      <p class="lead" data-t="about.what"></p>
+      <h2 data-t="about.dataTitle"></h2>
+      <ul id="about-data"></ul>
+      <h2 data-t="about.methodsTitle"></h2>
+      <ul id="about-methods"></ul>
+      <h2 data-t="about.creditsTitle"></h2>
+      <ul id="about-credits"></ul>
+      <p data-t="about.license"></p>
+    </section>
   </main>
 
-  <script type="module" src="js/main.js?v=final"></script>
+  <footer class="site-footer">
+    <p data-t="footer.credit"></p>
+    <p data-t="footer.base"></p>
+  </footer>
+
+  <script type="module" src="js/main.js?v=tenger-b1"></script>
 </body>
 </html>

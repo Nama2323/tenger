@@ -1,0 +1,27 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "example": true,
+  "trial_id": "rdra-brightness-example",
+  "trial_ref": {
+    "path": "trials/rdra-brightness-example/trial.json",
+    "sha256": "c990c3a250b199f5e0423d0a0a6c9582d829ad07503e9428473bee68867833b1"
+  },
+  "category": "illustrative",
+  "created_utc": "2026-11-14T12:35:00Z",
+  "t_mjd": 61250.0,
+  "model": {
+    "value": 5.0,
+    "sigma": 0.5,
+    "unit": "mag",
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "value": 5.5,
+    "sigma": 0.8,
+    "unit": "mag",
+    "content_type": "modeled"
+  },
+  "limitation_keys": [
+    "limit.example"
+  ]
+}

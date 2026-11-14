@@ -1,0 +1,290 @@
+{
+  "schema_version": "tenger.site_index/1",
+  "example": true,
+  "dataset_version": "example-2026-11-14",
+  "generated_utc": "2026-11-14T12:00:00Z",
+  "targets": [
+    {
+      "key": "barnard",
+      "name": "Barnard's Star",
+      "name_key": "target.barnard.name",
+      "role": "challenge",
+      "kind": "faststar",
+      "reference": {
+        "ra_deg": 269.44875,
+        "dec_deg": 4.73942,
+        "epoch_jyear": 2016.0,
+        "pmra_mas_yr": -801.55,
+        "pmdec_mas_yr": 10362.39,
+        "source": "Gaia DR3 (example copy)"
+      },
+      "footprint": {
+        "centre_ra_deg": 269.4464797438944,
+        "centre_dec_deg": 4.768669380549852,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "prediction": {
+        "status": "hit",
+        "trial_ids": [
+          "barnard-position-example"
+        ]
+      },
+      "investigation_path": "barnard/investigation.json",
+      "thumbnails": [],
+      "map": {
+        "distance": {
+          "value": 1.83,
+          "unit": "pc",
+          "kind": "parallax_distance",
+          "source": "example (approximate, not a cited value)"
+        },
+        "angle_deg": 25,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "wise0855",
+      "name": "WISE 0855",
+      "name_key": "target.wise0855.name",
+      "role": "challenge",
+      "kind": "browndwarf",
+      "reference": null,
+      "footprint": {
+        "centre_ra_deg": 133.75952899096637,
+        "centre_dec_deg": -7.242222163377443,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "prediction": {
+        "status": "insufficient_data",
+        "trial_ids": []
+      },
+      "investigation_path": null,
+      "thumbnails": [],
+      "map": {
+        "distance": {
+          "value": 2.28,
+          "unit": "pc",
+          "kind": "parallax_distance",
+          "source": "example (approximate, not a cited value)"
+        },
+        "angle_deg": 115,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "epsindib",
+      "name": "Epsilon Indi B",
+      "name_key": "target.epsindib.name",
+      "role": "challenge",
+      "kind": "browndwarf",
+      "reference": null,
+      "footprint": {
+        "centre_ra_deg": 331.09635023677424,
+        "centre_dec_deg": -56.80113606103126,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "investigation_path": null,
+      "thumbnails": [],
+      "map": {
+        "distance": {
+          "value": 3.64,
+          "unit": "pc",
+          "kind": "parallax_distance",
+          "source": "example (approximate, not a cited value)"
+        },
+        "angle_deg": 205,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "rwaur",
+      "name": "RW Aurigae",
+      "name_key": "target.rwaur.name",
+      "role": "challenge",
+      "kind": "variable",
+      "reference": null,
+      "footprint": {
+        "centre_ra_deg": 76.95647033216964,
+        "centre_dec_deg": 30.401223235721346,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "investigation_path": null,
+      "thumbnails": [],
+      "map": {
+        "distance": {
+          "value": 160,
+          "unit": "pc",
+          "kind": "parallax_distance",
+          "source": "example (approximate, not a cited value)"
+        },
+        "angle_deg": 300,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "rdra",
+      "name": "R Draconis",
+      "name_key": "target.rdra.name",
+      "role": "challenge",
+      "kind": "variable",
+      "reference": null,
+      "footprint": {
+        "centre_ra_deg": 248.16722504385717,
+        "centre_dec_deg": 66.75512696919918,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "prediction": {
+        "status": "waiting",
+        "trial_ids": [
+          "rdra-brightness-example"
+        ]
+      },
+      "investigation_path": null,
+      "thumbnails": [],
+      "map": {
+        "distance": null,
+        "angle_deg": 0,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "makemake",
+      "name": "Makemake",
+      "name_key": "target.makemake.name",
+      "role": "extra",
+      "kind": "dwarfplanet",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "investigation_path": null,
+      "thumbnails": [],
+      "map": {
+        "distance": {
+          "value": 52.6,
+          "unit": "au",
+          "kind": "heliocentric_distance",
+          "source": "example (approximate, not a cited value)"
+        },
+        "angle_deg": 60,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "pluto",
+      "name": "Pluto",
+      "name_key": "target.pluto.name",
+      "role": "extra",
+      "kind": "dwarfplanet",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "investigation_path": null,
+      "thumbnails": [],
+      "map": {
+        "distance": {
+          "value": 35.2,
+          "unit": "au",
+          "kind": "heliocentric_distance",
+          "source": "example (approximate, not a cited value)"
+        },
+        "angle_deg": 160,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "3i-atlas",
+      "name": "3I/ATLAS",
+      "name_key": "target.3i-atlas.name",
+      "role": "extra",
+      "kind": "comet",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "prediction": {
+        "status": "see_only",
+        "trial_ids": []
+      },
+      "investigation_path": null,
+      "thumbnails": [],
+      "map": {
+        "distance": {
+          "value": 2.9,
+          "unit": "au",
+          "kind": "geocentric_distance",
+          "source": "example (approximate, not a cited value)"
+        },
+        "angle_deg": 250,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "planet-nine",
+      "name": "Planet Nine",
+      "name_key": "target.planet-nine.name",
+      "role": "place",
+      "kind": "hypothetical",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "investigation_path": null,
+      "thumbnails": [],
+      "map": {
+        "distance": {
+          "value": 500,
+          "unit": "au",
+          "kind": "hypothetical_model",
+          "source": "example (illustrative; not observed)"
+        },
+        "angle_deg": 330,
+        "angle_is_arbitrary": true
+      }
+    }
+  ],
+  "trials": [
+    "trials/barnard-position-example/trial.json",
+    "trials/rdra-brightness-example/trial.json"
+  ],
+  "scoreboard_path": "scoreboard.json",
+  "game_rounds": [
+    "game/example-round.json"
+  ],
+  "lessons": [
+    "lessons/distance.json"
+  ],
+  "releases": [
+    {
+      "collection": "spherex_dr1",
+      "listed_utc": "2026-11-14T11:31:00Z"
+    }
+  ],
+  "credits_keys": [
+    "credit.irsa",
+    "credit.spherex",
+    "credit.base-project"
+  ]
+}

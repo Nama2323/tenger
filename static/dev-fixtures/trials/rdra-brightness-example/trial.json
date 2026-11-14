@@ -1,0 +1,46 @@
+{
+  "schema_version": "tenger.trial/1",
+  "example": true,
+  "trial_id": "rdra-brightness-example",
+  "target_key": "rdra",
+  "quantity": "brightness",
+  "category": "illustrative",
+  "frozen_utc": "2026-11-14T12:30:00Z",
+  "exposure": {
+    "status": "unknown",
+    "inventory_ref": null,
+    "team_statement": null,
+    "notes": "example fixture"
+  },
+  "training": {
+    "obs_keys": [
+      "spherex_qr3:EXAMPLE_0101_1:D4",
+      "spherex_qr3:EXAMPLE_0102_1:D4"
+    ],
+    "measurements_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "holdout": {
+    "obs_ids": [
+      "EXAMPLE_0103_1"
+    ],
+    "t_mjd": 61250.0,
+    "selection_rule_key": "holdout.next-visit"
+  },
+  "permitted_inputs": [],
+  "model": {
+    "id": "sinusoid-example",
+    "version": "0.0.0-example",
+    "code_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "baseline": {
+    "id": "constant"
+  },
+  "scoring": {
+    "kind": "scalar_1d_gaussian",
+    "coverage": 0.95,
+    "z_max": 1.959963984540054
+  },
+  "exclusion_rules_keys": [],
+  "exploratory": false,
+  "revises": null
+}

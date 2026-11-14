@@ -20,6 +20,7 @@ async function chooseTiles() {
 /** Falls back to a passive object if the map library or WebGL is unavailable. */
 export async function createSky(containerId, onSelect) {
   const unavailable = {
+    unavailable: true,
     goTo() {},
     async flyTo() {},
     refresh() {},

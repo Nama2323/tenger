@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "example": true,
+  "trial_id": "barnard-position-example",
+  "prediction_path": "trials/barnard-position-example/prediction.json",
+  "prediction_sha256": "bee488c7b143edd6f300744bcce972aa3a4716fdfc3feb9f79df840c7b122cca",
+  "commit": "0000000",
+  "committed_utc": "2026-11-14T12:06:00Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": null
+  }
+}

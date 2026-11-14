@@ -1,30 +1,42 @@
-// Application state and wiring between the sky map, plate, charts and controls.
+// TENGER: the page shell (Home, Investigate, Beat the physics, Learn, About) and the image viewer
+// inherited from SPHEREx Blink, extended with explicit A/B observations, Swipe, a caption strip and URL state.
 import * as api from './api.js';
+import { comparisonWarning, CONTEXT_STEP, describePicture } from './caption.js';
 import { drawLightCurve, drawSpectrum, drawWingCurve } from './chart.js';
-import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometry } from './science.js';
-import { applyTranslations, currentLanguage, setLanguage, t } from './i18n.js';
+import { createSource } from './contract.js';
+import { parseCoordinates, separationDeg } from './coords.js';
+import { $, chip, dataTable, el, formatNumber, formatUtc, prefersReducedMotion } from './dom.js';
+import {
+  bindCoordinateSearch, buildFovOptions, entryName, fillCoordinates, kindLabel, placeMapLabels, predictionLabel, renderHome, startBlinking,
+} from './home.js';
+import { applyTranslations, has, t } from './i18n.js';
+import { findByName, searchMatches } from './names.js';
+import { renderChanged, renderEvidence, renderPrediction, renderSpectrumNote } from './panels.js';
+import { renderAbout, renderGame, renderLearn } from './pages.js';
 import {
   drawPlate, limitsFor, paintComposite, paintDifference, paintMono, stacksFor, StackCache, tintFor,
 } from './plate.js';
-import { findByName, searchMatches } from './names.js';
+import { reservedRegionNear } from './reserved.js';
+import { bandToParam, buildRoute, PAGES, parseRoute, resolveRoute } from './route.js';
+import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometry } from './science.js';
 import { createSky } from './sky.js';
-import { canvasToPlate, fullView, panBy, zoomAt } from './viewport.js';
 import {
-  channelWavelength, CHANNELS, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt, resolveBand, selectBand, skyToPixel, wellCovered,
-  visitsOf,
+  channelWavelength, CHANNELS, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt, resolveBand,
+  selectBand, skyToPixel, visitsOf, wellCovered,
 } from './stack.js';
-import { runTour } from './tour.js';
+import { buildTargets, findCoveringTarget, isViewable, legacyPlaces } from './targets.js';
+import { canvasToPlate, fullView, panBy, zoomAt } from './viewport.js';
 
 const POLL_MS = 1500;
 const DEFAULT_FOV = 0.1;
 const CUSTOM_EPOCH = 2016;
 const DEFAULT_MID_MJD = 61100;
-const WISE_STEP = 'wise';
+const WISE_STEP = CONTEXT_STEP;
+const WISE_ID = 'allwise';
 const ALL_DATES = 'all';
 const MOTION_SIGNIFICANCE = 3;
 const AUTO_SPECTRUM_FRAMES = 12;
 const FULL_RANGE_LABEL = '0.75–5 μm';
-const COMPOSITE_COLOR = [255, 184, 77];
 const COUNT_UP_MS = 900;
 const DRAG_THRESHOLD_PX = 4;
 const FILM_TILE_DELAY_MS = 30;
@@ -43,21 +55,45 @@ const SAME_OBJECT_DEG = 0.004;
 const FAST_MOVER_MAS = 1000;
 // The long-wavelength array with the best date coverage for each variable star.
 const CURVE_ARRAYS = { rwaur: 5, rdra: 4 };
-const SWEEP_MS = 9000;
 const TRACK_MATCH_YEARS = 0.02;
-const MEASURE_DELAY_MS = 350;
-const DIVE_FOV = 0.4;
 const ARRAY_CANVAS_SIZE = 420;
 const FILM_CANVAS_SIZE = 160;
 const MOTION_PAINT_DELAY_MS = 40;
+const ONE_ARCSEC_DEG = 1 / 3600;
+const FOV_CHOICES = [0.05, 0.1, 0.2, 0.5];
+const IDS_SHOWN = 1;
+const IRSA_SPHEREX = 'https://irsa.ipac.caltech.edu/Missions/spherex.html';
+const IRSA_WISE = 'https://irsa.ipac.caltech.edu/Missions/wise.html';
+const KEY_STEP = { ArrowLeft: -1, ArrowRight: 1 };
+const SWIPE_ENDS = [0, 100];
+const RESIZE_MS = 150;
 
-const $ = (id) => document.getElementById(id);
 const buffer = document.createElement('canvas');
 const cache = new StackCache();
 
+/** The page shell: data sources, the target list and what the URL asked for. */
+const app = {
+  source: null,
+  indexState: null,
+  entries: [],
+  allTargets: [],
+  legacyPresets: [],
+  thumbs: new Map(),
+  page: 'home',
+  panel: 'see',
+  entry: null,
+  requested: null,
+  investigation: null,
+  pending: null,
+  notices: [],
+  keepNotices: false,
+  scrollToPanel: false,
+  embed: false,
+  sky: null,
+};
+
+/** The viewer. */
 const state = {
-  presets: [],
-  results: [],
   staticMeta: null,
   target: null,
   job: null,
@@ -66,40 +102,47 @@ const state = {
   wiseFrame: null,
   position: 0,
   band: { kind: 'composite' },
-  mode: 'video',
+  mode: 'blink',
   excludeFlags: false,
   gaia: [],
-  chart: 'spectrum',
   spectrum: null,
   spectrumObject: null,
   pick: null,
   track: null,
   playing: false,
-  view: 'one',
   range: { from: null, to: null, endpoints: true },
   received: 0,
   speedMs: 900,
   contrast: 1,
+  swipe: 50,
   follow: false,
   lock: null,
   picking: false,
   candidates: null,
-  compare: { a: 0, b: 0, next: 'a' },
+  next: 'a',
   plateView: { zoom: 1, x: 60, y: 60 },
   session: 0,
-  auto: { spectrum: false, final: false },
+  auto: { spectrum: false },
+  diffAsked: false,
 };
 
 let playTimer = null;
 let filmGeneration = 0;
-let sky = null;
+let captionKey = '';
 
-// ---------- Sequence of dates ----------
+// ---------- Sequence of dates and A/B ----------
 
+/** Dated steps with stable IDs (UTC date of the visit, the AllWISE frame is "allwise"). */
 function sequence() {
-  const dated = state.visits.map((visit) => ({ ...visit, key: visit.visit }));
+  const used = new Map();
+  const dated = state.visits.map((visit) => {
+    const day = formatUtc(mjdToDate(visit.mjd), { time: false });
+    const count = (used.get(day) ?? 0) + 1;
+    used.set(day, count);
+    return { ...visit, key: visit.visit, id: count > 1 ? `${day}-${count}` : day };
+  });
   return state.wiseFrame && $('wise').checked
-    ? [{ key: WISE_STEP, frames: [state.wiseFrame], year: state.wiseFrame.year }, ...dated]
+    ? [{ key: WISE_STEP, id: WISE_ID, frames: [state.wiseFrame], year: state.wiseFrame.year }, ...dated]
     : dated;
 }
 
@@ -107,6 +150,24 @@ function currentStep() {
   const steps = sequence();
   if (state.position === ALL_DATES || !steps.length) return null;
   return steps[Math.min(state.position, steps.length - 1)];
+}
+
+const indexOfId = (steps, id, fallback) => {
+  const index = steps.findIndex((step) => step.id === id);
+  return index >= 0 ? index : fallback;
+};
+
+/** Positions of A and B in the sequence. */
+function abPositions() {
+  const steps = sequence();
+  if (!steps.length) return [0, 0];
+  return [indexOfId(steps, state.range.from, 0), indexOfId(steps, state.range.to, steps.length - 1)];
+}
+
+function abSteps() {
+  const steps = sequence();
+  const [a, b] = abPositions();
+  return [steps[a] ?? null, steps[b] ?? null];
 }
 
 const yearOf = (step) => step.year ?? mjdToYear(step.mjd);
@@ -151,38 +212,48 @@ function stepLabel(step) {
   return step.key === WISE_STEP ? 'AllWISE 2010' : formatDate(mjdToDate(step.mjd));
 }
 
+/** "A · 15 Aug 2025" when the shown step is A or B. */
+function plateLabel(step) {
+  if (!step) return t('allDates');
+  const [a, b] = abSteps();
+  if (step === a || step?.id === a?.id) return t('plate.a', { date: stepLabel(step) });
+  if (step?.id === b?.id) return t('plate.b', { date: stepLabel(step) });
+  return stepLabel(step);
+}
+
 function render() {
   if (!state.job) return;
   const size = state.job.n;
-  const step = currentStep();
-  const comparing = state.view === 'compare';
-  const left = comparing ? compareStep(state.compare.a) : step;
-  const shown = paintStep(left, size, state.band);
+  const [aStep, bStep] = abSteps();
+  const mode = state.mode;
+  const two = mode === 'side' || mode === 'swipe';
+  let left = currentStep();
+  if (mode === 'diff') left = bStep;
+  else if (two) left = aStep;
+  const shown = mode === 'diff' ? paintPair(aStep, bStep, size, state.band) : paintStep(left, size, state.band);
   $('plate-empty').hidden = shown || !state.frames.length;
   $('plate-empty').textContent = t('noFrames');
   drawPlate($('plate'), buffer, overlayFor(left));
-  $('plate-date').textContent = stepLabel(left);
-  $('second-frame').hidden = !comparing;
-  $('arrays').hidden = comparing;
-  if (comparing) renderSecond(size);
-  else renderArrays(left, size);
-  document.body.dataset.layout = state.view;
+  $('plate-date').textContent = mode === 'diff' ? t('plate.diff') : two ? t('plate.a', { date: stepLabel(aStep) }) : plateLabel(left);
+  $('second-frame').hidden = !two;
+  if (two) renderSecond(bStep, size);
+  $('arrays').hidden = mode !== 'blink';
+  if (mode === 'blink') renderArrays(left, size);
+  $('plates').dataset.mode = mode;
+  $('swipe-control').hidden = mode !== 'swipe';
+  $('observatory').dataset.mode = mode;
+  document.body.dataset.layout = mode === 'side' ? 'compare' : 'one';
   describeStep(left);
-  $('explain').textContent = [explainNow(), state.view === 'compare' || state.playing ? rangeNote() : ''].filter(Boolean).join(' ');
+  renderCaption(left, aStep, bStep);
+  $('explain').textContent = [explainNow(), mode !== 'blink' || state.playing ? rangeNote() : ''].filter(Boolean).join(' ');
   markFilm();
   paintAmbient();
 }
 
-function compareStep(index) {
-  const steps = sequence();
-  return steps.length ? steps[Math.min(index, steps.length - 1)] : null;
-}
-
-function renderSecond(size) {
-  const right = compareStep(state.compare.b);
-  paintStep(right, size, state.band);
-  drawPlate($('plate-b'), buffer, overlayFor(right));
-  $('plate-date-b').textContent = stepLabel(right);
+function renderSecond(step, size) {
+  paintStep(step, size, state.band);
+  drawPlate($('plate-b'), buffer, overlayFor(step));
+  $('plate-date-b').textContent = t('plate.b', { date: stepLabel(step) });
 }
 
 /** Six live plates, one per detector array, for the date on the main plate. */
@@ -193,25 +264,19 @@ function renderArrays(step, size) {
     const painted = paintStep(available, size, band);
     if (painted) drawPlate(tile.querySelector('canvas'), buffer, overlayFor(available, { bare: true }));
     tile.classList.toggle('empty', !painted);
-    tile.setAttribute(
-      'aria-pressed',
-      String(state.band.kind === 'detector' && state.band.detector === band.detector),
-    );
+    tile.setAttribute('aria-pressed', String(state.band.kind === 'detector' && state.band.detector === band.detector));
   }
 }
 
 function buildArrays() {
   const tiles = Object.entries(DETECTOR_RANGES).map(([detector, [low, high]]) => {
-    const tile = document.createElement('button');
-    tile.type = 'button';
-    tile.dataset.detector = detector;
+    const canvas = el('canvas', { width: ARRAY_CANVAS_SIZE, height: ARRAY_CANVAS_SIZE });
+    const tile = el('button', {
+      type: 'button',
+      dataset: { detector },
+      'aria-label': t('caption.detector', { detector, low: String(low), high: String(high) }),
+    }, [canvas, el('b', { text: `${low}–${high} μm` })]);
     tile.style.setProperty('--tint', NEUTRAL_TINT);
-    const canvas = document.createElement('canvas');
-    canvas.width = ARRAY_CANVAS_SIZE;
-    canvas.height = ARRAY_CANVAS_SIZE;
-    const label = document.createElement('b');
-    label.textContent = `${low}–${high} μm`;
-    tile.append(canvas, label);
     tile.addEventListener('click', () => {
       const same = state.band.kind === 'detector' && state.band.detector === Number(detector);
       setBand(same ? { kind: 'composite' } : { kind: 'detector', detector: Number(detector) });
@@ -227,19 +292,28 @@ function paintAmbient() {
   ambient.getContext('2d').drawImage($('plate'), 0, 0, ambient.width, ambient.height);
 }
 
+const paintKey = (prefix, wanted) => `${prefix}|${wanted.kind}${wanted.detector ?? wanted.channel ?? ''}|${state.excludeFlags}|${state.contrast}`;
+
 /** Painting is the slow part, so finished pictures are kept and only copied afterwards. */
-function paintStep(step, size, wanted) {
-  const key = `painted|${step?.key ?? ALL_DATES}|${wanted.kind}${wanted.detector ?? wanted.channel ?? ''}|${state.mode}|${state.excludeFlags}|${state.contrast}`;
+function remembered(key, paint) {
   const stored = cache.entries.get(key);
   if (stored !== undefined) {
     if (stored) copyCanvas(stored, buffer);
     return Boolean(stored);
   }
-  const shown = paintFresh(step, size, wanted);
+  const shown = paint();
   const copy = shown ? document.createElement('canvas') : null;
   if (copy) copyCanvas(buffer, copy);
   cache.entries.set(key, copy);
   return shown;
+}
+
+function paintStep(step, size, wanted) {
+  return remembered(paintKey(`painted|${step?.key ?? ALL_DATES}`, wanted), () => paintFresh(step, size, wanted));
+}
+
+function paintPair(aStep, bStep, size, wanted) {
+  return remembered(paintKey(`diff|${aStep?.key}|${bStep?.key}`, wanted), () => paintDifferenceOf(aStep, bStep, size, wanted));
 }
 
 function copyCanvas(from, to) {
@@ -250,7 +324,6 @@ function copyCanvas(from, to) {
 
 function paintFresh(step, size, wanted) {
   if (step?.key === WISE_STEP) return paintWise(step, size);
-  if (state.mode === 'diff') return paintDiffStep(step, size, wanted);
   const frames = step ? step.frames : state.frames;
   const band = resolveBand(frames, wanted);
   if (!selectBand(frames, band).length) return false;
@@ -280,28 +353,25 @@ function paintWise(step, size) {
   return true;
 }
 
-function paintDiffStep(step, size, wanted) {
+/** B minus A in one band; only reachable when the pair has a validated comparison. */
+function paintDifferenceOf(aStep, bStep, size, wanted) {
+  if (!aStep || !bStep || aStep.key === WISE_STEP || bStep.key === WISE_STEP) return false;
   const band = wanted.kind === 'composite' ? { kind: 'all' } : wanted;
-  const first = state.visits[0];
-  const current = step ?? state.visits.at(-1);
-  if (!first || !current) return false;
-  if (!selectBand(first.frames, band).length || !selectBand(current.frames, band).length) return false;
-  const later = stacksFor(current.frames, band, size, state.excludeFlags, cache, `v${current.visit}`).image;
-  const earlier = stacksFor(first.frames, band, size, state.excludeFlags, cache, `v${first.visit}`).image;
+  if (!selectBand(aStep.frames, band).length || !selectBand(bStep.frames, band).length) return false;
+  const later = stacksFor(bStep.frames, band, size, state.excludeFlags, cache, `v${bStep.key}`).image;
+  const earlier = stacksFor(aStep.frames, band, size, state.excludeFlags, cache, `v${aStep.key}`).image;
   paintDifference(buffer, size, later, earlier);
   return true;
 }
 
 const formatDate = (date) =>
-  new Intl.DateTimeFormat(currentLanguage(), { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date);
+  new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(date);
 
 function describeStep(step) {
   if (step?.key === WISE_STEP) {
-    $('plate-date').textContent = 'AllWISE 2010';
     $('plate-info').textContent = '';
     return;
   }
-  $('plate-date').textContent = step ? formatDate(mjdToDate(step.mjd)) : t('allDates');
   const pool = step ? step.frames : state.frames;
   const frames = selectBand(pool, resolveBand(pool, state.band));
   const flagged = frames.length ? frames.reduce((sum, item) => sum + item.flaggedPct, 0) / frames.length : 0;
@@ -310,19 +380,120 @@ function describeStep(step) {
   ].filter(Boolean);
   if (state.mode === 'diff') parts.push(t('differenceLegend'));
   else if (state.target?.pmra || state.target?.pmdec) parts.push(t('expected'));
-  $('plate-info').textContent = parts.join('. ');
+  $('plate-info').textContent = `${parts.map((part) => part.replace(/\.$/, '')).join('. ')}.`;
 }
 
 function explainNow() {
   if (!state.target) return '';
-  if (state.view === 'compare') return t('explainCompare');
+  if (state.mode === 'side') return t('explainCompare');
+  if (state.mode === 'swipe') return t('explainSwipe');
   if (state.mode === 'diff') return t('explainDiff');
   if (state.picking) return t('explainChoose');
   if (state.follow) return t('explainFollow');
-  if (state.mode === 'sum') return t('explainSum');
+  if (state.position === ALL_DATES) return t('explainSum');
   if (state.band.kind !== 'composite') return t('explainBand');
   if (isFastMover(state.target)) return t('explainMover');
   return t(state.target.kind === 'variable' ? 'explainVideo' : 'explainPlace');
+}
+
+// ---------- Caption strip ----------
+
+function releaseText(releases) {
+  if (!releases.length) return '—';
+  return releases.map(({ release, count }) => t('release.count', {
+    label: has(`release.${release}`) ? t(`release.${release}`) : release,
+    count: String(count),
+  })).join(', ');
+}
+
+function wavelengthText(picture) {
+  const w = picture.wavelength;
+  if (w.kind === 'allwise') return t('caption.allwise', { um: String(w.centre) });
+  if (w.kind === 'composite') return t('caption.composite', { low: String(w.low), high: String(w.high) });
+  if (w.kind === 'detector') return t('caption.detector', { detector: String(w.detector), low: String(w.low), high: String(w.high) });
+  if (!w.channels.length) return '—';
+  return w.channels.map((channel, index) => t('caption.channel', {
+    um: w.wavelengths[index].toFixed(2), channel: String(channel),
+  })).join('; ');
+}
+
+function timeText(picture) {
+  if (picture.status === 'context') return t('caption.timeAllwise', { year: String(Math.floor(picture.year)) });
+  if (!picture.start) return '—';
+  const start = formatUtc(picture.start);
+  const end = formatUtc(picture.end);
+  return start === end ? start : t('caption.timeRange', { start, end });
+}
+
+function idsBlock(picture) {
+  if (!picture.obs.length) return document.createTextNode(t('caption.idsNone'));
+  const shown = picture.obs.slice(0, IDS_SHOWN).join(', ');
+  const summary = picture.obs.length > IDS_SHOWN
+    ? t('caption.idsMore', { first: shown, more: String(picture.obs.length - IDS_SHOWN) })
+    : shown;
+  if (picture.obs.length <= IDS_SHOWN) return el('code', { text: summary });
+  return el('details', { class: 'ids' }, [
+    el('summary', {}, el('code', { text: summary })),
+    el('p', {}, el('code', { text: picture.obs.join(', ') })),
+  ]);
+}
+
+function statusNote(picture) {
+  if (picture.status === 'context') return t('statusNote.context');
+  if (picture.status === 'difference') return t('statusNote.difference');
+  return `${t(`statusNote.${picture.combine}`)} ${state.target?.key ? t('statusNote.legacy') : ''}`.trim();
+}
+
+function captionColumn(letter, picture, side) {
+  const source = picture.status === 'context' ? IRSA_WISE : IRSA_SPHEREX;
+  return el('div', { class: 'caption-col', dataset: { side } }, [
+    el('p', { class: 'caption-head' }, [
+      el('span', { class: 'ab-letter', text: letter }),
+      chip(t(`status.${picture.status}`), `chip-status-${picture.status}`),
+    ]),
+    el('dl', { class: 'facts' }, [
+      el('dt', { text: t('caption.time') }), el('dd', { text: timeText(picture) }),
+      el('dt', { text: t('caption.wavelength') }), el('dd', { text: wavelengthText(picture) }),
+      el('dt', { text: t('caption.release') }), el('dd', { text: releaseText(picture.releases) }),
+    ]),
+    el('details', { class: 'caption-more' }, [
+      el('summary', { text: t('caption.more') }),
+      el('dl', { class: 'facts' }, [
+        el('dt', { text: t('caption.status') }), el('dd', { text: statusNote(picture) }),
+        el('dt', { text: t('caption.source') }), el('dd', {}, el('a', { href: source, target: '_blank', rel: 'noopener', text: t('caption.sourceIrsa') })),
+        el('dt', { text: t('caption.ids') }), el('dd', {}, idsBlock(picture)),
+      ]),
+    ]),
+  ]);
+}
+
+/** A and B columns (plus the date on the plate when Blink shows another one); rebuilt only when they change. */
+function renderCaption(left, aStep, bStep) {
+  const describe = (step, difference = false) => describePicture({ step, allFrames: state.frames, band: state.band, difference });
+  const blink = state.mode === 'blink';
+  const shownSide = !blink ? null : left && left.id === aStep?.id ? 'a' : left && left.id === bStep?.id ? 'b' : 'other';
+  const key = [state.mode, aStep?.id, bStep?.id, shownSide === 'other' ? (left?.id ?? ALL_DATES) : '',
+    bandToParam(state.band), state.target?.key ?? '', state.frames.length].join('|');
+  if (key !== captionKey) {
+    captionKey = key;
+    const a = describe(aStep);
+    const b = describe(bStep);
+    const columns = [];
+    if (state.mode === 'diff') columns.push(captionColumn(t('plate.diff'), describe(bStep, true), 'diff'));
+    if (shownSide === 'other') columns.push(captionColumn('·', describe(left), 'other'));
+    columns.push(captionColumn(t('ab.a'), a, 'a'), captionColumn(t('ab.b'), b, 'b'));
+    const warning = comparisonWarning(a, b);
+    $('caption-body').replaceChildren(
+      el('div', { class: 'caption-cols' }, columns),
+      ...(warning ? [el('p', { class: 'note warn', text: t(warning) })] : []),
+    );
+  }
+  for (const column of $('caption-body').querySelectorAll('.caption-col')) {
+    const on = blink && column.dataset.side === shownSide;
+    column.classList.toggle('is-shown', on);
+    if (on) column.setAttribute('aria-current', 'true');
+    else column.removeAttribute('aria-current');
+  }
 }
 
 // ---------- Controls ----------
@@ -334,16 +505,13 @@ function setPressed(container, attribute, value) {
 }
 
 function filmTile(step, position) {
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = 'film-tile';
-  button.dataset.position = String(position);
-  const canvas = document.createElement('canvas');
-  canvas.width = FILM_CANVAS_SIZE;
-  canvas.height = FILM_CANVAS_SIZE;
-  const label = document.createElement('span');
-  label.textContent = stepLabel(step);
-  button.append(canvas, label);
+  const canvas = el('canvas', { width: FILM_CANVAS_SIZE, height: FILM_CANVAS_SIZE, 'aria-hidden': 'true' });
+  const button = el('button', {
+    type: 'button',
+    class: 'film-tile',
+    dataset: { position: String(position) },
+    'aria-label': step ? `${stepLabel(step)} · ${step.id}` : t('allDates'),
+  }, [canvas, el('span', { text: stepLabel(step), 'aria-hidden': 'true' })]);
   button.addEventListener('click', () => pickFilm(position));
   return { button, canvas, step };
 }
@@ -375,26 +543,28 @@ function renderDates() {
 }
 
 function markFilm() {
-  const comparing = state.view === 'compare';
+  const [a, b] = abPositions();
   for (const tile of $('dates').children) {
     const position = tile.dataset.position === ALL_DATES ? ALL_DATES : Number(tile.dataset.position);
-    const active = comparing
-      ? position === state.compare.a || position === state.compare.b
-      : position === state.position;
+    const active = state.mode === 'blink' ? position === state.position : position === a || position === b;
     tile.setAttribute('aria-pressed', String(active));
+    const side = state.mode === 'diff' || position === ALL_DATES ? '' : position === a ? 'a' : position === b ? 'b' : '';
+    tile.dataset.ab = side;
+    tile.dataset.abLabel = side ? t(`ab.${side}`) : '';
   }
 }
 
-/** In comparison, each pick replaces the plate that was not picked last. */
+/** In Blink a tile shows that date; otherwise each pick replaces A or B in turn. */
 function pickFilm(position) {
-  if (state.view !== 'compare') {
+  if (state.mode === 'blink') {
     selectPosition(position);
     return;
   }
   if (position === ALL_DATES) return;
-  const side = state.compare.next;
-  state.compare = { ...state.compare, [side]: position, next: side === 'a' ? 'b' : 'a' };
-  render();
+  const step = sequence()[position];
+  const side = state.next;
+  state.next = side === 'a' ? 'b' : 'a';
+  setRange(side === 'a' ? { from: step.id } : { to: step.id });
 }
 
 const isFastMover = (object) => Math.hypot(object.pmra ?? 0, object.pmdec ?? 0) > FAST_MOVER_MAS;
@@ -409,14 +579,13 @@ async function lockCamera(object) {
   state.candidates = null;
   const sameAsTarget = object.key === state.target.key && Boolean(object.key);
   if (!sameAsTarget) state.track = null;
-  if (state.view === 'compare') setView('one');
-  if (state.mode !== 'video') setMode('video');
+  if (state.mode !== 'blink') setMode('blink');
   if (state.staticMeta && !$('wise').checked && (object.pmra || object.pmdec)) {
     $('wise').checked = true;
     await toggleWise();
   }
   if (state.position === ALL_DATES) state.position = 0;
-  setPlaying(true);
+  setPlaying(!prefersReducedMotion());
   measureSpectrum(object, null);
   if (!sameAsTarget) {
     $('motion-result').replaceChildren();
@@ -433,11 +602,6 @@ function unlockCamera() {
   state.candidates = null;
   refreshFollowUi();
   render();
-}
-
-/** Used by the guided demo: follow the main target, or stop. */
-function setFollow(follow) {
-  return follow ? lockCamera(targetAsObject()) : unlockCamera();
 }
 
 function targetAsObject() {
@@ -466,10 +630,9 @@ async function openChooser() {
 
 /** The target, the fastest catalogue stars and the brightest ones, without repeats. */
 function chooseCandidates() {
-  const mid = midYear();
   const onPlate = state.gaia.filter((star) => {
     const { x, y } = skyToPixel(star.ra, star.dec, state.job);
-    return x > EDGE_PX && y > EDGE_PX && x < state.job.n - EDGE_PX && y < state.job.n - EDGE_PX && mid;
+    return x > EDGE_PX && y > EDGE_PX && x < state.job.n - EDGE_PX && y < state.job.n - EDGE_PX;
   });
   const speed = (star) => Math.hypot(star.pmra, star.pmdec);
   const fastest = [...onPlate].sort((first, second) => speed(second) - speed(first)).slice(0, CANDIDATES_FAST);
@@ -498,13 +661,11 @@ function refreshFollowUi() {
   $('lock').textContent = state.follow ? t('lockedOn', { name: followedObject().name }) : '';
   $('chooser').hidden = !state.picking;
   if (!state.picking) return;
-  const chips = state.candidates.map((candidate, index) => {
-    const chip = document.createElement('button');
-    chip.type = 'button';
-    chip.textContent = index ? `${candidate.short}. ${candidate.name}` : candidate.name;
-    chip.addEventListener('click', () => lockCamera(candidate));
-    return chip;
-  });
+  const chips = state.candidates.map((candidate, index) => el('button', {
+    type: 'button',
+    text: index ? `${candidate.short}. ${candidate.name}` : candidate.name,
+    onclick: () => lockCamera(candidate),
+  }));
   $('chooser-list').replaceChildren(...chips);
 }
 
@@ -527,52 +688,63 @@ function chooseAt(plate) {
   });
 }
 
-async function compareWithPast() {
-  if (state.staticMeta && !$('wise').checked) {
-    $('wise').checked = true;
-    await toggleWise();
-  }
-  setView('compare');
+/** Difference needs a validated comparison of exactly this A/B pair in the investigation file. */
+function differenceAllowed() {
+  const doc = app.investigation?.state === 'ok' ? app.investigation.doc : null;
+  if (!doc?.capabilities?.difference) return false;
+  const { from, to } = state.range;
+  return (doc.comparisons ?? []).some((comparison) => comparison.grade === 'quantitative'
+    && (comparison.modes ?? []).includes('difference')
+    && ((comparison.a === from && comparison.b === to) || (comparison.a === to && comparison.b === from)));
 }
 
-function setView(view) {
-  state.view = view;
-  setPressed($('views'), 'view', view);
-  if (view === 'compare') {
-    setPlaying(false);
-    if (state.mode !== 'video') setMode('video');
-    const played = playedPositions();
-    state.compare = { a: played[0] ?? 0, b: played.at(-1) ?? 0, next: 'a' };
+function refreshModeButtons() {
+  const allowed = differenceAllowed();
+  const diff = $('modes').querySelector('[data-mode="diff"]');
+  diff.setAttribute('aria-disabled', String(!allowed));
+  $('diff-note').hidden = allowed || !state.diffAsked;
+  setPressed($('modes'), 'mode', state.mode);
+}
+
+function setMode(mode, { write = true } = {}) {
+  if (mode === 'diff' && !differenceAllowed()) {
+    state.diffAsked = true;
+    refreshModeButtons();
+    return;
   }
+  state.mode = mode;
+  state.diffAsked = false;
+  if (mode !== 'blink') {
+    setPlaying(false);
+    if (state.position === ALL_DATES) state.position = 0;
+  }
+  refreshModeButtons();
   render();
+  if (write) writeUrl();
 }
 
 function selectPosition(position) {
   setPlaying(false);
   state.position = position;
-  renderDates();
+  markFilm();
   render();
 }
 
 function setPlaying(playing) {
-  state.playing = playing;
-  $('play').textContent = t(playing ? 'pause' : 'play');
+  state.playing = playing && state.mode === 'blink';
+  $('play').textContent = t(state.playing ? 'pause' : 'play');
+  $('play').setAttribute('aria-pressed', String(state.playing));
   clearInterval(playTimer);
-  if (playing) playTimer = setInterval(advance, state.speedMs);
+  if (state.playing) playTimer = setInterval(advance, state.speedMs);
 }
 
-/** Positions in the date strip that the video plays, from the chosen date to the chosen date. */
+/** Positions that Blink plays: A and B, or every date from A to B. */
 function playedPositions() {
   const steps = sequence();
   if (!steps.length) return [];
-  const find = (key, fallback) => {
-    const index = steps.findIndex((step) => String(step.key) === String(key));
-    return index >= 0 ? index : fallback;
-  };
-  const first = find(state.range.from, 0);
-  const last = find(state.range.to, steps.length - 1);
+  const [first, last] = abPositions();
   const [low, high] = first <= last ? [first, last] : [last, first];
-  if (state.range.endpoints) return low === high ? [low] : [low, high];
+  if (state.range.endpoints) return first === last ? [first] : [first, last];
   return steps.map((_, index) => index).filter((index) => index >= low && index <= high);
 }
 
@@ -587,98 +759,127 @@ function advance() {
 
 function renderRange() {
   const steps = sequence();
-  const options = () => steps.map((step) => {
-    const option = document.createElement('option');
-    option.value = String(step.key);
-    option.textContent = stepLabel(step);
-    return option;
-  });
+  const options = () => steps.map((step) => el('option', {
+    value: step.id,
+    text: step.key === WISE_STEP ? stepLabel(step) : t('ab.option', { id: step.id, count: String(step.frames.length) }),
+  }));
   const fill = (select, value) => {
     select.replaceChildren(...options());
     select.value = String(value ?? '');
   };
-  fill($('range-from'), state.range.from ?? steps[0]?.key);
-  fill($('range-to'), state.range.to ?? steps.at(-1)?.key);
+  fill($('range-from'), state.range.from ?? steps[0]?.id);
+  fill($('range-to'), state.range.to ?? steps.at(-1)?.id);
   $('endpoints').setAttribute('aria-pressed', String(state.range.endpoints));
 }
 
-function setRange(change) {
+function setRange(change, { write = true } = {}) {
   state.range = { ...state.range, ...change };
   const played = playedPositions();
   if (played.length) state.position = played[0];
-  if (state.view === 'compare' && played.length) {
-    state.compare = { a: played[0], b: played.at(-1), next: 'a' };
-  }
   renderRange();
   markFilm();
-  if (state.mode === 'sum') setMode('video');
-  if (state.view !== 'compare') setPlaying(true);
+  if (state.mode === 'diff' && !differenceAllowed()) state.mode = 'blink';
+  refreshModeButtons();
+  if (state.mode === 'blink') setPlaying(!prefersReducedMotion());
   render();
+  if (write) writeUrl();
 }
 
-/** How far the object should have moved between the two chosen dates, from its catalogue motion. */
+/** How far the object should have moved between A and B, from its catalogue motion. */
 function rangeNote() {
   const object = followedObject();
   const speed = Math.hypot(object?.pmra ?? 0, object?.pmdec ?? 0) / 1000;
-  const played = playedPositions();
-  if (speed < MIN_NOTED_SPEED || played.length < 2) return '';
-  const steps = sequence();
-  const years = Math.abs(yearOf(steps[played.at(-1)]) - yearOf(steps[played[0]]));
+  const [aStep, bStep] = abSteps();
+  if (speed < MIN_NOTED_SPEED || !aStep || !bStep || aStep === bStep) return '';
+  const years = Math.abs(yearOf(bStep) - yearOf(aStep));
   return t('rangeNote', { years: number(years, 1), shift: number(speed * years, 0) });
 }
 
-function setMode(mode) {
-  state.mode = mode;
-  setPressed($('modes'), 'mode', mode);
-  if (mode === 'sum') {
-    setPlaying(false);
-    state.position = ALL_DATES;
-  } else if (state.position === ALL_DATES) {
-    state.position = 0;
-    setPlaying(true);
-  }
-  renderDates();
-  render();
-}
-
-function setBand(band) {
+function setBand(band, { write = true } = {}) {
   state.band = band;
   $('composite').setAttribute('aria-pressed', String(band.kind === 'composite'));
   $('band-label').textContent = band.kind === 'channel'
-    ? `${channelWavelength(band.channel).toFixed(2)} μm`
+    ? `≈${channelWavelength(band.channel).toFixed(2)} μm`
     : band.kind === 'detector' ? `D${band.detector}` : FULL_RANGE_LABEL;
   if (band.kind === 'channel') $('band').value = band.channel;
   render();
+  drawCharts();
+  if (write) writeUrl();
 }
 
 function buildBandScale() {
-  const stops = Array.from({ length: CHANNELS }, (_, channel) => {
-    const stop = document.createElement('span');
-    if (channel && detectorOfChannel(channel) !== detectorOfChannel(channel - 1)) stop.className = 'array-start';
-    return stop;
-  });
+  const stops = Array.from({ length: CHANNELS }, (_, channel) => el('span', {
+    class: channel && detectorOfChannel(channel) !== detectorOfChannel(channel - 1) ? 'array-start' : null,
+  }));
   $('band-scale').replaceChildren(...stops);
+}
+
+/** ← and → step through dates (B outside Blink); Space plays or pauses Blink, or flips the swipe. */
+function onViewerKey(event) {
+  if (!state.job || event.altKey || event.ctrlKey || event.metaKey) return;
+  const target = event.target;
+  if (target.closest('input, select, textarea')) return;
+  const steps = sequence();
+  if (event.key in KEY_STEP && steps.length) {
+    event.preventDefault();
+    const delta = KEY_STEP[event.key];
+    if (state.mode === 'blink') {
+      const from = state.position === ALL_DATES ? 0 : state.position;
+      selectPosition((from + delta + steps.length) % steps.length);
+    } else {
+      const [, b] = abPositions();
+      setRange({ to: steps[(b + delta + steps.length) % steps.length].id });
+    }
+    return;
+  }
+  if (event.key !== ' ' || target.closest('button, a, summary')) return;
+  event.preventDefault();
+  if (state.mode === 'blink') setPlaying(!state.playing);
+  else if (state.mode === 'swipe') setSwipe(state.swipe <= SWIPE_ENDS[0] ? SWIPE_ENDS[1] : SWIPE_ENDS[0]);
+}
+
+function setSwipe(value) {
+  state.swipe = Math.min(100, Math.max(0, Number(value)));
+  $('swipe').value = String(state.swipe);
+  $('plates').style.setProperty('--swipe', `${state.swipe}%`);
 }
 
 // ---------- Opening a patch of sky ----------
 
 const centreOf = (target) => ({ ra: target.centreRa ?? target.ra, dec: target.centreDec ?? target.dec });
 
-async function openTarget(target, fov = target.fov ?? DEFAULT_FOV) {
+function resetViewerState(target) {
   const session = state.session + 1;
   Object.assign(state, {
     session, target, job: null, staticMeta: null, frames: [], visits: [], wiseFrame: null, position: 0, gaia: [],
-    spectrum: null, spectrumObject: null, track: null, pick: null, band: { kind: 'composite' }, mode: 'video',
-    auto: { spectrum: false, final: false }, view: 'one', follow: false, lock: null, picking: false, candidates: null,
-    range: { from: null, to: null, endpoints: true }, received: 0,
+    spectrum: null, spectrumObject: null, track: null, pick: null, band: { kind: 'composite' }, mode: 'blink',
+    auto: { spectrum: false }, follow: false, lock: null, picking: false, candidates: null, next: 'a',
+    range: { from: null, to: null, endpoints: true }, received: 0, diffAsked: false,
   });
+  setPlaying(false);
   refreshFollowUi();
   cache.clear();
-  resetPanels(target, fov);
-  setPressed($('views'), 'view', 'one');
+  return session;
+}
+
+async function openTarget(target, requestedFov = target.fov ?? DEFAULT_FOV) {
   const { ra, dec } = centreOf(target);
-  sky?.goTo(ra, dec);
+  let fov = requestedFov;
+  const session = resetViewerState(target);
+  if (target.key && fov !== target.fov && reservedRegionNear(ra, dec, fov)) {
+    addNotice('note.preparedFov', { name: displayName(target), fov: String(target.fov) });
+    fov = target.fov;
+  }
+  resetPanels(target, fov);
   writeUrl();
+  if (!(target.key && fov === target.fov)) {
+    const reserved = reservedRegionNear(ra, dec, fov);
+    if (reserved) {
+      addNotice('note.reserved', { name: reservedName(reserved) });
+      showViewerEmpty(t('note.reservedEmpty'));
+      return;
+    }
+  }
   try {
     if (target.key && fov === target.fov) await openStatic(target, session);
     else await openLive(ra, dec, fov, session);
@@ -687,15 +888,22 @@ async function openTarget(target, fov = target.fov ?? DEFAULT_FOV) {
   }
 }
 
+function reservedName(region) {
+  const entry = app.allTargets.find((item) => item.key === region.key);
+  return entry ? entryName(entry) : region.key;
+}
+
+function showViewerEmpty(text) {
+  $('observatory').hidden = true;
+  $('see-empty').hidden = false;
+  $('see-empty').textContent = text;
+  $('progress').textContent = '';
+  refreshPanels();
+}
+
 function showLoadProblem(target, fov) {
-  const retry = document.createElement('button');
-  retry.type = 'button';
-  retry.className = 'glow';
-  retry.textContent = t('retry');
-  retry.addEventListener('click', () => openTarget(target, fov));
-  const message = document.createElement('p');
-  message.textContent = t('loadFailed');
-  $('progress').replaceChildren(message, retry);
+  const retry = el('button', { type: 'button', class: 'glow', text: t('retry'), onclick: () => openTarget(target, fov) });
+  $('progress').replaceChildren(el('p', { text: t('loadFailed') }), retry);
 }
 
 /** The challenge targets ship with the site, so they open at once with no server. */
@@ -709,54 +917,81 @@ async function openStatic(target, session) {
   state.plateView = fullView(meta.grid.n);
   state.frames = frames;
   state.visits = visitsOf(frames);
-  state.chart = target.kind === 'variable' ? 'curve' : 'spectrum';
-  if (isFastMover(target)) {
+  if (isFastMover(target) && meta.wise) {
     state.wiseFrame = await api.getStaticWise(target.key, meta);
     if (session !== state.session) return;
     $('wise').checked = true;
   }
   const steps = sequence();
-  state.range = { from: steps[0]?.key ?? null, to: steps.at(-1)?.key ?? null, endpoints: true };
+  state.range = { from: steps[0]?.id ?? null, to: steps.at(-1)?.id ?? null, endpoints: true };
   state.position = 0;
+  applyPendingView();
   renderDates();
-  setPlaying(true);
+  setPlaying(state.mode === 'blink' && !prefersReducedMotion());
   render();
   reportProgress(state.job);
-  setTimeout(() => {
-    if (session === state.session) autoMeasure();
-  }, MEASURE_DELAY_MS);
+  autoMeasure();
+  refreshPanels();
+  writeUrl();
 }
 
 async function openLive(ra, dec, fov, session) {
   state.job = await api.observe(ra, dec, fov);
   if (session !== state.session) return;
   state.plateView = fullView(state.job.n);
-  setPlaying(true);
   await followJob(session);
 }
 
 function resetPanels(target, fov) {
-  showPlate(true);
+  $('observatory').hidden = false;
+  $('see-empty').hidden = true;
   document.body.dataset.kind = target.kind ?? 'custom';
-  $('fov').value = String(fov);
+  fillFovSelect(fov);
   $('wise').checked = false;
   $('gaia').checked = false;
   $('motion-result').replaceChildren();
   $('measure').hidden = false;
   $('chart').replaceChildren();
+  $('curve-chart').replaceChildren();
+  $('spectrum-table').replaceChildren();
+  $('curve-table').replaceChildren();
   $('chart-note').textContent = t('clickHint');
+  $('curve-note').textContent = '';
   $('progress').textContent = target.key ? '' : t('searching');
-  describeTarget(target);
-  setPressed($('modes'), 'mode', 'video');
-  setBand({ kind: 'composite' });
+  describeTarget(target, fov);
+  refreshModeButtons();
+  setBand({ kind: 'composite' }, { write: false });
+  setSwipe(state.swipe);
   renderDates();
 }
 
-function describeTarget(target) {
+function fillFovSelect(fov) {
+  const choices = [...new Set([...FOV_CHOICES, fov])].sort((first, second) => first - second);
+  $('fov').replaceChildren(...choices.map((value) => el('option', {
+    value: String(value),
+    text: t('search.fovOption', { arcmin: String(Math.round(value * 60)), deg: String(value) }),
+  })));
+  $('fov').value = String(fov);
+}
+
+function describeTarget(target, fov) {
   const { ra, dec } = centreOf(target);
-  $('object-name').textContent = displayName(target);
-  $('object-kind').textContent = t(`kind${target.kind ?? 'custom'}`);
-  $('object-coords').textContent = `RA ${ra.toFixed(4)}°, Dec ${dec >= 0 ? '+' : ''}${dec.toFixed(4)}°`;
+  const entry = app.entry;
+  $('object-name').textContent = entry ? entryName(entry) : displayName(target);
+  $('object-kind').textContent = kindLabel(entry?.kind ?? target.kind ?? 'custom');
+  $('object-coords').textContent = t('inv.coords', {
+    ra: `${ra.toFixed(4)}°`, dec: `${dec >= 0 ? '+' : '−'}${Math.abs(dec).toFixed(4)}°`, fov: String(fov),
+  });
+  const chips = [];
+  if (entry) {
+    chips.push(chip(t(`role.${entry.role}`)));
+    chips.push(chip(isViewable(entry) ? t('data.legacy') : t(`data.${entry.dataStatus}`)));
+    chips.push(chip(predictionLabel(entry)));
+  } else {
+    chips.push(chip(t('kindcustom')));
+  }
+  $('object-status').replaceChildren(...chips);
+  document.title = `${$('object-name').textContent} · ${t('site.title')}`;
 }
 
 async function followJob(session) {
@@ -767,7 +1002,10 @@ async function followJob(session) {
     await pullFrames(session);
     if (session !== state.session) return;
     reportProgress(status);
-    if (status.status === 'done') autoMeasure();
+    if (status.status === 'done') {
+      autoMeasure();
+      refreshPanels();
+    }
     if (status.status === 'done' || status.status === 'error') return;
     await new Promise((resolve) => setTimeout(resolve, POLL_MS));
   }
@@ -777,28 +1015,24 @@ async function pullFrames(session) {
   if (state.job.done <= state.received) return;
   const incoming = await api.getFrames(state.job.id, state.received, state.job.n);
   if (session !== state.session || !incoming.length) return;
+  const first = !state.frames.length;
   state.received += incoming.length;
   state.frames = [...state.frames, ...wellCovered(incoming)];
   state.visits = visitsOf(state.frames);
+  const steps = sequence();
+  state.range = { ...state.range, from: state.range.from ?? steps[0]?.id ?? null, to: steps.at(-1)?.id ?? null };
   cache.clear();
   renderDates();
+  if (first) setPlaying(!prefersReducedMotion());
   render();
   autoMeasure();
 }
 
-/** Named targets show their spectrum and motion without being asked. */
+/** Every opened field shows its quick-look spectrum and light curve; motion waits for a click. */
 function autoMeasure() {
-  if (!state.target?.key) return;
-  const { auto } = state;
-  const finished = state.job.status === 'done';
-  if (!auto.spectrum && state.frames.length >= AUTO_SPECTRUM_FRAMES) {
-    auto.spectrum = true;
+  if (!state.auto.spectrum && state.frames.length >= AUTO_SPECTRUM_FRAMES && state.job.status === 'done') {
+    state.auto.spectrum = true;
     spectrumOfTarget();
-  }
-  if (!auto.final && finished) {
-    auto.final = true;
-    spectrumOfTarget();
-    if (state.target.pmra || state.target.pmdec || state.target.kind === 'variable') measureMotion();
   }
 }
 
@@ -820,27 +1054,7 @@ function finishedMessage(status) {
   return notes.join(' ');
 }
 
-function showPlate(open) {
-  document.body.dataset.view = open ? 'plate' : 'sky';
-  $('observatory').hidden = !open;
-  $('hero').hidden = open;
-  $('about').hidden = open;
-  scrollTo(0, 0);
-  if (!open) {
-    setPlaying(false);
-    sky?.refresh();
-  }
-}
-
-/** Flies the map into the target, then opens the plate. */
-async function diveInto(target) {
-  const { ra, dec } = centreOf(target);
-  document.body.dataset.view = 'diving';
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) await sky?.flyTo(ra, dec, DIVE_FOV);
-  return openTarget(target);
-}
-
-// ---------- Spectrum and motion ----------
+// ---------- Spectrum, light curve and motion (quick looks) ----------
 
 const motionOf = (object) => ({
   pmra: object?.pmra ?? 0,
@@ -849,28 +1063,52 @@ const motionOf = (object) => ({
 });
 
 function measureSpectrum(object, pick) {
-  state.pick = pick;
+  state.pick = pick ?? state.pick;
   state.spectrumObject = object;
   state.spectrum = photometry(state.frames, state.job, { ...motionOf(object), ...object });
   render();
-  drawChart();
+  drawCharts();
 }
 
-function drawChart() {
-  setPressed($('chart-kind'), 'chart', state.chart);
+function drawCharts() {
   const points = state.spectrum;
   if (!points) return;
   if (!points.length) {
     $('chart').replaceChildren();
+    $('curve-chart').replaceChildren();
+    $('spectrum-table').replaceChildren();
+    $('curve-table').replaceChildren();
     $('chart-note').textContent = t('noSpectrum');
+    $('curve-note').textContent = t('noSpectrum');
     return;
   }
+  drawSpectrum($('chart'), points);
+  $('chart-note').textContent = `${t('flaggedNote')} ${t('clickHint')}`;
+  $('spectrum-table').replaceChildren(dataTable({
+    caption: t('spectrum'),
+    columns: [t('table.wavelength'), t('table.flux'), t('table.error'), t('table.flagged'), t('table.array')],
+    rows: [...points].sort((first, second) => first.wavelength - second.wavelength).map((point) => [
+      formatNumber(point.wavelength, 3), formatNumber(point.flux, 1), formatNumber(point.error, 1),
+      t(point.flagged ? 'table.yes' : 'table.no'), `D${point.detector}`,
+    ]),
+  }));
   const shown = bandPoints(points);
   const useWings = isSaturated(shown);
-  if (state.chart === 'spectrum') drawSpectrum($('chart'), points);
-  else if (useWings) drawWingCurve($('chart'), shown);
-  else drawLightCurve($('chart'), shown);
-  $('chart-note').textContent = t(state.chart === 'curve' && useWings ? 'wingNote' : 'flaggedNote');
+  if (useWings) drawWingCurve($('curve-chart'), shown);
+  else drawLightCurve($('curve-chart'), shown);
+  $('curve-note').textContent = t(useWings ? 'wingNote' : 'flaggedNote');
+  const curveRows = [...shown].sort((first, second) => first.mjd - second.mjd).map((point) => [
+    formatUtc(mjdToDate(point.mjd)),
+    useWings ? formatNumber(point.wing, 3) : formatNumber(point.flux, 1),
+    useWings ? '—' : formatNumber(point.error, 1),
+    t(point.flagged ? 'table.yes' : 'table.no'),
+    `D${point.detector}`,
+  ]);
+  $('curve-table').replaceChildren(dataTable({
+    caption: t('lightCurve'),
+    columns: [t('table.date'), t(useWings ? 'table.wing' : 'table.flux'), t('table.error'), t('table.flagged'), t('table.array')],
+    rows: curveRows,
+  }));
 }
 
 function bandPoints(points) {
@@ -967,9 +1205,7 @@ async function measureMotion() {
 
 function showMotion(result) {
   if (MOTION_UNRELIABLE.has(state.target?.key) && !state.lock) {
-    const note = document.createElement('p');
-    note.textContent = t('motionUnreliable');
-    $('motion-result').replaceChildren(note);
+    $('motion-result').replaceChildren(el('p', { text: t('motionUnreliable') }));
     $('measure').hidden = true;
     state.track = null;
     return;
@@ -977,8 +1213,7 @@ function showMotion(result) {
   const unit = t('perYear');
   const floor = Math.max(result.controlMedian ?? Infinity, result.fit.totalErr);
   const real = result.fit.total > MOTION_SIGNIFICANCE * floor;
-  const big = document.createElement('div');
-  big.className = real ? 'big-number' : 'big-words';
+  const big = el('div', { class: real ? 'big-number' : 'big-words' });
   if (real) countUp(big, result.fit.total, unit);
   else big.textContent = t('notDetected');
   const rows = [
@@ -986,27 +1221,19 @@ function showMotion(result) {
     ...(result.catalog ? [[t('catalogue'), `${result.catalog.toFixed(2)}${unit}`]] : []),
     ...(result.controlMedian !== null ? [[t('controls'), `${result.controlMedian.toFixed(2)}${unit}`]] : []),
   ];
-  const table = document.createElement('table');
-  for (const [label, value] of rows) {
-    const row = table.insertRow();
-    row.insertCell().textContent = label;
-    row.insertCell().textContent = value;
-  }
-  const summary = document.createElement('p');
-  summary.textContent = `${t(real ? 'motionVerdict' : 'motionWeak')} ${t('motionBaseline', {
+  const table = el('table', {}, el('tbody', {}, rows.map(([label, value]) => el('tr', {}, [
+    el('th', { scope: 'row', text: label }), el('td', { text: value }),
+  ]))));
+  const summary = el('p', { text: `${t(real ? 'motionVerdict' : 'motionWeak')} ${t('motionBaseline', {
     count: result.visits.length, detectors: result.detectors.join(', '),
-  })}`;
-  $('motion-result').replaceChildren(big, table, summary);
+  })}` });
+  $('motion-result').replaceChildren(chip(t('changed.explore'), 'chip-example'), big, table, summary);
   $('measure').hidden = true;
 }
 
 function countUp(node, value, unit) {
-  const write = (shown) => {
-    const small = document.createElement('small');
-    small.textContent = unit;
-    node.replaceChildren(shown.toFixed(2), small);
-  };
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const write = (shown) => node.replaceChildren(shown.toFixed(2), el('small', { text: unit }));
+  if (prefersReducedMotion()) {
     write(value);
     return;
   }
@@ -1044,268 +1271,300 @@ async function toggleWise() {
       $('wise').checked = false;
     }
   }
+  const steps = sequence();
+  const keep = (id) => (steps.some((step) => step.id === id) ? id : null);
+  state.range = {
+    ...state.range,
+    from: keep(state.range.from) ?? steps[0]?.id ?? null,
+    to: keep(state.range.to) ?? steps.at(-1)?.id ?? null,
+  };
+  if ($('wise').checked) state.range.from = WISE_ID;
   state.position = 0;
   renderDates();
   render();
+  writeUrl();
 }
 
-// ---------- Search and URL ----------
+// ---------- Investigation panels ----------
+
+async function refreshPanels() {
+  const entry = app.entry;
+  const custom = !entry;
+  if (entry && app.investigation?.path !== entry.investigationPath) {
+    app.investigation = entry.investigationPath ? await app.source.investigation(entry.investigationPath) : { state: 'missing' };
+  }
+  if (custom) app.investigation = null;
+  renderChanged($('changed-validated'), { investigation: app.investigation, custom });
+  renderEvidence($('evidence-body'), {
+    investigation: app.investigation,
+    legacy: { frames: state.frames, meta: state.staticMeta, custom },
+  });
+  renderSpectrumNote($('spectrum-note'), { investigation: app.investigation });
+  $('explore-box').hidden = !state.frames.length;
+  refreshModeButtons();
+  await renderPrediction($('prediction-body'), { entry, indexState: app.indexState, loadTrial: (id) => app.source.trial(id) });
+}
+
+function setPanel(panel, { scroll = true, write = true, instant = false } = {}) {
+  app.panel = panel;
+  for (const button of document.querySelectorAll('.panel-nav button')) {
+    button.setAttribute('aria-current', String(button.dataset.panel === panel));
+  }
+  const behavior = instant || prefersReducedMotion() ? 'auto' : 'smooth';
+  if (scroll && panel !== 'see') $(`panel-${panel}`).scrollIntoView({ behavior, block: 'start' });
+  else if (scroll) scrollTo({ top: 0, behavior });
+  if (write) writeUrl();
+}
+
+// ---------- Notices ----------
+
+function addNotice(key, params = {}) {
+  if (!app.notices.some((item) => item.key === key && JSON.stringify(item.params) === JSON.stringify(params))) {
+    app.notices.push({ key, params });
+  }
+  renderNotices();
+}
+
+function renderNotices() {
+  $('notices').replaceChildren(...app.notices.map((item) => el('p', { class: 'notice', text: t(item.key, item.params) })));
+}
+
+// ---------- Navigation and URL ----------
+
+const dataVersion = () => (app.indexState?.state === 'ok' ? app.indexState.doc.dataset_version : 'legacy');
+
+function routeState() {
+  const base = { page: app.page, embed: app.embed, fixtures: app.source?.fixtures };
+  if (app.page !== 'investigate' || !state.target) return base;
+  const centre = app.requested ?? centreOf(state.target);
+  return {
+    ...base,
+    target: app.entry?.key ?? null,
+    ra: centre.ra,
+    dec: centre.dec,
+    fov: Number($('fov').value) || state.target.fov || DEFAULT_FOV,
+    panel: app.panel,
+    band: state.band,
+    mode: state.mode,
+    a: state.range.from,
+    b: state.range.to,
+    v: dataVersion(),
+  };
+}
+
+function writeUrl({ push = false } = {}) {
+  const search = buildRoute(routeState());
+  const url = `${location.pathname}${search}`;
+  if (url === `${location.pathname}${location.search}`) return;
+  if (push) history.pushState(null, '', url);
+  else history.replaceState(null, '', url);
+}
+
+function showPage(page, { push = true, focus = true } = {}) {
+  app.page = page;
+  for (const name of PAGES) $(`page-${name}`).hidden = name !== page;
+  document.body.dataset.page = page;
+  for (const link of document.querySelectorAll('.nav [data-page-link]')) {
+    const current = link.dataset.pageLink === page || (page === 'investigate' && link.dataset.pageLink === 'home');
+    link.setAttribute('aria-current', current ? 'page' : 'false');
+  }
+  if (page === 'home') requestAnimationFrame(placeMapLabels);
+  if (page !== 'investigate') {
+    setPlaying(false);
+    document.title = page === 'home' ? `${t('site.title')} · ${t('home.title')}` : `${t(`nav.${page}`)} · ${t('site.title')}`;
+  }
+  writeUrl({ push });
+  if (focus) {
+    scrollTo(0, 0);
+    const heading = page === 'investigate' ? $('object-name') : $(`page-${page}`).querySelector('h1');
+    heading?.focus({ preventScroll: true });
+  }
+}
+
+/** Opens a target entry: its prepared frames, or an honest "not available yet" page. */
+function openEntry(entry, { fov = null, requested = null, push = true } = {}) {
+  app.entry = entry;
+  app.requested = requested;
+  app.investigation = null;
+  if (!app.keepNotices) app.notices = [];
+  app.keepNotices = false;
+  renderNotices();
+  showPage('investigate', { push });
+  if (!isViewable(entry)) {
+    resetViewerState(null);
+    describeEntryOnly(entry);
+    addNotice('note.unavailable', { name: entryName(entry) });
+    showViewerEmpty(t('data.unavailableLong'));
+    writeUrl();
+    scrollToLinkedPanel();
+    return;
+  }
+  if (requested) {
+    addNotice('note.covered', { name: entryName(entry) });
+  }
+  openTarget(entry.legacy, fov ?? entry.fov).then(() => {
+    if (requested && state.job) {
+      state.pick = requested;
+      render();
+    }
+    scrollToLinkedPanel();
+  });
+}
+
+/** A link with panel=… scrolls there once the viewer above it has its final height. */
+function scrollToLinkedPanel() {
+  if (!app.scrollToPanel) return;
+  app.scrollToPanel = false;
+  if (app.panel !== 'see') setTimeout(() => setPanel(app.panel, { write: false, instant: true }), 0);
+  else setPanel('see', { scroll: false, write: false });
+}
+
+function describeEntryOnly(entry) {
+  $('object-name').textContent = entryName(entry);
+  $('object-kind').textContent = kindLabel(entry.kind);
+  $('object-coords').textContent = '';
+  $('object-status').replaceChildren(chip(t(`role.${entry.role}`)), chip(t(`data.${entry.dataStatus}`)), chip(predictionLabel(entry)));
+  document.title = `${entryName(entry)} · ${t('site.title')}`;
+}
 
 function customTarget(ra, dec, fov) {
-  return { name: `${ra.toFixed(3)}, ${dec.toFixed(3)}`, ra, dec, pmra: 0, pmdec: 0, epoch: CUSTOM_EPOCH, kind: 'custom', fov };
+  return { name: t('inv.position', { ra: ra.toFixed(3), dec: dec.toFixed(3) }), ra, dec, pmra: 0, pmdec: 0, epoch: CUSTOM_EPOCH, kind: 'custom', fov };
 }
+
+/** Coordinates: a prepared field that contains them opens at once; anything else goes live (if allowed). */
+function openPosition({ ra, dec, fov = null }, { push = true } = {}) {
+  const covering = findCoveringTarget(app.allTargets, ra, dec);
+  if (covering) {
+    const off = separationDeg(ra, dec, covering.centre.ra, covering.centre.dec) > ONE_ARCSEC_DEG;
+    openEntry(covering, { fov: fov ?? covering.fov, requested: off ? { ra, dec } : null, push });
+    return;
+  }
+  app.entry = null;
+  app.requested = { ra, dec };
+  app.investigation = null;
+  app.notices = app.keepNotices ? app.notices : [];
+  app.keepNotices = false;
+  renderNotices();
+  showPage('investigate', { push });
+  openTarget(customTarget(ra, dec, fov ?? DEFAULT_FOV), fov ?? DEFAULT_FOV).then(scrollToLinkedPanel);
+}
+
+/** View state from a link (band, mode, A/B, version), applied once the frames are in. */
+function applyPendingView() {
+  const pending = app.pending;
+  app.pending = null;
+  if (!pending) return;
+  if (pending.v && pending.v !== dataVersion()) addNotice('note.version', { link: pending.v, current: dataVersion() });
+  const steps = sequence();
+  for (const [side, id] of [['from', pending.a], ['to', pending.b]]) {
+    if (!id) continue;
+    if (steps.some((step) => step.id === id)) state.range[side] = id;
+    else addNotice('note.epochMissing', { id });
+  }
+  if (pending.band) setBand(pending.band, { write: false });
+  if (pending.mode === 'diff' && !differenceAllowed()) {
+    state.diffAsked = true;
+  } else if (pending.mode) {
+    state.mode = pending.mode;
+  }
+  refreshModeButtons();
+}
+
+/** Reads the address bar and shows what it asks for. */
+function applyLocation({ push = false } = {}) {
+  const route = parseRoute(location.search);
+  app.embed = route.embed;
+  document.body.classList.toggle('embed', route.embed);
+  const resolved = resolveRoute(route, app.allTargets);
+  app.notices = resolved.notes.slice();
+  app.keepNotices = true;
+  renderNotices();
+  if (resolved.page !== 'investigate') {
+    showPage(resolved.page, { push, focus: false });
+    return;
+  }
+  app.panel = route.panel ?? 'see';
+  app.scrollToPanel = true;
+  app.pending = { band: route.band, mode: route.mode, a: route.a, b: route.b, v: route.v };
+  const { open } = resolved;
+  if (open.kind === 'target') {
+    const entry = app.allTargets.find((item) => item.key === open.key);
+    const off = route.ra !== null && entry.centre
+      && separationDeg(route.ra, route.dec, entry.centre.ra, entry.centre.dec) > ONE_ARCSEC_DEG;
+    openEntry(entry, { fov: open.fov, requested: off ? { ra: route.ra, dec: route.dec } : null, push });
+  } else {
+    openPosition({ ra: open.ra, dec: open.dec, fov: open.fov }, { push });
+  }
+}
+
+async function share() {
+  writeUrl();
+  try {
+    await navigator.clipboard.writeText(location.href);
+    $('share-status').textContent = t('inv.copied');
+  } catch {
+    $('share-status').textContent = t('inv.copyFailed');
+  }
+}
+
+// ---------- Search by name ----------
+
+const displayName = (entry) => entry.name;
 
 async function search(text) {
   const query = text.trim();
   if (!query) return;
-  const named = findByName(query, state.presets);
+  const coordinates = parseCoordinates(query);
+  if (coordinates) {
+    openPosition(coordinates);
+    return;
+  }
+  const named = findByName(query, app.legacyPresets);
   if (named) {
     openNamed(named);
     return;
   }
-  try {
-    const { ra, dec } = await api.parsePosition(query);
-    openTarget(customTarget(ra, dec));
-    return;
-  } catch (error) {
-    if (error.status !== 422) throw error;
-  }
-  showMessage(t('searchingName'));
+  $('search-message').textContent = t('searchingName');
   try {
     const found = await api.resolveName(query);
-    showMessage(null);
-    openTarget({ kind: 'custom', pmra: 0, pmdec: 0, epoch: CUSTOM_EPOCH, ...found });
+    $('search-message').textContent = '';
+    openPosition({ ra: found.ra, dec: found.dec });
   } catch (error) {
-    showMessage(error.status === 404 ? t('notFound') : error.message);
+    $('search-message').textContent = error.status === 404 ? t('notFound') : error.message;
   }
 }
 
-function openNamed(entry) {
-  if (entry.key) {
-    diveInto(entry);
+function openNamed(found) {
+  const entry = found.key ? app.allTargets.find((item) => item.key === found.key) : null;
+  if (entry) {
+    openEntry(entry);
     return;
   }
-  const language = currentLanguage();
-  openTarget({
-    pmra: 0, pmdec: 0, epoch: 2000, ...entry, name: (language === 'ru' && entry.ru) || entry.name,
-  }, entry.fov ?? DEFAULT_FOV);
-}
-
-function showMessage(message) {
-  $('caption').hidden = !message;
-  $('caption').textContent = message ?? '';
-}
-
-function writeUrl() {
-  const { ra, dec } = centreOf(state.target);
-  const params = new URLSearchParams(location.search);
-  params.delete('target');
-  if (state.target.key) params.set('target', state.target.key);
-  params.set('ra', ra.toFixed(5));
-  params.set('dec', dec.toFixed(5));
-  params.set('fov', $('fov').value);
-  history.replaceState(null, '', `?${params}`);
-}
-
-function openFromUrl() {
-  const params = new URLSearchParams(location.search);
-  document.body.classList.toggle('embed', params.get('embed') === '1');
-  const fov = Number(params.get('fov')) || undefined;
-  const preset = state.presets.find((item) => item.key === params.get('target'));
-  if (preset) {
-    openTarget(preset, fov ?? preset.fov);
+  const covering = findCoveringTarget(app.allTargets, found.ra, found.dec);
+  if (covering) {
+    openEntry(covering, { requested: { ra: found.ra, dec: found.dec } });
     return;
   }
-  const ra = Number(params.get('ra'));
-  const dec = Number(params.get('dec'));
-  if (params.has('ra') && params.has('dec') && Number.isFinite(ra) && Number.isFinite(dec)) {
-    openTarget(customTarget(ra, dec, fov), fov);
-  }
+  app.entry = null;
+  app.requested = null;
+  app.notices = [];
+  renderNotices();
+  showPage('investigate');
+  const fov = found.fov ?? DEFAULT_FOV;
+  openTarget({ pmra: 0, pmdec: 0, epoch: 2000, kind: 'custom', ...found, fov }, fov);
 }
-
-// ---------- Actions used by the guided demo ----------
-
-const demoActions = {
-  caption: showMessage,
-  showSky() {
-    state.session += 1;
-    showPlate(false);
-    $('about').hidden = true;
-  },
-  finish() {
-    state.session += 1;
-    showPlate(false);
-    showMessage(null);
-  },
-  skyGoTo: (ra, dec, fov) => sky?.flyTo(ra, dec, fov),
-  open: (key) => openTarget(state.presets.find((item) => item.key === key)),
-  frameCount: () => state.frames.length,
-  visitCount: () => state.visits.length,
-  setBand,
-  setMode,
-  setPlaying,
-  spectrumOfTarget,
-  setFollow,
-  measureMotion,
-  async showWise() {
-    $('wise').checked = true;
-    await toggleWise();
-    setFollow(false);
-    setView('compare');
-  },
-};
-
-// ---------- Start ----------
-
-function bindControls() {
-  bindSearchList();
-  bindViewingTools();
-  $('search').addEventListener('submit', (event) => {
-    event.preventDefault();
-    closeSearchList();
-    showMessage(null);
-    search($('search-input').value).catch((error) => showMessage(error.message));
-  });
-  $('play').addEventListener('click', () => setPlaying(!state.playing));
-  $('modes').addEventListener('click', (event) => event.target.dataset.mode && setMode(event.target.dataset.mode));
-  $('composite').addEventListener('click', () => setBand({ kind: 'composite' }));
-  $('band').addEventListener('input', () => setBand({ kind: 'channel', channel: Number($('band').value) }));
-  $('fov').addEventListener('change', () => openTarget(state.target, Number($('fov').value)));
-  $('gaia').addEventListener('change', toggleGaia);
-  $('wise').addEventListener('change', toggleWise);
-  $('flags').addEventListener('change', () => {
-    state.excludeFlags = $('flags').checked;
-    render();
-  });
-  bindPlateGestures($('plate'));
-  bindPlateGestures($('plate-b'));
-  $('follow').addEventListener('click', openChooser);
-  $('chooser-close').addEventListener('click', unlockCamera);
-  $('try-compare').addEventListener('click', compareWithPast);
-  $('range-from').addEventListener('change', () => setRange({ from: $('range-from').value }));
-  $('range-to').addEventListener('change', () => setRange({ to: $('range-to').value }));
-  $('endpoints').addEventListener('click', () => setRange({ endpoints: !state.range.endpoints }));
-  $('views').addEventListener('click', (event) => event.target.dataset.view && setView(event.target.dataset.view));
-  $('measure').addEventListener('click', measureMotion);
-  $('chart-kind').addEventListener('click', (event) => {
-    if (!event.target.dataset.chart) return;
-    state.chart = event.target.dataset.chart;
-    drawChart();
-  });
-  $('back-to-sky').addEventListener('click', () => {
-    state.session += 1;
-    showPlate(false);
-  });
-  $('language').addEventListener('click', toggleLanguage);
-  $('tour').addEventListener('click', () => runTour(demoActions, $('tour')));
-  $('hero-tour').addEventListener('click', () => runTour(demoActions, $('tour')));
-  $('open-here').addEventListener('click', () => {
-    const { ra, dec } = sky.selected();
-    openTarget(customTarget(ra, dec));
-  });
-}
-
-function translate() {
-  applyTranslations();
-  $('language').textContent = currentLanguage() === 'ru' ? 'EN' : 'RU';
-  if (state.candidates) state.candidates = chooseCandidates();
-  refreshFollowUi();
-  $('play').textContent = t(state.playing ? 'pause' : 'play');
-}
-
-function toggleLanguage() {
-  setLanguage(currentLanguage() === 'ru' ? 'en' : 'ru');
-  translate();
-  buildLanding();
-  if (!state.job) return;
-  describeTarget(state.target);
-  renderDates();
-  render();
-  drawChart();
-  reportProgress(state.job);
-}
-
-const BLINK_MS = 900;
-
-/** A looping pair of real plates; which one shows is driven by one attribute on the body. */
-function blinkTile(key, thumbs) {
-  const tile = document.createElement('div');
-  tile.className = thumbs.kind === 'colour' ? 'blink place' : 'blink';
-  thumbs.frames.forEach((frame, index) => {
-    const side = index ? 'b' : 'a';
-    const image = document.createElement('img');
-    image.src = `data/${key}/${frame.file}`;
-    image.alt = '';
-    image.className = `plate-${side}`;
-    const label = document.createElement('b');
-    label.className = `label-${side}`;
-    label.textContent = frame.label;
-    tile.style.setProperty(`--${side}x`, `${frame.x * 100}%`);
-    tile.style.setProperty(`--${side}y`, `${frame.y * 100}%`);
-    tile.append(image, label);
-  });
-  const ring = document.createElement('i');
-  ring.className = 'ring';
-  tile.append(ring);
-  return tile;
-}
-
-function startBlinking() {
-  setInterval(() => {
-    document.body.dataset.blink = document.body.dataset.blink === 'b' ? 'a' : 'b';
-  }, BLINK_MS);
-}
-
-function resultOf(key) {
-  return state.results.find((item) => item.key === key);
-}
-
-const displayName = (entry) => (currentLanguage() === 'ru' && entry.ru) || entry.name;
-
-function presetCard(preset) {
-  const result = resultOf(preset.key);
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.style.setProperty('--tint', NEUTRAL_TINT);
-  const name = document.createElement('strong');
-  name.textContent = displayName(preset);
-  const hook = document.createElement('small');
-  hook.textContent = t(`hook_${preset.key}`);
-  const words = document.createElement('span');
-  words.className = 'card-words';
-  words.append(name, hook);
-  button.replaceChildren(...(result?.thumbs ? [blinkTile(preset.key, result.thumbs)] : []), words);
-  button.addEventListener('click', () => diveInto(preset));
-  return button;
-}
-
-function buildPresets() {
-  $('presets').replaceChildren(...state.presets.filter((preset) => preset.category === 'challenge').map(presetCard));
-}
-
-// ---------- Search list ----------
 
 const SEARCH_GROUPS = ['stars', 'galaxies', 'nebulae', 'clusters', 'challenge'];
 
 function searchRow(entry) {
-  const row = document.createElement('button');
-  row.type = 'button';
-  row.className = 'search-row';
-  const thumb = resultOf(entry.key)?.thumbs?.frames?.[1];
-  if (thumb) {
-    const image = document.createElement('img');
-    image.src = `data/${entry.key}/${thumb.file}`;
-    image.alt = '';
-    image.loading = 'lazy';
-    row.append(image);
-  }
-  const words = document.createElement('span');
-  const name = document.createElement('strong');
-  name.textContent = displayName(entry);
-  const hook = document.createElement('small');
-  hook.textContent = entry.key ? t(`hook_${entry.key}`) : t('loadsLive');
-  words.append(name, hook);
-  row.append(words);
+  const thumb = app.thumbs.get(entry.key)?.frames?.[1];
+  const row = el('button', { type: 'button', class: 'search-row' }, [
+    thumb ? el('img', { src: `data/${entry.key}/${thumb.file}`, alt: '', loading: 'lazy' }) : null,
+    el('span', {}, [
+      el('strong', { text: entry.name }),
+      el('small', { text: entry.key && has(`hook_${entry.key}`) ? t(`hook_${entry.key}`) : t('loadsLive') }),
+    ]),
+  ]);
   row.addEventListener('click', () => {
     closeSearchList();
     $('search-input').value = '';
@@ -1315,17 +1574,13 @@ function searchRow(entry) {
 }
 
 function renderSearchList() {
-  const matches = searchMatches($('search-input').value, state.presets);
+  const matches = searchMatches($('search-input').value, app.legacyPresets);
   const groups = [...SEARCH_GROUPS, 'more'].flatMap((group) => {
     const members = matches.filter((entry) => (entry.category ?? 'more') === group);
     if (!members.length) return [];
-    const title = document.createElement('h3');
-    title.textContent = t(`category_${group}`);
-    return [title, ...members.map(searchRow)];
+    return [el('h3', { text: t(`category_${group}`) }), ...members.map(searchRow)];
   });
-  const empty = document.createElement('p');
-  empty.textContent = t('searchHint');
-  $('search-list').replaceChildren(...(groups.length ? groups : [empty]));
+  $('search-list').replaceChildren(...(groups.length ? groups : [el('p', { text: t('searchHint') })]));
   $('search-list').hidden = false;
 }
 
@@ -1350,7 +1605,18 @@ function bindSearchList() {
   });
 }
 
-// ---------- More ways to view ----------
+// ---------- Real sky context (Aladin Lite, loaded on demand) ----------
+
+async function openSkyContext() {
+  if (app.sky || !$('sky-details').open) return;
+  app.sky = 'loading';
+  const sky = await createSky('sky', (ra, dec) => fillCoordinates(ra, dec));
+  app.sky = sky;
+  if (sky.unavailable) $('sky-message').textContent = t('sky.failed');
+  else $('sky-message').textContent = '';
+}
+
+// ---------- Start ----------
 
 function bindViewingTools() {
   $('speed').addEventListener('change', () => {
@@ -1366,87 +1632,141 @@ function bindViewingTools() {
   });
   $('fullscreen').addEventListener('click', () => {
     if (document.fullscreenElement) document.exitFullscreen();
-    else document.querySelector('.plates').requestFullscreen?.();
+    else $('plates').requestFullscreen?.();
   });
   $('save-image').addEventListener('click', savePlate);
 }
 
 function savePlate() {
-  const link = document.createElement('a');
   const label = $('plate-date').textContent.replace(/[^\p{L}\p{N}]+/gu, '-');
-  link.download = `spherex-${state.target?.key ?? 'sky'}-${label}.png`;
-  link.href = $('plate').toDataURL('image/png');
-  link.click();
+  el('a', { download: `tenger-${state.target?.key ?? 'sky'}-${label}.png`, href: $('plate').toDataURL('image/png') }).click();
 }
 
-function buildProof() {
-  const hero = resultOf('wise0855');
-  if (hero?.thumbs) $('proof-plate').replaceChildren(blinkTile('wise0855', hero.thumbs));
-  $('proof').hidden = !hero?.thumbs;
-}
-
-const number = (value, digits = 2) =>
-  new Intl.NumberFormat(currentLanguage(), { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
-
-function resultRow(preset) {
-  const result = resultOf(preset.key);
-  const row = document.createElement('tr');
-  const brightness = result.variability?.faintest.level > 0
-    ? t('timesBrighter', {
-      ratio: number(result.variability.brightest.level / result.variability.faintest.level, 1),
-      detector: result.variability.detector,
-    })
-    : t('noneMeasured');
-  const cells = [
-    displayName(preset),
-    `${result.frames} / ${result.available}`,
-    String(result.dates),
-    MOTION_UNRELIABLE.has(preset.key) ? t('motionUnreliable') : result.measured > MOTION_SIGNIFICANCE * result.error
-      ? `${number(result.measured)} ± ${number(result.error)}`
-      : t('notDetected'),
-    result.catalog === null ? t('noneMeasured') : number(result.catalog),
-    result.control === null ? t('noneMeasured') : number(result.control),
-    brightness,
-  ];
-  for (const text of cells) {
-    const cell = row.insertCell();
-    cell.textContent = text;
+function bindControls() {
+  bindSearchList();
+  bindViewingTools();
+  bindCoordinateSearch((request) => openPosition(request));
+  $('search').addEventListener('submit', (event) => {
+    event.preventDefault();
+    closeSearchList();
+    $('search-message').textContent = '';
+    search($('search-input').value).catch((error) => {
+      $('search-message').textContent = error.message;
+    });
+  });
+  for (const link of document.querySelectorAll('[data-page-link]')) {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      app.notices = [];
+      renderNotices();
+      showPage(link.dataset.pageLink);
+    });
   }
-  return row;
-}
-
-function buildResults() {
-  $('results-body').replaceChildren(...state.results.flatMap((result) => {
-    const preset = state.presets.find((item) => item.key === result.key);
-    return preset && result.measured !== undefined ? [resultRow(preset)] : [];
-  }));
-}
-
-function buildLanding() {
-  buildPresets();
-  buildProof();
-  buildResults();
-}
-
-async function start() {
-  setLanguage(currentLanguage());
-  translate();
-  buildBandScale();
-  buildArrays();
-  bindControls();
-  setPressed($('modes'), 'mode', 'video');
-  setPressed($('views'), 'view', 'one');
-  setPressed($('chart-kind'), 'chart', 'spectrum');
-  $('composite').setAttribute('aria-pressed', 'true');
-  state.presets = await api.getTargets();
-  state.results = await api.getResults().catch(() => []);
-  buildLanding();
-  startBlinking();
-  openFromUrl();
-  sky = await createSky('sky', (ra, dec) => {
-    $('open-here').hidden = false;
-    $('open-here').textContent = `${t('openHere')}: ${ra.toFixed(2)}, ${dec.toFixed(2)}`;
+  $('inv-back').addEventListener('click', () => showPage('home'));
+  $('share').addEventListener('click', share);
+  for (const button of document.querySelectorAll('.panel-nav button')) {
+    button.addEventListener('click', () => setPanel(button.dataset.panel));
+  }
+  $('play').addEventListener('click', () => {
+    if (state.mode !== 'blink') setMode('blink');
+    setPlaying(!state.playing);
+  });
+  $('modes').addEventListener('click', (event) => {
+    const mode = event.target.closest('button')?.dataset.mode;
+    if (mode) setMode(mode);
+  });
+  $('composite').addEventListener('click', () => setBand({ kind: 'composite' }));
+  $('band').addEventListener('input', () => setBand({ kind: 'channel', channel: Number($('band').value) }));
+  $('fov').addEventListener('change', () => openTarget(state.target, Number($('fov').value)));
+  $('gaia').addEventListener('change', toggleGaia);
+  $('wise').addEventListener('change', toggleWise);
+  $('flags').addEventListener('change', () => {
+    state.excludeFlags = $('flags').checked;
+    render();
+  });
+  $('swipe').addEventListener('input', () => setSwipe($('swipe').value));
+  bindPlateGestures($('plate'));
+  bindPlateGestures($('plate-b'));
+  $('panel-see').addEventListener('keydown', onViewerKey);
+  $('follow').addEventListener('click', openChooser);
+  $('chooser-close').addEventListener('click', unlockCamera);
+  $('range-from').addEventListener('change', () => setRange({ from: $('range-from').value }));
+  $('range-to').addEventListener('change', () => setRange({ to: $('range-to').value }));
+  $('swap').addEventListener('click', () => setRange({ from: state.range.to, to: state.range.from }));
+  $('endpoints').addEventListener('click', () => setRange({ endpoints: !state.range.endpoints }));
+  $('measure').addEventListener('click', measureMotion);
+  $('sky-details').addEventListener('toggle', openSkyContext);
+  addEventListener('popstate', () => applyLocation());
+  let resizeTimer = null;
+  addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(placeMapLabels, RESIZE_MS);
   });
 }
 
-start().catch((error) => showMessage(error.message));
+const number = (value, digits = 2) =>
+  new Intl.NumberFormat('en', { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
+
+/** Prepared thumbnails per key (only the thumbs field of the legacy results file; its numbers are not used). */
+async function loadThumbs() {
+  try {
+    const results = await api.getResults();
+    for (const result of results) if (result.thumbs) app.thumbs.set(result.key, result.thumbs);
+  } catch {
+    // Thumbnails are decoration; cards work without them.
+  }
+}
+
+async function loadData() {
+  const fixtures = parseRoute(location.search).fixtures;
+  app.source = createSource({ fixtures });
+  const [presets, indexState] = await Promise.all([api.getTargets(), app.source.index(), loadThumbs()]);
+  app.legacyPresets = presets;
+  app.indexState = indexState;
+  const index = indexState.state === 'ok' ? indexState.doc : null;
+  app.entries = buildTargets(index, presets);
+  app.allTargets = [...app.entries, ...legacyPlaces(presets, app.entries)];
+  const example = fixtures || Boolean(index?.example);
+  $('example-banner').hidden = !example;
+  document.body.classList.toggle('example-data', example);
+  const [rounds, lessons] = await Promise.all([
+    Promise.all((index?.game_rounds ?? []).map((path) => app.source.gameRound(path))),
+    Promise.all((index?.lessons ?? []).map((path) => app.source.lesson(path))),
+  ]);
+  renderGame(rounds);
+  renderLearn(lessons);
+}
+
+function openFromHome(entry) {
+  app.panel = 'see';
+  app.scrollToPanel = false;
+  openEntry(entry);
+}
+
+async function start() {
+  applyTranslations();
+  document.title = `${t('site.title')} · ${t('home.title')}`;
+  buildBandScale();
+  buildArrays();
+  buildFovOptions($('fov'));
+  bindControls();
+  setPressed($('modes'), 'mode', 'blink');
+  $('composite').setAttribute('aria-pressed', 'true');
+  $('play').textContent = t('play');
+  refreshFollowUi();
+  renderAbout();
+  await loadData();
+  renderHome({
+    entries: app.entries,
+    indexLoaded: app.indexState?.state === 'ok',
+    thumbsOf: (entry) => app.thumbs.get(entry.key) ?? null,
+    onOpen: openFromHome,
+  });
+  startBlinking();
+  applyLocation();
+}
+
+start().catch((error) => {
+  $('caption').hidden = false;
+  $('caption').textContent = error.message;
+});

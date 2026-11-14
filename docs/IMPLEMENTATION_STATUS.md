@@ -174,4 +174,89 @@ Phase C: first real investigation. Write `scripts/build_investigation.py` that e
 
 ## Web (Session B)
 
-*Session B fills this section.*
+### Map of the inherited UI (read before B1, git `a646a75`)
+
+Plain ES modules, no build step, served as is from `static/`.
+
+| File | Lines | Role |
+|---|---:|---|
+| `index.html` | 183 | One page: header (logo, name/coordinate search with "Top places" list, demo, RU/EN toggle), landing `#hero` (title, WISE 0855 "proof" blink, five challenge cards), `#about` (results table from `results.json`, three text columns), `#observatory` (plate canvas + six detector tiles, side panel with motion result, spectrum/light-curve chart and tools, footer deck with film strip, From/To range, One/Side-by-side, band slider) |
+| `js/main.js` | 1452 | Everything else: app state, plate rendering and paint cache, film strip, play loop, From/To range, compare view, follow/lock camera, Gaia/AllWISE overlays, static vs live loading (`openStatic`/`openLive` + job polling), auto spectrum + motion, URL (`target`, `ra`, `dec`, `fov`, `embed`), landing cards, results table, search list, guided demo actions |
+| `js/plate.js` | 302 | Canvas renderer: stacks per band, stretch limits, mono/composite/difference painting, overlays (Gaia rings, track, expected-motion ring, pick cross, scale bar, N/E) |
+| `js/stack.js` | 272 | Pure maths: channel/detector ranges, median stacking, `visitsOf`, `resolveBand` (nearest-channel fallback), tangent-plane projection, decoders |
+| `js/science.js` | 337 | Browser photometry, spectrum, centroid tracking, proper-motion fit, control stars |
+| `js/chart.js` | 121 | SVG spectrum and light-curve charts (molecule reference lines) |
+| `js/viewport.js` | 43 | Zoom/pan maths |
+| `js/api.js` | 82 | Static loader with retries (`data/…`), live API client (`LIVE_SERVER` on github.io) |
+| `js/i18n.js` | 328 | English + Russian strings, default from `navigator.language` |
+| `js/names.js`, `js/sky.js`, `js/tour.js` | 54/76/116 | Offline name list; Aladin Lite all-sky background; scripted demo |
+| `css/style.css` | 553 | Dark glass theme, amber accent, one breakpoint at 1000 px |
+
+Problems found for TENGER: the landing presents the legacy `results.json` motion numbers as "Tested on all
+five challenge targets"; the motion box says "the motion is real"; "Sum" is a per-pixel median;
+Difference subtracts the first date over a broad band with no validation; single-channel views silently
+use the nearest channel per date; Russian is chosen automatically for Russian browsers; many controls
+are under 44 px; there is no page/panel/A/B/band state in the URL.
+
+### Task B1, 14 Nov 2026 (phase E: TENGER interface; base `a646a75`, worktree branch `web`)
+
+**What changed**
+
+| Area | Files | Result |
+|---|---|---|
+| Shell and navigation | `index.html`, `js/main.js`, `css/style.css` | TENGER header with Investigate (Home), Beat the physics, Learn, About. Pages are sections of one HTML file, switched by `page=` with history (Back works). Skip link, focus moves to the page heading. |
+| English resource | `js/i18n.js` | One English table for every visible string (≈510 keys, including all contract enums, notes, captions, charts, panels). English is forced as default; the inherited Russian table stays in the file but is no longer offered (it does not cover the new pages). |
+| Home | `js/home.js`, `js/map.js`, `js/targets.js` | Prominent RA/Dec + FOV form with a local parser (`js/coords.js`: degrees, `hms`/`dms`, colons, spaces, unicode minus); name search kept; five official shortcuts plus Makemake, Pluto and 3I/ATLAS as "Not available yet"; schematic log-distance map with the required caption, arbitrary-angle check, colour **and** shape per family (stars amber circle, variables purple diamond, Solar System cyan ring, hypothetical orange dashed ring), unplaced/clamped notes and label placement that avoids other names and dots; target list built from the same entries. The real Aladin sky is an opt-in "Pick a position on the real sky" panel that only fills the coordinate form. |
+| Data loading | `js/contract.js` | Reads `data/index.json`, `<key>/investigation.json`, `trials/<id>/{trial,prediction,receipt,verification}.json`, game rounds and lessons per DATA-CONTRACT v1. Each result is `ok`, `missing`, `unsupported` (newer major), `invalid` (wrong kind, unsafe path) or `error`. `?fixtures=1` switches the base to `dev-fixtures/` and shows a page-wide "Example data, not an observation" banner. |
+| Investigation | `js/main.js`, `js/panels.js`, `js/caption.js` | Panels in order See, What changed, Prediction, Evidence, Spectrum (optional), with a sticky panel bar. See keeps the inherited renderer, viewport, detector tiles, follow-camera, Gaia/AllWISE overlays and live mode, and adds Blink / Side by side / Swipe / Difference with explicit A/B observation (epoch) IDs, swap, "Only A and B". Caption strip per plate: UTC time or range, wavelength (array range, or the channel actually shown with a substitution warning), releases with counts, IRSA source link, status chip (processed / context / difference), full observation-ID list, plus an A/B warning (cross-mission, different channels, broad band). |
+| Difference gate | `js/main.js` | Difference is offered only when the investigation file lists a quantitative comparison of exactly this A/B pair with `difference` allowed. No such file exists, so it is off everywhere, with the reason shown. The old first-date broad-band difference is no longer reachable. |
+| Honesty fixes | `js/main.js`, `js/i18n.js` | Legacy `results.json` numbers are no longer shown (only its thumbnails are used). Motion is no longer measured automatically; the button lives in "Explore in your browser (not validated)" and the wording no longer says "the motion is real". "Sum" is called "All dates (median)". Prediction/Evidence/What changed show "not published yet" states when files are missing. |
+| Reserved-sky guard | `js/reserved.js` | Live jobs are refused within 2° (plus half the field diagonal) of Barnard, WISE 0855, ε Indi B, RW Aur, R Dra and the Makemake/Pluto path boxes from `docs/EXPOSURE.md`. Prepared frames still open; a different FOV for a prepared target falls back to the prepared field with a note. |
+| URLs | `js/route.js` | Old `ra`, `dec`, `fov`, `target`, `embed` links work. Added `page`, `panel`, `band` (`all`, `d1`–`d6`, `c0`–`c101`), `a`, `b`, `mode`, `v`; `id` is an alias of `target`; coordinates win over a conflicting target (note shown); bad values are dropped with a note; a data-version mismatch or a missing A/B ID is reported. "Copy share link" copies the full state. |
+| Accessibility | `css/style.css`, `js/main.js` | Real buttons; 44 px minimum for every control (measured); ←/→ change date (B outside Blink), Space plays/pauses or flips the swipe; `prefers-reduced-motion` stops autoplay, blinking thumbnails and smooth scrolling; every chart has a "Show the data as a table" disclosure; token contrast checked in tests. |
+| Game / Learn / About | `js/pages.js` | Beat the physics explains the reveal order and the bounded `exp_decay_v1` score and lists published rounds (none yet). Learn lists the three lessons and the Planet X Lab as "In preparation". About gives sources, methods/limits, credits (base project, IRSA, SPHEREx, WISE, Gaia, Aladin, fonts) and the AI disclosure. |
+| Fixtures | `static/dev-fixtures/` | Index (8 targets + hypothetical Planet Nine), Barnard investigation, a verified example position trial (hash chain trial → prediction → receipt is real), an R Dra brightness trial with no receipt/verification, a game round and a lesson. Every file has `"example": true`; distances and numbers are invented or approximate. |
+
+**Commands and results** (14 Nov 2026, Node v26.13.1, Chrome headless via DevTools protocol)
+
+| Command | Result |
+|---|---|
+| `node --test tests/*.mjs` | **84 passed, 0 failed** (39 inherited + 45 new in `route`, `coords`, `contract`, `i18n`, `targets`, `caption`, `contrast`) |
+| `.venv/bin/uvicorn backend.api:app --port 8766` from this worktree | Serves the site; `data/index.json` 404 (not published yet, handled) |
+| `node docs/screens/capture.mjs http://localhost:8766 docs/screens` | 10 page states × 360/390/768/1280. Measured `innerWidth` = requested width every time; `scrollWidth` = `clientWidth` (no horizontal scroll) everywhere; no control under 44 px; no script errors. Report: `docs/screens/viewport-report.json` |
+| In-app browser (Claude desktop, 1024 px pane) | Keyboard (Space, ←/→), Blink/Side/Swipe, Difference refused with reason, band change, share link round trip (mode, band, A/B, panel restored), conflicting link, unknown target, version mismatch, embed mode: all as described above |
+| Guard check, in-page with `/api/observe` trapped | `?target=barnard&fov=0.5`, `?ra=201&dec=21` (Makemake path), `?ra=270.5&dec=5`, `?target=rdra&ra=248.9&dec=66.0`: **0** live requests, notices shown |
+| Live mode at RA 40°, Dec +60° (far from all eight targets) | Job started on the local server, QR3 frames arrived, caption showed their times and release |
+
+Screenshots: `docs/screens/<page>-<width>.png`. They show the real app; they are not evidence of validated
+science. Fixture screenshots (`home-fixtures-map`, `prediction-fixtures`) show the example banner.
+
+**Waiting on Session A**
+
+- `static/data/index.json`: until it exists the distance map shows its waiting text, prediction statuses read
+  "No prediction published yet", and Prediction says "The prediction ledger is not published yet".
+- `<key>/investigation.json` per target: needed for validated What changed values, Evidence tables, the
+  Difference gate (comparisons with `difference`) and the Spectrum flag. The viewer's A/B IDs are legacy
+  visit dates (`2026-08-23`, `allwise`); epoch IDs (`e1`, `e2`) from investigation files are not yet mapped to
+  frames. A preview asset per epoch, or a mapping from epochs to legacy frames, is needed for that.
+- Trials, receipts, verifications, game rounds and lessons: the panels render them already (checked with
+  fixtures) and show "waiting"/"not checked yet" for missing parts.
+- Makemake, Pluto, 3I/ATLAS: stay "Not available yet" until the index lists them with products.
+- Keys used by data (`limit.*`, `explain.*`, `ident.*`, `quantity.*`, `credit.*`): unknown keys show a visible
+  "(description not written yet)" text. Session A should send the list of keys it writes so the English text
+  can be added.
+
+**Limits and open points**
+
+- Viewer frames are still the legacy prepared frames (QR2/QR3, approximate channel wavelengths, flags not
+  re-validated). Single-channel views still use the nearest channel per date for display; the caption names
+  the channel shown and warns when it differs between A and B.
+- The reserved regions are a copy of `docs/EXPOSURE.md` in `js/reserved.js`; 3I/ATLAS has no region (no path
+  data here). Update the list when predictions are frozen or regions change.
+- The guided demo (`js/tour.js`) is no longer reachable from the UI: its captions relied on the old landing
+  and on the unvalidated motion number. Kept in the repository.
+- No real-phone check yet; only emulated widths in headless Chrome and the desktop pane.
+- `backend/api.py` CORS and `js/api.js` `LIVE_SERVER` are unchanged (team decision 6).
+
+**Next action (proposed)**: phase F/G web work once Session A publishes the index and the first trial:
+scoreboard page from `scoreboard.json`, the Beat the physics round player, and printable lessons.

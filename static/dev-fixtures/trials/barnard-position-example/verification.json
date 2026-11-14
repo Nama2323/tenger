@@ -1,0 +1,46 @@
+{
+  "schema_version": "tenger.verification/1",
+  "example": true,
+  "trial_id": "barnard-position-example",
+  "prediction_sha256": "bee488c7b143edd6f300744bcce972aa3a4716fdfc3feb9f79df840c7b122cca",
+  "revealed_utc": "2026-11-14T13:00:00Z",
+  "observed": {
+    "ra_deg": 269.44675087,
+    "dec_deg": 4.76886667,
+    "cov_arcsec2": [
+      [
+        0.81,
+        0.0
+      ],
+      [
+        0.0,
+        0.81
+      ]
+    ],
+    "obs_keys": [
+      "spherex_qr3:EXAMPLE_0004_1:D3"
+    ],
+    "content_type": "measured"
+  },
+  "identification": {
+    "method_key": "ident.preregistered-aperture",
+    "alternatives": 0,
+    "ambiguous": false
+  },
+  "residuals": {
+    "model": {
+      "east_arcsec": 0.9,
+      "north_arcsec": 0.6,
+      "d2": 0.56,
+      "error_arcsec": 1.08
+    },
+    "baseline": {
+      "east_arcsec": -0.6,
+      "north_arcsec": 1.4,
+      "d2": 0.758,
+      "error_arcsec": 1.52
+    }
+  },
+  "status": "hit",
+  "status_reason_key": null
+}
