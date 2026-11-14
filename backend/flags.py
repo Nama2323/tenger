@@ -1,13 +1,14 @@
 """SPHEREx pixel-flag schemas and the measurement mask policy.
 
-Two header schemas exist (verified 14 Nov 2026 against a real DR1 Level 2 cutout,
-`level2_2025W33_2C_0321_1D6_spx_l2b-v27-2026-228.fits`, and the IRSA SPHEREx
-documentation, which says the flag definitions travel in the FLAGS header):
+Two header schemas exist. Verified 14 Nov 2026 against real cutouts of already-exposed
+Barnard-field exposures (DR1 `l2b-v27-2026-228` and QR3 `l2b-v27-2026-241`, software
+7.0.5: MSKN/MSKM; QR2 `l2b-v20-2025-266`, software 6.4+psffix1: MP_) and the IRSA
+SPHEREx documentation, which says the flag definitions travel in the FLAGS header:
 
 * current (DR1, QR3): one triplet per mask plane n,
   ``MSKNnnnn`` = name, ``MSKMnnnn`` = bitmask (always ``1 << n``),
   ``MSKDnnnn`` = description, e.g. ``MSKN0001 = 'OVERFLOW'``, ``MSKM0001 = 2``.
-* historical (early quick releases): ``HIERARCH MP_<NAME> = <bit number>``,
+* historical (QR2): ``HIERARCH MP_<NAME> = <bit number>``,
   e.g. ``MP_HOT = 10``.
 
 A header with neither schema, a malformed definition, or two schemas that disagree
@@ -36,6 +37,8 @@ _POLICY: dict[str, tuple[str, str]] = {
     "TRANSIENT": (REJECT, "transient during the ramp; the per-pixel repair cannot be checked here"),
     "OVERFLOW": (REJECT, "overflow during the ramp; value may be saturated"),
     "SUR_ERROR": (REJECT, "error in on-board processing"),
+    "PHANTOM": (REJECT, "phantom (non-imaging) pixel, QR2 schema"),
+    "REFERENCE": (REJECT, "reference (non-imaging) pixel, QR2 schema"),
     "NONFUNC": (REJECT, "permanently unusable pixel"),
     "DICHROIC": (REJECT, "low efficiency due to the dichroic; strict policy rejects it"),
     "MISSING_DATA": (REJECT, "on-board data lost"),

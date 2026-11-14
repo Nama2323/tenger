@@ -117,3 +117,26 @@ def test_missing_variance_or_flag_schema_is_refused():
         copy.writeto(buffer)
     with pytest.raises(ProductError):
         load_product(buffer.getvalue())
+
+
+QR2 = Path(__file__).parent / "fixtures" / "spherex_qr2_2025W33_2C_0321_1_D6.fits.gz"
+
+
+def test_real_qr2_product_uses_the_historical_mp_schema():
+    """Same exposure as the DR1 fixture, earlier release: MP_ keys, PSF extension, older software."""
+    qr2 = load_product(QR2.read_bytes())
+    assert qr2.flag_schema.schema == "MP"
+    names = qr2.flag_schema.by_name()
+    assert names["OVERFLOW"].bit == 1 and names["SOURCE"].action == "keep"
+    assert names["PHANTOM"].reason.startswith("phantom")
+    assert not any(d.reason.startswith("flag name not") for d in qr2.flag_schema.definitions)
+    assert qr2.software_version == "6.4+psffix1"
+    assert int(qr2.reject.sum()) == 14
+
+
+def test_qr2_and_dr1_products_of_one_exposure_differ_and_are_not_interchangeable(product):
+    qr2 = load_product(QR2.read_bytes())
+    assert qr2.obs_id == product.obs_id
+    # DR1 adds BLOOM/HALO planes and reprocesses the pixels.
+    assert "BLOOM" in product.flag_schema.by_name() and "BLOOM" not in qr2.flag_schema.by_name()
+    assert not np.array_equal(qr2.image, product.image)
