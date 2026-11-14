@@ -77,9 +77,17 @@ Decided by the team for Task A3 (phases C–D). It changes the exposed set as fo
   | Makemake | 2025-12-28 → 2026-01-09 | 111 | DR1 | see below | same run |
   | Makemake | **2026-05-30 → 06-13** | **0 (closed)** | QR3 | — | — |
 
-  Makemake total: 236 rows requested, 234 processed, 2 failed after retries. The fixed-sky pair
-  (`2025W22_2B_0258_1` D3 and `2025W23_1C_0121_1` D3) re-uses two of those exposures with a
-  different cutout centre. Pluto rows are added when its run finishes.
+  | Pluto | 2025-04-25 → 05-01 | 10 | DR1 | see below | 14 Nov, 21:34–22:00 |
+  | Pluto | 2025-09-25 → 10-12 | 109 | DR1 | see below | same run |
+  | Pluto | 2026-04-25 → 05-02 | 97 | DR1 | see below | same run |
+  | Pluto | 2026-05-12 | 2 | DR1 | see below | same run |
+  | Pluto | **2026-09-29 → 10-02** | **0 (closed)** | QR3 | — | — |
+
+  Makemake total: 236 rows requested, 234 processed, 2 failed after retries. Pluto: 218 requested,
+  218 processed. Each body also has a fixed-sky pair that re-uses two of its training exposures
+  with a different cutout centre (Makemake `2025W22_2B_0258_1` D3 + `2025W23_1C_0121_1` D3; Pluto
+  `2025W40_2B_0346_4` D3 + `2025W41_1A_0285_1` D3). The newest exposure opened is MJD 61049.26
+  (Makemake) and 61172.96 (Pluto); the holdout windows start at MJD 61190.77 and 61312.68.
 - Live jobs near the targets remain blocked in the web app (`static/js/reserved.js`, and
   `static/data/reserved.json` from A3).
 

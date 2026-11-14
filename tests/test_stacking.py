@@ -48,3 +48,17 @@ def test_no_body_means_no_detection():
     pairs = [exposure_with_body(i, flux=0.0) for i in range(12)]
     result = stacking.joint_fit([p for p, _ in pairs], [pos for _, pos in pairs])
     assert result["status"] == "insufficient_data"
+
+
+def test_spacecraft_offset_moves_a_near_body_by_the_expected_parallax():
+    from types import SimpleNamespace
+
+    from scripts.build_body import spacecraft_corrected
+
+    member = {"centre": {"ra_deg": 90.0, "dec_deg": 0.0},
+              "product": SimpleNamespace(info={"X_SC": 7000.0, "Y_SC": 0.0, "Z_SC": 0.0})}
+    ra, dec = spacecraft_corrected(member, 36.0)
+    east, north = astrometry.tangent_offsets_arcsec(90.0, 0.0, ra, dec)
+    expected = 7000.0 / 1.495978707e8 / 36.0 * 206264.806  # about 0.27 arcsec
+    assert abs(east - expected) < 1e-3 and abs(north) < 1e-6
+    assert spacecraft_corrected(member, None) == (90.0, 0.0)

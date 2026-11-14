@@ -21,6 +21,10 @@ from scripts.build_investigation import json_bytes, preview_image
 
 NAMES = {"makemake": "Makemake", "pluto": "Pluto", "3i-atlas": "3I/ATLAS"}
 MOVED_ENOUGH_ARCSEC = 30.0
+# Geocentric distance (au) from JPL Horizons at 2026-01-01 00:00 UTC (scripts/build_index.py);
+# used only to move the geocentric ephemeris to the spacecraft (shift <0.3 arcsec, 3% accurate).
+DISTANCE_AU = {"makemake": 52.743, "pluto": 36.328}
+KM_PER_AU = 1.495978707e8
 STATIC_SNR = 5.0
 
 
@@ -147,7 +151,7 @@ def build(key: str, out: Path) -> dict:
 
     if see_only:
         return write_see_only(key, folder, follow, observations, epochs)
-    epoch_fits = joint_epoch_fits(groups)
+    epoch_fits = joint_epoch_fits(groups, DISTANCE_AU.get(key))
     accepted = [row for row in epoch_fits if row["identification"] == "body"]
     limitations = ["limit.ephemeris-guided", "limit.gaussian-psf-model", "limit.training-visits-only",
                    "limit.joint-fit-epochs"]
@@ -184,6 +188,8 @@ def build(key: str, out: Path) -> dict:
                      "config_sha256": inv.config_sha256({"pipeline": config.PIPELINE_VERSION, "moved": MOVED_ENOUGH_ARCSEC,
                                                          "static_snr": STATIC_SNR})},
         "request": {"mode": "object_following", "ephemeris": "JPL Horizons (docs/exposure inventory)",
+                    "offset_reference": "Horizons geocentric position moved to the spacecraft (FITS X_SC/Y_SC/Z_SC; "
+                                        f"distance {DISTANCE_AU.get(key)} au at 2026-01-01)",
                     "cutout_deg": round(float(follow[0]["grid"]["fov"]) * config.CUTOUT_MARGIN, 4) if follow else None},
         "coverage": {"observations_listed": len(follow), "observations_used": sum(o.get("quality", {}).get("usable", False) for o in observations),
                      "training_only": True, "holdout_window_mjd_closed": [low, high],
@@ -213,12 +219,30 @@ def build(key: str, out: Path) -> dict:
             "epoch_identification": {row["epoch"]: row["identification"] for row in epoch_fits}}
 
 
-def joint_epoch_fits(groups: dict) -> list[dict]:
-    """One joint forced fit per epoch, with the time-shuffled null test."""
+def spacecraft_corrected(member: dict, distance_au: float | None) -> tuple[float, float]:
+    """Geocentric ephemeris position moved to the spacecraft (header X_SC/Y_SC/Z_SC, km, GEOCENTER)."""
+    ra, dec = member["centre"]["ra_deg"], member["centre"]["dec_deg"]
+    info = member["product"].info
+    if not distance_au or not all(key in info for key in ("X_SC", "Y_SC", "Z_SC")):
+        return ra, dec
+    s = np.array([info["X_SC"], info["Y_SC"], info["Z_SC"]], float) / KM_PER_AU
+    a, d = math.radians(ra), math.radians(dec)
+    east = np.array([-math.sin(a), math.cos(a), 0.0])
+    north = np.array([-math.sin(d) * math.cos(a), -math.sin(d) * math.sin(a), math.cos(d)])
+    shift_e = -float(s @ east) / distance_au * 206264.806
+    shift_n = -float(s @ north) / distance_au * 206264.806
+    return astrometry.tangent_to_sky(ra, dec, shift_e, shift_n)
+
+
+def joint_epoch_fits(groups: dict, distance_au: float | None = None) -> list[dict]:
+    """One joint forced fit per epoch, with the time-shuffled null test.
+
+    Offsets are measured from the ephemeris moved to the spacecraft's position.
+    """
     rows = []
     for (visit, detector), members in sorted(groups.items()):
         products = [member["product"] for member in members]
-        positions = [(member["centre"]["ra_deg"], member["centre"]["dec_deg"]) for member in members]
+        positions = [spacecraft_corrected(member, distance_au) for member in members]
         fit = stacking.joint_fit(products, positions)
         null = stacking.null_test(products, positions)
         detected = fit["status"] == "measured"

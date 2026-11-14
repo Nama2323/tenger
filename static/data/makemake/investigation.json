@@ -5,12 +5,13 @@
   "dataset_version": "a3-2026-11-14",
   "pipeline": {
     "version": "tenger-a2-2026.11.14",
-    "code_sha256": "53eaaa8d545f7e67ffa965df0ef431497d6304d2db2bd196157cbd5017c6441b",
+    "code_sha256": "1bad64bb73800341073b99621d3cf631f87b1d48d2e7d38808e2eec17b104687",
     "config_sha256": "2e9b52a511333bfbcc5a3cf0151f3a64682966baccc455b6bca32de865309612"
   },
   "request": {
     "mode": "object_following",
     "ephemeris": "JPL Horizons (docs/exposure inventory)",
+    "offset_reference": "Horizons geocentric position moved to the spacecraft (FITS X_SC/Y_SC/Z_SC; distance 52.743 au at 2026-01-01)",
     "cutout_deg": 0.0725
   },
   "coverage": {
@@ -8770,8 +8771,8 @@
         "v0-d1"
       ],
       "identification": "none",
-      "snr": 3.556,
-      "null_snr": -0.8587,
+      "snr": 3.5426,
+      "null_snr": -0.7266,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -8792,8 +8793,8 @@
         "v0-d2"
       ],
       "identification": "body",
-      "snr": 9.2654,
-      "null_snr": -1.4544,
+      "snr": 9.2644,
+      "null_snr": -1.429,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -8801,18 +8802,18 @@
         "limit.joint-fit-epochs"
       ],
       "status": "measured",
-      "value": 0.902,
-      "sigma": 0.378,
-      "east_arcsec": -0.249,
-      "north_arcsec": 0.867,
+      "value": 0.969,
+      "sigma": 0.377,
+      "east_arcsec": -0.319,
+      "north_arcsec": 0.915,
       "cov_arcsec2": [
         [
-          0.10152,
-          0.00686
+          0.09942,
+          0.00884
         ],
         [
-          0.00686,
-          0.14257
+          0.00884,
+          0.14216
         ]
       ]
     },
@@ -8825,8 +8826,8 @@
         "v0-d3"
       ],
       "identification": "candidate",
-      "snr": 6.3804,
-      "null_snr": 4.3161,
+      "snr": 6.2526,
+      "null_snr": 4.2687,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -8847,8 +8848,8 @@
         "v0-d4"
       ],
       "identification": "none",
-      "snr": 3.0396,
-      "null_snr": 1.2181,
+      "snr": 3.0742,
+      "null_snr": 1.216,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -8869,8 +8870,8 @@
         "v0-d5"
       ],
       "identification": "none",
-      "snr": 4.0115,
-      "null_snr": 0.2393,
+      "snr": 4.0206,
+      "null_snr": 0.2374,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -8891,8 +8892,8 @@
         "v0-d6"
       ],
       "identification": "none",
-      "snr": 1.123,
-      "null_snr": 2.2991,
+      "snr": 1.1637,
+      "null_snr": 2.2761,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -8913,8 +8914,8 @@
         "v1-d1"
       ],
       "identification": "candidate",
-      "snr": 13.0569,
-      "null_snr": 3.7766,
+      "snr": 13.0796,
+      "null_snr": 3.7533,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -8935,8 +8936,8 @@
         "v1-d2"
       ],
       "identification": "none",
-      "snr": 3.7339,
-      "null_snr": 1.4257,
+      "snr": 3.672,
+      "null_snr": 1.303,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -8957,8 +8958,8 @@
         "v1-d3"
       ],
       "identification": "none",
-      "snr": 2.6432,
-      "null_snr": 1.8961,
+      "snr": 2.6589,
+      "null_snr": 1.9112,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -8979,8 +8980,8 @@
         "v1-d4"
       ],
       "identification": "none",
-      "snr": 3.0045,
-      "null_snr": 5.9483,
+      "snr": 2.8722,
+      "null_snr": 5.9115,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -9001,8 +9002,8 @@
         "v1-d5"
       ],
       "identification": "none",
-      "snr": 2.3926,
-      "null_snr": -1.5309,
+      "snr": 2.3379,
+      "null_snr": -1.5596,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -9023,8 +9024,8 @@
         "v1-d6"
       ],
       "identification": "none",
-      "snr": 1.1973,
-      "null_snr": 3.632,
+      "snr": 1.2041,
+      "null_snr": 3.6402,
       "limitation_keys": [
         "limit.ephemeris-guided",
         "limit.gaussian-psf-model",
@@ -9047,23 +9048,23 @@
         "n_exposures": 21,
         "identification": "none",
         "reason_key": "measure.low-snr",
-        "snr": 3.556,
-        "offset_east_arcsec": 0.7795,
-        "offset_north_arcsec": 1.9376,
+        "snr": 3.5426,
+        "offset_east_arcsec": 0.7127,
+        "offset_north_arcsec": 1.942,
         "cov_arcsec2": [
           [
-            0.26374815778939226,
-            0.016770324920023477
+            0.2652551825135067,
+            0.017042887833801378
           ],
           [
-            0.016770324920022853,
-            0.2854908047312656
+            0.017042887833800875,
+            0.28293989255942925
           ]
         ],
-        "chi2_red": 1.2121,
+        "chi2_red": 1.1972,
         "null": {
           "status": "insufficient_data",
-          "snr": -0.8587,
+          "snr": -0.7266,
           "passes": true,
           "n_exposures": 17
         }
@@ -9076,23 +9077,23 @@
         "n_exposures": 23,
         "identification": "body",
         "reason_key": null,
-        "snr": 9.2654,
-        "offset_east_arcsec": -0.2492,
-        "offset_north_arcsec": 0.8668,
+        "snr": 9.2644,
+        "offset_east_arcsec": -0.319,
+        "offset_north_arcsec": 0.9155,
         "cov_arcsec2": [
           [
-            0.10151976292158421,
-            0.0068607965003962944
+            0.09941682203045882,
+            0.008843803125581359
           ],
           [
-            0.006860796500396324,
-            0.1425650914336658
+            0.008843803125581313,
+            0.14215528982722567
           ]
         ],
-        "chi2_red": 1.1602,
+        "chi2_red": 1.1609,
         "null": {
           "status": "insufficient_data",
-          "snr": -1.4544,
+          "snr": -1.429,
           "passes": true,
           "n_exposures": 7
         }
@@ -9105,23 +9106,23 @@
         "n_exposures": 18,
         "identification": "candidate",
         "reason_key": null,
-        "snr": 6.3804,
-        "offset_east_arcsec": 3.3804,
-        "offset_north_arcsec": 3.9828,
+        "snr": 6.2526,
+        "offset_east_arcsec": 3.3021,
+        "offset_north_arcsec": 4.0368,
         "cov_arcsec2": [
           [
-            0.10454178889166543,
-            0.004258214528035799
+            0.1057863538128645,
+            0.004378059649349641
           ],
           [
-            0.004258214528035773,
-            0.10656168630002959
+            0.004378059649349654,
+            0.10782156250886961
           ]
         ],
-        "chi2_red": 1.3129,
+        "chi2_red": 1.3263,
         "null": {
           "status": "insufficient_data",
-          "snr": 4.3161,
+          "snr": 4.2687,
           "passes": false,
           "n_exposures": 18
         }
@@ -9134,23 +9135,23 @@
         "n_exposures": 19,
         "identification": "none",
         "reason_key": "measure.low-snr",
-        "snr": 3.0396,
-        "offset_east_arcsec": 2.0152,
-        "offset_north_arcsec": 0.0308,
+        "snr": 3.0742,
+        "offset_east_arcsec": 1.9577,
+        "offset_north_arcsec": 0.0638,
         "cov_arcsec2": [
           [
-            0.4019797256813253,
-            -0.009193514420552008
+            0.400120849384859,
+            -0.008821258213475987
           ],
           [
-            -0.009193514420551812,
-            0.39722384129017213
+            -0.00882125821347624,
+            0.39449983889707696
           ]
         ],
-        "chi2_red": 1.0669,
+        "chi2_red": 1.0679,
         "null": {
           "status": "insufficient_data",
-          "snr": 1.2181,
+          "snr": 1.216,
           "passes": true,
           "n_exposures": 15
         }
@@ -9163,23 +9164,23 @@
         "n_exposures": 23,
         "identification": "none",
         "reason_key": "measure.low-snr",
-        "snr": 4.0115,
-        "offset_east_arcsec": -2.4522,
-        "offset_north_arcsec": 0.6412,
+        "snr": 4.0206,
+        "offset_east_arcsec": -2.5197,
+        "offset_north_arcsec": 0.772,
         "cov_arcsec2": [
           [
-            0.5513287871528076,
-            -0.008066456495561232
+            0.5530965314227037,
+            -0.009327957686594371
           ],
           [
-            -0.008066456495560991,
-            0.49921470384121686
+            -0.009327957686594127,
+            0.5043855685255829
           ]
         ],
-        "chi2_red": 0.9932,
+        "chi2_red": 0.995,
         "null": {
           "status": "insufficient_data",
-          "snr": 0.2393,
+          "snr": 0.2374,
           "passes": true,
           "n_exposures": 6
         }
@@ -9192,23 +9193,23 @@
         "n_exposures": 17,
         "identification": "none",
         "reason_key": "measure.low-snr",
-        "snr": 1.123,
-        "offset_east_arcsec": 5.0944,
-        "offset_north_arcsec": 2.6306,
+        "snr": 1.1637,
+        "offset_east_arcsec": 4.864,
+        "offset_north_arcsec": 2.6154,
         "cov_arcsec2": [
           [
-            1.0988017582324405,
-            -0.00779776035945692
+            1.065161470985358,
+            -0.02263667201776007
           ],
           [
-            -0.007797760359457879,
-            1.1884093037945218
+            -0.022636672017759967,
+            1.1611759217188922
           ]
         ],
-        "chi2_red": 0.8141,
+        "chi2_red": 0.8198,
         "null": {
           "status": "insufficient_data",
-          "snr": 2.2991,
+          "snr": 2.2761,
           "passes": true,
           "n_exposures": 18
         }
@@ -9221,23 +9222,23 @@
         "n_exposures": 18,
         "identification": "candidate",
         "reason_key": null,
-        "snr": 13.0569,
-        "offset_east_arcsec": 1.0542,
-        "offset_north_arcsec": -0.8199,
+        "snr": 13.0796,
+        "offset_east_arcsec": 0.9942,
+        "offset_north_arcsec": -0.732,
         "cov_arcsec2": [
           [
-            0.07921606863410342,
-            0.0011535776840429519
+            0.07947251104954883,
+            0.0011421385098526048
           ],
           [
-            0.0011535776840429705,
-            0.06586642419366082
+            0.0011421385098526107,
+            0.06604410630679719
           ]
         ],
-        "chi2_red": 1.6295,
+        "chi2_red": 1.6373,
         "null": {
           "status": "insufficient_data",
-          "snr": 3.7766,
+          "snr": 3.7533,
           "passes": false,
           "n_exposures": 18
         }
@@ -9250,23 +9251,23 @@
         "n_exposures": 19,
         "identification": "none",
         "reason_key": "measure.low-snr",
-        "snr": 3.7339,
-        "offset_east_arcsec": -0.4247,
-        "offset_north_arcsec": -0.0727,
+        "snr": 3.672,
+        "offset_east_arcsec": -0.4699,
+        "offset_north_arcsec": 0.013,
         "cov_arcsec2": [
           [
-            0.7472254669227617,
-            -0.03556707085301565
+            0.7646945183098052,
+            -0.037021254568177765
           ],
           [
-            -0.0355670708530155,
-            0.6427458859485732
+            -0.03702125456817797,
+            0.6560449630846524
           ]
         ],
-        "chi2_red": 17.0671,
+        "chi2_red": 17.1658,
         "null": {
           "status": "insufficient_data",
-          "snr": 1.4257,
+          "snr": 1.303,
           "passes": true,
           "n_exposures": 17
         }
@@ -9279,23 +9280,23 @@
         "n_exposures": 18,
         "identification": "none",
         "reason_key": "measure.low-snr",
-        "snr": 2.6432,
-        "offset_east_arcsec": -8.2121,
-        "offset_north_arcsec": -1.7093,
+        "snr": 2.6589,
+        "offset_east_arcsec": -8.2541,
+        "offset_north_arcsec": -1.6532,
         "cov_arcsec2": [
           [
-            0.05795156341552832,
-            -0.02217479515934089
+            0.058053496029849785,
+            -0.022359649303531903
           ],
           [
-            -0.022174795159340843,
-            0.0629402284457048
+            -0.022359649303531896,
+            0.0629959231481085
           ]
         ],
-        "chi2_red": 3.7501,
+        "chi2_red": 3.7527,
         "null": {
           "status": "insufficient_data",
-          "snr": 1.8961,
+          "snr": 1.9112,
           "passes": true,
           "n_exposures": 18
         }
@@ -9308,23 +9309,23 @@
         "n_exposures": 18,
         "identification": "none",
         "reason_key": "measure.low-snr",
-        "snr": 3.0045,
-        "offset_east_arcsec": 4.6725,
-        "offset_north_arcsec": -8.0281,
+        "snr": 2.8722,
+        "offset_east_arcsec": 4.59,
+        "offset_north_arcsec": -7.9102,
         "cov_arcsec2": [
           [
-            0.20622793240119497,
-            -0.010292957080882886
+            0.2086629631027349,
+            -0.010984928482806645
           ],
           [
-            -0.010292957080882984,
-            0.2490203689968773
+            -0.010984928482806572,
+            0.2489608526705918
           ]
         ],
-        "chi2_red": 1.2226,
+        "chi2_red": 1.2388,
         "null": {
           "status": "measured",
-          "snr": 5.9483,
+          "snr": 5.9115,
           "passes": false,
           "n_exposures": 17
         }
@@ -9337,23 +9338,23 @@
         "n_exposures": 19,
         "identification": "none",
         "reason_key": "measure.low-snr",
-        "snr": 2.3926,
-        "offset_east_arcsec": 2.1218,
-        "offset_north_arcsec": -1.3501,
+        "snr": 2.3379,
+        "offset_east_arcsec": 2.1508,
+        "offset_north_arcsec": -1.2988,
         "cov_arcsec2": [
           [
-            1.3699478292024907,
-            0.12208998518957992
+            1.3811979795578584,
+            0.13118172387935564
           ],
           [
-            0.1220899851895791,
-            1.4955746441309545
+            0.13118172387935761,
+            1.4982548246809388
           ]
         ],
-        "chi2_red": 1.6515,
+        "chi2_red": 1.653,
         "null": {
           "status": "insufficient_data",
-          "snr": -1.5309,
+          "snr": -1.5596,
           "passes": true,
           "n_exposures": 17
         }
@@ -9366,23 +9367,23 @@
         "n_exposures": 18,
         "identification": "none",
         "reason_key": "measure.low-snr",
-        "snr": 1.1973,
-        "offset_east_arcsec": -10.5757,
-        "offset_north_arcsec": -0.996,
+        "snr": 1.2041,
+        "offset_east_arcsec": -10.6045,
+        "offset_north_arcsec": -0.9356,
         "cov_arcsec2": [
           [
-            0.8926950044108614,
-            0.18636609634745846
+            0.8900114989723414,
+            0.18659586218459415
           ],
           [
-            0.18636609634745863,
-            0.8427411106941762
+            0.18659586218459367,
+            0.8432233838118783
           ]
         ],
         "chi2_red": 1.0417,
         "null": {
           "status": "insufficient_data",
-          "snr": 3.632,
+          "snr": 3.6402,
           "passes": false,
           "n_exposures": 18
         }
