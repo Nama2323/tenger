@@ -1,0 +1,26 @@
+1
+00:00:00,000 --> 00:00:04,000
+TENGER: see the sky change in NASA SPHEREx images.
+
+2
+00:00:04,000 --> 00:00:07,000
+Real images, 2010 and 2026: Barnard's Star moved.
+
+3
+00:00:07,000 --> 00:00:13,000
+We locked a Pluto forecast in GitHub
+before opening the newest images.
+
+4
+00:00:13,000 --> 00:00:19,000
+6 arcsec off: 3,000x closer than a straight line,
+but just outside our 95% region. A published miss.
+
+5
+00:00:19,000 --> 00:00:23,000
+We found why, and froze new forecasts for 2027.
+
+6
+00:00:23,000 --> 00:00:27,000
+Could SPHEREx see Planet X? We measured it: for the nominal
+Planet Nine, one image is 4 to 7 magnitudes too shallow.

@@ -1441,3 +1441,25 @@ Session A's verification: 345 Tercidina inside (D² 0.12); 4 ambiguous; 3 insuff
   - About 630 requests in all, every one to that origin: none to onrender.com, no `/api/` request, no console
     error. Screenshots `live-off-coords-*` and `live-off-name-*`.
   - Captures `home`, `about`, `about-footer` at 360/1280: no horizontal scroll.
+
+### Live site after the user's update of `main` (`4efc3e0`), and B9: the 30-second video, 15 Nov 2026
+
+- **Live check.**
+  - Files: all 1,577 on https://nama2323.github.io/tenger/ match `main`. 296 text files are byte-identical; 1,281
+    binaries return 200 at the exact size.
+  - Crawl: 52 pages and states, every button on 11 pages. 19,383 requests, all to nama2323.github.io; none failed,
+    none to onrender.com, `/api/` or `dev-fixtures`. No console error, and no page text names the base project.
+  - In the browser: the Planet X headline ("about 1 time in 4"), the 28% line and the ± note; the lessons (Session
+    A's exercises, 4 significant figures, z in the answer); the checked asteroid batch; the data-only footer; and the
+    live-search note for both coordinate and name search.
+- **B9 video** `docs/screens/demo/tenger-demo-30s.mp4`:
+  - 30.000 s (900 frames), 3,062,603 bytes, 1280×720, H.264 High, yuv420p, 30 fps, no audio.
+  - Captions are burned in from Chrome-rendered PNGs, since this ffmpeg has no text filters; there is a matching
+    `.srt` and a contact sheet.
+  - `make-video.mjs` records the deployed site shot by shot, and every caption number was checked against the data
+    files (README in that folder).
+  - Shot 2: AllWISE 2010 against SPHEREx 2026; the site has no 2MASS frames. Shot 6 adds "for the nominal Planet
+    Nine".
+- **Recording fix.** A headless Chrome left by a failed first run kept its port with a busy software GPU process.
+  Later runs connected to it, and the viewer drew about 2 frames a second. The script now uses a fresh port, Chrome
+  on the Mac's GPU (Metal), and always closes its Chrome.

@@ -1,5 +1,38 @@
 # Demo clips for the 30-second video
 
+## The 30-second video (task B9)
+
+`tenger-demo-30s.mp4`: **30.000 s** (900 frames), **3,062,603 bytes**, 1280×720, H.264 High, yuv420p, 30 fps, no
+audio track. English captions burned in (34 px, bottom, dark box, at most 2 lines), the same text and line breaks in
+`tenger-demo-30s.srt`, and one frame per shot in `tenger-demo-30s-contact.png`. Made with `make-video.mjs` from the
+deployed site (https://nama2323.github.io/tenger, `main` = `4efc3e0`) on 15 Nov 2026. Real screen recordings of the
+site only: no generated images, video, voice or music. The captions and the title card are text drawn by Chrome in
+the site's own font and stylesheet (`video/caption.html`, `video/title-card.html`).
+
+| Time | Shot | Caption | Checked against |
+|---|---|---|---|
+| 0–4 s | Home in 3D, the flight to Pluto, Pluto's images | TENGER: see the sky change in NASA SPHEREx images. | — |
+| 4–7 s | Barnard's Star blinking A ↔ B | Real images, 2010 and 2026: Barnard's Star moved. | Years read from the two frames' own labels while recording: "A · AllWISE 2010", "B · Aug 22, 2026" |
+| 7–13 s | The Pluto reveal: evaluation image, training track, frozen 95% region with "Frozen in git b2df072 on 2026-11-14 14:49 UTC" | We locked a Pluto forecast in GitHub before opening the newest images. | `trials/pluto-position-2026b` (prospective; team confirmation pending, shown on screen) |
+| 13–19 s | The straight line far away, the observed position, the verdict "Miss, D = 2.60 > 2.45" | 6 arcsec off: 3,000x closer than a straight line, but just outside our 95% region. A published miss. | `verification.json`: model 5.90″ (D² 6.77 > 5.991); straight line 19,870″ (5.52°), 3,368× farther |
+| 19–23 s | "Why we missed" on the Pluto card, then the open 2027 forecasts | We found why, and froze new forecasts for 2027. | `trials/pluto/postmortem.json`; open forecasts for 2027-04-25 and 2027-09-29 |
+| 23–27 s | Planet X Lab, "Measured by TENGER", the headline and the first curve | Could SPHEREx see Planet X? We measured it: for the nominal Planet Nine, one image is 4 to 7 magnitudes too shallow. | `planetx/depth.json`: the nominal Linder & Mordasini planet is 4.36 (0.8 µm), 5.32 (3.4 µm) and 7.28 (4.6 µm) mag below one exposure's 50% depth |
+| 27–30 s | Title card: TENGER: Predict the Sky, nama2323.github.io/tenger, the team, "Data: NASA SPHEREx via NASA/IPAC IRSA" | (the card's own text) | README team line |
+
+Two captions differ from the first brief:
+- **Shot 2:** the site has no 2MASS frames, so the blink is AllWISE 2010 against SPHEREx 2026 (the user's
+  replacement text).
+- **Shot 6:** adds "for the nominal Planet Nine". 4 to 7 magnitudes is the nominal planet; the closest published case
+  (280 AU) is only 0.36 mag short and one exposure would catch it about 1 time in 4, as the page itself says.
+
+While recording, every shot's page was checked:
+- no exception;
+- no request to `dev-fixtures` or onrender.com;
+- the page HTML names neither the base project nor its author.
+
+Re-make: `node docs/screens/demo/make-video.mjs` (Chrome with the Mac's GPU, ffmpeg, Node 22+; about 3 minutes);
+`ONLY=<shot id>` records one shot and prints its frame times.
+
 Silent clips of the **public site** (no `?fixtures`, real data only), recorded on 15 Nov 2026 from a local
 server with `record.mjs` in this folder. Every clip: MP4, H.264 (High), yuv420p, 1280×720, 30 fps, no audio.
 During recording the page made no request to `dev-fixtures` and threw no error (`clips.json`).
