@@ -12,4 +12,4 @@
 **Needs your decision.**
 1. Team statement: confirm that nobody viewed the 8 asteroids' images (or Pluto's evaluation visit). Until then both stay "pending".
 2. `main` is at `8fea8b9`, before the asteroid freeze. To publish A9 and A10: `git fetch origin && git push origin origin/tenger-dev:main`.
-3. Whether the site and video should mention the exploratory 7-of-7 result. It is labelled exploratory everywhere and is never the calibration.
+3. Decided by the user (15 Nov): keep the 7-of-7 result on the site and in the submission text, always labelled exploratory, never as the calibration.

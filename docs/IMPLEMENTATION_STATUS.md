@@ -28,6 +28,13 @@ the repository public and enabling Pages (`docs/RELEASE.md`).
 **Checks:** `pytest` 207 passed, 2 skipped; `node --test` 207 passed (after rebasing on Session B's `1a4f27a`);
 validator 120 files, 0 failures; audit exit 0.
 
+**User decisions, 15 Nov:**
+- The base code is named only in README's Licence line; LICENSE and git history are unchanged. The
+  `credit.base-project` key was removed (`5bfa3d3`).
+- The exploratory 7-of-7 Horizons result stays on the site and in the submission text. It is always
+  labelled exploratory, never the calibration.
+- The team statement for the asteroid batch and Pluto will come later today.
+
 ### Task A9, 15 Nov 2026 (blind asteroid batch with a calibration result; contract V13)
 
 | Step | Files and commits | Result |
