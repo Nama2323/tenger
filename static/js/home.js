@@ -4,7 +4,7 @@ import { parseDec, parseRa } from './coords.js';
 import { $, el, prefersReducedMotion } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { AU_PER_UNIT, RINGS, mapRadius, placeOnMap } from './map.js';
-import { isViewable } from './targets.js';
+import { isLegacyOnly, isViewable } from './targets.js';
 
 const BLINK_MS = 900;
 const LABEL_SIDES = ['label-right', 'label-left', 'label-below', 'label-above'];
@@ -32,7 +32,7 @@ export function predictionLabel(entry) {
   return entry.prediction.status ? t(`trial.${entry.prediction.status}`) : t('trial.none');
 }
 
-const statusLabel = (entry) => t(`data.${entry.dataStatus}`);
+export const statusLabel = (entry) => (isLegacyOnly(entry) ? t('data.legacyOnly') : t(`data.${entry.dataStatus}`));
 const hookOf = (entry) => (has(`hook_${entry.key}`) ? t(`hook_${entry.key}`) : null);
 export const kindLabel = (kind) => t(has(`kind${kind}`) ? `kind${kind}` : 'kindother');
 
@@ -88,8 +88,10 @@ function plannedCard(entry) {
     el('span', { class: 'card-words' }, [
       el('strong', { text: entryName(entry) }),
       el('small', { text: hookOf(entry) }),
-      el('small', { class: 'card-status', text: entry.seeOnly ? `${statusLabel(entry)} · ${t('trial.see_only')}` : statusLabel(entry) }),
-      entry.statusReasonKey ? el('small', { class: 'card-status', text: tData(entry.statusReasonKey, 'explain.unknown') }) : null,
+      el('small', { class: 'card-status', text: [
+        entry.statusReasonKey ? t('data.unavailableBecause', { reason: tData(entry.statusReasonKey, 'explain.unknown') }) : statusLabel(entry),
+        entry.seeOnly ? t('trial.see_only') : null,
+      ].filter(Boolean).join(' · ') }),
     ]),
   ]);
 }

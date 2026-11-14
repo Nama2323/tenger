@@ -9,6 +9,7 @@ import { parseCoordinates, separationDeg } from './coords.js';
 import { $, chip, dataTable, el, formatNumber, formatUtc, prefersReducedMotion } from './dom.js';
 import {
   bindCoordinateSearch, buildFovOptions, entryName, fillCoordinates, kindLabel, placeMapLabels, predictionLabel, renderHome, startBlinking,
+  statusLabel,
 } from './home.js';
 import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
 import { findByName, searchMatches } from './names.js';
@@ -27,7 +28,7 @@ import {
   channelWavelength, CHANNELS, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
   selectBand, skyToPixel, visitsOf, wellCovered,
 } from './stack.js';
-import { buildTargets, canonicalKey, findCoveringTarget, isViewable, legacyPlaces } from './targets.js';
+import { buildTargets, canonicalKey, findCoveringTarget, isLegacyOnly, isViewable, legacyPlaces } from './targets.js';
 import { canvasToPlate, fullView, panBy, zoomAt } from './viewport.js';
 
 const POLL_MS = 1500;
@@ -444,10 +445,21 @@ function idsBlock(picture) {
   ]);
 }
 
+/**
+ * Where the viewer's frames come from: 'rebuilt' when the evidence file says the bundle was rebuilt from its
+ * own exposures (legacy: null, DATA-CONTRACT V3.1/V3.5), 'legacy' for older prepared frames, 'live' otherwise.
+ */
+function framesKind() {
+  if (!state.target?.key) return 'live';
+  const doc = app.investigation?.state === 'ok' ? app.investigation.doc : null;
+  return doc && doc.legacy === null && state.staticMeta?.dataset_version ? 'rebuilt' : 'legacy';
+}
+
 function statusNote(picture) {
   if (picture.status === 'context') return t('statusNote.context');
   if (picture.status === 'difference') return t('statusNote.difference');
-  return `${t(`statusNote.${picture.combine}`)} ${state.target?.key ? t('statusNote.legacy') : ''}`.trim();
+  const kind = framesKind();
+  return `${t(`statusNote.${picture.combine}`)} ${kind === 'live' ? '' : t(`statusNote.${kind}`)}`.trim();
 }
 
 function captionColumn(letter, picture, side) {
@@ -1017,7 +1029,8 @@ function describeTarget(target, fov) {
   const chips = [];
   if (entry) {
     chips.push(chip(t(`role.${entry.role}`)));
-    chips.push(chip(isViewable(entry) ? t('data.legacy') : t(`data.${entry.dataStatus}`)));
+    chips.push(chip(isViewable(entry) ? t(`data.${framesKind()}`) : statusLabel(entry)));
+    if (isLegacyOnly(entry)) chips.push(chip(t('data.legacyOnly')));
     chips.push(chip(predictionLabel(entry)));
   } else {
     chips.push(chip(t('kindcustom')));
@@ -1336,9 +1349,12 @@ async function refreshPanels() {
   const custom = !entry;
   await ensureInvestigation();
   renderChanged($('changed-validated'), { investigation: app.investigation, custom });
+  if (entry && state.target) describeTarget(state.target, Number($('fov').value) || state.target.fov || DEFAULT_FOV);
+  captionKey = '';
+  render();
   renderEvidence($('evidence-body'), {
     investigation: app.investigation,
-    legacy: { frames: state.frames, meta: state.staticMeta, custom },
+    legacy: { frames: state.frames, meta: state.staticMeta, custom, kind: framesKind() },
     epochs: app.investigation?.state === 'ok' ? epochCoverage(app.investigation.doc, state.visits.map((visit) => visit.visit)) : null,
   });
   renderSpectrumNote($('spectrum-note'), { investigation: app.investigation });
@@ -1844,7 +1860,7 @@ function thumbsOf(entry) {
       kind: 'index',
       frames: listed.slice(0, 2).map((thumb) => ({
         src: thumb.src,
-        label: thumb.time_utc ? String(thumb.time_utc).slice(0, 10) : tData(thumb.label_key, 'explain.unknown'),
+        label: thumb.time_utc ? String(thumb.time_utc).slice(0, 10) : '',
       })),
     };
   }

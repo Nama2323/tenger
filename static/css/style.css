@@ -764,6 +764,7 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 .chart .area { stroke: none; fill: var(--accent); opacity: 0.16; }
 #panel-spectrum .chart { max-width: 760px; }
 
+.missing-measurements summary { min-height: var(--tap); display: flex; align-items: center; cursor: pointer; color: var(--solar); font-weight: 600; }
 .data-table summary { min-height: var(--tap); display: flex; align-items: center; cursor: pointer; color: var(--solar); font-weight: 600; }
 .table-scroll { overflow-x: auto; max-height: 420px; overflow-y: auto; }
 .data-table table { width: 100%; border-collapse: collapse; font-size: 14px; }

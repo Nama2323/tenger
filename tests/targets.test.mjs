@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { distanceInAu, mapRadius, placeOnMap, RINGS } from '../static/js/map.js';
-import { buildTargets, colourOf, findCoveringTarget, isViewable, legacyPlaces, OFFICIAL_KEYS } from '../static/js/targets.js';
+import { buildTargets, colourOf, findCoveringTarget, isLegacyOnly, isViewable, legacyPlaces, OFFICIAL_KEYS } from '../static/js/targets.js';
 
 const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const legacy = read('../static/data/targets.json');
@@ -28,6 +28,15 @@ test('with the fixture index: its targets, statuses and map data are used', () =
   assert.ok(barnard.legacy, 'viewer frames still come from the legacy target');
   assert.equal(entries.find((entry) => entry.key === 'planet-nine').colour, 'hypothetical');
   assert.equal(entries.filter((entry) => entry.official).length, 5);
+});
+
+test('with the real index: all five challenge targets stay viewable, unvalidated ones are marked legacy-only', () => {
+  const realIndex = read('../static/data/index.json');
+  const entries = buildTargets(realIndex, legacy);
+  for (const key of OFFICIAL_KEYS) assert.ok(isViewable(entries.find((entry) => entry.key === key)), key);
+  const unvalidated = entries.filter((entry) => entry.official && realIndex.targets.find((target) => target.key === entry.key)?.data_status === 'unavailable');
+  for (const entry of unvalidated) assert.equal(isLegacyOnly(entry), true, entry.key);
+  for (const key of ['makemake', 'pluto', '3i-atlas']) assert.equal(isViewable(entries.find((entry) => entry.key === key)), false, key);
 });
 
 test('colour families', () => {

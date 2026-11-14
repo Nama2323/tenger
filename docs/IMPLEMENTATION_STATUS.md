@@ -310,3 +310,33 @@ scoreboard page from `scoreboard.json`, the Beat the physics round player, and p
 
 **Next action (proposed)**: when Session A publishes the real rounds, play each one at 360 and 1280 px and
 re-capture `docs/screens/`; then the scoreboard page and printable lessons (phase G/H).
+
+### B2 follow-up, 14 Nov 2026 (after Session A's `1c6715a`: first real investigation, index, reserved, strings)
+
+Requested by Session A:
+
+- **Paths with spaces**: `tests/contract.test.mjs` and `tests/i18n.test.mjs` built folder paths from
+  `URL.pathname`, which keeps `%20` and failed with ENOENT in `/Users/…/Hackathon Astrolemma`. Both now use
+  `fileURLToPath`. Checked by copying `static/` and `tests/` into a scratch folder whose path has a space:
+  105/105 pass there.
+- **New data keys** (`limit.blended-binary`, `limit.few-visits-parallax`, `limit.visit-systematics`,
+  `quantity.parallax_arcsec`): the copied block in `js/i18n.js` is regenerated from `strings.en.json`
+  (71 keys). The test keeps failing on any key Session A adds later until it is copied; at run time the page
+  fills such keys from the file, so users never see a raw key.
+
+Real data now on the site (`data/index.json`, `data/barnard/investigation.json`, rebuilt Barnard bundle):
+
+- Home: the map draws 7 targets at Session A's cited distances (Gaia DR3 / SIMBAD parallaxes, JPL Horizons);
+  3I/ATLAS has no distance and is listed as unplaced. Prediction statuses read "No prediction published yet".
+- Barnard: chip "Frames from the investigation (quality-gated DR1/QR3)" because the evidence file has
+  `legacy: null` and the bundle carries `dataset_version` (V3.1/V3.5); A/B dates are the file's
+  `viewer.visits` (2025-08-29, 2026-03-20, 2026-08-22). What changed shows Session A's explanations, the
+  SPHEREx proper motion next to the Gaia catalogue value (content chips "Measured" / "Catalogue"), the values
+  that could not be measured folded away with their reasons, and the limitations once. Evidence covers all
+  18 epochs. No comparison allows a difference image, so Difference stays off with its reason.
+- WISE 0855, ε Indi B, RW Aur, R Dra: the index says `unavailable` (`unavailable.no-validated-product`).
+  Their bundled frames stay viewable so the five-target viewer is kept (CLAUDE.md), labelled
+  "Legacy frames only; no validated product yet" and "Prepared frames (legacy, not yet re-validated)". If
+  the team prefers to hide them until validated, it is one line in `isViewable` (`js/targets.js`).
+- `node --test tests/*.mjs`: **105 passed** (adds a test that all five challenge targets stay viewable with the
+  real index while unvalidated ones are marked legacy-only). Screenshots regenerated (see below).

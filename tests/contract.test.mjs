@@ -2,10 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { checkSchema, createSource, isSafePath } from '../static/js/contract.js';
 
-const FIXTURES = new URL('../static/dev-fixtures/', import.meta.url).pathname;
-const DATA = new URL('../static/data/', import.meta.url).pathname;
+// fileURLToPath, not URL.pathname: a checkout path may contain spaces ("Hackathon Astrolemma").
+const FIXTURES = fileURLToPath(new URL('../static/dev-fixtures/', import.meta.url));
+const DATA = fileURLToPath(new URL('../static/data/', import.meta.url));
 
 function jsonFiles(folder) {
   return readdirSync(folder).flatMap((name) => {

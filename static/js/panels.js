@@ -53,18 +53,36 @@ export function renderChanged(host, { investigation, custom }) {
     return;
   }
   const doc = investigation.doc;
-  const items = (doc.measurements ?? []).map((measurement) => el('li', { class: 'measurement' }, [
+  const measurements = doc.measurements ?? [];
+  const valued = measurements.filter((measurement) => measurement.value !== null && measurement.value !== undefined);
+  const missing = measurements.filter((measurement) => !valued.includes(measurement));
+  const missingList = missing.length ? el('details', { class: 'missing-measurements' }, [
+    el('summary', { text: t('changed.missingCount', { count: String(missing.length) }) }),
+    el('ul', { class: 'measurements' }, missing.map(measurementItem)),
+  ]) : null;
+  const limitations = [...new Set([...(doc.limitation_keys ?? []), ...measurements.flatMap((item) => item.limitation_keys ?? [])])];
+  host.replaceChildren(...[
+    exampleStamp(doc),
+    ...(doc.explanation ?? []).map((item) => el('p', { text: explanationText(item) })),
+    valued.length ? el('ul', { class: 'measurements' }, valued.map(measurementItem)) : note(t('changed.waiting')),
+    missingList,
+    limitations.length ? el('div', {}, [
+      el('h4', { text: t('pred.limitations') }),
+      el('ul', {}, limitations.map((key) => el('li', { text: tData(key, 'limit.unknown') }))),
+    ]) : null,
+  ].filter(Boolean));
+}
+
+function measurementItem(measurement) {
+  const inputs = Array.isArray(measurement.inputs) && measurement.inputs.length <= 2 ? measurement.inputs.join(' → ') : null;
+  return el('li', { class: 'measurement' }, [
     el('strong', { text: quantityLabel(measurement.quantity) }),
     el('span', { class: 'measurement-value', text: measurementValue(measurement) }),
     chip(t(`content.${measurement.content_type}`), `chip-${measurement.content_type}`),
-    chip(t(`mstatus.${measurement.status}`)),
-    ...(measurement.limitation_keys ?? []).map((key) => el('small', { text: tData(key, 'limit.unknown') })),
-  ]));
-  host.replaceChildren(
-    ...[exampleStamp(doc)].filter(Boolean),
-    items.length ? el('ul', { class: 'measurements' }, items) : note(t('changed.waiting')),
-    ...(doc.explanation ?? []).map((item) => el('p', { text: explanationText(item) })),
-  );
+    measurement.status !== 'measured' ? chip(t(`mstatus.${measurement.status}`)) : null,
+    inputs ? el('small', { text: t('changed.inputs', { inputs }) }) : null,
+    measurement.status_reason_key ? el('small', { text: tData(measurement.status_reason_key, 'explain.unknown') }) : null,
+  ]);
 }
 
 // ---------- Prediction ----------
@@ -344,7 +362,7 @@ function legacyEvidence(legacy) {
   })).join(', ');
   return [
     el('h3', { text: t('evidence.legacyTitle') }),
-    note(custom ? t('evidence.custom') : t('evidence.legacyLead')),
+    note(custom ? t('evidence.custom') : t(legacy.kind === 'rebuilt' ? 'evidence.rebuiltLead' : 'evidence.legacyLead')),
     factList([
       [t('evidence.frames'), t('evidence.framesValue', {
         shown: String(frames.length), total: String(meta?.total ?? '—'), available: String(meta?.available ?? '—'),

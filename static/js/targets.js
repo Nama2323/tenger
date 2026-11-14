@@ -141,8 +141,15 @@ export function buildTargets(index, legacyPresets = []) {
   return entries;
 }
 
-/** Whether the viewer has prepared frames to show for this entry. */
-export const isViewable = (entry) => Boolean(entry?.legacy) && entry.dataStatus !== 'unavailable';
+/**
+ * Whether the viewer has bundled frames to show. The five challenge targets stay viewable even when the
+ * index has no validated product for them yet (CLAUDE.md: keep the five-target viewer); the labels then
+ * say "legacy frames only".
+ */
+export const isViewable = (entry) => Boolean(entry?.legacy);
+
+/** Bundled frames exist, but the index lists no validated product for the target. */
+export const isLegacyOnly = (entry) => isViewable(entry) && entry.fromIndex && entry.dataStatus === 'unavailable';
 
 /** The prepared field that contains a position, nearest centre first. */
 export function findCoveringTarget(entries, ra, dec) {

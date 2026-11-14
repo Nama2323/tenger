@@ -1,9 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { currentLanguage, englishKeys, has, t, tData } from '../static/js/i18n.js';
 
-const STATIC = new URL('../static/', import.meta.url).pathname;
+// fileURLToPath, not URL.pathname: a checkout path may contain spaces ("Hackathon Astrolemma").
+const STATIC = fileURLToPath(new URL('../static/', import.meta.url));
 const html = readFileSync(`${STATIC}index.html`, 'utf8');
 const scripts = readdirSync(`${STATIC}js`).filter((name) => name.endsWith('.js'))
   .map((name) => ({ name, source: readFileSync(`${STATIC}js/${name}`, 'utf8') }));
