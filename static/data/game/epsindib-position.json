@@ -1,0 +1,267 @@
+{
+  "schema_version": "tenger.game_round/1",
+  "contract_version": 6,
+  "round_id": "epsindib-position",
+  "trial_id": "epsindib-position-2026b",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "confirmation_pending": false,
+  "quantity": "position",
+  "units": "arcsec",
+  "derived_from": [
+    {
+      "path": "trials/epsindib-position-2026b/prediction.json",
+      "sha256": "4d3d7add45f007a524ac6b5fbd055e0940101c5dd398cc553537a62c455dffc2"
+    },
+    {
+      "path": "trials/epsindib-position-2026b/verification.json",
+      "sha256": "c6a1e9d8afcf74de0ddc4cebca9fbb7f1ababb20dd47a0f723132293130a704e"
+    },
+    {
+      "path": "trials/epsindib-position-2026b/training.json",
+      "sha256": "bb7494eda1c49e276e4870753137ae24ed6a3b4afd71d4296343cb53999cb5be"
+    }
+  ],
+  "frame": {
+    "kind": "tangent plane, east/north arcsec",
+    "centre_ra_deg": 331.09814317,
+    "centre_dec_deg": -56.80137992,
+    "centre_is": "the frozen model at the reveal time",
+    "east_left": true
+  },
+  "training_points": [
+    {
+      "t_mjd": 60792.842595,
+      "east_arcsec": -5.252,
+      "north_arcsec": 4.22,
+      "n_exposures": 2,
+      "visit": 0,
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60809.029686,
+      "east_arcsec": -4.974,
+      "north_arcsec": 3.799,
+      "n_exposures": 32,
+      "visit": 0,
+      "detector": 2,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60801.630042,
+      "east_arcsec": -5.067,
+      "north_arcsec": 3.859,
+      "n_exposures": 25,
+      "visit": 0,
+      "detector": 3,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60791.982773,
+      "east_arcsec": -5.06,
+      "north_arcsec": 3.978,
+      "n_exposures": 3,
+      "visit": 0,
+      "detector": 4,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60809.791696,
+      "east_arcsec": -4.991,
+      "north_arcsec": 3.772,
+      "n_exposures": 28,
+      "visit": 0,
+      "detector": 5,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60802.125428,
+      "east_arcsec": -4.889,
+      "north_arcsec": 3.69,
+      "n_exposures": 23,
+      "visit": 0,
+      "detector": 6,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60958.777653,
+      "east_arcsec": -3.925,
+      "north_arcsec": 2.227,
+      "n_exposures": 13,
+      "visit": 1,
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60959.267638,
+      "east_arcsec": -3.881,
+      "north_arcsec": 2.339,
+      "n_exposures": 25,
+      "visit": 1,
+      "detector": 2,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60954.343585,
+      "east_arcsec": -4.023,
+      "north_arcsec": 2.407,
+      "n_exposures": 23,
+      "visit": 1,
+      "detector": 3,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60963.490983,
+      "east_arcsec": -3.915,
+      "north_arcsec": 2.388,
+      "n_exposures": 21,
+      "visit": 1,
+      "detector": 4,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60960.45116,
+      "east_arcsec": -3.842,
+      "north_arcsec": 2.339,
+      "n_exposures": 24,
+      "visit": 1,
+      "detector": 5,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60954.58641,
+      "east_arcsec": -3.719,
+      "north_arcsec": 2.208,
+      "n_exposures": 22,
+      "visit": 1,
+      "detector": 6,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61152.463776,
+      "east_arcsec": -1.329,
+      "north_arcsec": 1.615,
+      "n_exposures": 14,
+      "visit": 2,
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61155.878218,
+      "east_arcsec": -1.13,
+      "north_arcsec": 1.502,
+      "n_exposures": 7,
+      "visit": 2,
+      "detector": 2,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61159.904634,
+      "east_arcsec": -1.219,
+      "north_arcsec": 1.323,
+      "n_exposures": 12,
+      "visit": 2,
+      "detector": 3,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61152.141672,
+      "east_arcsec": -1.382,
+      "north_arcsec": 1.546,
+      "n_exposures": 17,
+      "visit": 2,
+      "detector": 4,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61155.975886,
+      "east_arcsec": -1.099,
+      "north_arcsec": 1.636,
+      "n_exposures": 6,
+      "visit": 2,
+      "detector": 5,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61159.965845,
+      "east_arcsec": -0.956,
+      "north_arcsec": 1.253,
+      "n_exposures": 11,
+      "visit": 2,
+      "detector": 6,
+      "content_type": "measured"
+    }
+  ],
+  "reveal_t_mjd": 61310.861843,
+  "baseline": {
+    "east_arcsec": 0.101,
+    "north_arcsec": 0.169,
+    "cov_arcsec2": [
+      [
+        0.003296,
+        -2.7e-05
+      ],
+      [
+        -2.7e-05,
+        0.003359
+      ]
+    ]
+  },
+  "model": {
+    "east_arcsec": 0.0,
+    "north_arcsec": 0.0,
+    "region_d2": 5.991464547107979,
+    "cov_arcsec2": [
+      [
+        0.025269,
+        -0.0027
+      ],
+      [
+        -0.0027,
+        0.026334
+      ]
+    ]
+  },
+  "actual": {
+    "east_arcsec": 0.0098,
+    "north_arcsec": -0.0749,
+    "cov_arcsec2": [
+      [
+        0.000474,
+        -0.000156
+      ],
+      [
+        -0.000156,
+        0.000515
+      ]
+    ],
+    "image": {
+      "path": "epsindib/epochs/v3-d6.webp",
+      "content_type": "processed",
+      "epoch_id": "v3-d6",
+      "centre_ra_deg": 331.09635,
+      "centre_dec_deg": -56.801136,
+      "scale_arcsec_px": 1.5,
+      "width_px": 240,
+      "height_px": 240,
+      "north_up": true,
+      "east_left": true
+    }
+  },
+  "outcome": {
+    "model": "hit",
+    "model_error_arcsec": 0.0755,
+    "model_d2": 0.2088,
+    "baseline": "miss",
+    "baseline_error_arcsec": 0.2599
+  },
+  "scoring": {
+    "formula": "exp_decay_v1",
+    "scale": 0.4136,
+    "scale_source": "frozen model 95% semi-major axis (prediction.json)"
+  }
+}

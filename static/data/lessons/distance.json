@@ -1,0 +1,155 @@
+{
+  "schema_version": "tenger.lesson/1",
+  "contract_version": 6,
+  "lesson_id": "distance",
+  "title_key": "lesson.distance.title",
+  "grade_band": "8-11",
+  "investigation_key": "pluto",
+  "formula_key": "lesson.distance.formula",
+  "worked_example": {
+    "prompt_key": "lesson.distance.worked",
+    "inputs": [
+      {
+        "name": "visit1_ra_deg",
+        "value": 304.150611,
+        "unit": "deg",
+        "content_type": "measured",
+        "synthetic": false,
+        "source_ref": "trials/pluto-position-2026b/training.json"
+      },
+      {
+        "name": "visit1_dec_deg",
+        "value": -23.615572,
+        "unit": "deg",
+        "content_type": "measured",
+        "synthetic": false,
+        "source_ref": "trials/pluto-position-2026b/training.json"
+      },
+      {
+        "name": "visit1_mjd",
+        "value": 60952.914134,
+        "unit": "d",
+        "content_type": "measured",
+        "synthetic": false,
+        "source_ref": "trials/pluto-position-2026b/training.json"
+      },
+      {
+        "name": "visit2_ra_deg",
+        "value": 308.528103,
+        "unit": "deg",
+        "content_type": "measured",
+        "synthetic": false,
+        "source_ref": "trials/pluto-position-2026b/training.json"
+      },
+      {
+        "name": "visit2_dec_deg",
+        "value": -22.89244,
+        "unit": "deg",
+        "content_type": "measured",
+        "synthetic": false,
+        "source_ref": "trials/pluto-position-2026b/training.json"
+      },
+      {
+        "name": "visit2_mjd",
+        "value": 61156.804893,
+        "unit": "d",
+        "content_type": "measured",
+        "synthetic": false,
+        "source_ref": "trials/pluto-position-2026b/training.json"
+      }
+    ],
+    "answer": {
+      "value": 4.0862,
+      "unit": "deg",
+      "derived_by": "scripts/build_records.py",
+      "note": "great-circle angle between the mean training positions of two SPHEREx visits"
+    }
+  },
+  "exercises": [
+    {
+      "id": "q1",
+      "prompt_key": "lesson.distance.q1",
+      "inputs": [
+        {
+          "name": "separation_deg",
+          "value": 4.086182,
+          "unit": "deg",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "trials/pluto-position-2026b/training.json"
+        },
+        {
+          "name": "days",
+          "value": 203.890759,
+          "unit": "d",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "trials/pluto-position-2026b/training.json"
+        }
+      ],
+      "answer": {
+        "value": 0.02004,
+        "unit": "deg/d"
+      }
+    },
+    {
+      "id": "q2",
+      "prompt_key": "lesson.distance.q2",
+      "inputs": [
+        {
+          "name": "distance_au",
+          "value": 35.3421,
+          "unit": "au",
+          "content_type": "modeled",
+          "synthetic": false,
+          "source_ref": "trials/pluto-position-2026b/prediction.json"
+        },
+        {
+          "name": "au_light_minutes",
+          "value": 8.316746,
+          "unit": "min",
+          "content_type": "catalogue",
+          "synthetic": false,
+          "source_ref": "IAU 2012 astronomical unit and the speed of light"
+        }
+      ],
+      "answer": {
+        "value": 4.899,
+        "unit": "h"
+      }
+    },
+    {
+      "id": "q3",
+      "prompt_key": "lesson.distance.q3",
+      "inputs": [
+        {
+          "name": "parallax_arcsec",
+          "value": 0.546976,
+          "unit": "arcsec",
+          "content_type": "catalogue",
+          "synthetic": false,
+          "source_ref": "Gaia DR3 (barnard/investigation.json)"
+        }
+      ],
+      "answer": {
+        "value": 1.8282,
+        "unit": "pc"
+      }
+    }
+  ],
+  "teacher_note_key": "lesson.distance.teacher",
+  "derived_from": [
+    {
+      "path": "trials/pluto-position-2026b/training.json",
+      "sha256": "1bd012f933012389d0b63285108e396ddb6ef672efe5c0d1c25c0af8d5ef3d37"
+    },
+    {
+      "path": "trials/pluto-position-2026b/prediction.json",
+      "sha256": "809e7af155b70b6f736e9157122ad1e12030d191bd1a516d472eb37ed6f5cc3c"
+    },
+    {
+      "path": "barnard/investigation.json",
+      "sha256": "d59974ade26e2cd57d24987ede45367eb1efd439aab37e06aec6ff7929168a93"
+    }
+  ]
+}

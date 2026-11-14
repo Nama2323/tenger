@@ -6,7 +6,8 @@ import pytest
 
 DATA = Path(__file__).resolve().parent.parent / "static" / "data"
 KEY_FIELDS = ("reason_key", "status_reason_key", "label_key", "rule_key", "until_key", "explain_key", "key",
-              "method_key", "name_key")
+              "method_key", "name_key", "prompt_key", "title_key", "formula_key", "teacher_note_key",
+              "selection_rule_key", "note_key")
 LIST_KEY_FIELDS = ("limitation_keys", "reason_keys", "credits_keys")
 
 
@@ -28,7 +29,7 @@ def collect_keys(node, found):
                 found.add(value)
             if field == "key" and isinstance(value, str) and value.startswith(("explain.", "limit.")):
                 found.add(value)
-            if field in LIST_KEY_FIELDS and isinstance(value, list):
+            if field in ("limitation_keys", "reason_keys", "credits_keys", "exclusion_rules_keys") and isinstance(value, list):
                 found.update(item for item in value if isinstance(item, str))
             if field == "quantity" and isinstance(value, str):
                 found.add(f"quantity.{value}")
@@ -41,7 +42,8 @@ def collect_keys(node, found):
 def test_every_data_key_has_english_text():
     strings = load("strings.en.json")["strings"]
     found = set()
-    for path in [*investigations(), DATA / "index.json", DATA / "reserved.json"]:
+    extra = [*DATA.glob("trials/*/*.json"), *DATA.glob("game/*.json"), *DATA.glob("lessons/*.json"), DATA / "scoreboard.json"]
+    for path in [*investigations(), DATA / "index.json", DATA / "reserved.json", *extra]:
         if path.exists():
             collect_keys(json.loads(path.read_text()), found)
     found = {key for key in found if not key.startswith("target.")}

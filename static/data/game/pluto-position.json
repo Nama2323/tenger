@@ -1,0 +1,159 @@
+{
+  "schema_version": "tenger.game_round/1",
+  "contract_version": 6,
+  "round_id": "pluto-position",
+  "trial_id": "pluto-position-2026b",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "confirmation_pending": true,
+  "quantity": "position",
+  "units": "arcsec",
+  "derived_from": [
+    {
+      "path": "trials/pluto-position-2026b/prediction.json",
+      "sha256": "809e7af155b70b6f736e9157122ad1e12030d191bd1a516d472eb37ed6f5cc3c"
+    },
+    {
+      "path": "trials/pluto-position-2026b/verification.json",
+      "sha256": "cbeb79c308b7973c62f6a2486992bda498c8493dd26eaddd654f4f8ef5db3548"
+    },
+    {
+      "path": "trials/pluto-position-2026b/training.json",
+      "sha256": "1bd012f933012389d0b63285108e396ddb6ef672efe5c0d1c25c0af8d5ef3d37"
+    }
+  ],
+  "frame": {
+    "kind": "tangent plane, east/north arcsec",
+    "centre_ra_deg": 306.09653606,
+    "centre_dec_deg": -23.71915129,
+    "centre_is": "the frozen model at the reveal time",
+    "east_left": true
+  },
+  "training_points": [
+    {
+      "t_mjd": 60956.865268,
+      "east_arcsec": -6481.807,
+      "north_arcsec": 319.351,
+      "n_exposures": 9,
+      "visit": 1,
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60954.051377,
+      "east_arcsec": -6451.649,
+      "north_arcsec": 322.795,
+      "n_exposures": 11,
+      "visit": 1,
+      "detector": 2,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60947.826862,
+      "east_arcsec": -6325.832,
+      "north_arcsec": 346.073,
+      "n_exposures": 10,
+      "visit": 1,
+      "detector": 3,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60955.716976,
+      "east_arcsec": -6474.083,
+      "north_arcsec": 319.566,
+      "n_exposures": 1,
+      "visit": 1,
+      "detector": 4,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61156.779673,
+      "east_arcsec": 8068.233,
+      "north_arcsec": 2909.931,
+      "n_exposures": 15,
+      "visit": 2,
+      "detector": 1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61156.899469,
+      "east_arcsec": 8070.564,
+      "north_arcsec": 2909.063,
+      "n_exposures": 4,
+      "visit": 2,
+      "detector": 4,
+      "content_type": "measured"
+    }
+  ],
+  "reveal_t_mjd": 61314.164221,
+  "baseline": {
+    "east_arcsec": 19253.505,
+    "north_arcsec": 4886.402,
+    "cov_arcsec2": [
+      [
+        2875.564504,
+        92.627641
+      ],
+      [
+        92.627641,
+        3367.08014
+      ]
+    ]
+  },
+  "model": {
+    "east_arcsec": 0.0,
+    "north_arcsec": 0.0,
+    "region_d2": 5.991464547107979,
+    "cov_arcsec2": [
+      [
+        5.866457,
+        1.027688
+      ],
+      [
+        1.027688,
+        1.256226
+      ]
+    ]
+  },
+  "actual": {
+    "east_arcsec": -5.3655,
+    "north_arcsec": -2.4517,
+    "cov_arcsec2": [
+      [
+        0.089613,
+        0.056337
+      ],
+      [
+        0.056337,
+        0.063135
+      ]
+    ],
+    "image": {
+      "path": "pluto/verification/spherex_qr3_2026W40_2A_0033_4_D3.webp",
+      "content_type": "processed",
+      "epoch_id": null,
+      "obs_key": "spherex_qr3:2026W40_2A_0033_4:D3",
+      "centre_ra_deg": 306.0927309587644,
+      "centre_dec_deg": -23.71973123760583,
+      "scale_arcsec_px": 0.75,
+      "width_px": 240,
+      "height_px": 240,
+      "north_up": true,
+      "east_left": true
+    }
+  },
+  "outcome": {
+    "model": "miss",
+    "model_error_arcsec": 5.8991,
+    "model_d2": 6.7728,
+    "baseline": "miss",
+    "baseline_error_arcsec": 19869.7467
+  },
+  "scoring": {
+    "formula": "exp_decay_v1",
+    "scale": 6.063,
+    "scale_source": "frozen model 95% semi-major axis (prediction.json)"
+  }
+}

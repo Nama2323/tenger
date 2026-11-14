@@ -1,0 +1,102 @@
+{
+  "schema_version": "tenger.lesson/1",
+  "contract_version": 6,
+  "lesson_id": "brightness",
+  "title_key": "lesson.brightness.title",
+  "grade_band": "8-11",
+  "investigation_key": "epsindib",
+  "formula_key": "lesson.brightness.formula",
+  "worked_example": {
+    "prompt_key": "lesson.brightness.worked",
+    "inputs": [
+      {
+        "name": "ratio",
+        "value": 1.0246,
+        "unit": "",
+        "content_type": "measured",
+        "synthetic": false,
+        "source_ref": "epsindib/investigation.json#m-flux-v0-d5-v3-d5"
+      },
+      {
+        "name": "sigma",
+        "value": 0.0271,
+        "unit": "",
+        "content_type": "measured",
+        "synthetic": false,
+        "source_ref": "epsindib/investigation.json#m-flux-v0-d5-v3-d5"
+      }
+    ],
+    "answer": {
+      "value": -0.0264,
+      "unit": "mag",
+      "z": 0.908,
+      "derived_by": "scripts/build_records.py"
+    }
+  },
+  "exercises": [
+    {
+      "id": "q1",
+      "prompt_key": "lesson.brightness.q1",
+      "inputs": [
+        {
+          "name": "ratio",
+          "value": 0.9428,
+          "unit": "",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "epsindib/investigation.json#m-flux-v0-d2-v1-d2"
+        },
+        {
+          "name": "sigma",
+          "value": 0.0501,
+          "unit": "",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "epsindib/investigation.json#m-flux-v0-d2-v1-d2"
+        }
+      ],
+      "answer": {
+        "value": 0.064,
+        "unit": "mag",
+        "z": -1.142
+      }
+    },
+    {
+      "id": "q2",
+      "prompt_key": "lesson.brightness.q2",
+      "inputs": [
+        {
+          "name": "n_flagged",
+          "value": 356,
+          "unit": "",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "barnard/investigation.json#photometry"
+        },
+        {
+          "name": "n_exposures",
+          "value": 356,
+          "unit": "",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "barnard/investigation.json#photometry"
+        }
+      ],
+      "answer": {
+        "value": 1.0,
+        "unit": "fraction"
+      }
+    }
+  ],
+  "teacher_note_key": "lesson.brightness.teacher",
+  "derived_from": [
+    {
+      "path": "epsindib/investigation.json",
+      "sha256": "5021f99be9231c4fb2867a5fceb60ed1a2bb7ef48a4585005f2f81882b9e5dc9"
+    },
+    {
+      "path": "barnard/investigation.json",
+      "sha256": "d59974ade26e2cd57d24987ede45367eb1efd439aab37e06aec6ff7929168a93"
+    }
+  ]
+}

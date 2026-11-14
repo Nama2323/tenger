@@ -2,7 +2,7 @@
   "schema_version": "tenger.site_index/1",
   "contract_version": 3,
   "dataset_version": "a3-2026-11-14",
-  "generated_utc": "2026-11-14T14:51:30Z",
+  "generated_utc": "2026-11-14T15:25:02Z",
   "targets": [
     {
       "key": "barnard",
@@ -406,8 +406,16 @@
     "trials/wise0855-position-2026a/trial.json"
   ],
   "scoreboard_path": "scoreboard.json",
-  "game_rounds": [],
-  "lessons": [],
+  "game_rounds": [
+    "game/barnard-position.json",
+    "game/epsindib-position.json",
+    "game/pluto-position.json"
+  ],
+  "lessons": [
+    "lessons/brightness.json",
+    "lessons/distance.json",
+    "lessons/how-sure.json"
+  ],
   "reserved_path": "reserved.json",
   "strings_path": "strings.en.json",
   "releases": [

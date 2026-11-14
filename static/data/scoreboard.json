@@ -1,7 +1,7 @@
 {
   "schema_version": "tenger.scoreboard/1",
   "contract_version": 5,
-  "generated_utc": "2026-11-14T14:51:28Z",
+  "generated_utc": "2026-11-14T15:24:02Z",
   "derived_from": [
     {
       "path": "trials/barnard-position-2026b/trial.json",
@@ -12,12 +12,20 @@
       "sha256": "27ba83c378a541dde37aaff1dfbbade8784beed07a5eb9de4f715426910a979b"
     },
     {
+      "path": "trials/barnard-position-2026b/verification.json",
+      "sha256": "f03dc23a3501cdebb28284a28bafda2db0e0fa6c8893860909fde6064fd8c8c5"
+    },
+    {
       "path": "trials/epsindib-position-2026b/trial.json",
       "sha256": "ee8b19ba26dd42386a1448a5f83a75172d9102f24cf2422efbec2593136e5131"
     },
     {
       "path": "trials/epsindib-position-2026b/prediction.json",
       "sha256": "4d3d7add45f007a524ac6b5fbd055e0940101c5dd398cc553537a62c455dffc2"
+    },
+    {
+      "path": "trials/epsindib-position-2026b/verification.json",
+      "sha256": "c6a1e9d8afcf74de0ddc4cebca9fbb7f1ababb20dd47a0f723132293130a704e"
     },
     {
       "path": "trials/makemake-position-2026a/trial.json",
@@ -42,6 +50,10 @@
     {
       "path": "trials/pluto-position-2026b/prediction.json",
       "sha256": "809e7af155b70b6f736e9157122ad1e12030d191bd1a516d472eb37ed6f5cc3c"
+    },
+    {
+      "path": "trials/pluto-position-2026b/verification.json",
+      "sha256": "cbeb79c308b7973c62f6a2486992bda498c8493dd26eaddd654f4f8ef5db3548"
     },
     {
       "path": "trials/pluto-position-open-2027a/trial.json",
@@ -78,17 +90,17 @@
   ],
   "counts": {
     "retrospective_holdout": {
-      "waiting": 2,
-      "hit": 0,
+      "waiting": 0,
+      "hit": 2,
       "miss": 0,
       "insufficient_data": 4,
       "ambiguous": 0,
       "invalid_comparison": 0
     },
     "prospective_unexposed": {
-      "waiting": 1,
+      "waiting": 0,
       "hit": 0,
-      "miss": 0,
+      "miss": 1,
       "insufficient_data": 0,
       "ambiguous": 0,
       "invalid_comparison": 0
@@ -111,13 +123,17 @@
         "retrospective_holdout",
         "catalogue_assisted"
       ],
-      "status": "waiting",
+      "status": "hit",
       "status_reason_key": null,
       "exploratory": false,
       "confirmation_pending": false,
       "counts_as_prospective": false,
-      "model_error_arcsec": null,
-      "baseline_error_arcsec": null
+      "counts_as_prospective_if_confirmed": false,
+      "model_d2": 2.6175,
+      "baseline_d2": 786.1725,
+      "baseline_status": "miss",
+      "model_error_arcsec": 1.5188,
+      "baseline_error_arcsec": 3.1073
     },
     {
       "trial_id": "epsindib-position-2026b",
@@ -128,13 +144,17 @@
         "retrospective_holdout",
         "catalogue_assisted"
       ],
-      "status": "waiting",
+      "status": "hit",
       "status_reason_key": null,
       "exploratory": false,
       "confirmation_pending": false,
       "counts_as_prospective": false,
-      "model_error_arcsec": null,
-      "baseline_error_arcsec": null
+      "counts_as_prospective_if_confirmed": false,
+      "model_d2": 0.2088,
+      "baseline_d2": 18.0842,
+      "baseline_status": "miss",
+      "model_error_arcsec": 0.0755,
+      "baseline_error_arcsec": 0.2599
     },
     {
       "trial_id": "makemake-position-2026a",
@@ -149,6 +169,10 @@
       "exploratory": false,
       "confirmation_pending": false,
       "counts_as_prospective": false,
+      "counts_as_prospective_if_confirmed": false,
+      "model_d2": null,
+      "baseline_d2": null,
+      "baseline_status": null,
       "model_error_arcsec": null,
       "baseline_error_arcsec": null
     },
@@ -160,13 +184,17 @@
       "labels": [
         "prospective_unexposed"
       ],
-      "status": "waiting",
+      "status": "miss",
       "status_reason_key": null,
       "exploratory": false,
       "confirmation_pending": true,
       "counts_as_prospective": false,
-      "model_error_arcsec": null,
-      "baseline_error_arcsec": null
+      "counts_as_prospective_if_confirmed": true,
+      "model_d2": 6.7728,
+      "baseline_d2": 133737.9755,
+      "baseline_status": "miss",
+      "model_error_arcsec": 5.8991,
+      "baseline_error_arcsec": 19869.7467
     },
     {
       "trial_id": "rdra-brightness-2026a",
@@ -182,6 +210,10 @@
       "exploratory": false,
       "confirmation_pending": false,
       "counts_as_prospective": false,
+      "counts_as_prospective_if_confirmed": false,
+      "model_d2": null,
+      "baseline_d2": null,
+      "baseline_status": null,
       "model_error_arcsec": null,
       "baseline_error_arcsec": null
     },
@@ -198,6 +230,10 @@
       "exploratory": true,
       "confirmation_pending": false,
       "counts_as_prospective": false,
+      "counts_as_prospective_if_confirmed": false,
+      "model_d2": null,
+      "baseline_d2": null,
+      "baseline_status": null,
       "model_error_arcsec": null,
       "baseline_error_arcsec": null
     },
@@ -215,6 +251,10 @@
       "exploratory": false,
       "confirmation_pending": false,
       "counts_as_prospective": false,
+      "counts_as_prospective_if_confirmed": false,
+      "model_d2": null,
+      "baseline_d2": null,
+      "baseline_status": null,
       "model_error_arcsec": null,
       "baseline_error_arcsec": null
     }

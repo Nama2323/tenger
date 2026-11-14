@@ -139,8 +139,8 @@ def build(out: Path) -> dict:
         "trials": sorted(f"trials/{folder.name}/trial.json" for folder in (out / "trials").glob("*")
                          if (folder / "trial.json").exists()),
         "scoreboard_path": "scoreboard.json" if (out / "scoreboard.json").exists() else None,
-        "game_rounds": [],
-        "lessons": [],
+        "game_rounds": sorted(f"game/{path.name}" for path in (out / "game").glob("*.json")) if (out / "game").exists() else [],
+        "lessons": sorted(f"lessons/{path.name}" for path in (out / "lessons").glob("*.json")) if (out / "lessons").exists() else [],
         "reserved_path": "reserved.json",
         "strings_path": "strings.en.json",
         "releases": sorted({release for target in targets for release in _releases(out, target)}),

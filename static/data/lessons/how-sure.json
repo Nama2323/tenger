@@ -1,0 +1,111 @@
+{
+  "schema_version": "tenger.lesson/1",
+  "contract_version": 6,
+  "lesson_id": "how-sure",
+  "title_key": "lesson.how-sure.title",
+  "grade_band": "8-11",
+  "investigation_key": "pluto",
+  "formula_key": "lesson.how-sure.formula",
+  "worked_example": {
+    "prompt_key": "lesson.how-sure.worked",
+    "inputs": [
+      {
+        "name": "d2",
+        "value": 6.7728,
+        "unit": "",
+        "content_type": "measured",
+        "synthetic": false,
+        "source_ref": "trials/pluto-position-2026b/verification.json"
+      },
+      {
+        "name": "threshold",
+        "value": 5.991,
+        "unit": "",
+        "content_type": "catalogue",
+        "synthetic": false,
+        "source_ref": "chi-square, 2 degrees of freedom, 95%"
+      }
+    ],
+    "answer": {
+      "value": 0,
+      "unit": "hit (1) or miss (0)",
+      "derived_by": "scripts/build_records.py",
+      "note": "D^2 above the threshold: a miss"
+    }
+  },
+  "exercises": [
+    {
+      "id": "q1",
+      "prompt_key": "lesson.how-sure.q1",
+      "inputs": [
+        {
+          "name": "n_trials",
+          "value": 3,
+          "unit": "",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "scoreboard.json"
+        }
+      ],
+      "answer": {
+        "value": 2.85,
+        "unit": "expected hits"
+      }
+    },
+    {
+      "id": "q2",
+      "prompt_key": "lesson.how-sure.q2",
+      "inputs": [
+        {
+          "name": "n_trials",
+          "value": 3,
+          "unit": "",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "scoreboard.json"
+        }
+      ],
+      "answer": {
+        "value": 0.8574,
+        "unit": "probability"
+      }
+    },
+    {
+      "id": "q3",
+      "prompt_key": "lesson.how-sure.q3",
+      "inputs": [
+        {
+          "name": "n_hits",
+          "value": 2,
+          "unit": "",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "scoreboard.json"
+        },
+        {
+          "name": "n_trials",
+          "value": 3,
+          "unit": "",
+          "content_type": "measured",
+          "synthetic": false,
+          "source_ref": "scoreboard.json"
+        }
+      ],
+      "answer": {
+        "value": 0.6667,
+        "unit": "fraction"
+      }
+    }
+  ],
+  "teacher_note_key": "lesson.how-sure.teacher",
+  "derived_from": [
+    {
+      "path": "scoreboard.json",
+      "sha256": "74d86a948160976cbc5981fd535b9d000060db082ce16bdb53117bc9628d382f"
+    },
+    {
+      "path": "trials/pluto-position-2026b/verification.json",
+      "sha256": "cbeb79c308b7973c62f6a2486992bda498c8493dd26eaddd654f4f8ef5db3548"
+    }
+  ]
+}

@@ -353,7 +353,9 @@
           "dec_deg": 20.9651
         }
       ],
-      "source": "docs/exposure/makemake.json (JPL Horizons geocentric positions at each exposure)"
+      "source": "docs/exposure/makemake.json (JPL Horizons geocentric positions at each exposure)",
+      "status": "released",
+      "release_reason_key": "reserved.released-nothing-to-verify"
     },
     {
       "key": "pluto",
@@ -429,7 +431,9 @@
           "dec_deg": -23.72139
         }
       ],
-      "source": "docs/exposure/pluto.json (JPL Horizons geocentric positions at each exposure)"
+      "source": "docs/exposure/pluto.json (JPL Horizons geocentric positions at each exposure)",
+      "status": "released",
+      "release_reason_key": "reserved.released-verified"
     },
     {
       "key": "3i-atlas",
@@ -1116,7 +1120,12 @@
           "dec_deg": 5.43585
         }
       ],
-      "source": "https://irsa.ipac.caltech.edu/data/SPHEREx/docs/comet3iatlas/obscore_3I_Atlas.vot"
+      "source": "https://irsa.ipac.caltech.edu/data/SPHEREx/docs/comet3iatlas/obscore_3I_Atlas.vot",
+      "status": "reserved"
     }
+  ],
+  "released": [
+    "makemake",
+    "pluto"
   ]
 }

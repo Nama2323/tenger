@@ -54,8 +54,14 @@ def build(generated_utc: str | None = None) -> dict:
             "category": category, "labels": trial.get("labels", [category]), "status": status,
             "status_reason_key": reason, "exploratory": trial.get("exploratory", False),
             "confirmation_pending": trial.get("confirmation_pending", False),
+            # A prospective trial counts only once every teammate has confirmed the visit was unseen.
             "counts_as_prospective": bool(category == "prospective_unexposed" and not trial.get("exploratory")
-                                          and status in ("hit", "miss")),
+                                          and status in ("hit", "miss") and not trial.get("confirmation_pending")),
+            "counts_as_prospective_if_confirmed": bool(category == "prospective_unexposed"
+                                                       and not trial.get("exploratory") and status in ("hit", "miss")),
+            "model_d2": ((residuals.get("model") or {}).get("d2")),
+            "baseline_d2": ((residuals.get("baseline") or {}).get("d2")),
+            "baseline_status": ((residuals.get("baseline") or {}).get("status")),
             "model_error_arcsec": (residuals.get("model") or {}).get("error_arcsec"),
             "baseline_error_arcsec": (residuals.get("baseline") or {}).get("error_arcsec"),
         })

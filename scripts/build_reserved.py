@@ -81,14 +81,39 @@ def comet_region() -> dict:
     }
 
 
+def still_reserved(key: str) -> tuple[bool, str | None]:
+    """A body's evaluation path stays reserved until its frozen trial is verified (or frozen as insufficient)."""
+    trial = frozen_trial(key)
+    if not trial:
+        return True, None
+    folder = ROOT / "static" / "data" / "trials" / trial["trial_id"]
+    if (folder / "verification.json").exists():
+        return False, "reserved.released-verified"
+    prediction = json.loads((folder / "prediction.json").read_text()) if (folder / "prediction.json").exists() else {}
+    if prediction.get("prediction_status") == "insufficient_data":
+        return False, "reserved.released-nothing-to-verify"
+    return True, None
+
+
 def build(out: Path) -> dict:
-    regions = [body_region("makemake"), body_region("pluto"), comet_region()]
+    regions, released = [], []
+    for key in ("makemake", "pluto"):
+        region = body_region(key)
+        keep, reason = still_reserved(key)
+        # The region stays listed (readers may keep blocking live loads); status says whether it still protects anything.
+        region["status"] = "reserved" if keep else "released"
+        if not keep:
+            region["release_reason_key"] = reason
+            released.append(key)
+        regions.append(region)
+    regions.append({**comet_region(), "status": "reserved"})
     document = {
         "schema_version": "tenger.reserved/1",
         "margin_deg": MARGIN_DEG,
         "rule_key": "reserved.rule",
         "note": "A live request is refused when its centre lies within margin_deg plus half the field diagonal of a path point or box.",
         "regions": regions,
+        "released": released,
     }
     out.mkdir(parents=True, exist_ok=True)
     (out / "reserved.json").write_text(json.dumps(document, indent=2, ensure_ascii=False) + "\n")

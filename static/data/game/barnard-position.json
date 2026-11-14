@@ -1,0 +1,150 @@
+{
+  "schema_version": "tenger.game_round/1",
+  "contract_version": 6,
+  "round_id": "barnard-position",
+  "trial_id": "barnard-position-2026b",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "confirmation_pending": false,
+  "quantity": "position",
+  "units": "arcsec",
+  "derived_from": [
+    {
+      "path": "trials/barnard-position-2026b/prediction.json",
+      "sha256": "27ba83c378a541dde37aaff1dfbbade8784beed07a5eb9de4f715426910a979b"
+    },
+    {
+      "path": "trials/barnard-position-2026b/verification.json",
+      "sha256": "f03dc23a3501cdebb28284a28bafda2db0e0fa6c8893860909fde6064fd8c8c5"
+    },
+    {
+      "path": "trials/barnard-position-2026b/training.json",
+      "sha256": "8ec6b425bb87ea46d6aea4171863da4fcd87c68dc6249432553367712b6dcde8"
+    }
+  ],
+  "frame": {
+    "kind": "tangent plane, east/north arcsec",
+    "centre_ra_deg": 269.44622936,
+    "centre_dec_deg": 4.77026983,
+    "centre_is": "the frozen model at the reveal time",
+    "east_left": true
+  },
+  "training_points": [
+    {
+      "t_mjd": 60914.490847,
+      "east_arcsec": -0.278,
+      "north_arcsec": -11.092,
+      "n_exposures": 9,
+      "visit": 0,
+      "detector": 5,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60908.819075,
+      "east_arcsec": -0.454,
+      "north_arcsec": -11.058,
+      "n_exposures": 13,
+      "visit": 0,
+      "detector": 6,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61110.092069,
+      "east_arcsec": 0.562,
+      "north_arcsec": -4.499,
+      "n_exposures": 1,
+      "visit": 1,
+      "detector": 4,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61115.148286,
+      "east_arcsec": 0.887,
+      "north_arcsec": -4.981,
+      "n_exposures": 10,
+      "visit": 1,
+      "detector": 5,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61128.918972,
+      "east_arcsec": 0.979,
+      "north_arcsec": -4.586,
+      "n_exposures": 16,
+      "visit": 1,
+      "detector": 6,
+      "content_type": "measured"
+    }
+  ],
+  "reveal_t_mjd": 61273.417815,
+  "baseline": {
+    "east_arcsec": 1.756,
+    "north_arcsec": -0.229,
+    "cov_arcsec2": [
+      [
+        0.008311,
+        -0.000248
+      ],
+      [
+        -0.000248,
+        0.00835
+      ]
+    ]
+  },
+  "model": {
+    "east_arcsec": 0.0,
+    "north_arcsec": 0.0,
+    "region_d2": 5.991464547107979,
+    "cov_arcsec2": [
+      [
+        0.882432,
+        -0.008637
+      ],
+      [
+        -0.008637,
+        0.894369
+      ]
+    ]
+  },
+  "actual": {
+    "east_arcsec": -1.306,
+    "north_arcsec": -0.7753,
+    "cov_arcsec2": [
+      [
+        0.004881,
+        -0.001582
+      ],
+      [
+        -0.001582,
+        0.004162
+      ]
+    ],
+    "image": {
+      "path": "barnard/epochs/v2-d5.webp",
+      "content_type": "processed",
+      "epoch_id": "v2-d5",
+      "centre_ra_deg": 269.44648,
+      "centre_dec_deg": 4.768669,
+      "scale_arcsec_px": 1.5,
+      "width_px": 240,
+      "height_px": 240,
+      "north_up": true,
+      "east_left": true
+    }
+  },
+  "outcome": {
+    "model": "hit",
+    "model_error_arcsec": 1.5188,
+    "model_d2": 2.6175,
+    "baseline": "miss",
+    "baseline_error_arcsec": 3.1073
+  },
+  "scoring": {
+    "formula": "exp_decay_v1",
+    "scale": 2.3221,
+    "scale_source": "frozen model 95% semi-major axis (prediction.json)"
+  }
+}
