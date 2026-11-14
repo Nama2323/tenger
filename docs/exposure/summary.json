@@ -1,0 +1,317 @@
+{
+ "schema_version": "tenger.exposure_inventory/1",
+ "generated_utc": "2026-11-14T11:31:20+00:00",
+ "git_head": "58f993b9fdc4119a5ef421180419a2668c5dbe45",
+ "network": true,
+ "rules": {
+  "exposure_key": "obs_id (all six arrays of one exposure count as exposed together)",
+  "visit_gap_days": 10.0,
+  "collections_listed": [
+   "spherex_dr1",
+   "spherex_dr1_deep",
+   "spherex_qr3",
+   "spherex_qr3_deep"
+  ],
+  "fixed_target_radius_deg": 0.005,
+  "moving_target_window_days": 20,
+  "pixels_requested": false
+ },
+ "targets": {
+  "barnard": {
+   "name": "Barnard's Star",
+   "role": "challenge",
+   "exposed": {
+    "obs_ids": 166,
+    "utc_range": [
+     "2025-08-15T20:45:11Z",
+     "2026-09-22T15:04:21Z"
+    ],
+    "by_source": {
+     "bundled_static_data": 166,
+     "prior_audit_cutout": 1,
+     "processed_frame_cache": 166
+    },
+    "by_release": {
+     "spherex_dr1": 1,
+     "spherex_qr2": 112,
+     "spherex_qr3": 54
+    }
+   },
+   "archive": {
+    "rows_with_target_in_footprint": 358,
+    "obs_ids": 181,
+    "by_collection": {
+     "spherex_dr1": 239,
+     "spherex_qr3": 119
+    },
+    "t_min_utc_range": [
+     "2025-08-15T20:45:11Z",
+     "2026-09-22T15:04:21Z"
+    ],
+    "rows_whose_obs_id_is_exposed": 328
+   },
+   "candidates": {
+    "rows": 30,
+    "obs_ids": 15,
+    "after_newest_exposed_obs_ids": 0,
+    "visits": 4
+   },
+   "nearby_bundled_fields": [
+    {
+     "key": "barnard",
+     "separation_deg": 0.0
+    }
+   ]
+  },
+  "wise0855": {
+   "name": "WISE 0855",
+   "role": "challenge",
+   "exposed": {
+    "obs_ids": 129,
+    "utc_range": [
+     "2025-05-05T16:48:02Z",
+     "2026-05-14T06:53:35Z"
+    ],
+    "by_source": {
+     "bundled_static_data": 129,
+     "processed_frame_cache": 129
+    },
+    "by_release": {
+     "spherex_qr2": 129
+    }
+   },
+   "archive": {
+    "rows_with_target_in_footprint": 258,
+    "obs_ids": 129,
+    "by_collection": {
+     "spherex_dr1": 258
+    },
+    "t_min_utc_range": [
+     "2025-05-05T16:48:02Z",
+     "2026-05-14T06:53:35Z"
+    ],
+    "rows_whose_obs_id_is_exposed": 258
+   },
+   "candidates": {
+    "rows": 0,
+    "obs_ids": 0,
+    "after_newest_exposed_obs_ids": 0,
+    "visits": 0
+   },
+   "nearby_bundled_fields": [
+    {
+     "key": "wise0855",
+     "separation_deg": 0.0
+    }
+   ]
+  },
+  "epsindib": {
+   "name": "Epsilon Indi B",
+   "role": "challenge",
+   "exposed": {
+    "obs_ids": 193,
+    "utc_range": [
+     "2025-04-24T20:31:57Z",
+     "2026-10-02T11:28:25Z"
+    ],
+    "by_source": {
+     "bundled_static_data": 193,
+     "processed_frame_cache": 193
+    },
+    "by_release": {
+     "spherex_qr2": 143,
+     "spherex_qr3": 50
+    }
+   },
+   "archive": {
+    "rows_with_target_in_footprint": 458,
+    "obs_ids": 238,
+    "by_collection": {
+     "spherex_dr1": 338,
+     "spherex_qr3": 120
+    },
+    "t_min_utc_range": [
+     "2025-04-24T20:31:57Z",
+     "2026-10-02T11:28:25Z"
+    ],
+    "rows_whose_obs_id_is_exposed": 373
+   },
+   "candidates": {
+    "rows": 85,
+    "obs_ids": 45,
+    "after_newest_exposed_obs_ids": 0,
+    "visits": 7
+   },
+   "nearby_bundled_fields": [
+    {
+     "key": "epsindib",
+     "separation_deg": 0.0
+    }
+   ]
+  },
+  "rwaur": {
+   "name": "RW Aurigae",
+   "role": "challenge",
+   "exposed": {
+    "obs_ids": 164,
+    "utc_range": [
+     "2025-09-01T10:04:17Z",
+     "2026-09-16T21:30:05Z"
+    ],
+    "by_source": {
+     "bundled_static_data": 164,
+     "processed_frame_cache": 164
+    },
+    "by_release": {
+     "spherex_qr2": 110,
+     "spherex_qr3": 54
+    }
+   },
+   "archive": {
+    "rows_with_target_in_footprint": 335,
+    "obs_ids": 168,
+    "by_collection": {
+     "spherex_dr1": 226,
+     "spherex_qr3": 109
+    },
+    "t_min_utc_range": [
+     "2025-09-01T10:04:17Z",
+     "2026-09-16T21:30:05Z"
+    ],
+    "rows_whose_obs_id_is_exposed": 327
+   },
+   "candidates": {
+    "rows": 8,
+    "obs_ids": 4,
+    "after_newest_exposed_obs_ids": 0,
+    "visits": 3
+   },
+   "nearby_bundled_fields": [
+    {
+     "key": "rwaur",
+     "separation_deg": 0.0
+    }
+   ]
+  },
+  "rdra": {
+   "name": "R Draconis",
+   "role": "challenge",
+   "exposed": {
+    "obs_ids": 255,
+    "utc_range": [
+     "2025-04-24T21:06:38Z",
+     "2026-09-27T06:59:17Z"
+    ],
+    "by_source": {
+     "bundled_static_data": 255,
+     "processed_frame_cache": 255
+    },
+    "by_release": {
+     "spherex_qr2_deep": 119,
+     "spherex_qr2": 70,
+     "spherex_qr3_deep": 66
+    }
+   },
+   "archive": {
+    "rows_with_target_in_footprint": 2493,
+    "obs_ids": 1258,
+    "by_collection": {
+     "spherex_dr1": 413,
+     "spherex_dr1_deep": 1225,
+     "spherex_qr3": 126,
+     "spherex_qr3_deep": 729
+    },
+    "t_min_utc_range": [
+     "2025-04-24T21:06:38Z",
+     "2026-09-27T06:59:17Z"
+    ],
+    "rows_whose_obs_id_is_exposed": 507
+   },
+   "candidates": {
+    "rows": 1986,
+    "obs_ids": 1003,
+    "after_newest_exposed_obs_ids": 0,
+    "visits": 7
+   },
+   "nearby_bundled_fields": [
+    {
+     "key": "rdra",
+     "separation_deg": 0.0
+    }
+   ]
+  },
+  "makemake": {
+   "name": "Makemake",
+   "role": "extra",
+   "exposed": {
+    "obs_ids": 0,
+    "utc_range": null,
+    "by_source": {},
+    "by_release": {}
+   },
+   "archive": {
+    "rows_with_target_in_footprint": 363,
+    "obs_ids": 184,
+    "by_collection": {
+     "spherex_dr1": 236,
+     "spherex_qr3": 127
+    },
+    "t_min_utc_range": [
+     "2025-05-30T23:07:22Z",
+     "2026-06-13T11:29:28Z"
+    ],
+    "rows_whose_obs_id_is_exposed": 0
+   },
+   "candidates": {
+    "rows": 363,
+    "obs_ids": 184,
+    "after_newest_exposed_obs_ids": 184,
+    "visits": 4
+   },
+   "nearby_bundled_fields": []
+  },
+  "pluto": {
+   "name": "Pluto",
+   "role": "extra",
+   "exposed": {
+    "obs_ids": 0,
+    "utc_range": null,
+    "by_source": {},
+    "by_release": {}
+   },
+   "archive": {
+    "rows_with_target_in_footprint": 238,
+    "obs_ids": 120,
+    "by_collection": {
+     "spherex_dr1": 218,
+     "spherex_qr3": 20
+    },
+    "t_min_utc_range": [
+     "2025-04-25T03:07:35Z",
+     "2026-10-02T14:31:52Z"
+    ],
+    "rows_whose_obs_id_is_exposed": 0
+   },
+   "candidates": {
+    "rows": 238,
+    "obs_ids": 120,
+    "after_newest_exposed_obs_ids": 120,
+    "visits": 5
+   },
+   "nearby_bundled_fields": []
+  },
+  "3i_atlas": {
+   "name": "3I/ATLAS",
+   "role": "see_only",
+   "rows": 259,
+   "obs_ids": 133,
+   "collections": {
+    "spherex_qr2": 259
+   },
+   "t_min_utc_range": [
+    "2025-08-01T08:00:09Z",
+    "2025-12-14T23:59:08Z"
+   ]
+  }
+ }
+}

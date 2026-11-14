@@ -1,0 +1,46 @@
+{
+ "key": "3i_atlas",
+ "name": "3I/ATLAS",
+ "kind": "comet",
+ "role": "see_only",
+ "source": "https://irsa.ipac.caltech.edu/data/SPHEREx/docs/comet3iatlas/obscore_3I_Atlas.vot",
+ "columns": [
+  "dataproduct_subtype",
+  "calib_level",
+  "obs_id",
+  "obs_title",
+  "spherex_detector",
+  "obs_creator_did",
+  "s_ra",
+  "s_dec",
+  "comet_ra",
+  "comet_dec",
+  "t_min",
+  "t_max",
+  "t_exptime",
+  "em_min",
+  "em_max",
+  "s_region",
+  "dataproduct_type",
+  "access_format",
+  "access_estsize",
+  "access_url",
+  "spherex_uuid",
+  "facility_name",
+  "instrument_name",
+  "obs_collection",
+  "target_name",
+  "target_moving"
+ ],
+ "rows": 259,
+ "exposed": [],
+ "note": "Published SPHEREx team papers (Lisse et al. 2025-2026) already show these data.",
+ "collections": {
+  "spherex_qr2": 259
+ },
+ "t_min_utc_range": [
+  "2025-08-01T08:00:09Z",
+  "2025-12-14T23:59:08Z"
+ ],
+ "obs_ids": 133
+}
