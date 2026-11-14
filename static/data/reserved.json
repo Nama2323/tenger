@@ -8,7 +8,11 @@
       "key": "makemake",
       "kind": "holdout_path",
       "reason_key": "reserved.prediction-holdout",
-      "until_key": "reserved.until-predictions-frozen",
+      "until_key": "reserved.until-verified",
+      "frozen_trial": {
+        "trial_id": "makemake-position-2026a",
+        "prediction_commit": "24e215aed374a1fedf9110bcdb46b5a3473e7a3e"
+      },
       "window_mjd": [
         61190.7655,
         61204.4788
@@ -355,7 +359,11 @@
       "key": "pluto",
       "kind": "holdout_path",
       "reason_key": "reserved.prediction-holdout",
-      "until_key": "reserved.until-predictions-frozen",
+      "until_key": "reserved.until-verified",
+      "frozen_trial": {
+        "trial_id": "pluto-position-2026b",
+        "prediction_commit": "b2df072ea6ee40c34e4ec33e022504f56f656803"
+      },
       "window_mjd": [
         61312.6847,
         61315.6055

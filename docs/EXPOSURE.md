@@ -128,6 +128,17 @@ Session A nor this repository has opened any pixel of either evaluation visit. H
 the evaluation exposures do exist in `docs/exposure/<key>.json` and `static/data/reserved.json`: the
 A1 coverage check computed them. The A4 prediction code never reads them (tested).
 
+## Task A4 (14 Nov 2026, 22:35–22:55 UB): predictions frozen, nothing opened
+
+A4 opened, downloaded, rendered or measured **no pixels**. It made no Horizons query and read no
+catalogue position at an evaluation epoch. Training measurements came from the A3 evidence files:
+Makemake and Pluto training visits only, and the challenge targets' non-holdout visits. Prediction
+code reads only `static/data/trials/<id>/trial.json` and `training.json` (tested). Trial manifests
+were committed and pushed (`486e723`) before any prediction, then each prediction (`6c13e88` …
+`7afe037`), then the receipts (`ba1d3c8`). The Makemake and Pluto evaluation visits stay closed in
+`static/data/reserved.json` (`until_key: reserved.until-verified`) until Task A5's pre-registered
+verification opens them.
+
 ## Who has seen what
 
 - **Teammates** have viewed the bundled frames, thumbnails and results of the five challenge targets

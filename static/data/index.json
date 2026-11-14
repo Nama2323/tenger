@@ -2,7 +2,7 @@
   "schema_version": "tenger.site_index/1",
   "contract_version": 3,
   "dataset_version": "a3-2026-11-14",
-  "generated_utc": "2026-11-14T14:25:46Z",
+  "generated_utc": "2026-11-14T14:51:30Z",
   "targets": [
     {
       "key": "barnard",
@@ -36,8 +36,11 @@
         }
       ],
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "waiting",
+        "trial_ids": [
+          "barnard-position-2026b"
+        ],
+        "open_forecast_ids": []
       },
       "map": {
         "distance": {
@@ -82,8 +85,11 @@
         }
       ],
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "insufficient_data",
+        "trial_ids": [
+          "wise0855-position-2026a"
+        ],
+        "open_forecast_ids": []
       },
       "map": {
         "distance": {
@@ -128,8 +134,11 @@
         }
       ],
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "waiting",
+        "trial_ids": [
+          "epsindib-position-2026b"
+        ],
+        "open_forecast_ids": []
       },
       "map": {
         "distance": {
@@ -174,8 +183,11 @@
         }
       ],
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "insufficient_data",
+        "trial_ids": [
+          "rwaur-brightness-2026a"
+        ],
+        "open_forecast_ids": []
       },
       "map": {
         "distance": {
@@ -220,8 +232,11 @@
         }
       ],
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "insufficient_data",
+        "trial_ids": [
+          "rdra-brightness-2026a"
+        ],
+        "open_forecast_ids": []
       },
       "map": {
         "distance": {
@@ -266,8 +281,13 @@
         }
       ],
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "insufficient_data",
+        "trial_ids": [
+          "makemake-position-2026a"
+        ],
+        "open_forecast_ids": [
+          "makemake-position-open-2027a"
+        ]
       },
       "map": {
         "distance": {
@@ -312,8 +332,13 @@
         }
       ],
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "waiting",
+        "trial_ids": [
+          "pluto-position-2026b"
+        ],
+        "open_forecast_ids": [
+          "pluto-position-open-2027a"
+        ]
       },
       "map": {
         "distance": {
@@ -359,7 +384,8 @@
       ],
       "prediction": {
         "status": "see_only",
-        "trial_ids": []
+        "trial_ids": [],
+        "open_forecast_ids": []
       },
       "map": {
         "distance": null,
@@ -368,8 +394,18 @@
       }
     }
   ],
-  "trials": [],
-  "scoreboard_path": null,
+  "trials": [
+    "trials/barnard-position-2026b/trial.json",
+    "trials/epsindib-position-2026b/trial.json",
+    "trials/makemake-position-2026a/trial.json",
+    "trials/makemake-position-open-2027a/trial.json",
+    "trials/pluto-position-2026b/trial.json",
+    "trials/pluto-position-open-2027a/trial.json",
+    "trials/rdra-brightness-2026a/trial.json",
+    "trials/rwaur-brightness-2026a/trial.json",
+    "trials/wise0855-position-2026a/trial.json"
+  ],
+  "scoreboard_path": "scoreboard.json",
   "game_rounds": [],
   "lessons": [],
   "reserved_path": "reserved.json",

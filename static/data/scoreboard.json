@@ -1,0 +1,222 @@
+{
+  "schema_version": "tenger.scoreboard/1",
+  "contract_version": 5,
+  "generated_utc": "2026-11-14T14:51:28Z",
+  "derived_from": [
+    {
+      "path": "trials/barnard-position-2026b/trial.json",
+      "sha256": "b93fdaa599d791c0c0584a1e4fefb50adac14b80accbc81d3b2010d7547f7835"
+    },
+    {
+      "path": "trials/barnard-position-2026b/prediction.json",
+      "sha256": "27ba83c378a541dde37aaff1dfbbade8784beed07a5eb9de4f715426910a979b"
+    },
+    {
+      "path": "trials/epsindib-position-2026b/trial.json",
+      "sha256": "ee8b19ba26dd42386a1448a5f83a75172d9102f24cf2422efbec2593136e5131"
+    },
+    {
+      "path": "trials/epsindib-position-2026b/prediction.json",
+      "sha256": "4d3d7add45f007a524ac6b5fbd055e0940101c5dd398cc553537a62c455dffc2"
+    },
+    {
+      "path": "trials/makemake-position-2026a/trial.json",
+      "sha256": "d929a6fcaf92c5202c397637466569349e07ab4fec4ecd73ff828b72151c616e"
+    },
+    {
+      "path": "trials/makemake-position-2026a/prediction.json",
+      "sha256": "88a33bfa96b628286f543302f3a00de08151bbf2d76e797bb869ecfe0f9827b8"
+    },
+    {
+      "path": "trials/makemake-position-open-2027a/trial.json",
+      "sha256": "633d7c75c9404dbe5c1c31a6b900871de95fbd58368656e5d70c1613d6b55e9a"
+    },
+    {
+      "path": "trials/makemake-position-open-2027a/prediction.json",
+      "sha256": "05547db5829524b923cf0786f03fa061642a154ba5402c463ee8983434b98751"
+    },
+    {
+      "path": "trials/pluto-position-2026b/trial.json",
+      "sha256": "52ef8d173053c02d788825ddc895c9f6ffca9cd6004b5996777728433f8b373d"
+    },
+    {
+      "path": "trials/pluto-position-2026b/prediction.json",
+      "sha256": "809e7af155b70b6f736e9157122ad1e12030d191bd1a516d472eb37ed6f5cc3c"
+    },
+    {
+      "path": "trials/pluto-position-open-2027a/trial.json",
+      "sha256": "3bb8a39e5de636c149d74417ad60ff271884cf1985f064efede599333b379579"
+    },
+    {
+      "path": "trials/pluto-position-open-2027a/prediction.json",
+      "sha256": "e80e2516e96a71f5cd7c5a451682418c3eb5b496b43ed4aadd3a29cbdf059acd"
+    },
+    {
+      "path": "trials/rdra-brightness-2026a/trial.json",
+      "sha256": "3ae1852a51149100e133d3fb466841032efdb4d6a3ff0195da8e53e654c4e704"
+    },
+    {
+      "path": "trials/rdra-brightness-2026a/prediction.json",
+      "sha256": "c1c6b58d8280557ebdc5d2d7950d21fd384946f7dbd9633ecc18e63057b0200b"
+    },
+    {
+      "path": "trials/rwaur-brightness-2026a/trial.json",
+      "sha256": "60bd0843cb6065079290f370e807fbd373263d1d0c250970b92dcf48775ce15e"
+    },
+    {
+      "path": "trials/rwaur-brightness-2026a/prediction.json",
+      "sha256": "ffdf2ac253f196e8dcae90b5176e171738b868e1e89510f241e2d7b2c41a920d"
+    },
+    {
+      "path": "trials/wise0855-position-2026a/trial.json",
+      "sha256": "2c84dd85e951f218b6f204c311c236c03f091c8659e29d59543838176c9914fc"
+    },
+    {
+      "path": "trials/wise0855-position-2026a/prediction.json",
+      "sha256": "44d2fd6fb99ef412e5cd16995e202559d327e41ece86dc08f7ed2d1e65d05805"
+    }
+  ],
+  "counts": {
+    "retrospective_holdout": {
+      "waiting": 2,
+      "hit": 0,
+      "miss": 0,
+      "insufficient_data": 4,
+      "ambiguous": 0,
+      "invalid_comparison": 0
+    },
+    "prospective_unexposed": {
+      "waiting": 1,
+      "hit": 0,
+      "miss": 0,
+      "insufficient_data": 0,
+      "ambiguous": 0,
+      "invalid_comparison": 0
+    }
+  },
+  "see_only": [
+    "3i-atlas"
+  ],
+  "open_forecasts": [
+    "makemake-position-open-2027a",
+    "pluto-position-open-2027a"
+  ],
+  "rows": [
+    {
+      "trial_id": "barnard-position-2026b",
+      "target_key": "barnard",
+      "quantity": "position",
+      "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout",
+        "catalogue_assisted"
+      ],
+      "status": "waiting",
+      "status_reason_key": null,
+      "exploratory": false,
+      "confirmation_pending": false,
+      "counts_as_prospective": false,
+      "model_error_arcsec": null,
+      "baseline_error_arcsec": null
+    },
+    {
+      "trial_id": "epsindib-position-2026b",
+      "target_key": "epsindib",
+      "quantity": "position",
+      "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout",
+        "catalogue_assisted"
+      ],
+      "status": "waiting",
+      "status_reason_key": null,
+      "exploratory": false,
+      "confirmation_pending": false,
+      "counts_as_prospective": false,
+      "model_error_arcsec": null,
+      "baseline_error_arcsec": null
+    },
+    {
+      "trial_id": "makemake-position-2026a",
+      "target_key": "makemake",
+      "quantity": "position",
+      "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout"
+      ],
+      "status": "insufficient_data",
+      "status_reason_key": "predict.no-training-positions",
+      "exploratory": false,
+      "confirmation_pending": false,
+      "counts_as_prospective": false,
+      "model_error_arcsec": null,
+      "baseline_error_arcsec": null
+    },
+    {
+      "trial_id": "pluto-position-2026b",
+      "target_key": "pluto",
+      "quantity": "position",
+      "category": "prospective_unexposed",
+      "labels": [
+        "prospective_unexposed"
+      ],
+      "status": "waiting",
+      "status_reason_key": null,
+      "exploratory": false,
+      "confirmation_pending": true,
+      "counts_as_prospective": false,
+      "model_error_arcsec": null,
+      "baseline_error_arcsec": null
+    },
+    {
+      "trial_id": "rdra-brightness-2026a",
+      "target_key": "rdra",
+      "quantity": "brightness",
+      "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout",
+        "catalogue_assisted"
+      ],
+      "status": "insufficient_data",
+      "status_reason_key": "predict.no-training-measurements",
+      "exploratory": false,
+      "confirmation_pending": false,
+      "counts_as_prospective": false,
+      "model_error_arcsec": null,
+      "baseline_error_arcsec": null
+    },
+    {
+      "trial_id": "rwaur-brightness-2026a",
+      "target_key": "rwaur",
+      "quantity": "brightness",
+      "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout"
+      ],
+      "status": "insufficient_data",
+      "status_reason_key": "predict.no-period-model",
+      "exploratory": true,
+      "confirmation_pending": false,
+      "counts_as_prospective": false,
+      "model_error_arcsec": null,
+      "baseline_error_arcsec": null
+    },
+    {
+      "trial_id": "wise0855-position-2026a",
+      "target_key": "wise0855",
+      "quantity": "position",
+      "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout",
+        "catalogue_assisted"
+      ],
+      "status": "insufficient_data",
+      "status_reason_key": "predict.no-training-positions",
+      "exploratory": false,
+      "confirmation_pending": false,
+      "counts_as_prospective": false,
+      "model_error_arcsec": null,
+      "baseline_error_arcsec": null
+    }
+  ]
+}

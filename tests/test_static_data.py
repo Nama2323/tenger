@@ -112,3 +112,22 @@ def test_reserved_regions_cover_the_holdout_paths():
         assert region["path"], region["key"]
         lo, hi = region["window_mjd"]
         assert all(lo <= point["mjd"] <= hi for point in region["path"])
+
+
+def test_frozen_trials_have_intact_hash_chains_and_open_forecasts_are_not_counted():
+    from scripts import predict
+
+    trials_dir = DATA / "trials"
+    if not trials_dir.exists():
+        pytest.skip("no trials published")
+    for folder in sorted(trials_dir.iterdir()):
+        assert predict.check(folder.name) == [], folder.name
+        receipt = json.loads((folder / "receipt.json").read_text())
+        assert len(receipt["commit"]) == 40
+    scoreboard = load("scoreboard.json")
+    rows = {row["trial_id"] for row in scoreboard["rows"]}
+    assert not rows & set(scoreboard["open_forecasts"])
+    for row in scoreboard["rows"]:
+        prediction = json.loads((trials_dir / row["trial_id"] / "prediction.json").read_text())
+        if prediction["prediction_status"] == "insufficient_data":
+            assert row["status"] == "insufficient_data"

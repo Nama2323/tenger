@@ -109,6 +109,7 @@
     "reserved.rule": "Live loading is paused near these paths so reserved observations stay unopened.",
     "reserved.see-only": "See-only target: live loading is paused along its path.",
     "reserved.until-predictions-frozen": "Until the predictions are frozen and published.",
+    "reserved.until-verified": "The prediction is frozen; the data stay closed until the pre-registered check opens them.",
     "thumb.spherex": "SPHEREx picture (processed)",
     "unavailable.holdout-closed": "the newest visit is reserved for the prediction test",
     "unavailable.no-current-product": "the exposure listed in the official table has no current (DR1) product",

@@ -9,8 +9,8 @@ still open. Session A edits only "Science/data". Session B edits only "Web".
 
 ### Current phase
 
-**Phases C–D done (Task A3).** All eight targets have a published evidence file built from DR1/QR3
-native data (see "Task A3"). Next: Task A4, freeze and push the predictions (phase F).
+**Phase F part 1 done (Task A4): predictions frozen and pushed; nothing verified.** See "Task A4".
+Next: Task A5, verification of the released evaluation visits.
 
 ### Task A1, 14 Nov 2026 (git base `58f993b`, branch `tenger-dev`)
 
@@ -72,6 +72,88 @@ prediction, receipt, verification, scoreboard, game round and lesson. Enums, pat
 **Files added in A1**: `docs/EXPOSURE.md`, `docs/exposure/{summary,barnard,wise0855,epsindib,rwaur,rdra,makemake,pluto,3i_atlas}.json`,
 `docs/exposure/SHA256SUMS`, `docs/DATA-CONTRACT.md`, `docs/IMPLEMENTATION_STATUS.md`,
 `scripts/exposure_inventory.py`, `tests/test_exposure_inventory.py`. No application file changed.
+
+### Task A4, 14 Nov 2026 (phase F part 1: freeze and predict; branch `tenger-dev`)
+
+**Order of events (all on `origin/tenger-dev`):**
+1. Team viewing recorded in `docs/EXPOSURE.md` (`ef61149`).
+2. Model code, tests and contract V5 (`1edb723`).
+3. Nine trial manifests and training measurements (`486e723`).
+4. One "predict: freeze <target>" commit per trial: `6c13e88` barnard, `84e4fee` epsindib, `b2df072` pluto, `24e215a` makemake, `d6999ef` wise0855, `70d15a9` rwaur, `df778bb` rdra, `d317a51` pluto open forecast, `7afe037` makemake open forecast.
+5. Receipts with full SHAs (`ba1d3c8`).
+
+`python -m scripts.predict check` reports every hash chain intact.
+
+**Team statement.** The task message left two placeholders unfilled: the viewer's name ("[Name]")
+and the other teammates' answer ("[confirmed none / not answered yet]"). They are recorded as given,
+and the other teammates are treated as **not answered yet**. What was seen: Makemake's training
+visits and its **evaluation visit** (2026-06-09, 06-12); Pluto's training visits only.
+
+**Trials, categories and why**
+
+| Trial | Category (labels) | Prediction | Why |
+|---|---|---|---|
+| `pluto-position-2026b` | **prospective_unexposed**, `confirmation_pending` | **predicted**: 2026-10-01 (MJD 61314.65), 95% semi-axes 2.5″ × 6.1″ | Evaluation visit (2026-09-29 → 10-02, QR3, D3/D6) not reported viewed and never opened by Session A. The forecast is our own heliocentric two-body fit to 50 training detections (2 visits). No JPL orbit or ephemeris input: Horizons only centred the training cutouts (`ephemeris_use`). All 8 starting distances (5–100 au) converge to one bound orbit (35.34 au, χ²/dof 1.99; near-best spread 0.01″). Pending until every teammate confirms |
+| `barnard-position-2026b` | retrospective_holdout (+ catalogue_assisted) | predicted: 95% semi-axes 2.3″ | Holdout = visit 2 (2026-08-16 → 09-22), already seen. Parallax fixed to Gaia DR3 because the free fit is unusable (A3: 0.95″ vs 0.547″). Two training visits sit ±0.44″ off the catalogue track; this visit systematic sets the uncertainty |
+| `epsindib-position-2026b` | retrospective_holdout (+ catalogue_assisted) | predicted: 95% semi-axes 0.4″ | Holdout = visit 3 (2026-09-27), seen. Parallax fixed to the Gaia EDR3 value via SIMBAD (free fit inconsistent, z = 7). Uncertainty from per-visit-and-array means (308 training positions, 3 visits) |
+| `makemake-position-2026a` | retrospective_holdout | **insufficient_data** (`predict.no-training-positions`) | Evaluation visit seen by the team. No single-exposure training detection; only 1 validated joint epoch: an orbit is unconstrained |
+| `wise0855-position-2026a` | retrospective_holdout (+ catalogue_assisted) | insufficient_data (`predict.no-training-positions`) | Every training position contaminated (A3) |
+| `rwaur-brightness-2026a` | retrospective_holdout, exploratory | insufficient_data (`predict.no-period-model`) | Only 15 single-exposure fluxes at assorted wavelengths, with no wavelength-matched pair across training visits. Unresolved binary: no defensible range |
+| `rdra-brightness-2026a` | retrospective_holdout (+ catalogue_assisted) | insufficient_data (`predict.no-training-measurements`) | Saturated in every exposure: nothing for a VSX-period model to phase |
+| `pluto-position-open-2027a` | prospective_unexposed, **open forecast** | predicted: reference 2027-04-25 (MJD 61520), track 2027-03-26 → 05-25 every 5 days; at the reference 95% semi-axes 1.1″ × 54″ (along track) | Next visit expected near 04-25 (cadence of the training visits). Same orbit fit; not counted in the scoreboard; `check_after_utc` 2027-05-15 |
+| `makemake-position-open-2027a` | prospective_unexposed, open forecast | insufficient_data | Orbit unconstrained (as above) |
+| 3I/ATLAS | see_only | — | Never a trial |
+
+Eligible for scoring when the evaluation data are measured: **3 trials**. Pluto is prospective,
+pending confirmation; Barnard and Eps Ind B are retrospective. Four trials are frozen as
+`insufficient_data` and count as such. One open forecast (Pluto) waits for IRSA.
+
+**Model vs baseline on the training data.**
+- **Pluto:** orbit χ²/dof 1.99 (residual RMS 0.29″, 0.30″). The straight-line baseline can't follow
+  the parallax loop, and its forecast lies 5.5° from the orbit's. Fitting the October visit alone
+  mispredicts April by about 4,000″, so one visit can't constrain an orbit.
+- **Barnard:** χ²/dof 8.2 at exposure level, 2.9 at visit level.
+- **Eps Ind B:** 5.7 at exposure level, 9.5 at visit level.
+
+The baselines (no parallax) are in each `prediction.json` under `diagnostics`.
+
+**Scoring as frozen.**
+- **Hit rule:** D² = r̄ᵀ S⁻¹ r̄ ≤ 5.991, with S = C_pred + C_obs.
+- **Residual:** r̄ is the mean, over identified holdout exposures, of observed − frozen model. The
+  model is evaluated with each exposure's own observer position.
+- **Observed covariance:** C_obs is the sample covariance divided by N; fewer than 3 identified
+  exposures means insufficient_data.
+- **Pluto identification is pre-registered:** search around the frozen model only (no ephemeris
+  query), S/N ≥ 10, static-source check, ambiguity rule.
+
+**Tests** (`tests/test_predict.py`, `tests/test_static_data.py`) cover:
+- **Orbit:** synthetic recovery with the forecast inside D² < 13.8; convergence from every starting
+  distance; a one-visit arc flagged as unconstrained.
+- **Categories:** label precedence.
+- **Isolation:** holdout rows ignored even when poisoned; evaluation rows reduced to IDs and times;
+  prediction runs with no network and no files outside the trial folder.
+- **Integrity:** repeated predictions byte-identical; tampering with training, trial or prediction
+  detected; predictions never rewritten; insufficient trials frozen as such; published hash chains
+  intact; open forecasts not counted.
+
+`.venv/bin/python -m pytest`: **144 passed, 2 skipped**.
+
+**Published for Session B:**
+- `static/data/trials/<id>/{trial,training,prediction,receipt}.json`
+- `scoreboard.json`: retrospective 2 waiting + 4 insufficient; prospective 1 waiting; open forecasts listed separately
+- `index.json`: `trials`, `scoreboard_path`, and per target `prediction.status` / `trial_ids` / `open_forecast_ids`
+- `reserved.json`: evaluation paths stay closed until verified
+- Contract V5
+
+**Limits.**
+- Pluto's category depends on teammates who haven't answered yet.
+- The orbit model is Sun-only (planetary perturbations neglected over a 7-month arc). Pluto–Charon
+  photocentre motion is left in the residuals.
+- The spacecraft position at the evaluation time is a covariance term in the headline prediction;
+  verification uses the real header positions.
+- The Barnard and Eps Ind B uncertainties rest on only two or three visits.
+- Horizons positions for the evaluation exposures exist in the repository (A1 inventory,
+  `reserved.json`); the prediction code provably does not read them.
 
 ### Task A3, 14 Nov 2026 (phases C–D, branch `tenger-dev`)
 
@@ -240,14 +322,12 @@ neutral position (0, 0). Bake and live jobs were not run.
 
 ### Next action (proposed)
 
-Task A4 (phase F): freeze trial manifests and predictions, then push and write receipts before any
-holdout is opened. Candidates:
-- Pluto position (training epochs above; holdout 2026-09-29 → 10-02, QR3, arrays 3 and 6), and
-  Makemake position (one validated epoch; may end `insufficient_data`). Both are
-  `catalogue_assisted` if the Horizons orbit shapes the prediction.
-- Barnard and Eps Ind B `retrospective_holdout` position trials (hold out the newest visit, predict
-  from the earlier ones).
-Then game rounds and lesson records (A5) from the frozen trials.
+Task A5 (phase F part 2): verify the three eligible trials.
+- Open the evaluation visits only through a verification script. It first checks every hash chain,
+  centres Pluto cutouts on the frozen model, applies the pre-registered identification and exclusion
+  rules, writes `verification.json` and regenerates `scoreboard.json`.
+- Get the remaining teammates' statements for Pluto before or during A5.
+- Then build game rounds and lesson records from the verified trials.
 
 ---
 

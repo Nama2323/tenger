@@ -62,6 +62,30 @@ def horizons_distance(command: str) -> dict | None:
             "source": f"JPL Horizons {command}, geocentric delta at 2026-01-01 00:00 UTC"}
 
 
+def prediction_summary(key: str, out: Path) -> dict:
+    """Status of this target's frozen trials (from the trial folders; never typed by hand)."""
+    if key == "3i-atlas":
+        return {"status": "see_only", "trial_ids": [], "open_forecast_ids": []}
+    trials, forecasts, statuses = [], [], []
+    for folder in sorted((out / "trials").glob("*")):
+        trial_path = folder / "trial.json"
+        if not trial_path.exists():
+            continue
+        trial = json.loads(trial_path.read_text())
+        if trial["target_key"] != key:
+            continue
+        if trial.get("open_forecast"):
+            forecasts.append(trial["trial_id"])
+            continue
+        trials.append(trial["trial_id"])
+        prediction_path = folder / "prediction.json"
+        if prediction_path.exists():
+            prediction = json.loads(prediction_path.read_text())
+            statuses.append("insufficient_data" if prediction.get("prediction_status") == "insufficient_data" else "waiting")
+    status = "waiting" if "waiting" in statuses else ("insufficient_data" if statuses else None)
+    return {"status": status, "trial_ids": trials, "open_forecast_ids": forecasts}
+
+
 def target_entry(key: str, name: str, kind: str, role: str, out: Path, distance: dict | None) -> dict:
     path = out / key / "investigation.json"
     doc = json.loads(path.read_text()) if path.exists() else None
@@ -89,7 +113,7 @@ def target_entry(key: str, name: str, kind: str, role: str, out: Path, distance:
         entry.update({"reference": None, "footprint": None, "data_status": "unavailable", "measurement_status": None,
                       "investigation_path": None, "thumbnails": [],
                       "status_reason_key": "unavailable.no-validated-product"})
-    entry["prediction"] = {"status": "see_only" if key == "3i-atlas" else None, "trial_ids": []}
+    entry["prediction"] = prediction_summary(key, out)
     entry["map"] = {"distance": distance, "angle_deg": ANGLES.get(key, 0.0), "angle_is_arbitrary": True}
     return entry
 
@@ -112,8 +136,9 @@ def build(out: Path) -> dict:
         "dataset_version": "a3-2026-11-14",
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "targets": targets,
-        "trials": [],
-        "scoreboard_path": None,
+        "trials": sorted(f"trials/{folder.name}/trial.json" for folder in (out / "trials").glob("*")
+                         if (folder / "trial.json").exists()),
+        "scoreboard_path": "scoreboard.json" if (out / "scoreboard.json").exists() else None,
         "game_rounds": [],
         "lessons": [],
         "reserved_path": "reserved.json",

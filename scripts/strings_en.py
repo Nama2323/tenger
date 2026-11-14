@@ -123,6 +123,7 @@ STRINGS = {
     "reserved.rule": "Live loading is paused near these paths so reserved observations stay unopened.",
     "reserved.prediction-holdout": "Reserved for a prediction test.",
     "reserved.until-predictions-frozen": "Until the predictions are frozen and published.",
+    "reserved.until-verified": "The prediction is frozen; the data stay closed until the pre-registered check opens them.",
     "reserved.see-only": "See-only target: live loading is paused along its path.",
     # thumbnails and credits
     "thumb.spherex": "SPHEREx picture (processed)",

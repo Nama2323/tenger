@@ -25,6 +25,18 @@ def _box(points: list[dict]) -> dict:
     return {"ra_deg": [round(min(ras), 4), round(max(ras), 4)], "dec_deg": [round(min(decs), 4), round(max(decs), 4)]}
 
 
+def frozen_trial(key: str) -> dict | None:
+    """The frozen A4 trial for this body's evaluation visit, if any (IDs and receipt only)."""
+    for folder in sorted((ROOT / "static" / "data" / "trials").glob(f"{key}-position-*")):
+        trial_path = folder / "trial.json"
+        if not trial_path.exists() or json.loads(trial_path.read_text()).get("open_forecast"):
+            continue
+        receipt_path = folder / "receipt.json"
+        receipt = json.loads(receipt_path.read_text()) if receipt_path.exists() else {}
+        return {"trial_id": folder.name, "prediction_commit": receipt.get("commit")}
+    return None
+
+
 def body_region(key: str) -> dict:
     inventory = json.loads((ROOT / "docs" / "exposure" / f"{key}.json").read_text())
     low, high = HOLDOUT_WINDOWS_MJD[key]
@@ -32,11 +44,13 @@ def body_region(key: str) -> dict:
     points = sorted({(round(row["t_min_mjd"], 4), round(row["target_ra_at_time"], 5), round(row["target_dec_at_time"], 5))
                      for row in rows})
     path = [{"mjd": mjd, "ra_deg": ra, "dec_deg": dec} for mjd, ra, dec in points]
+    trial = frozen_trial(key)
     return {
         "key": key,
         "kind": "holdout_path",
         "reason_key": "reserved.prediction-holdout",
-        "until_key": "reserved.until-predictions-frozen",
+        "until_key": "reserved.until-verified" if trial else "reserved.until-predictions-frozen",
+        "frozen_trial": trial,
         "window_mjd": [round(min(p["mjd"] for p in path), 4), round(max(p["mjd"] for p in path), 4)],
         "obs_ids": len({row["obs_id"] for row in rows}),
         **_box(path),
