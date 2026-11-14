@@ -97,10 +97,11 @@ Decided by the team for Task A3 (phases C–D). It changes the exposed set as fo
 ## Team confirmation for Task A4 (recorded 14 Nov 2026, 22:35 UB, before any prediction)
 
 Statement passed to Session A in the A4 task message, recorded as given. The message left two template
-placeholders unfilled. They are kept as placeholders here, not guessed.
+placeholders unfilled. The name was supplied in the A5 task message (14 Nov 2026, 23:12 UB) and is filled
+in below; see "Team confirmation update for Task A5".
 
-- **Viewer:** "[Name]" (one teammate; the name was not filled in). They downloaded and inspected SPHEREx
-  cutouts of:
+- **Viewer:** **Narmandakh** (name supplied at A5; the A4 record read "[Name]"). He downloaded and
+  inspected SPHEREx cutouts of:
   - **Makemake** on 2025-05-31, 06-01, 06-02, 06-11, 12-28, 12-29, 12-30, 12-31 and 2026-01-01, 01-03,
     01-05, 01-09, **06-09, 06-12** (UTC);
   - **Pluto** on 2025-10-04 and 10-06 (detectors D2 and D3) and 2026-04-30 15:57:59 UTC (D2).
@@ -127,6 +128,31 @@ not known to be exposed. A Pluto trial fitted only to our training positions may
 Session A nor this repository has opened any pixel of either evaluation visit. Horizons positions for
 the evaluation exposures do exist in `docs/exposure/<key>.json` and `static/data/reserved.json`: the
 A1 coverage check computed them. The A4 prediction code never reads them (tested).
+
+## Team confirmation update for Task A5 (recorded 14 Nov 2026, 23:12 UB, before any evaluation pixel was opened)
+
+Statement passed to Session A in the A5 task message, recorded as given:
+
+- **Narmandakh** did the earlier research. The Makemake viewing recorded in A4 (2025-05-31 to
+  2026-06-12) was his.
+- **Pluto, pixels:** he opened exactly five Pluto cutouts, all outside the evaluation window:
+  2025-10-04 01:09:28 UTC (D3), 2025-10-04 23:58:26 UTC (D2), 2025-10-06 02:05:55 UTC (D3),
+  2025-10-06 13:30:36 UTC (D2) and 2026-04-30 15:57:59 UTC (D2). He downloaded them from IRSA (Moving
+  Object Search Tool and SPHEREx Cutout Service) and opened them locally in Python.
+- **Pluto, metadata only:** for 2026-09-29, 10-01 and 10-02 (the evaluation visit) he saw only the
+  archive listing records, never any pixels. Those records may include JPL-predicted positions. Our
+  forecast did not use those listings: it was computed from `training.json` alone (A4, tested).
+- **Other teammates:** the other three have **not answered yet**.
+
+Consequences:
+
+| Trial | Effect |
+|---|---|
+| `pluto-position-2026b` | Stays `prospective_unexposed` with `confirmation_pending: true` until all four have confirmed. A teammate saw the **metadata** of the evaluation visit, possibly including JPL-predicted positions. That is an exposure of the ephemeris, not of the SPHEREx pixels, and the forecast did not use it. It is recorded here and in `verification.json` as a limitation. |
+| `makemake-position-2026a` | Unchanged: `retrospective_holdout` (evaluation visit viewed). |
+
+Session A opens Pluto's evaluation pixels only after this record is committed and pushed, through
+`scripts/verify.py`, with cutouts centred on the frozen model (not on the listing's positions).
 
 ## Task A4 (14 Nov 2026, 22:35–22:55 UB): predictions frozen, nothing opened
 
