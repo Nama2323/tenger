@@ -381,7 +381,9 @@ export function renderEvidence(host, { investigation, legacy, epochs }) {
   if (investigation?.state === 'ok') {
     parts.push(...investigationEvidence(investigation.doc));
     if (epochs?.total) {
-      parts.push(note(t('evidence.epochsMatched', { matched: String(epochs.matched), total: String(epochs.total) })));
+      parts.push(note(t(epochs.preview ? 'evidence.previewEpochs' : 'evidence.epochsMatched', {
+        matched: String(epochs.matched), total: String(epochs.total),
+      })));
     }
   }
   else if (!legacy?.custom) parts.push(note(investigation && investigation.state !== 'missing' ? stateText(investigation) : t('evidence.waiting')));

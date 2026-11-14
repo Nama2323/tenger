@@ -63,11 +63,40 @@ export function describePicture({ step, allFrames = [], band = { kind: 'composit
   };
 }
 
+const EPOCH_ARRAY = /-d(\d)$/;
+
+/**
+ * A preview epoch from an evidence file (DATA-CONTRACT V3.1: one array in one visit, or a fixed-sky pair
+ * epoch): its time span, array, releases and observation IDs, from the record alone.
+ */
+export function describePreviewEpoch(epoch) {
+  const keys = (epoch.obs_keys ?? []).map((key) => String(key).split(':'));
+  const releases = new Map();
+  for (const [collection] of keys) releases.set(collection, (releases.get(collection) ?? 0) + 1);
+  const detector = epoch.detector ?? Number(EPOCH_ARRAY.exec(epoch.id ?? '')?.[1]);
+  const wavelength = DETECTOR_RANGES[detector]
+    ? { kind: 'detector', detector, low: DETECTOR_RANGES[detector][0], high: DETECTOR_RANGES[detector][1] }
+    : { kind: 'unknown' };
+  return {
+    status: epoch.assets?.content_type === 'artificial' ? 'artificial' : 'processed',
+    combine: epoch.assets?.preview_kind ?? epoch.combine ?? 'single',
+    frame: epoch.frame ?? null,
+    wavelength,
+    start: Number.isFinite(epoch.t_start_mjd) ? mjdToDate(epoch.t_start_mjd) : null,
+    end: Number.isFinite(epoch.t_end_mjd) ? mjdToDate(epoch.t_end_mjd) : null,
+    releases: [...releases.entries()].sort().map(([release, count]) => ({ release, count })),
+    obs: keys.map((parts) => `${parts[1] ?? '?'} ${parts[2] ?? ''}`.trim()).sort(),
+    frameCount: keys.length || 1,
+  };
+}
+
 /** Why two pictures are not like-for-like, as an i18n key, or null. */
 export function comparisonWarning(first, second) {
   if (!first || !second) return null;
   if ((first.status === 'context') !== (second.status === 'context')) return 'caption.warnCrossMission';
   if (!first.frameCount || !second.frameCount) return 'caption.warnNoExposure';
+  if (first.wavelength.kind === 'detector' && second.wavelength.kind === 'detector'
+    && first.wavelength.detector !== second.wavelength.detector) return 'caption.warnArrays';
   const a = first.wavelength;
   if (a.kind === 'channel') return 'caption.warnChannelLabel';
   if (a.kind === 'composite' || a.kind === 'detector') return 'caption.warnBroadBand';

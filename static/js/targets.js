@@ -148,6 +148,10 @@ export function buildTargets(index, legacyPresets = []) {
  */
 export const isViewable = (entry) => Boolean(entry?.legacy);
 
+/** Frames to view, or an evidence file with epoch previews (data_status partial or available). */
+export const isOpenable = (entry) => isViewable(entry)
+  || (Boolean(entry?.investigationPath) && entry.dataStatus !== 'unavailable');
+
 /** Bundled frames exist, but the index lists no validated product for the target. */
 export const isLegacyOnly = (entry) => isViewable(entry) && entry.fromIndex && entry.dataStatus === 'unavailable';
 

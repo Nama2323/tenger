@@ -12,7 +12,6 @@
 </head>
 <body data-page="home">
   <a class="skip" href="#main" data-t="site.skip"></a>
-  <canvas id="ambient" class="ambient" width="48" height="27" aria-hidden="true"></canvas>
 
   <header class="topbar">
     <a id="logo" class="brand" href="./" data-page-link="home">
@@ -120,69 +119,77 @@
     </section>
 
     <!-- ======================= Investigation ======================= -->
-    <section id="page-investigate" class="page" hidden aria-labelledby="object-name">
+    <section id="page-investigate" class="page page-investigate" hidden aria-labelledby="object-name">
       <header class="inv-head">
-        <button id="inv-back" type="button" class="ghost" data-t="inv.back"></button>
-        <div class="object">
-          <p id="object-kind" class="object-kind"></p>
-          <h1 id="object-name" tabindex="-1"></h1>
-          <p id="object-coords" class="note"></p>
-          <p id="object-status" class="stamps"></p>
+        <div class="inv-head-actions">
+          <button id="inv-back" type="button" class="quiet" data-t="inv.back"></button>
+          <button id="share" type="button" class="quiet" data-t="inv.share"></button>
         </div>
-        <div class="share">
-          <button id="share" type="button" data-t="inv.share"></button>
+        <div class="object">
+          <p id="object-kind" class="object-kind eyebrow"></p>
+          <h1 id="object-name" tabindex="-1"></h1>
+          <p id="object-coords" class="object-coords mono"></p>
+          <p id="object-status" class="stamps"></p>
           <span id="share-status" class="note" role="status"></span>
         </div>
       </header>
 
-      <nav class="panel-nav" data-t-label="panel.nav">
-        <button type="button" data-panel="see" data-t="panel.see"></button>
-        <button type="button" data-panel="changed" data-t="panel.changed"></button>
-        <button type="button" data-panel="prediction" data-t="panel.prediction"></button>
-        <button type="button" data-panel="evidence" data-t="panel.evidence"></button>
-        <button type="button" data-panel="spectrum" data-t="panel.spectrum"></button>
-      </nav>
-
-      <section id="panel-see" class="panel panel-see" aria-labelledby="h-see">
-        <h2 id="h-see" class="sr-only" data-t="panel.see"></h2>
-        <p id="progress" class="progress" role="status"></p>
-        <p id="see-empty" class="panel-note" hidden></p>
-        <div id="observatory" class="observatory">
-          <section class="plate-wrap" data-t-label="viewer.label">
-            <div id="plates" class="plates" data-mode="blink">
-              <div id="frame-a" class="plate-frame">
-                <canvas id="plate" width="1600" height="1600" tabindex="0" data-t-label="viewer.label"></canvas>
-                <p id="plate-date" class="plate-date"></p>
-                <p id="lock" class="lock" hidden></p>
-                <p id="plate-empty" class="plate-empty" hidden></p>
-                <p class="plate-hint" data-t="zoomHint"></p>
-              </div>
-              <div id="second-frame" class="plate-frame plate-b" hidden>
-                <canvas id="plate-b" width="1600" height="1600"></canvas>
-                <p id="plate-date-b" class="plate-date"></p>
-                <i id="swipe-line" class="swipe-line" aria-hidden="true"></i>
-              </div>
+      <div id="observatory" class="stage" data-mode="blink">
+        <section class="stage-view" data-t-label="viewer.label">
+          <div id="plates" class="plates" data-mode="blink">
+            <div id="frame-a" class="plate-frame">
+              <canvas id="plate" width="1600" height="1600" tabindex="0" data-t-label="viewer.label"></canvas>
+              <p id="plate-date" class="plate-date"></p>
+              <p id="lock" class="lock" hidden></p>
+              <p id="plate-empty" class="plate-empty" hidden></p>
+              <p class="plate-hint" data-t="zoomHint"></p>
             </div>
-            <label id="swipe-control" class="swipe-control" hidden><span data-t="swipe.label"></span>
-              <input id="swipe" type="range" min="0" max="100" step="1" value="50">
-            </label>
-            <div id="arrays" class="arrays" role="group"></div>
-          </section>
-
-          <div class="side-col">
-          <section id="caption-strip" class="caption-strip" aria-labelledby="caption-title">
-            <h3 id="caption-title" data-t="caption.title"></h3>
-            <div id="caption-body"></div>
-          </section>
-
-          <aside class="side">
+            <div id="second-frame" class="plate-frame plate-b" hidden>
+              <canvas id="plate-b" width="1600" height="1600"></canvas>
+              <p id="plate-date-b" class="plate-date"></p>
+              <i id="swipe-line" class="swipe-line" aria-hidden="true"></i>
+            </div>
+          </div>
+        </section>
+        <label id="swipe-control" class="swipe-control" hidden><span data-t="swipe.label"></span>
+          <input id="swipe" type="range" min="0" max="100" step="1" value="50">
+        </label>
+        <div class="timebar glass" role="group" data-t-label="timebar.label">
+          <div class="timebar-track">
+            <button id="play" type="button" class="primary play-button"></button>
+            <div id="dates" class="film" role="group" data-t-label="caption.time"></div>
+          </div>
+          <div class="timebar-controls">
             <div class="segment" role="group" id="modes" data-t-label="mode.label">
               <button type="button" data-mode="blink" data-t="mode.blink"></button>
-              <button type="button" data-mode="side" data-t="mode.side"></button>
               <button type="button" data-mode="swipe" data-t="mode.swipe"></button>
+              <button type="button" data-mode="side" data-t="mode.side"></button>
               <button type="button" data-mode="diff" data-t="mode.diff"></button>
             </div>
-            <p id="diff-note" class="note warn" hidden data-t="mode.diffOff"></p>
+            <p id="explain" class="explain" aria-live="polite"></p>
+          </div>
+          <p id="diff-note" class="note warn" hidden data-t="mode.diffOff"></p>
+        </div>
+      </div>
+
+      <div id="inv-panel" class="inv-panel">
+        <nav class="panel-nav" data-t-label="panel.nav">
+          <button type="button" data-panel="see" data-t="panel.see"></button>
+          <button type="button" data-panel="changed" data-t="panel.changed"></button>
+          <button type="button" data-panel="prediction" data-t="panel.prediction"></button>
+          <button type="button" data-panel="evidence" data-t="panel.evidence"></button>
+          <button type="button" data-panel="spectrum" data-t="panel.spectrum"></button>
+        </nav>
+
+        <section id="panel-see" class="panel panel-see" aria-labelledby="h-see">
+          <h2 id="h-see" class="panel-title" data-t="panel.see"></h2>
+          <p id="progress" class="progress" role="status"></p>
+          <p id="see-empty" class="panel-note" hidden></p>
+          <div id="see-tools" class="see-tools">
+            <section id="caption-strip" class="caption-strip" aria-labelledby="caption-title">
+              <h3 id="caption-title" data-t="caption.title"></h3>
+              <div id="caption-body"></div>
+            </section>
             <div class="ab" role="group" data-t-label="ab.label">
               <label class="ab-pick"><span class="ab-letter" data-t="ab.a"></span><select id="range-from"></select></label>
               <label class="ab-pick"><span class="ab-letter" data-t="ab.b"></span><select id="range-to"></select></label>
@@ -191,6 +198,18 @@
                 <button id="endpoints" type="button" data-t="ab.only"></button>
               </div>
             </div>
+            <section class="wavelength" aria-labelledby="wavelength-title">
+              <h3 id="wavelength-title" data-t="caption.wavelength"></h3>
+              <div class="bands">
+                <button id="composite" type="button" data-t="composite"></button>
+                <output id="band-label" class="mono"></output>
+                <div class="band-track">
+                  <div id="band-scale" class="band-scale" aria-hidden="true"></div>
+                  <input id="band" type="range" min="0" max="101" step="1" value="0" data-t-label="bandSlider">
+                </div>
+              </div>
+              <div id="arrays" class="arrays" role="group" data-t-label="arrays.label"></div>
+            </section>
             <details id="more" class="more">
               <summary data-t="viewer.more"></summary>
               <div class="tools">
@@ -218,76 +237,59 @@
               <div id="chooser" class="chooser" hidden>
                 <strong data-t="chooseTitle"></strong>
                 <div id="chooser-list" class="chooser-list"></div>
-                <button id="chooser-close" type="button" class="ghost" data-t="cancel"></button>
+                <button id="chooser-close" type="button" class="quiet" data-t="cancel"></button>
               </div>
             </details>
             <p class="note" data-t="viewer.keys"></p>
             <p class="note"><span id="plate-info"></span></p>
-          </aside>
-          </div>
-
-          <div class="deck">
-            <p id="explain" class="explain" aria-live="polite"></p>
-            <div class="timeline">
-              <button id="play" type="button" class="glow"></button>
-              <div id="dates" class="film" role="group" data-t-label="caption.time"></div>
-            </div>
-            <div class="bands">
-              <button id="composite" type="button" data-t="composite"></button>
-              <div class="band-track">
-                <div id="band-scale" class="band-scale" aria-hidden="true"></div>
-                <input id="band" type="range" min="0" max="101" step="1" value="0" data-t-label="bandSlider">
-              </div>
-              <output id="band-label"></output>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="panel-changed" class="panel" aria-labelledby="h-changed">
-        <h2 id="h-changed" data-t="panel.changed"></h2>
-        <p class="lead" data-t="changed.lead"></p>
-        <div id="changed-validated"></div>
-        <section id="explore-box" class="explore-box" aria-labelledby="h-explore">
-          <h3 id="h-explore" data-t="changed.explore"></h3>
-          <p class="note" data-t="changed.exploreLead"></p>
-          <div class="explore-grid">
-            <div>
-              <h4 data-t="changed.motionTitle"></h4>
-              <div id="motion-result" class="motion-result"></div>
-              <button id="measure" type="button" data-t="measure"></button>
-            </div>
-            <div>
-              <h4 data-t="changed.curveTitle"></h4>
-              <div id="curve-chart" class="chart"></div>
-              <p id="curve-note" class="note"></p>
-              <div id="curve-table"></div>
-            </div>
           </div>
         </section>
-      </section>
 
-      <section id="panel-prediction" class="panel" aria-labelledby="h-prediction">
-        <h2 id="h-prediction" data-t="panel.prediction"></h2>
-        <p class="lead" data-t="pred.lead"></p>
-        <div id="prediction-body"></div>
-      </section>
+        <section id="panel-changed" class="panel" aria-labelledby="h-changed">
+          <h2 id="h-changed" class="panel-title" data-t="panel.changed"></h2>
+          <p class="lead" data-t="changed.lead"></p>
+          <div id="changed-validated"></div>
+          <section id="explore-box" class="explore-box" aria-labelledby="h-explore">
+            <h3 id="h-explore" data-t="changed.explore"></h3>
+            <p class="note" data-t="changed.exploreLead"></p>
+            <div class="explore-grid">
+              <div>
+                <h4 data-t="changed.motionTitle"></h4>
+                <div id="motion-result" class="motion-result"></div>
+                <button id="measure" type="button" data-t="measure"></button>
+              </div>
+              <div>
+                <h4 data-t="changed.curveTitle"></h4>
+                <div id="curve-chart" class="chart"></div>
+                <p id="curve-note" class="note"></p>
+                <div id="curve-table"></div>
+              </div>
+            </div>
+          </section>
+        </section>
 
-      <section id="panel-evidence" class="panel" aria-labelledby="h-evidence">
-        <h2 id="h-evidence" data-t="panel.evidence"></h2>
-        <p class="lead" data-t="evidence.lead"></p>
-        <div id="evidence-body"></div>
-      </section>
+        <section id="panel-prediction" class="panel" aria-labelledby="h-prediction">
+          <h2 id="h-prediction" class="panel-title" data-t="panel.prediction"></h2>
+          <p class="lead" data-t="pred.lead"></p>
+          <div id="prediction-body"></div>
+        </section>
 
-      <section id="panel-spectrum" class="panel" aria-labelledby="h-spectrum">
-        <h2 id="h-spectrum" data-t="panel.spectrumOptional"></h2>
-        <p class="lead" data-t="spectrum.lead"></p>
-        <div id="spectrum-note"></div>
-        <div id="chart" class="chart"></div>
-        <p id="chart-note" class="note"></p>
-        <p class="note" data-t="spectrum.features"></p>
-        <div id="spectrum-table"></div>
-      </section>
+        <section id="panel-evidence" class="panel" aria-labelledby="h-evidence">
+          <h2 id="h-evidence" class="panel-title" data-t="panel.evidence"></h2>
+          <p class="lead" data-t="evidence.lead"></p>
+          <div id="evidence-body"></div>
+        </section>
+
+        <section id="panel-spectrum" class="panel" aria-labelledby="h-spectrum">
+          <h2 id="h-spectrum" class="panel-title" data-t="panel.spectrumOptional"></h2>
+          <p class="lead" data-t="spectrum.lead"></p>
+          <div id="spectrum-note"></div>
+          <div id="chart" class="chart"></div>
+          <p id="chart-note" class="note"></p>
+          <p class="note" data-t="spectrum.features"></p>
+          <div id="spectrum-table"></div>
+        </section>
+      </div>
     </section>
 
     <!-- ======================= Beat the physics ======================= -->

@@ -1,7 +1,7 @@
 // TENGER: the page shell (Home, Investigate, Beat the physics, Learn, About) and the image viewer
 // inherited from SPHEREx Blink, extended with explicit A/B observations, Swipe, a caption strip and URL state.
 import * as api from './api.js';
-import { comparisonWarning, CONTEXT_STEP, describePicture } from './caption.js';
+import { comparisonWarning, CONTEXT_STEP, describePicture, describePreviewEpoch } from './caption.js';
 import { drawLightCurve, drawSpectrum, drawWingCurve } from './chart.js';
 import { createSource } from './contract.js';
 import { allowsDifference, comparisonReasons, epochCoverage, pairComparison } from './epochs.js';
@@ -28,7 +28,9 @@ import {
   channelWavelength, CHANNELS, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
   selectBand, skyToPixel, visitsOf, wellCovered,
 } from './stack.js';
-import { buildTargets, canonicalKey, findCoveringTarget, isLegacyOnly, isViewable, legacyPlaces } from './targets.js';
+import {
+  buildTargets, canonicalKey, findCoveringTarget, isLegacyOnly, isOpenable, isViewable, legacyPlaces,
+} from './targets.js';
 import { canvasToPlate, fullView, panBy, zoomAt } from './viewport.js';
 
 const POLL_MS = 1500;
@@ -142,6 +144,7 @@ let captionKey = '';
  * name the evidence file's viewer.visits[].date_utc uses); the AllWISE frame is "allwise".
  */
 function sequence() {
+  if (state.previews) return state.previews;
   const used = new Map();
   const dated = state.visits.map((visit) => {
     const day = formatUtc(mjdToDate(visit.mjd), { time: false });
@@ -230,6 +233,10 @@ function plateLabel(step) {
 }
 
 function render() {
+  if (state.previews) {
+    renderPreview();
+    return;
+  }
   if (!state.job) return;
   const size = state.job.n;
   const [aStep, bStep] = abSteps();
@@ -294,10 +301,10 @@ function buildArrays() {
   $('arrays').replaceChildren(...tiles);
 }
 
-/** The page's background glow is the current picture itself, heavily blurred. */
+/** The page's background glow is the current picture itself, heavily blurred (when the page has one). */
 function paintAmbient() {
   const ambient = $('ambient');
-  ambient.getContext('2d').drawImage($('plate'), 0, 0, ambient.width, ambient.height);
+  if (ambient) ambient.getContext('2d').drawImage($('plate'), 0, 0, ambient.width, ambient.height);
 }
 
 const paintKey = (prefix, wanted) => `${prefix}|${wanted.kind}${wanted.detector ?? wanted.channel ?? ''}|${state.excludeFlags}|${state.contrast}`;
@@ -450,6 +457,7 @@ function idsBlock(picture) {
  * own exposures (legacy: null, DATA-CONTRACT V3.1/V3.5), 'legacy' for older prepared frames, 'live' otherwise.
  */
 function framesKind() {
+  if (state.previews) return 'preview';
   if (!state.target?.key) return 'live';
   const doc = app.investigation?.state === 'ok' ? app.investigation.doc : null;
   return doc && doc.legacy === null && state.staticMeta?.dataset_version ? 'rebuilt' : 'legacy';
@@ -459,7 +467,8 @@ function statusNote(picture) {
   if (picture.status === 'context') return t('statusNote.context');
   if (picture.status === 'difference') return t('statusNote.difference');
   const kind = framesKind();
-  return `${t(`statusNote.${picture.combine}`)} ${kind === 'live' ? '' : t(`statusNote.${kind}`)}`.trim();
+  const combine = has(`statusNote.${picture.combine}`) ? t(`statusNote.${picture.combine}`) : '';
+  return `${combine} ${kind === 'live' ? '' : t(`statusNote.${kind}`)}`.trim();
 }
 
 function captionColumn(letter, picture, side) {
@@ -487,7 +496,9 @@ function captionColumn(letter, picture, side) {
 
 /** A and B columns (plus the date on the plate when Blink shows another one); rebuilt only when they change. */
 function renderCaption(left, aStep, bStep) {
-  const describe = (step, difference = false) => describePicture({ step, allFrames: state.frames, band: state.band, difference });
+  const describe = (step, difference = false) => (step?.epoch
+    ? describePreviewEpoch(step.epoch)
+    : describePicture({ step, allFrames: state.frames, band: state.band, difference }));
   const blink = state.mode === 'blink';
   const shownSide = !blink ? null : left && left.id === aStep?.id ? 'a' : left && left.id === bStep?.id ? 'b' : 'other';
   const key = [state.mode, aStep?.id, bStep?.id, shownSide === 'other' ? (left?.id ?? ALL_DATES) : '',
@@ -536,6 +547,11 @@ function filmTile(step, position) {
 }
 
 function paintFilmTile({ canvas, step }) {
+  if (step?.preview) {
+    drawPreview(canvas, step);
+    return;
+  }
+  if (!step && state.previews) return;
   const saved = document.createElement('canvas');
   copyCanvas(buffer, saved);
   if (paintStep(step, state.job.n, { kind: 'composite' })) drawPlate(canvas, buffer, { grid: state.job, bare: true });
@@ -546,17 +562,18 @@ function paintFilmTile({ canvas, step }) {
 function renderDates() {
   filmGeneration += 1;
   const generation = filmGeneration;
-  if (!state.job) {
+  if (!state.job && !state.previews) {
     $('dates').replaceChildren();
     return;
   }
-  const tiles = [...sequence().map((step, index) => filmTile(step, index)), filmTile(null, ALL_DATES)];
+  const steps = sequence().map((step, index) => filmTile(step, index));
+  const tiles = state.previews ? steps : [...steps, filmTile(null, ALL_DATES)];
   $('dates').replaceChildren(...tiles.map((tile) => tile.button));
   renderRange();
   markFilm();
   tiles.forEach((tile, order) => {
     setTimeout(() => {
-      if (generation === filmGeneration && state.job) paintFilmTile(tile);
+      if (generation === filmGeneration && (state.job || state.previews)) paintFilmTile(tile);
     }, order * FILM_TILE_DELAY_MS + FILM_FIRST_DELAY_MS);
   });
 }
@@ -711,6 +728,11 @@ function chooseAt(plate) {
 function currentComparison() {
   const doc = app.investigation?.state === 'ok' ? app.investigation.doc : null;
   if (!doc) return null;
+  if (state.previews) {
+    const { from, to } = state.range;
+    const comparison = (doc.comparisons ?? []).find((item) => (item.a === from && item.b === to) || (item.a === to && item.b === from)) ?? null;
+    return { comparison, reason: comparison ? null : 'no-comparison', detector: null, pair: true };
+  }
   const [aStep, bStep] = abSteps();
   const visitOf = (step) => (!step || step.key === WISE_STEP ? null : step.key);
   return pairComparison(doc, visitOf(aStep), visitOf(bStep), state.band);
@@ -726,11 +748,15 @@ function gradeNote() {
   const found = currentComparison();
   if (!found) return null;
   if (found.reason === 'composite') return el('p', { class: 'note', text: t('caption.gradePerArray') });
-  if (!found.comparison) return found.reason === 'context' ? null : el('p', { class: 'note', text: t('caption.gradeNone') });
+  if (!found.comparison) {
+    if (found.reason === 'context') return null;
+    return el('p', { class: 'note', text: t(found.pair ? 'caption.gradeNonePair' : 'caption.gradeNone') });
+  }
   const { comparison } = found;
-  const reasons = comparisonReasons(comparison).map((key) => tData(key, 'explain.unknown')).join(' ');
+  const reasons = [...comparisonReasons(comparison), comparison.explain_key].filter(Boolean)
+    .map((key) => tData(key, 'explain.unknown')).join(' ');
   return el('p', { class: 'note' }, [
-    chip(t('caption.grade', {
+    chip(t(found.pair ? 'caption.gradePair' : 'caption.grade', {
       grade: has(`grade.${comparison.grade}`) ? t(`grade.${comparison.grade}`) : comparison.grade,
       detector: String(found.detector),
     })),
@@ -858,7 +884,7 @@ function buildBandScale() {
 
 /** ← and → step through dates (B outside Blink); Space plays or pauses Blink, or flips the swipe. */
 function onViewerKey(event) {
-  if (!state.job || event.altKey || event.ctrlKey || event.metaKey) return;
+  if ((!state.job && !state.previews) || event.altKey || event.ctrlKey || event.metaKey) return;
   const target = event.target;
   if (target.closest('input, select, textarea')) return;
   const steps = sequence();
@@ -896,8 +922,9 @@ function resetViewerState(target) {
     session, target, job: null, staticMeta: null, frames: [], visits: [], wiseFrame: null, position: 0, gaia: [],
     spectrum: null, spectrumObject: null, track: null, pick: null, band: { kind: 'composite' }, mode: 'blink',
     auto: { spectrum: false }, follow: false, lock: null, picking: false, candidates: null, next: 'a',
-    range: { from: null, to: null, endpoints: true }, received: 0, diffAsked: false,
+    range: { from: null, to: null, endpoints: true }, received: 0, diffAsked: false, previews: null,
   });
+  document.body.classList.remove('preview-mode');
   setPlaying(false);
   refreshFollowUi();
   cache.clear();
@@ -937,6 +964,7 @@ function reservedName(region) {
 
 function showViewerEmpty(text) {
   $('observatory').hidden = true;
+  $('see-tools').hidden = true;
   $('see-empty').hidden = false;
   $('see-empty').textContent = text;
   $('progress').textContent = '';
@@ -988,6 +1016,7 @@ async function openLive(ra, dec, fov, session) {
 
 function resetPanels(target, fov) {
   $('observatory').hidden = false;
+  $('see-tools').hidden = false;
   $('see-empty').hidden = true;
   document.body.dataset.kind = target.kind ?? 'custom';
   fillFovSelect(fov);
@@ -1023,13 +1052,13 @@ function describeTarget(target, fov) {
   const entry = app.entry;
   $('object-name').textContent = entry ? entryName(entry) : displayName(target);
   $('object-kind').textContent = kindLabel(entry?.kind ?? target.kind ?? 'custom');
-  $('object-coords').textContent = t('inv.coords', {
-    ra: `${ra.toFixed(4)}°`, dec: `${dec >= 0 ? '+' : '−'}${Math.abs(dec).toFixed(4)}°`, fov: String(fov),
-  });
+  $('object-coords').textContent = Number.isFinite(ra) && Number.isFinite(dec)
+    ? t('inv.coords', { ra: `${ra.toFixed(4)}°`, dec: `${dec >= 0 ? '+' : '−'}${Math.abs(dec).toFixed(4)}°`, fov: String(fov) })
+    : t('inv.bodyCentred');
   const chips = [];
   if (entry) {
     chips.push(chip(t(`role.${entry.role}`)));
-    chips.push(chip(isViewable(entry) ? t(`data.${framesKind()}`) : statusLabel(entry)));
+    chips.push(chip(isViewable(entry) || state.previews ? t(`data.${framesKind()}`) : statusLabel(entry)));
     if (isLegacyOnly(entry)) chips.push(chip(t('data.legacyOnly')));
     chips.push(chip(predictionLabel(entry)));
   } else {
@@ -1355,7 +1384,9 @@ async function refreshPanels() {
   renderEvidence($('evidence-body'), {
     investigation: app.investigation,
     legacy: { frames: state.frames, meta: state.staticMeta, custom, kind: framesKind() },
-    epochs: app.investigation?.state === 'ok' ? epochCoverage(app.investigation.doc, state.visits.map((visit) => visit.visit)) : null,
+    epochs: app.investigation?.state !== 'ok' ? null : state.previews
+      ? { matched: state.previews.length, total: app.investigation.doc.epochs?.length ?? 0, preview: true }
+      : epochCoverage(app.investigation.doc, state.visits.map((visit) => visit.visit)),
   });
   renderSpectrumNote($('spectrum-note'), { investigation: app.investigation });
   $('explore-box').hidden = !state.frames.length;
@@ -1370,7 +1401,10 @@ function setPanel(panel, { scroll = true, write = true, instant = false } = {}) 
   }
   const behavior = instant || prefersReducedMotion() ? 'auto' : 'smooth';
   if (scroll && panel !== 'see') $(`panel-${panel}`).scrollIntoView({ behavior, block: 'start' });
-  else if (scroll) scrollTo({ top: 0, behavior });
+  else if (scroll) {
+    $('inv-panel').scrollTo({ top: 0, behavior });
+    scrollTo({ top: 0, behavior });
+  }
   if (write) writeUrl();
 }
 
@@ -1411,7 +1445,7 @@ function routeState() {
     target: app.entry?.key ?? null,
     ra: centre.ra,
     dec: centre.dec,
-    fov: Number($('fov').value) || state.target.fov || DEFAULT_FOV,
+    fov: state.previews ? null : Number($('fov').value) || state.target.fov || DEFAULT_FOV,
     panel: app.panel,
     band: state.band,
     mode: state.mode,
@@ -1438,13 +1472,15 @@ function setMenu(open) {
 function showPage(page, { push = true, focus = true } = {}) {
   app.page = page;
   setMenu(false);
-  for (const name of PAGES) $(`page-${name}`).hidden = name !== page;
+  for (const name of PAGES) $(`page-${name}`).hidden = name !== page && !(page === 'investigate' && name === 'home');
+  // The investigation panel slides in over the map, which stays visible but out of reach.
+  $('page-home').inert = page === 'investigate';
   document.body.dataset.page = page;
   for (const link of document.querySelectorAll('.nav [data-page-link]')) {
     const current = link.dataset.pageLink === page || (page === 'investigate' && link.dataset.pageLink === 'home');
     link.setAttribute('aria-current', current ? 'page' : 'false');
   }
-  if (page === 'home') requestAnimationFrame(placeMapLabels);
+  if (page === 'home' || page === 'investigate') requestAnimationFrame(placeMapLabels);
   if (page !== 'investigate') {
     setPlaying(false);
     document.title = page === 'home' ? `${t('site.title')} · ${t('home.title')}` : `${t(`nav.${page}`)} · ${t('site.title')}`;
@@ -1452,6 +1488,7 @@ function showPage(page, { push = true, focus = true } = {}) {
   writeUrl({ push });
   if (focus) {
     scrollTo(0, 0);
+    $('inv-panel').scrollTo(0, 0);
     const heading = page === 'investigate' ? $('object-name') : $(`page-${page}`).querySelector('h1');
     heading?.focus({ preventScroll: true });
   }
@@ -1466,6 +1503,10 @@ function openEntry(entry, { fov = null, requested = null, push = true } = {}) {
   app.keepNotices = false;
   renderNotices();
   showPage('investigate', { push });
+  if (!isViewable(entry) && isOpenable(entry)) {
+    openPreview(entry);
+    return;
+  }
   if (!isViewable(entry)) {
     resetViewerState(null);
     describeEntryOnly(entry);
@@ -1486,6 +1527,111 @@ function openEntry(entry, { fov = null, requested = null, push = true } = {}) {
     }
     scrollToLinkedPanel();
   });
+}
+
+// ---------- Preview-only investigations (epochs[].assets.preview, no frame bundle) ----------
+
+const previewImages = new Map();
+
+function previewStepsOf(doc) {
+  return (doc?.epochs ?? []).filter((epoch) => epoch?.assets?.preview && typeof epoch.id === 'string')
+    .map((epoch) => ({
+      key: `preview-${epoch.id}`,
+      id: epoch.id,
+      epoch,
+      frames: [],
+      preview: app.source.url(epoch.assets.preview),
+      mjd: ((epoch.t_start_mjd ?? 0) + (epoch.t_end_mjd ?? epoch.t_start_mjd ?? 0)) / 2,
+    }))
+    .filter((step) => step.preview)
+    .sort((first, second) => first.mjd - second.mjd);
+}
+
+/** Draws a preview image into a plate or tile canvas; redraws when it has loaded. */
+function drawPreview(canvas, step) {
+  const context = canvas.getContext('2d');
+  context.fillStyle = '#05070d';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  if (!step?.preview) return;
+  let image = previewImages.get(step.preview);
+  if (!image) {
+    image = new Image();
+    image.decoding = 'async';
+    image.addEventListener('load', () => {
+      render();
+      for (const tile of $('dates').children) {
+        const index = Number(tile.dataset.position);
+        const tileStep = sequence()[index];
+        if (tileStep?.preview === step.preview) drawPreview(tile.querySelector('canvas'), tileStep);
+      }
+    });
+    image.src = step.preview;
+    previewImages.set(step.preview, image);
+  }
+  if (image.complete && image.naturalWidth) {
+    context.imageSmoothingEnabled = true;
+    context.imageSmoothingQuality = 'high';
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+  }
+}
+
+function renderPreview() {
+  const [aStep, bStep] = abSteps();
+  const mode = state.mode === 'diff' ? 'blink' : state.mode;
+  const two = mode === 'side' || mode === 'swipe';
+  const left = two ? aStep : currentStep();
+  drawPreview($('plate'), left);
+  $('plate-date').textContent = two ? t('plate.a', { date: stepLabel(aStep) }) : plateLabel(left);
+  $('second-frame').hidden = !two;
+  if (two) {
+    drawPreview($('plate-b'), bStep);
+    $('plate-date-b').textContent = t('plate.b', { date: stepLabel(bStep) });
+  }
+  $('plates').dataset.mode = mode;
+  $('observatory').dataset.mode = mode;
+  $('swipe-control').hidden = mode !== 'swipe';
+  $('plate-empty').hidden = true;
+  $('plate-info').textContent = '';
+  document.body.dataset.layout = mode === 'side' ? 'compare' : 'one';
+  renderCaption(left, aStep, bStep);
+  $('explain').textContent = t(left?.epoch?.frame === 'body_centred' ? 'explainBodyCentred' : 'explainPreview');
+  markFilm();
+}
+
+/** Opens a target whose evidence file has preview images but no frame bundle (e.g. Makemake). */
+async function openPreview(entry) {
+  const session = resetViewerState({ key: entry.key, name: entryName(entry), kind: entry.kind });
+  document.body.classList.add('preview-mode');
+  $('observatory').hidden = false;
+  $('see-tools').hidden = false;
+  $('see-empty').hidden = true;
+  $('progress').textContent = '';
+  $('chart-note').textContent = '';
+  for (const id of ['chart', 'curve-chart', 'spectrum-table', 'curve-table', 'motion-result']) $(id).replaceChildren();
+  describeTarget(state.target, null);
+  await ensureInvestigation();
+  if (session !== state.session) return;
+  const steps = app.investigation?.state === 'ok' ? previewStepsOf(app.investigation.doc) : [];
+  if (!steps.length) {
+    showViewerEmpty(t('data.unavailableLong'));
+    writeUrl();
+    scrollToLinkedPanel();
+    return;
+  }
+  state.previews = steps;
+  const ids = new Set(steps.map((step) => step.id));
+  const pair = (app.investigation.doc.comparisons ?? []).find((item) => ids.has(item.a) && ids.has(item.b));
+  state.range = { from: pair?.a ?? steps[0].id, to: pair?.b ?? steps.at(-1).id, endpoints: true };
+  state.position = Math.max(0, steps.findIndex((step) => step.id === state.range.from));
+  applyPendingView();
+  if (state.mode === 'diff') state.mode = 'blink';
+  refreshModeButtons();
+  renderDates();
+  setPlaying(state.mode === 'blink' && !prefersReducedMotion());
+  render();
+  refreshPanels();
+  writeUrl();
+  scrollToLinkedPanel();
 }
 
 /** A link with panel=… scrolls there once the viewer above it has its final height. */
@@ -1686,7 +1832,11 @@ function bindSearchList() {
     if (!event.target.closest('.search')) closeSearchList();
   });
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeSearchList();
+    if (event.key !== 'Escape') return;
+    closeSearchList();
+    setMenu(false);
+    // Escape closes the investigation panel (not while a form field or the full-screen viewer has it).
+    if (app.page === 'investigate' && !document.fullscreenElement && !event.target.closest('input, select, textarea')) showPage('home');
   });
 }
 

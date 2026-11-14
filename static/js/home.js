@@ -3,7 +3,7 @@
 import { $, el, prefersReducedMotion } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { AU_PER_UNIT, RINGS, mapRadius, placeOnMap } from './map.js';
-import { isLegacyOnly, isViewable } from './targets.js';
+import { isLegacyOnly, isOpenable } from './targets.js';
 
 const BLINK_MS = 900;
 const LABEL_SIDES = ['label-right', 'label-left', 'label-below', 'label-above'];
@@ -71,7 +71,7 @@ export function startBlinking() {
 function shortcutChip(entry, thumbs, onOpen) {
   const label = `${entryName(entry)}. ${hookOf(entry) ?? ''} ${statusLabel(entry)}. ${predictionLabel(entry)}.`;
   const tile = thumbs ? blinkTile(entry.key, thumbs) : el('span', { class: 'blink empty', 'aria-hidden': 'true' });
-  if (!isViewable(entry)) {
+  if (!isOpenable(entry)) {
     return el('li', {}, el('span', { class: `target-chip chip-off colour-${entry.colour}`, 'aria-label': label, role: 'img' }, [tile, entryName(entry)]));
   }
   return el('li', {}, el('button', {
@@ -106,13 +106,13 @@ function mapMarker(entry, place, onOpen) {
   const distance = formatDistance(entry.map.distance);
   const label = t('map.marker', { name: entryName(entry), distance, status: statusLabel(entry) });
   const props = {
-    class: `map-marker colour-${entry.colour} label-right${isViewable(entry) ? '' : ' is-off'}`,
+    class: `map-marker colour-${entry.colour} label-right${isOpenable(entry) ? '' : ' is-off'}`,
     style: `left:${(place.x * 100).toFixed(2)}%;top:${(place.y * 100).toFixed(2)}%`,
     'aria-label': label,
     title: label,
   };
   const content = [el('i', { class: 'dot', 'aria-hidden': 'true' }), el('span', { text: entryName(entry), 'aria-hidden': 'true' })];
-  if (isViewable(entry)) return el('button', { ...props, type: 'button', onclick: () => onOpen(entry) }, content);
+  if (isOpenable(entry)) return el('button', { ...props, type: 'button', onclick: () => onOpen(entry) }, content);
   return el('span', { ...props, role: 'img' }, content);
 }
 
@@ -211,7 +211,7 @@ const GROUPS = ['star', 'variable', 'solar', 'hypothetical', 'other'];
 function railItem(entry, onOpen) {
   const distance = entry.map ? formatDistance(entry.map.distance) : null;
   const source = entry.map?.distance?.source;
-  const status = isViewable(entry) || !entry.statusReasonKey
+  const status = isOpenable(entry) || !entry.statusReasonKey
     ? statusLabel(entry)
     : t('data.unavailableBecause', { reason: tData(entry.statusReasonKey, 'explain.unknown') });
   const lines = [
@@ -220,7 +220,7 @@ function railItem(entry, onOpen) {
     el('small', { text: distance ? t('feed.distance', { distance, source: source ?? '—' }) : t('feed.noDistance') }),
     el('small', { text: `${status} · ${t('feed.prediction', { status: predictionLabel(entry) })}` }),
   ];
-  if (!isViewable(entry)) return el('li', {}, el('div', { class: `rail-item is-off colour-${entry.colour}` }, lines));
+  if (!isOpenable(entry)) return el('li', {}, el('div', { class: `rail-item is-off colour-${entry.colour}` }, lines));
   return el('li', {}, el('button', {
     type: 'button',
     class: `rail-item colour-${entry.colour}`,
