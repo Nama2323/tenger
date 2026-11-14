@@ -65,6 +65,9 @@ STRINGS = {
     "compare.response-unknown": "The wavelength of one picture is unknown.",
     "compare.no-spectral-overlap": "The two pictures saw different wavelengths.",
     "compare.field-gradient-unknown": "How the wavelength changes across the picture is unknown.",
+    "compare.psf-differs": "The star images are sharper on one date than the other (PSF differs by more than 10%), so no difference image.",
+    "compare.psf-unknown": "The image sharpness (PSF) is not known for one date.",
+    "compare.registration-unverified": "The sky alignment of these pictures is not confirmed by the pipeline.",
     "compare.no-exposures": "One of the dates has no usable exposure.",
     # measurement refusals
     "measure.flagged-pixels-in-aperture": "Flagged pixels (for example saturation) cover the star.",

@@ -120,6 +120,9 @@ def observation_record(exposure: Exposure, ra: float, dec: float, gate: tuple[bo
         "mask_policy": product.flag_schema.policy,
         "flagged_fraction": _round(float(product.reject[covered].mean()) if covered.any() else None, 4),
         "quality": {"usable": gate[0], "reason_key": gate[1], "l2_dqa": product.info.get("L2DQAFLG")},
+        "psf_fwhm_arcsec": _round(product.info.get("PSF_FWHM"), 3),
+        "astrometry": {"fine_solution_flag": product.info.get("FINAST"),
+                       "solved": product.info.get("ASTRONETSOLVED"), "matched_stars": product.info.get("MATCH_NSTARS")},
     }
 
 
@@ -195,9 +198,17 @@ def build_comparisons(epochs: list[dict], records: dict[str, dict], gradients: d
                 source = spectral.match_epochs(pairs_a, pairs_b, "flux")
                 position = spectral.match_epochs(pairs_a, pairs_b, "position")
                 field = _field_grade(source, records, gradients, detector)
-                difference = source["grade"] == spectral.QUANTITATIVE and field["grade"] == spectral.QUANTITATIVE
+                psf = _psf_check(first["obs_keys"], second["obs_keys"], records)
+                registration = _registration_check([*first["obs_keys"], *second["obs_keys"]], records)
+                difference = (source["grade"] == spectral.QUANTITATIVE and field["grade"] == spectral.QUANTITATIVE
+                              and psf == "pass" and registration == "pass")
                 modes = ["blink", "side_by_side", "swipe"] + (["difference"] if difference else [])
-                reasons = sorted({source["reason_key"], field["reason_key"]})
+                reasons = {source["reason_key"], field["reason_key"]}
+                if psf != "pass":
+                    reasons.add("compare.psf-differs" if psf == "fail" else "compare.psf-unknown")
+                if registration != "pass":
+                    reasons.add("compare.registration-unverified")
+                reasons = sorted(reasons)
                 comparisons.append({
                     "id": f"c-{first['id']}-{second['id']}",
                     "a": first["id"],
@@ -207,8 +218,8 @@ def build_comparisons(epochs: list[dict], records: dict[str, dict], gradients: d
                     "checks": {
                         "response": _check(source["grade"]),
                         "field_response": _check(field["grade"]),
-                        "registration": "not_checked",
-                        "psf": "not_checked",
+                        "registration": registration,
+                        "psf": psf,
                         "background": "not_checked",
                     },
                     "reason_keys": reasons,
@@ -218,6 +229,28 @@ def build_comparisons(epochs: list[dict], records: dict[str, dict], gradients: d
                     "field": field,
                 })
     return comparisons
+
+
+PSF_MATCH_FRACTION = 0.10
+
+
+def _psf_check(keys_a: list[str], keys_b: list[str], records: dict) -> str:
+    """Median header PSF FWHM of the two epochs within 10% of each other."""
+    a = [records[key].get("psf_fwhm_arcsec") for key in keys_a if records[key].get("psf_fwhm_arcsec")]
+    b = [records[key].get("psf_fwhm_arcsec") for key in keys_b if records[key].get("psf_fwhm_arcsec")]
+    if not a or not b:
+        return "not_checked"
+    fwhm_a, fwhm_b = float(np.median(a)), float(np.median(b))
+    return "pass" if abs(fwhm_a - fwhm_b) / max(fwhm_a, fwhm_b) <= PSF_MATCH_FRACTION else "fail"
+
+
+def _registration_check(keys: list[str], records: dict) -> str:
+    """Every exposure has a solved fine astrometric WCS (FINAST = 0, ASTRONETSOLVED true)."""
+    flags = [records[key].get("astrometry") or {} for key in keys]
+    if not flags or any(item.get("fine_solution_flag") is None or item.get("solved") is None for item in flags):
+        return "not_checked"
+    good = all(item.get("fine_solution_flag") == 0 and item.get("solved") in (True, "True", "T") for item in flags)
+    return "pass" if good else "fail"
 
 
 def _check(grade: str) -> str:

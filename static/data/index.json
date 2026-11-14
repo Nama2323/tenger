@@ -2,7 +2,7 @@
   "schema_version": "tenger.site_index/1",
   "contract_version": 3,
   "dataset_version": "a3-2026-11-14",
-  "generated_utc": "2026-11-14T14:03:07Z",
+  "generated_utc": "2026-11-14T14:11:33Z",
   "targets": [
     {
       "key": "barnard",
@@ -102,23 +102,41 @@
       "name_key": "target.epsindib.name",
       "role": "challenge",
       "kind": "browndwarf",
-      "reference": null,
-      "footprint": null,
-      "data_status": "unavailable",
-      "measurement_status": null,
-      "investigation_path": null,
-      "thumbnails": [],
-      "status_reason_key": "unavailable.no-validated-product",
+      "reference": {
+        "ra_deg": 331.07645259698074,
+        "dec_deg": -56.79380789289388,
+        "epoch_jyear": 2016.0,
+        "pmra_mas_yr": 3981.977,
+        "pmdec_mas_yr": -2466.832,
+        "source": "SIMBAD via simbad.cfa.harvard.edu: position 2020yCat.1350....0G, motion 2020yCat.1350....0G, parallax 2020yCat.1350....0G; moved to 2016.0"
+      },
+      "footprint": {
+        "centre_ra_deg": 331.09635,
+        "centre_dec_deg": -56.801136,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "measurement_status": "measured",
+      "investigation_path": "epsindib/investigation.json",
+      "thumbnails": [
+        {
+          "path": "epsindib/epochs/v3-d6.webp",
+          "content_type": "processed",
+          "label_key": "thumb.spherex",
+          "epoch_id": "v3-d6",
+          "time_utc": null
+        }
+      ],
       "prediction": {
         "status": null,
         "trial_ids": []
       },
       "map": {
         "distance": {
-          "value": 3.695,
+          "value": 3.6947,
           "unit": "pc",
           "kind": "parallax_distance",
-          "source": "SIMBAD parallax 270.658 mas (2020yCat.1350....0G) via simbad.cfa.harvard.edu"
+          "source": "SIMBAD via simbad.cfa.harvard.edu: position 2020yCat.1350....0G, motion 2020yCat.1350....0G, parallax 2020yCat.1350....0G; moved to 2016.0 parallax 270.658 mas"
         },
         "angle_deg": 110.0,
         "angle_is_arbitrary": true
@@ -130,23 +148,41 @@
       "name_key": "target.rwaur.name",
       "role": "challenge",
       "kind": "variable",
-      "reference": null,
-      "footprint": null,
-      "data_status": "unavailable",
-      "measurement_status": null,
-      "investigation_path": null,
-      "thumbnails": [],
-      "status_reason_key": "unavailable.no-validated-product",
+      "reference": {
+        "ra_deg": 76.95654431103,
+        "dec_deg": 30.40131614989,
+        "epoch_jyear": 2016.0,
+        "pmra_mas_yr": 4.906,
+        "pmdec_mas_yr": -24.578,
+        "source": "Gaia DR3"
+      },
+      "footprint": {
+        "centre_ra_deg": 76.95647,
+        "centre_dec_deg": 30.401223,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "measurement_status": "insufficient_data",
+      "investigation_path": "rwaur/investigation.json",
+      "thumbnails": [
+        {
+          "path": "rwaur/epochs/v2-d6.webp",
+          "content_type": "processed",
+          "label_key": "thumb.spherex",
+          "epoch_id": "v2-d6",
+          "time_utc": null
+        }
+      ],
       "prediction": {
         "status": null,
         "trial_ids": []
       },
       "map": {
         "distance": {
-          "value": 64.851,
+          "value": 183.3483,
           "unit": "pc",
           "kind": "parallax_distance",
-          "source": "SIMBAD parallax 15.42 mas (2007A&A...474..653V) via simbad.cfa.harvard.edu"
+          "source": "Gaia DR3 parallax 5.4541 mas"
         },
         "angle_deg": 155.0,
         "angle_is_arbitrary": true

@@ -6,7 +6,7 @@
   "pipeline": {
     "version": "tenger-a2-2026.11.14",
     "config_sha256": "1da5cb57a2d745528e56b60d384216af7368e8663435c03c95cbb903cd9a82c5",
-    "code_sha256": "1bad64bb73800341073b99621d3cf631f87b1d48d2e7d38808e2eec17b104687",
+    "code_sha256": "137b6b9155e989d019926553d840e5c4df2962169a57d9d37a120467d1857040",
     "settings": {
       "pipeline": "tenger-a2-2026.11.14",
       "mask_policy": "tenger-mask-v1",
@@ -84,6 +84,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3355
       }
     },
     {
@@ -114,6 +120,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 665
       }
     },
     {
@@ -144,6 +156,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3390
       }
     },
     {
@@ -174,6 +192,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 643
       }
     },
     {
@@ -204,6 +228,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3298
       }
     },
     {
@@ -234,6 +264,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 655
       }
     },
     {
@@ -264,6 +300,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3120
       }
     },
     {
@@ -294,6 +336,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 975
       }
     },
     {
@@ -324,6 +372,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3043
       }
     },
     {
@@ -354,6 +408,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 967
       }
     },
     {
@@ -384,6 +444,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2995
       }
     },
     {
@@ -414,6 +480,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 969
       }
     },
     {
@@ -444,6 +516,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2968
       }
     },
     {
@@ -474,6 +552,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 943
       }
     },
     {
@@ -504,6 +588,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3161
       }
     },
     {
@@ -534,6 +624,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 966
       }
     },
     {
@@ -564,6 +660,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3144
       }
     },
     {
@@ -594,6 +696,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 972
       }
     },
     {
@@ -624,6 +732,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3041
       }
     },
     {
@@ -654,6 +768,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2964
       }
     },
     {
@@ -684,6 +804,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 905
       }
     },
     {
@@ -714,6 +840,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2506
       }
     },
     {
@@ -744,6 +876,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1570
       }
     },
     {
@@ -774,6 +912,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2396
       }
     },
     {
@@ -804,6 +948,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1485
       }
     },
     {
@@ -834,6 +984,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2828
       }
     },
     {
@@ -864,6 +1020,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1378
       }
     },
     {
@@ -894,6 +1056,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2746
       }
     },
     {
@@ -924,6 +1092,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1266
       }
     },
     {
@@ -954,6 +1128,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2558
       }
     },
     {
@@ -984,6 +1164,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1632
       }
     },
     {
@@ -1014,6 +1200,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2566
       }
     },
     {
@@ -1044,6 +1236,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1637
       }
     },
     {
@@ -1074,6 +1272,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2553
       }
     },
     {
@@ -1104,6 +1308,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1609
       }
     },
     {
@@ -1134,6 +1344,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2515
       }
     },
     {
@@ -1164,6 +1380,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1596
       }
     },
     {
@@ -1194,6 +1416,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3313
       }
     },
     {
@@ -1224,6 +1452,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1568
       }
     },
     {
@@ -1254,6 +1488,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3291
       }
     },
     {
@@ -1284,6 +1524,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1563
       }
     },
     {
@@ -1314,6 +1560,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3290
       }
     },
     {
@@ -1344,6 +1596,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1556
       }
     },
     {
@@ -1374,6 +1632,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3284
       }
     },
     {
@@ -1404,6 +1668,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1543
       }
     },
     {
@@ -1434,6 +1704,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3261
       }
     },
     {
@@ -1464,6 +1740,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1569
       }
     },
     {
@@ -1494,6 +1776,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3234
       }
     },
     {
@@ -1524,6 +1812,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1587
       }
     },
     {
@@ -1554,6 +1848,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3218
       }
     },
     {
@@ -1584,6 +1884,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1536
       }
     },
     {
@@ -1614,6 +1920,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3156
       }
     },
     {
@@ -1644,6 +1956,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1506
       }
     },
     {
@@ -1674,6 +1992,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2549
       }
     },
     {
@@ -1704,6 +2028,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1683
       }
     },
     {
@@ -1734,6 +2064,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2554
       }
     },
     {
@@ -1764,6 +2100,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1669
       }
     },
     {
@@ -1794,6 +2136,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2536
       }
     },
     {
@@ -1824,6 +2172,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1649
       }
     },
     {
@@ -1854,6 +2208,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2528
       }
     },
     {
@@ -1884,6 +2244,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1604
       }
     },
     {
@@ -1914,6 +2280,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2489
       }
     },
     {
@@ -1944,6 +2316,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1675
       }
     },
     {
@@ -1974,6 +2352,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3361
       }
     },
     {
@@ -2004,6 +2388,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1641
       }
     },
     {
@@ -2034,6 +2424,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3193
       }
     },
     {
@@ -2064,6 +2460,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1132
       }
     },
     {
@@ -2094,6 +2496,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2713
       }
     },
     {
@@ -2124,6 +2532,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1127
       }
     },
     {
@@ -2154,6 +2568,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2658
       }
     },
     {
@@ -2184,6 +2604,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1103
       }
     },
     {
@@ -2214,6 +2640,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2630
       }
     },
     {
@@ -2244,6 +2676,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1120
       }
     },
     {
@@ -2274,6 +2712,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3534
       }
     },
     {
@@ -2304,6 +2748,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 824
       }
     },
     {
@@ -2334,6 +2784,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3525
       }
     },
     {
@@ -2364,6 +2820,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1114
       }
     },
     {
@@ -2394,6 +2856,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3442
       }
     },
     {
@@ -2424,6 +2892,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1112
       }
     },
     {
@@ -2454,6 +2928,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3416
       }
     },
     {
@@ -2484,6 +2964,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1073
       }
     },
     {
@@ -2514,6 +3000,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3352
       }
     },
     {
@@ -2544,6 +3036,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1100
       }
     },
     {
@@ -2574,6 +3072,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3342
       }
     },
     {
@@ -2604,6 +3108,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1092
       }
     },
     {
@@ -2634,6 +3144,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3259
       }
     },
     {
@@ -2664,6 +3180,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1095
       }
     },
     {
@@ -2694,6 +3216,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3216
       }
     },
     {
@@ -2724,6 +3252,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1074
       }
     },
     {
@@ -2754,6 +3288,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3265
       }
     },
     {
@@ -2784,6 +3324,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1063
       }
     },
     {
@@ -2814,6 +3360,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3224
       }
     },
     {
@@ -2844,6 +3396,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3226
       }
     },
     {
@@ -2874,6 +3432,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1038
       }
     },
     {
@@ -2904,6 +3468,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3174
       }
     },
     {
@@ -2934,6 +3504,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1035
       }
     },
     {
@@ -2964,6 +3540,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3171
       }
     },
     {
@@ -2994,6 +3576,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1053
       }
     },
     {
@@ -3024,6 +3612,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3877
       }
     },
     {
@@ -3054,6 +3648,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1039
       }
     },
     {
@@ -3084,6 +3684,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2765
       }
     },
     {
@@ -3114,6 +3720,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 764
       }
     },
     {
@@ -3144,6 +3756,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2681
       }
     },
     {
@@ -3174,6 +3792,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 739
       }
     },
     {
@@ -3204,6 +3828,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2664
       }
     },
     {
@@ -3234,6 +3864,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 759
       }
     },
     {
@@ -3264,6 +3900,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2646
       }
     },
     {
@@ -3294,6 +3936,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 719
       }
     },
     {
@@ -3324,6 +3972,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3498
       }
     },
     {
@@ -3354,6 +4008,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": null,
+        "matched_stars": 710
       }
     },
     {
@@ -3384,6 +4044,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3531
       }
     },
     {
@@ -3414,6 +4080,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 739
       }
     },
     {
@@ -3444,6 +4116,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3434
       }
     },
     {
@@ -3474,6 +4152,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 731
       }
     },
     {
@@ -3504,6 +4188,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3424
       }
     },
     {
@@ -3534,6 +4224,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1092
       }
     },
     {
@@ -3564,6 +4260,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3409
       }
     },
     {
@@ -3594,6 +4296,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 688
       }
     },
     {
@@ -3624,6 +4332,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3344
       }
     },
     {
@@ -3654,6 +4368,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 689
       }
     },
     {
@@ -3684,6 +4404,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3297
       }
     },
     {
@@ -3714,6 +4440,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 575
       }
     },
     {
@@ -3744,6 +4476,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3294
       }
     },
     {
@@ -3774,6 +4512,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 687
       }
     },
     {
@@ -3804,6 +4548,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2609
       }
     },
     {
@@ -3834,6 +4584,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 664
       }
     },
     {
@@ -3864,6 +4620,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2627
       }
     },
     {
@@ -3894,6 +4656,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 632
       }
     },
     {
@@ -3924,6 +4692,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3170
       }
     },
     {
@@ -3954,6 +4728,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 659
       }
     },
     {
@@ -3984,6 +4764,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3138
       }
     },
     {
@@ -4014,6 +4800,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": null,
+        "matched_stars": 642
       }
     },
     {
@@ -4044,6 +4836,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3176
       }
     },
     {
@@ -4074,6 +4872,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 674
       }
     },
     {
@@ -4104,6 +4908,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3144
       }
     },
     {
@@ -4134,6 +4944,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 658
       }
     },
     {
@@ -4164,6 +4980,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3127
       }
     },
     {
@@ -4194,6 +5016,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 642
       }
     },
     {
@@ -4224,6 +5052,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3235
       }
     },
     {
@@ -4254,6 +5088,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 940
       }
     },
     {
@@ -4284,6 +5124,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3911
       }
     },
     {
@@ -4314,6 +5160,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1276
       }
     },
     {
@@ -4344,6 +5196,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3289
       }
     },
     {
@@ -4374,6 +5232,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 883
       }
     },
     {
@@ -4404,6 +5268,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3175
       }
     },
     {
@@ -4434,6 +5304,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 546
       }
     },
     {
@@ -4464,6 +5340,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": null,
+        "matched_stars": 3919
       }
     },
     {
@@ -4494,6 +5376,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1280
       }
     },
     {
@@ -4524,6 +5412,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3838
       }
     },
     {
@@ -4554,6 +5448,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1264
       }
     },
     {
@@ -4584,6 +5484,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3179
       }
     },
     {
@@ -4614,6 +5520,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 537
       }
     },
     {
@@ -4644,6 +5556,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3809
       }
     },
     {
@@ -4674,6 +5592,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1247
       }
     },
     {
@@ -4704,6 +5628,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3786
       }
     },
     {
@@ -4734,6 +5664,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 889
       }
     },
     {
@@ -4764,6 +5700,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3171
       }
     },
     {
@@ -4794,6 +5736,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 529
       }
     },
     {
@@ -4824,6 +5772,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3177
       }
     },
     {
@@ -4854,6 +5808,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 547
       }
     },
     {
@@ -4884,6 +5844,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3191
       }
     },
     {
@@ -4914,6 +5880,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 569
       }
     },
     {
@@ -4944,6 +5916,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3205
       }
     },
     {
@@ -4974,6 +5952,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 550
       }
     },
     {
@@ -5004,6 +5988,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3200
       }
     },
     {
@@ -5034,6 +6024,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 566
       }
     },
     {
@@ -5064,6 +6060,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3294
       }
     },
     {
@@ -5094,6 +6096,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 565
       }
     },
     {
@@ -5124,6 +6132,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2386
       }
     },
     {
@@ -5154,6 +6168,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 585
       }
     },
     {
@@ -5184,6 +6204,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2394
       }
     },
     {
@@ -5214,6 +6240,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 566
       }
     },
     {
@@ -5244,6 +6276,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2409
       }
     },
     {
@@ -5274,6 +6312,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 580
       }
     },
     {
@@ -5304,6 +6348,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2445
       }
     },
     {
@@ -5334,6 +6384,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 915
       }
     },
     {
@@ -5364,6 +6420,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3459
       }
     },
     {
@@ -5394,6 +6456,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 947
       }
     },
     {
@@ -5424,6 +6492,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3369
       }
     },
     {
@@ -5454,6 +6528,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 969
       }
     },
     {
@@ -5484,6 +6564,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3385
       }
     },
     {
@@ -5514,6 +6600,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 632
       }
     },
     {
@@ -5544,6 +6636,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3290
       }
     },
     {
@@ -5574,6 +6672,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 576
       }
     },
     {
@@ -5604,6 +6708,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3294
       }
     },
     {
@@ -5634,6 +6744,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 895
       }
     },
     {
@@ -5664,6 +6780,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3287
       }
     },
     {
@@ -5694,6 +6816,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 912
       }
     },
     {
@@ -5724,6 +6852,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3009
       }
     },
     {
@@ -5754,6 +6888,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 898
       }
     },
     {
@@ -5784,6 +6924,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3041
       }
     },
     {
@@ -5814,6 +6960,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 893
       }
     },
     {
@@ -5844,6 +6996,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3069
       }
     },
     {
@@ -5874,6 +7032,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 891
       }
     },
     {
@@ -5904,6 +7068,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3079
       }
     },
     {
@@ -5934,6 +7104,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 914
       }
     },
     {
@@ -5964,6 +7140,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3105
       }
     },
     {
@@ -5994,6 +7176,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1486
       }
     },
     {
@@ -6024,6 +7212,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2899
       }
     },
     {
@@ -6054,6 +7248,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1288
       }
     },
     {
@@ -6084,6 +7284,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2887
       }
     },
     {
@@ -6114,6 +7320,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1276
       }
     },
     {
@@ -6144,6 +7356,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2952
       }
     },
     {
@@ -6174,6 +7392,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1312
       }
     },
     {
@@ -6204,6 +7428,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3084
       }
     },
     {
@@ -6234,6 +7464,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 893
       }
     },
     {
@@ -6264,6 +7500,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3122
       }
     },
     {
@@ -6294,6 +7536,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 910
       }
     },
     {
@@ -6324,6 +7572,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3402
       }
     },
     {
@@ -6354,6 +7608,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 978
       }
     },
     {
@@ -6384,6 +7644,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3456
       }
     },
     {
@@ -6414,6 +7680,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 901
       }
     },
     {
@@ -6444,6 +7716,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3262
       }
     },
     {
@@ -6474,6 +7752,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 962
       }
     },
     {
@@ -6504,6 +7788,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3355
       }
     },
     {
@@ -6534,6 +7824,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 979
       }
     },
     {
@@ -6564,6 +7860,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2962
       }
     },
     {
@@ -6594,6 +7896,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1293
       }
     },
     {
@@ -6624,6 +7932,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2932
       }
     },
     {
@@ -6654,6 +7968,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1314
       }
     },
     {
@@ -6684,6 +8004,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2958
       }
     },
     {
@@ -6714,6 +8040,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1313
       }
     },
     {
@@ -6744,6 +8076,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3039
       }
     },
     {
@@ -6774,6 +8112,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1326
       }
     },
     {
@@ -6804,6 +8148,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3206
       }
     },
     {
@@ -6834,6 +8184,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2102
       }
     },
     {
@@ -6864,6 +8220,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3530
       }
     },
     {
@@ -6894,6 +8256,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1372
       }
     },
     {
@@ -6924,6 +8292,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3571
       }
     },
     {
@@ -6954,6 +8328,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1375
       }
     },
     {
@@ -6984,6 +8364,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3609
       }
     },
     {
@@ -7014,6 +8400,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 2023
       }
     },
     {
@@ -7044,6 +8436,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3194
       }
     },
     {
@@ -7074,6 +8472,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1433
       }
     },
     {
@@ -7104,6 +8508,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.531,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3185
       }
     },
     {
@@ -7134,6 +8544,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.673,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1448
       }
     },
     {
@@ -7164,6 +8580,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3307
       }
     },
     {
@@ -7194,6 +8616,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 945
       }
     },
     {
@@ -7224,6 +8652,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3329
       }
     },
     {
@@ -7254,6 +8688,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 931
       }
     },
     {
@@ -7284,6 +8724,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3384
       }
     },
     {
@@ -7314,6 +8760,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 637
       }
     },
     {
@@ -7344,6 +8796,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3392
       }
     },
     {
@@ -7374,6 +8832,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 704
       }
     },
     {
@@ -7404,6 +8868,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.448,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3430
       }
     },
     {
@@ -7434,6 +8904,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 9.042,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 810
       }
     },
     {
@@ -7464,6 +8940,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3453
       }
     },
     {
@@ -7494,6 +8976,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1033
       }
     },
     {
@@ -7524,6 +9012,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3500
       }
     },
     {
@@ -7554,6 +9048,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1042
       }
     },
     {
@@ -7584,6 +9084,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3510
       }
     },
     {
@@ -7614,6 +9120,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1073
       }
     },
     {
@@ -7644,6 +9156,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3969
       }
     },
     {
@@ -7674,6 +9192,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1385
       }
     },
     {
@@ -7704,6 +9228,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 7.461,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 3593
       }
     },
     {
@@ -7734,6 +9264,12 @@
         "usable": true,
         "reason_key": null,
         "l2_dqa": "Pass"
+      },
+      "psf_fwhm_arcsec": 8.634,
+      "astrometry": {
+        "fine_solution_flag": 0,
+        "solved": true,
+        "matched_stars": 1064
       }
     }
   ],
@@ -8609,8 +10145,8 @@
       "checks": {
         "response": "pass",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -8679,8 +10215,8 @@
       "checks": {
         "response": "partial",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -8714,8 +10250,8 @@
       "checks": {
         "response": "pass",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -8769,12 +10305,13 @@
         "response": "pass",
         "field_response": "partial",
         "registration": "not_checked",
-        "psf": "not_checked",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
         "compare.field-shifted",
-        "compare.matched-pairs"
+        "compare.matched-pairs",
+        "compare.registration-unverified"
       ],
       "brightness": {
         "grade": "quantitative",
@@ -8839,8 +10376,8 @@
       "checks": {
         "response": "pass",
         "field_response": "pass",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -8902,12 +10439,13 @@
         "response": "pass",
         "field_response": "partial",
         "registration": "not_checked",
-        "psf": "not_checked",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
         "compare.field-shifted",
-        "compare.matched-pairs"
+        "compare.matched-pairs",
+        "compare.registration-unverified"
       ],
       "brightness": {
         "grade": "quantitative",
@@ -8987,8 +10525,8 @@
       "checks": {
         "response": "partial",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9023,8 +10561,8 @@
       "checks": {
         "response": "pass",
         "field_response": "pass",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9077,8 +10615,8 @@
       "checks": {
         "response": "partial",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9112,8 +10650,8 @@
       "checks": {
         "response": "pass",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9182,8 +10720,8 @@
       "checks": {
         "response": "partial",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9217,8 +10755,8 @@
       "checks": {
         "response": "pass",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9271,8 +10809,8 @@
       "checks": {
         "response": "pass",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9334,8 +10872,8 @@
       "checks": {
         "response": "pass",
         "field_response": "pass",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9396,8 +10934,8 @@
       "checks": {
         "response": "pass",
         "field_response": "partial",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9475,11 +11013,12 @@
         "response": "partial",
         "field_response": "partial",
         "registration": "not_checked",
-        "psf": "not_checked",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
         "compare.field-no-matched-pair",
+        "compare.registration-unverified",
         "compare.response-shifted"
       ],
       "brightness": {
@@ -9510,8 +11049,8 @@
       "checks": {
         "response": "pass",
         "field_response": "pass",
-        "registration": "not_checked",
-        "psf": "not_checked",
+        "registration": "pass",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
@@ -9565,11 +11104,12 @@
         "response": "partial",
         "field_response": "partial",
         "registration": "not_checked",
-        "psf": "not_checked",
+        "psf": "pass",
         "background": "not_checked"
       },
       "reason_keys": [
         "compare.field-no-matched-pair",
+        "compare.registration-unverified",
         "compare.response-shifted"
       ],
       "brightness": {

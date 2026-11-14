@@ -7,8 +7,9 @@ from backend.processing import Grid
 from tests.test_astrometry import star_product
 
 
-def record(obs_key, centre, width=0.037):
-    return {"obs_key": obs_key, "response": {"centre_um": centre, "width_um": width, "source": "WCS-WAVE"}}
+def record(obs_key, centre, width=0.037, fwhm=9.0, finast=0):
+    return {"obs_key": obs_key, "response": {"centre_um": centre, "width_um": width, "source": "WCS-WAVE"},
+            "psf_fwhm_arcsec": fwhm, "astrometry": {"fine_solution_flag": finast, "solved": True}}
 
 
 def epoch(eid, visit, detector, keys, mjd):
@@ -137,3 +138,14 @@ def test_a_fit_far_from_the_catalogue_track_is_not_the_target():
     [result] = inv.track([exposure], track_star, [])
     assert result["position"].status == "measured"
     assert result["identified"] is False and result["identification_reason_key"] == "measure.not-target"
+
+
+def test_difference_also_needs_matching_psf_and_a_solved_registration():
+    epochs = [epoch("v0-d6", 0, 6, ["a"], 61000.0), epoch("v1-d6", 1, 6, ["b"], 61200.0)]
+    gradients = {"a": (0.0001, 0.0), "b": (0.0001, 0.0), "half_size_px": 60}
+    blurred = {"a": record("a", 4.929), "b": record("b", 4.9292, fwhm=11.0)}
+    [comparison] = inv.build_comparisons(epochs, blurred, gradients)
+    assert comparison["checks"]["psf"] == "fail" and "difference" not in comparison["modes"]
+    unsolved = {"a": record("a", 4.929), "b": record("b", 4.9292, finast=1)}
+    [comparison] = inv.build_comparisons(epochs, unsolved, gradients)
+    assert comparison["checks"]["registration"] == "fail" and "difference" not in comparison["modes"]
