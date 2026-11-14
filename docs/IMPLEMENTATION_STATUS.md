@@ -9,8 +9,8 @@ still open. Session A edits only "Science/data". Session B edits only "Web".
 
 ### Current phase
 
-**Phase F done (Tasks A4–A5): predictions frozen, then verified; scoreboard, game and lesson records
-published.** See "Task A5". Open: teammates' confirmation for Pluto; the 2027 open forecast.
+**Phase F done (Tasks A4–A5), Pluto post-mortem (A5b) and 3D-view data (A6) published.** Open:
+teammates' confirmation for Pluto; the 2027 open forecast; release prep (README).
 
 ### Task A1, 14 Nov 2026 (git base `58f993b`, branch `tenger-dev`)
 
@@ -72,6 +72,38 @@ prediction, receipt, verification, scoreboard, game round and lesson. Enums, pat
 **Files added in A1**: `docs/EXPOSURE.md`, `docs/exposure/{summary,barnard,wise0855,epsindib,rwaur,rdra,makemake,pluto,3i_atlas}.json`,
 `docs/exposure/SHA256SUMS`, `docs/DATA-CONTRACT.md`, `docs/IMPLEMENTATION_STATUS.md`,
 `scripts/exposure_inventory.py`, `tests/test_exposure_inventory.py`. No application file changed.
+
+### Task A6, 14 Nov 2026 (data for the 3D views)
+
+`static/data/scene3d.json` (kind `tenger.scene3d/1`, contract V9), built by
+`python -m scripts.build_scene3d`:
+- **Pluto and Makemake, catalogue:** JPL SBDB orbital elements (Pluto solution 1, epoch JD 2457588.5;
+  Makemake solution 130, epoch JD 2461200.5, with sigmas). Heliocentric ecliptic positions on
+  2026-11-14 00:00 TDB from JPL Horizons (Pluto 35.64 au from the Sun, Makemake 52.74 au; Earth
+  included). Drawable orbit points for each.
+- **Pluto, ours (modeled):** the frozen A4 state as ecliptic elements: a 40.45 au, e 0.293,
+  i 17.17°, Ω 110.33°, ω 111.76°, against SBDB's 39.59 au, 0.252, 17.15°, 110.29°, 113.71°. Our
+  position today is 0.04 au from Horizons'. Labelled two-visit and Sun-only.
+- **Stars:** RA/Dec, parallax and distance from each evidence file's catalogue entry. Barnard
+  1.83 pc, WISE 0855 2.28 pc, Eps Ind B 3.69 pc, RW Aur 183 pc (cautioned: unresolved binary, poor
+  Gaia fit), R Dra 799 pc.
+- **Planet Nine:** hypothetical. Only the quantities stated in five cited abstracts (Batygin & Brown
+  2016; Brown & Batygin 2016; Batygin et al. 2019; Brown & Batygin 2021; Brown, Holman & Batygin
+  2024, which excludes 78% of the 2021 parameter space), with DOIs. No position or orbit is given.
+- **Pluto loop:**
+  - SPHEREx heliocentric positions (Earth plus header spacecraft vector) and the fitted Pluto
+    positions for all 50 training detections and all 20 evaluation exposures (4 with measured
+    positions);
+  - the frozen forecast and the observed position (miss, D² 6.77);
+  - the 2027 open-forecast track (13 points).
+
+Tests: `tests/test_scene3d.py` (circular-orbit elements, ellipse points, ecliptic rotation, source
+labels, Planet Nine cited and never placed, loop completeness) and `tests/test_static_data.py`
+(every key, including `credit.sbdb`, has English text).
+
+README: team section added (Narmandakh Garam, Erkhes Orgil, Anu-Ujin Bayarbaatar, Sonomlegtsog
+Zolzaya), as passed on from the user by Session B. The rest of the README still describes SPHEREx
+Blink and needs release prep.
 
 ### Task A5b, 14 Nov 2026 (exploratory post-mortem of the Pluto miss; nothing re-scored)
 

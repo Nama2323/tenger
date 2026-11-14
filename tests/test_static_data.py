@@ -42,7 +42,8 @@ def collect_keys(node, found):
 def test_every_data_key_has_english_text():
     strings = load("strings.en.json")["strings"]
     found = set()
-    extra = [*DATA.glob("trials/*/*.json"), *DATA.glob("game/*.json"), *DATA.glob("lessons/*.json"), DATA / "scoreboard.json"]
+    extra = [*DATA.glob("trials/*/*.json"), *DATA.glob("game/*.json"), *DATA.glob("lessons/*.json"), DATA / "scoreboard.json",
+             DATA / "scene3d.json"]
     for path in [*investigations(), DATA / "index.json", DATA / "reserved.json", *extra]:
         if path.exists():
             collect_keys(json.loads(path.read_text()), found)

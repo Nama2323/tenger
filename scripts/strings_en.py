@@ -163,6 +163,7 @@ STRINGS = {
     "credit.gaia": "Positions and motions of comparison stars: ESA Gaia DR3.",
     "credit.horizons": "Ephemerides: JPL Horizons.",
     "credit.comet-table": "3I/ATLAS exposure list: SPHEREx team, via IRSA.",
+    "credit.sbdb": "Orbital elements: JPL Small-Body Database.",
     "credit.base-project": "Built on the team's earlier SPHEREx Blink project.",
 }
 

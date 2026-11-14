@@ -26,6 +26,7 @@
     "credit.gaia": "Positions and motions of comparison stars: ESA Gaia DR3.",
     "credit.horizons": "Ephemerides: JPL Horizons.",
     "credit.irsa": "Data: NASA/IPAC Infrared Science Archive (IRSA).",
+    "credit.sbdb": "Orbital elements: JPL Small-Body Database.",
     "credit.spherex": "SPHEREx is a NASA mission led by Caltech and managed by JPL.",
     "exclude.contaminated": "Positions spoiled by a catalogued neighbour are not used.",
     "exclude.fewer-than-3": "Fewer than 3 identified exposures means insufficient data.",

@@ -53,3 +53,7 @@ Tests: `.venv/bin/python -m pytest` and `node --test tests/*.mjs`.
 ## Data
 
 NASA SPHEREx, AllWISE and ESA Gaia DR3, served by NASA/IPAC IRSA. Sky map by Aladin Lite (CDS).
+
+## Team
+
+Narmandakh Garam, Erkhes Orgil, Anu-Ujin Bayarbaatar, Sonomlegtsog Zolzaya.

@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 9 | 2026-11-14 | Additive (Task A6). `scene3d.json` for the 3D views. |
 | 8 | 2026-11-14 | Additive (Task A5b). Exploratory post-mortem file `trials/pluto/postmortem.json`. |
 | 7 | 2026-11-14 | Additive (Task A5). Verification extras, reserved.json status, scoreboard and game additions. |
 | 6 | 2026-11-14 | Additive. Verification residual fields agreed with Session B before A5 (reference position, C_pred, C_obs). |
@@ -696,3 +697,23 @@ after the reveal"), `exploratory: true`, `counts: false`, `trial_id` (the trial 
 | `open_forecast_2027` | Frozen ellipse vs the exploratory N-body shift |
 
 Pages must show it as "exploratory, after the reveal" and must not use it to change any count or status.
+
+---
+
+# Version 9 (additive, Task A6, 14 Nov 2026): `scene3d.json`
+
+`static/data/scene3d.json`, kind `tenger.scene3d/1`, built by `scripts/build_scene3d.py`. Index
+key: none (fixed path).
+
+| Path | Content |
+|---|---|
+| `epoch_jd_tdb` | The scene's "now" (2461358.5 = 2026-11-14 00:00 TDB) |
+| `frames` | `solar_system`: heliocentric ecliptic J2000, au (obliquity 84381.448″). `stars`: ICRS unit direction + distance in pc |
+| `bodies.pluto.catalogue_orbit`, `bodies.makemake.catalogue_orbit` | JPL SBDB elements (`a, e, i, om, w, ma, q, tp, per, n, ad` with value/sigma/units), epoch, solution, producer, plus `orbit_points_au` (180 points for drawing). `content_type: "catalogue"` |
+| `bodies.*.position_now` | JPL Horizons heliocentric vector at `epoch_jd_tdb` (position, velocity, distance from the Sun, ephemeris source). Earth included. `content_type: "catalogue"` |
+| `bodies.pluto.our_orbit` | **Ours**: the frozen A4 state vector converted to ecliptic elements, its position now, `orbit_points_au`, `limitations`. `content_type: "modeled"`, `ours: true` |
+| `stars[]` | Per challenge target: RA/Dec (epoch), ICRS direction, parallax, distance (pc), source, evidence file, and `caution` where the distance is doubtful (RW Aur) |
+| `planet_nine` | `status: "hypothetical"`. `estimates[]`: each with `reference`, `doi` and only the quantities its abstract states (`mass_earth`, `semimajor_axis_au`, `eccentricity`, `inclination_deg`, `perihelion_au`, `brightness_v` as `{min,max}` or `{value,plus,minus}`, or a text constraint). No position or orbit is given, so none may be drawn as known |
+| `pluto_loop.training[]`, `.evaluation[]` | Per exposure: role, `obs_key`, `t_mjd`, `spherex_au` (Earth + header spacecraft vector), `fitted_pluto_au` (frozen orbit at light emission), and `measured` RA/Dec where Pluto was detected |
+| `pluto_loop.frozen_forecast`, `.observed` | The A4 forecast (RA/Dec, `cov_arcsec2`, 3D position) and the A5 observation (RA/Dec, `cov_arcsec2`, Earth position, verdict, D²) |
+| `pluto_loop.open_forecast_2027` | The frozen 2027 track with covariances, Earth and fitted Pluto positions, and its "open forecast" label |
