@@ -4,7 +4,7 @@
 import { covarianceEllipse } from './coords.js';
 import { $, chip, dataTable, el, formatNumber, formatUtc, withUnit } from './dom.js';
 import {
-  checkRound, errorUnit, physicsLost, positionView, readBest, roundKind, saveBest, scalarView, scoreRound, ticks,
+  checkRound, errorUnit, isMagnitude, physicsLost, positionView, readBest, roundKind, saveBest, scalarView, scoreRound, ticks,
 } from './game.js';
 import { has, t } from './i18n.js';
 import { categoryChip, categoryNote, exampleChip, prospectiveChip, trialStatusChip } from './labels.js';
@@ -92,7 +92,7 @@ function positionGeometry() {
 function scalarGeometry() {
   const { round } = play;
   const view = scalarView(round, revealedParts().map((part) => round[part]));
-  const inverted = round.units === 'mag';
+  const inverted = isMagnitude(round.units);
   const timeSpan = view.time[1] - view.time[0];
   const valueSpan = view.value[1] - view.value[0];
   const yOf = (value) => (inverted
@@ -142,7 +142,7 @@ function drawAxes(plot, geo) {
     plot.append(svg('line', { x1: PAD, x2: SIZE - PAD, y1: y, y2: y, class: 'grid' }));
     plot.append(svg('text', { x: PAD - 6, y: y + 4, class: 'tick', 'text-anchor': 'end' }, formatNumber(tick, 1)));
   }
-  plot.append(svg('text', { x: 6, y: PAD - 14, class: 'axis' }, t(round.units === 'mag' ? 'game.axisMag' : 'game.axisValue', { unit: round.units ?? '' })));
+  plot.append(svg('text', { x: 6, y: PAD - 14, class: 'axis' }, t(isMagnitude(round.units) ? 'game.axisMag' : 'game.axisValue', { unit: has(`unit.${round.units}`) ? t(`unit.${round.units}`) : (round.units ?? '') })));
   const revealX = geo.xOf(round.reveal_t_mjd);
   plot.append(svg('line', { x1: revealX, x2: revealX, y1: PAD, y2: SIZE - PAD, class: 'reveal-line' }));
   plot.append(svg('text', { x: revealX - 4, y: PAD - 4, class: 'axis', 'text-anchor': 'end' }, t('game.revealDate', { date: dateOf(round.reveal_t_mjd) })));
@@ -277,7 +277,7 @@ function nudge(east, north, times = 1, focusPlot = false) {
   if (play.kind === 'position') {
     setGuess({ east_arcsec: start.east_arcsec + east * step, north_arcsec: start.north_arcsec + north * step }, { focusPlot });
   } else if (north) {
-    const brighterUp = play.round.units === 'mag' ? -1 : 1;
+    const brighterUp = isMagnitude(play.round.units) ? -1 : 1;
     setGuess({ value: start.value + brighterUp * north * step }, { focusPlot });
   }
 }
@@ -423,7 +423,7 @@ function guessInputs() {
     : [field('guess-value', 'game.inputValue')];
   const nudges = play.kind === 'position'
     ? [nudgeButton('game.nudgeNorth', 0, 1), nudgeButton('game.nudgeEast', 1, 0), nudgeButton('game.nudgeWest', -1, 0), nudgeButton('game.nudgeSouth', 0, -1)]
-    : [nudgeButton(play.round.units === 'mag' ? 'game.nudgeBrighter' : 'game.nudgeUp', 0, 1), nudgeButton(play.round.units === 'mag' ? 'game.nudgeFainter' : 'game.nudgeDown', 0, -1)];
+    : [nudgeButton(isMagnitude(play.round.units) ? 'game.nudgeBrighter' : 'game.nudgeUp', 0, 1), nudgeButton(isMagnitude(play.round.units) ? 'game.nudgeFainter' : 'game.nudgeDown', 0, -1)];
   return el('fieldset', { id: 'guess-inputs', class: 'guess-inputs' }, [
     el('legend', { text: t('game.yourGuess') }),
     el('div', { class: 'guess-fields' }, fields),

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
-  checkRound, expDecayScore, physicsLost, pointError, positionView, readBest, saveBest, scalarView, scoreRound, ticks,
+  checkRound, expDecayScore, isMagnitude, physicsLost, pointError, positionView, readBest, saveBest, scalarView, scoreRound, ticks,
 } from '../static/js/game.js';
 
 const read = (path) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
@@ -64,7 +64,7 @@ test('positions reported in arcmin are converted from the arcsec fields', () => 
 
 test('brightness rounds use absolute differences in magnitudes', () => {
   const result = scoreRound(rdra, { value: 5.9 });
-  assert.equal(result.unit, 'mag');
+  assert.equal(result.unit, 'mag_ab');
   assert.ok(Math.abs(result.errors.player - 0.5) < 1e-9);
   assert.ok(Math.abs(result.errors.model - 0.5) < 1e-9);
   assert.deepEqual(result.best.sort(), ['model', 'player'], 'equal errors tie');
@@ -104,6 +104,15 @@ test('before the reveal, the view comes from the training points only', () => {
   const scalar = scalarView(rdra);
   assert.ok(scalar.time[1] > rdra.reveal_t_mjd && scalar.time[0] < rdra.training_points[0].t_mjd);
   assert.deepEqual(scalarView({ ...rdra, actual: { value: 99 } }), scalar);
+});
+
+test('contract V4 brightness units: only magnitudes count smaller as brighter', () => {
+  assert.equal(isMagnitude('mag_ab'), true);
+  assert.equal(isMagnitude('mag'), true);
+  assert.equal(isMagnitude('ujy'), false);
+  assert.equal(isMagnitude('ratio'), false);
+  assert.equal(isMagnitude(undefined), false);
+  assert.equal(checkRound({ ...rdra, units: 'ujy' }).ok, true);
 });
 
 test('ticks are round numbers inside the range', () => {

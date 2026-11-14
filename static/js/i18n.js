@@ -157,6 +157,8 @@ const TEXT = {
     'unit.mjy_sr': 'MJy/sr',
     'unit.ujy': 'μJy',
     'unit.mag': 'mag',
+    'unit.mag_ab': 'AB mag',
+    'unit.ratio': '× reference',
     'unit.days': 'days',
     'unit.mjd': 'MJD',
     'unit.au': 'au',
@@ -458,6 +460,7 @@ const TEXT = {
     'table.no': 'no',
 
     // ---------- Beat the physics ----------
+    'game.eyebrow': 'Prediction game',
     'game.title': 'Beat the physics',
     'game.lead': 'Guess where a target will be, or how bright it will get. Then see, in this order, your guess, a simple straight-line baseline, the frozen physics model and the real observation. The physics model is allowed to lose.',
     'game.scoring': 'Raw errors come first. A round’s score is 100 × e^(−error ÷ scale), with the scale fixed before the reveal; a perfect guess scores 100 and nothing is divided by the baseline error.',
@@ -473,7 +476,7 @@ const TEXT = {
     'game.keys': 'Keys: arrows move your guess (Shift for bigger steps), Enter locks it in.',
     'game.axisEast': '← east ({unit})',
     'game.axisNorth': 'north ↑ ({unit})',
-    'game.axisMag': 'magnitude (brighter ↑)',
+    'game.axisMag': 'brightness, {unit} (brighter ↑)',
     'game.axisValue': 'value ({unit})',
     'game.revealDate': 'guess for {date}',
     'game.yourGuess': 'Your guess',

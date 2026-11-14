@@ -20,6 +20,9 @@ export function expDecayScore(error, scale) {
 const isPosition = (point) => Number.isFinite(point?.east_arcsec) && Number.isFinite(point?.north_arcsec);
 const isScalar = (point) => Number.isFinite(point?.value);
 
+/** Magnitudes (DATA-CONTRACT V4: "mag_ab"): smaller is brighter, so plots put small values at the top. */
+export const isMagnitude = (units) => typeof units === 'string' && /^mag/.test(units);
+
 /** 'position' or 'scalar' from the round's quantity, or null for a quantity the page cannot play. */
 export function roundKind(round) {
   if (round?.quantity === 'position') return 'position';

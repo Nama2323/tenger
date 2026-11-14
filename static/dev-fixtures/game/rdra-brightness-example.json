@@ -5,7 +5,7 @@
   "trial_id": "rdra-brightness-example",
   "category": "retrospective_holdout",
   "quantity": "brightness",
-  "units": "mag",
+  "units": "mag_ab",
   "derived_from": [
     {
       "path": "trials/rdra-brightness-example/prediction.json",
@@ -16,27 +16,32 @@
     {
       "t_mjd": 60800.0,
       "value": 6.2,
-      "content_type": "measured"
+      "content_type": "measured",
+      "sigma": null
     },
     {
       "t_mjd": 60890.0,
       "value": 5.1,
-      "content_type": "measured"
+      "content_type": "measured",
+      "sigma": null
     },
     {
       "t_mjd": 61000.0,
       "value": 4.6,
-      "content_type": "measured"
+      "content_type": "measured",
+      "sigma": null
     },
     {
       "t_mjd": 61090.0,
       "value": 5.8,
-      "content_type": "measured"
+      "content_type": "measured",
+      "sigma": null
     },
     {
       "t_mjd": 61180.0,
       "value": 6.6,
-      "content_type": "measured"
+      "content_type": "measured",
+      "sigma": null
     }
   ],
   "reveal_t_mjd": 61290.0,
@@ -50,7 +55,8 @@
   },
   "actual": {
     "value": 5.4,
-    "image": null
+    "image": null,
+    "sigma": null
   },
   "scoring": {
     "formula": "exp_decay_v1",
