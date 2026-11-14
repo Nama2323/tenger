@@ -3,10 +3,38 @@
 // static/data/planetx/). Pure, no DOM. The game's planets are artificial sources added to real frames: never a
 // detection, never counted.
 
+import { DETECTOR_RANGES } from './stack.js';
+
 export const DEPTH_PATH = 'planetx/depth.json';
 export const HIDDEN_PATH = 'planetx/hidden-planet.json';
 
 const finite = (value) => Number.isFinite(value);
+
+/** A SPHEREx detector pixel, about 6.15″. Frames resampled when aligned can have finer picture pixels. */
+export const NATIVE_PIXEL_ARCSEC = 6.15;
+
+/**
+ * Where the published bands of the Planet X predictions sit (µm): Johnson I about 0.80, WISE W1 3.35, WISE W2 4.60.
+ * Keyed by the band ids of the depth file; the published band name is the fallback.
+ */
+export const PUBLISHED_BAND_UM = { i: 0.8, w1: 3.35, w2: 4.6 };
+const BAND_NAMES = [[/\bjohnson\s*i\b/i, 'i'], [/\bw1\b/i, 'w1'], [/\bw2\b/i, 'w2']];
+
+/**
+ * Does the band's published wavelength lie inside the SPHEREx array the file names, and do the file's own
+ * wavelengths lie inside that array? ok is null when the band is not one we know.
+ */
+export function bandWavelengthCheck(band) {
+  const key = PUBLISHED_BAND_UM[band?.id] !== undefined ? band.id : BAND_NAMES.find(([pattern]) => pattern.test(band?.published_band ?? band?.publishedBand ?? ''))?.[1];
+  const published = key ? PUBLISHED_BAND_UM[key] : null;
+  const array = DETECTOR_RANGES[band?.detector] ?? null;
+  const used = band?.wavelength_um ?? band?.wavelength ?? null;
+  if (published === null || !array) return { published, array, ok: null, publishedInside: null, usedInside: null };
+  const inside = (value) => value >= array[0] && value <= array[1];
+  const publishedInside = inside(published);
+  const usedInside = Array.isArray(used) && used.every(finite) ? used.every(inside) : null;
+  return { published, array, ok: publishedInside && usedInside !== false, publishedInside, usedInside };
+}
 
 /** Wilson score interval for k successes in n trials (z = 1.96 for 95%). */
 export function wilson(k, n, z = 1.96) {
@@ -101,6 +129,7 @@ export function readDepth(doc) {
       detector: Number.isInteger(band.detector) ? band.detector : null,
       publishedBand: band.published_band ?? null,
       wavelength: Array.isArray(band.wavelength_um) && band.wavelength_um.every(finite) ? band.wavelength_um : null,
+      check: bandWavelengthCheck(band),
       ...pooled,
       fields,
     }];
@@ -133,6 +162,12 @@ export function readDepth(doc) {
     wise,
     verdicts: (doc.verdicts ?? []).filter((item) => item && typeof item.verdict_key === 'string'),
     verdictKey: doc.verdict_key ?? null,
+    // The headline sentence with its numbers: { key, values } filled from the file, `text` as Session A wrote it.
+    verdictSummary: typeof doc.verdict_summary?.key === 'string' ? {
+      key: doc.verdict_summary.key,
+      values: doc.verdict_summary.values && typeof doc.verdict_summary.values === 'object' ? doc.verdict_summary.values : {},
+      text: typeof doc.verdict_summary.text === 'string' ? doc.verdict_summary.text : null,
+    } : null,
     missionKey: doc.mission_sensitivity?.statement_key ?? null,
     // Session A names them limitation_keys; assumption_keys is the earlier name. Both are shown, once each.
     assumptionKeys: [...new Set([doc.assumption_keys, doc.limitation_keys].flatMap((list) => (Array.isArray(list) ? list : [])).filter((key) => typeof key === 'string'))],
@@ -180,6 +215,24 @@ export function readHiddenPlanet(doc) {
 }
 
 /** The player's tap against the injected source in the frame they tapped: distance in pixels (and arcsec). */
+/**
+ * The numbers the reveal shows, so they multiply as written: the distance rounded to 0.1 picture pixel, times that
+ * frame's own pixel scale from the file, and the tolerance circle in pixels and arcseconds.
+ */
+export function tapReport(pair, verdict) {
+  if (!pair || !verdict) return null;
+  const scale = pair.frames[verdict.point.frame]?.pixelArcsec;
+  const px = Math.round(verdict.distancePx * 10) / 10;
+  return {
+    px,
+    scale: finite(scale) ? scale : null,
+    arcsec: finite(scale) ? px * scale : null,
+    tolerancePx: pair.tolerance,
+    toleranceArcsec: finite(scale) && finite(pair.tolerance) ? pair.tolerance * scale : null,
+    resampled: finite(scale) ? Math.abs(scale - NATIVE_PIXEL_ARCSEC) / NATIVE_PIXEL_ARCSEC > 0.05 : null,
+  };
+}
+
 export function judgeTap(pair, tap) {
   if (!pair || !finite(tap?.x) || !finite(tap?.y)) return null;
   const candidates = pair.injected.filter((point) => tap.frame === undefined || point.frame === tap.frame);
@@ -189,3 +242,35 @@ export function judgeTap(pair, tap) {
   const scale = pair.frames[nearest.point.frame]?.pixelArcsec;
   return { distancePx: nearest.distance, distanceArcsec: finite(scale) ? nearest.distance * scale : null, hit: nearest.distance <= pair.tolerance, point: nearest.point };
 }
+
+/**
+ * Every published prediction against our depth, one row per verdict in the file: the gap (prediction minus our
+ * pooled 50% single-exposure depth) and how many of them are too faint. Numbers only from the file.
+ */
+export function gapRows(depth) {
+  const rows = (depth?.verdicts ?? []).filter((verdict) => finite(verdict.gap_mag?.value)).map((verdict) => ({
+    bandId: verdict.band_id ?? null,
+    modelId: verdict.model_id ?? null,
+    model: depth.models.find((item) => item.id === verdict.model_id) ?? null,
+    wise: verdict.model_id === 'wise-limit' || (depth.wise && depth.wise.id === verdict.model_id),
+    predicted: finite(verdict.model_mag_ab) ? verdict.model_mag_ab : null,
+    depth: finite(verdict.depth_50_ab) ? verdict.depth_50_ab : null,
+    gap: verdict.gap_mag.value,
+    sigma: finite(verdict.gap_mag.sigma) ? verdict.gap_mag.sigma : null,
+    factor: finite(verdict.factor_in_flux) ? verdict.factor_in_flux : null,
+    verdictKey: verdict.verdict_key,
+  }));
+  const closest = rows.reduce((best, row) => (best === null || row.gap < best.gap ? row : best), null);
+  return { rows, tooFaint: rows.filter((row) => row.gap > 0).length, closest };
+}
+
+/** How many artificial planets each point of the pooled curves holds: the method's number, else [min, max] counted from the curves. */
+export function injectedPerPoint(depth) {
+  if (finite(depth?.method?.injections_per_point)) return [depth.method.injections_per_point, depth.method.injections_per_point];
+  const counts = (depth?.bands ?? []).flatMap((band) => band.curve.map((point) => point.injected)).filter(finite);
+  return counts.length ? [Math.min(...counts), Math.max(...counts)] : null;
+}
+
+/** The published values drawn on one band's chart, faintest last, numbered for the chart's key. */
+export const bandModels = (depth, bandId) => depth.models.filter((model) => model.bandId === bandId && model.range)
+  .sort((a, b) => a.range[0] - b.range[0]).map((model, index) => ({ ...model, number: index + 1 }));

@@ -1737,3 +1737,8 @@ body.embed .panel-title { top: 0; }
 }
 .batch-chart .closer-model { fill: var(--star); }
 .batch-chart .closer-line { fill: var(--solar); stroke: var(--bg); stroke-width: 1; }
+.planetx-gaps { display: grid; gap: 8px; }
+.planetx-gaps td { white-space: nowrap; }
+.planetx-chart .marker-number { font: 700 11px var(--font-mono); }
+.planetx-key { margin: 0; padding-left: 1.6em; display: grid; gap: 2px; font-size: 13px; color: var(--dim); }
+.planetx-key li::marker { color: var(--hypothetical); font-weight: 700; font-family: var(--font-mono); }

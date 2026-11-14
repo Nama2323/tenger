@@ -49,7 +49,7 @@ const depth = {
   counts: false,
   note: 'EXAMPLE ONLY: invented numbers for building the page. Not a measurement.',
   method: { single_exposure: true, injections_per_point: 100, mag_step: 0.5, interval_method: 'wilson', confidence: 0.95, detection_rule: { snr_min: 5, max_offset_px: 1 } },
-  bands: [band('i', 1, [0.75, 1.09], 'Johnson I (example)', 19.6, 0.32), band('w1', 3, [1.63, 2.41], 'WISE W1 (example)', 19.2, 0.3), band('w2', 6, [4.42, 5.0], 'WISE W2 (example)', 18.3, 0.35)],
+  bands: [band('i', 1, [0.75, 1.09], 'Johnson I (example)', 19.6, 0.32), band('w1', 4, [2.42, 3.82], 'WISE W1 (example)', 19.2, 0.3), band('w2', 6, [4.42, 5.0], 'WISE W2 (example)', 18.3, 0.35)],
   models: [
     { id: 'example-a', reference: 'Example model A (invented)', band_id: 'w2', mag_published: { value: 20.9, system: 'AB' }, vega_to_ab: null, mag_ab: 20.9, note_key: 'planetx.example.model' },
     { id: 'example-b', reference: 'Example model B (invented)', band_id: 'i', mag_published: { value: 21.6, system: 'Vega' }, vega_to_ab: { offset: 0.45, reference: 'example' }, mag_ab: 22.05, note_key: 'planetx.example.model' },

@@ -4,7 +4,7 @@
 // after the reveal, never shown as a detection, never counted outside the game.
 import { $, chip, el, formatNumber, prefersReducedMotion } from './dom.js';
 import { has, t, tData } from './i18n.js';
-import { DEPTH_PATH, HIDDEN_PATH, judgeTap, magExtent, readDepth, readHiddenPlanet } from './planetx.js';
+import { bandModels, DEPTH_PATH, gapRows, injectedPerPoint, HIDDEN_PATH, judgeTap, magExtent, NATIVE_PIXEL_ARCSEC, readDepth, readHiddenPlanet, tapReport } from './planetx.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const svg = (name, attributes = {}, children = []) => {
@@ -49,13 +49,66 @@ export async function loadPlanetX(real, fixtures) {
 
 // ---------- The measured panel ----------
 
+/** The headline verdict with its numbers filled from the file (verdict_summary), else the plain verdict text. */
+function verdictLine(depth) {
+  const summary = depth.verdictSummary;
+  const words = summary && has(summary.key) ? t(summary.key, summary.values) : summary?.text ?? (depth.verdictKey ? text(depth.verdictKey) : '');
+  return words ? el('p', { class: 'planetx-verdict', text: words }) : null;
+}
+
+const gapName = (row, depth) => (row.wise
+  ? t('planetx.wiseRow', { reference: depth.wise?.reference ?? '—' })
+  : row.model?.scenarioKey ? text(row.model.scenarioKey, {}, 'explain.unknown') : row.model?.reference ?? row.modelId ?? '—');
+
+/** Every published prediction against our depth: one sentence, each verdict's meaning once, then the table. */
+function gapSection(depth) {
+  const { rows, tooFaint, closest } = gapRows(depth);
+  if (!rows.length) return null;
+  const bandName = (id) => depth.bands.find((band) => band.id === id)?.publishedBand ?? id ?? '—';
+  const meanings = [...new Set(rows.map((row) => row.verdictKey))].filter((key) => key !== depth.verdictKey && key !== depth.verdictSummary?.key);
+  return el('div', { class: 'planetx-gaps' }, [
+    el('p', { text: t('planetx.gapsSummary', {
+      n: String(rows.length), faint: String(tooFaint), name: gapName(closest, depth), band: bandName(closest.bandId),
+      gap: formatNumber(closest.gap, 2), sigma: closest.sigma === null ? '—' : formatNumber(closest.sigma, 2),
+      factor: closest.factor === null ? '—' : formatNumber(closest.factor, 1),
+    }) }),
+    ...meanings.map((key) => el('p', { class: 'note', text: text(key) })),
+    el('details', { class: 'data-table' }, [
+      el('summary', { text: t('planetx.gapTableShow', { n: String(rows.length) }) }),
+      el('div', { class: 'table-scroll' }, el('table', {}, [
+        el('caption', { text: t('planetx.gapTable') }),
+        el('thead', {}, el('tr', {}, ['planetx.col.prediction', 'planetx.col.band', 'planetx.col.predicted', 'planetx.col.depth', 'planetx.col.gap', 'planetx.col.factor']
+          .map((key) => el('th', { scope: 'col', text: t(key) })))),
+        el('tbody', {}, rows.map((row) => el('tr', {}, [
+          el('th', { scope: 'row', text: gapName(row, depth) }),
+          el('td', { text: bandName(row.bandId) }),
+          el('td', { text: row.predicted === null ? '—' : mag(row.predicted) }),
+          el('td', { text: row.depth === null ? '—' : mag(row.depth) }),
+          el('td', { text: row.sigma === null ? formatNumber(row.gap, 2) : `${formatNumber(row.gap, 2)} ± ${formatNumber(row.sigma, 2)}` }),
+          el('td', { text: row.factor === null ? '—' : `×${formatNumber(row.factor, 1)}` }),
+        ]))),
+      ])),
+    ]),
+  ]);
+}
+
 function bandTitle(band) {
   const range = band.wavelength ? `${formatNumber(band.wavelength[0], 2)}–${formatNumber(band.wavelength[1], 2)}` : '—';
   return t('planetx.bandTitle', { band: band.publishedBand ?? band.id, detector: band.detector ? `D${band.detector}` : '—', range });
 }
 
+/** The key to the numbered markers: which published prediction each number is, and its AB magnitude in this band. */
+function modelKey(band, depth) {
+  const models = bandModels(depth, band.id);
+  if (!models.length) return null;
+  return el('ol', { class: 'planetx-key', 'aria-label': t('planetx.keyLabel', { band: band.publishedBand ?? band.id }) }, models.map((model) => el('li', { value: String(model.number) }, [
+    el('span', { text: model.scenarioKey ? text(model.scenarioKey) : model.reference }),
+    el('span', { class: 'mono', text: ` AB ${model.range[0] === model.range[1] ? mag(model.range[0]) : `${mag(model.range[0])}–${mag(model.range[1])}`}` }),
+  ])));
+}
+
 function bandChart(band, depth) {
-  const models = depth.models.filter((model) => model.bandId === band.id && model.range);
+  const models = bandModels(depth, band.id);
   const wise = depth.wise?.bandId === band.id ? depth.wise : null;
   const [low, high] = magExtent(band, [...models.map((model) => model.range), wise ? [wise.mag] : []]);
   const [width, height, left, right, top, bottom] = [560, 250, 44, 14, 16, 46];
@@ -76,17 +129,15 @@ function bandChart(band, depth) {
     svg('line', { x1: x(entry.value), x2: x(entry.value), y1: top, y2: height - bottom, class: className }),
     svg('text', { x: x(entry.value) + 4, y: y(level) - 6, class: `depth-label ${className}` }, [document.createTextNode(t('planetx.depthLabel', { level: String(Math.round(level * 100)), mag: mag(entry.value) }))]),
   ] : []);
+  // Several published values share a chart: each marker carries a number, explained in the key under the chart.
   const markers = models.flatMap((model, index) => {
     const [from, to] = model.range;
-    const labelY = top + 12 + index * 14;
+    const labelY = top + 11 + (index % 3) * 12;
     return [
       from === to
         ? svg('line', { x1: x(from), x2: x(from), y1: top, y2: height - bottom, class: 'model' })
         : svg('rect', { x: x(from), y: top, width: Math.max(2, x(to) - x(from)), height: height - top - bottom, class: 'model-range' }),
-      // Labels near the right edge are written to the left of the marker, so they stay inside the chart.
-      x(to) > width * 0.62
-        ? svg('text', { x: x(from) - 4, y: labelY, class: 'marker-label model', 'text-anchor': 'end' }, [document.createTextNode(model.reference)])
-        : svg('text', { x: x(to) + 4, y: labelY, class: 'marker-label model' }, [document.createTextNode(model.reference)]),
+      svg('text', { x: x(to) + 3, y: labelY, class: 'marker-label model marker-number' }, [document.createTextNode(String(model.number))]),
     ];
   });
   const wiseMarker = wise ? [
@@ -143,7 +194,10 @@ function assumptions(depth) {
   const method = depth.method ?? {};
   const rule = method.detection_rule ?? {};
   const items = [
-    t('planetx.assume.injected', { n: Number.isFinite(method.injections_per_point) ? String(method.injections_per_point) : '—' }),
+    (() => {
+      const counts = injectedPerPoint(depth);
+      return counts ? t('planetx.assume.injected', { n: counts[0] === counts[1] ? String(counts[0]) : `${counts[0]}–${counts[1]}` }) : null;
+    })(),
     method.single_exposure === true ? t('planetx.assume.single') : null,
     Number.isFinite(rule.snr_min) ? t('planetx.assume.rule', { snr: String(rule.snr_min), offset: String(rule.max_offset_px ?? '—') }) : null,
     t('planetx.assume.interval', { confidence: String(Math.round(depth.confidence * 100)) }),
@@ -168,21 +222,17 @@ export function measuredPanel(data) {
     ]),
     depth.example ? el('p', { class: 'panel-note warn', text: t('planetx.exampleNote') }) : null,
     el('p', { text: t('planetx.lead') }),
-    depth.verdictKey ? el('p', { class: 'planetx-verdict', text: text(depth.verdictKey) }) : null,
-    ...depth.verdicts.map((verdict) => {
-      const band = depth.bands.find((item) => item.id === verdict.band_id);
-      const model = depth.models.find((item) => item.id === verdict.model_id);
-      const gap = Number.isFinite(verdict.gap_mag?.value)
-        ? t('planetx.gapLine', { band: band?.publishedBand ?? verdict.band_id ?? '—', model: model?.reference ?? verdict.model_id ?? '—', gap: formatNumber(verdict.gap_mag.value, 1), sigma: formatNumber(verdict.gap_mag.sigma, 1) })
-        : '';
-      // The overall verdict is shown above; a per-band verdict adds its own text only when it differs.
-      const own = verdict.verdict_key !== depth.verdictKey ? text(verdict.verdict_key) : '';
-      return own || gap ? el('p', { class: 'note', text: [own, gap].filter(Boolean).join(' ') }) : null;
-    }),
+    verdictLine(depth),
+    gapSection(depth),
     el('div', { class: 'planetx-grid' }, [
       el('div', { class: 'planetx-bands' }, depth.bands.map((band) => el('figure', { class: 'planetx-band' }, [
         el('figcaption', {}, [el('strong', { text: bandTitle(band) }), el('span', { class: 'note', text: depthLine(band) })]),
+        band.check?.ok === false ? el('p', { class: 'panel-note warn', text: t('planetx.bandMismatch', {
+          band: band.publishedBand ?? band.id, um: formatNumber(band.check.published, 2), detector: band.detector ? `D${band.detector}` : '—',
+          low: band.check.array ? formatNumber(band.check.array[0], 2) : '—', high: band.check.array ? formatNumber(band.check.array[1], 2) : '—',
+        }) }) : null,
         bandChart(band, depth),
+        modelKey(band, depth),
         bandTable(band),
       ]))),
       el('aside', { class: 'planetx-side' }, [
@@ -243,13 +293,20 @@ function reveal() {
   setBlink(false);
   drawMarks();
   const verdict = judgeTap(round.pair, round.guess);
+  const shown = tapReport(round.pair, verdict);
   const { pipeline } = round.pair;
+  const decimals = (value) => (Number.isInteger(value) ? 0 : Number.isInteger(value * 10) ? 1 : 2);
   $('hidden-result').replaceChildren(
     el('p', { class: 'hidden-artificial', text: t('hidden.label') }),
     el('p', { class: verdict.hit ? 'hidden-hit' : 'hidden-miss', text: t(verdict.hit ? 'hidden.youFound' : 'hidden.youMissed', {
-      px: formatNumber(verdict.distancePx, 1),
-      arcsec: verdict.distanceArcsec === null ? '—' : formatNumber(verdict.distanceArcsec, 0),
-      tolerance: formatNumber(round.pair.tolerance, 0),
+      px: formatNumber(shown.px, 1),
+      scale: shown.scale === null ? '—' : formatNumber(shown.scale, decimals(shown.scale)),
+      arcsec: shown.arcsec === null ? '—' : formatNumber(shown.arcsec, decimals(shown.scale ?? 0) + 1),
+      tolerance: formatNumber(shown.tolerancePx, decimals(shown.tolerancePx)),
+      toleranceArcsec: shown.toleranceArcsec === null ? '—' : formatNumber(shown.toleranceArcsec, Math.max(1, decimals(shown.tolerancePx))),
+    }) }),
+    shown.scale === null ? null : el('p', { class: 'note', text: t(shown.resampled ? 'hidden.scaleResampled' : 'hidden.scaleNative', {
+      scale: formatNumber(shown.scale, decimals(shown.scale)), native: formatNumber(NATIVE_PIXEL_ARCSEC, 2),
     }) }),
     el('p', { text: t(pipeline.found ? 'hidden.pipelineFound' : 'hidden.pipelineMissed', {
       snr: pipeline.positions.length ? formatNumber(Math.min(...pipeline.positions.map((point) => point.snr ?? Infinity)), 1) : '—',

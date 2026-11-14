@@ -293,10 +293,10 @@
     },
     {
       "id": "w1",
-      "detector": 3,
+      "detector": 4,
       "wavelength_um": [
-        1.63,
-        2.41
+        2.42,
+        3.82
       ],
       "published_band": "WISE W1 (example)",
       "pooled": {
