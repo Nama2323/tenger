@@ -218,11 +218,13 @@ def fit_motion(
     mjd_ref: float,
     parallax_arcsec: float | None,
     floor_arcsec: float = 0.0,
+    fit_parallax: bool = False,
 ) -> dict:
-    """Weighted least squares for offset + proper motion (+ fixed parallax if given).
+    """Weighted least squares for offset + proper motion, with parallax fixed, free or absent.
 
-    Returns the parameters, their covariance, chi-square and residuals. Each point's
-    covariance is increased by floor_arcsec**2 on both axes (systematic floor).
+    parallax_arcsec fixes the parallax (catalogue-assisted); fit_parallax=True fits it as
+    a fifth parameter from the SPHEREx positions alone. Each point's covariance is
+    increased by floor_arcsec**2 on both axes (systematic floor).
     """
     if len(points) < 3:
         return {"status": "insufficient_data", "reason_key": "measure.too-few-epochs", "n_points": len(points)}
@@ -230,9 +232,12 @@ def fit_motion(
     for point in points:
         tau = (point.mjd - mjd_ref) / DAYS_PER_YEAR
         pe, pn = parallax_factors(ra0, dec0, point.observer_au)
-        shift_e = parallax_arcsec * pe if parallax_arcsec else 0.0
-        shift_n = parallax_arcsec * pn if parallax_arcsec else 0.0
-        rows += [[1.0, 0.0, tau, 0.0], [0.0, 1.0, 0.0, tau]]
+        fixed = parallax_arcsec if (parallax_arcsec and not fit_parallax) else 0.0
+        shift_e, shift_n = fixed * pe, fixed * pn
+        if fit_parallax:
+            rows += [[1.0, 0.0, tau, 0.0, pe], [0.0, 1.0, 0.0, tau, pn]]
+        else:
+            rows += [[1.0, 0.0, tau, 0.0], [0.0, 1.0, 0.0, tau]]
         values += [point.east - shift_e, point.north - shift_n]
         cov = np.asarray(point.cov, float) + np.eye(2) * floor_arcsec**2
         weights_blocks.append(np.linalg.inv(cov))
@@ -250,11 +255,14 @@ def fit_motion(
     residual = values - design @ params
     chi2 = float(residual @ weight @ residual)
     dof = max(1, len(values) - design.shape[1])
+    named = {"east0": float(params[0]), "north0": float(params[1]),
+             "pm_east_arcsec_yr": float(params[2]), "pm_north_arcsec_yr": float(params[3])}
+    if fit_parallax:
+        named["parallax_arcsec"] = float(params[4])
     return {
         "status": "measured",
         "reason_key": None,
-        "params": {"east0": float(params[0]), "north0": float(params[1]),
-                   "pm_east_arcsec_yr": float(params[2]), "pm_north_arcsec_yr": float(params[3])},
+        "params": named,
         "cov": covariance.tolist(),
         "chi2": chi2,
         "dof": dof,
@@ -262,7 +270,8 @@ def fit_motion(
         "n_points": len(points),
         "span_days": float(np.ptp(times)),
         "residuals_arcsec": residual.reshape(-1, 2).tolist(),
-        "parallax_fixed_arcsec": parallax_arcsec,
+        "parallax_fixed_arcsec": None if fit_parallax else parallax_arcsec,
+        "parallax_fitted": fit_parallax,
         "floor_arcsec": floor_arcsec,
     }
 

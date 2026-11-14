@@ -28,15 +28,47 @@ from backend.spectral import MATCH_FRACTION_OF_BANDWIDTH
 from scripts.build_site import ENCODE_STEP, encode, soft_scale_of
 
 DATASET_VERSION = "a3-2026-11-14"
-VIEWER_MIN_COVERAGE = 0.92  # the viewer drops frames below this (static/js/stack.js)
+VIEWER_MIN_COVERAGE = 0.92  # the viewer drops frames below this (static/js/stack.js wellCovered)
+VIEWER_COVERAGE_STRIDE = 7
 VIEWER_MAX_FRAMES = 240
 PREVIEW_SIZE = 240
 FIELD_RADIUS_FACTOR = 0.75  # Gaia query radius as a fraction of the field width
 MOVERS = {"barnard", "wise0855", "epsindib"}
-# Catalogue values for targets Gaia DR3 does not list (with their source).
-CATALOGUE_FALLBACK = {
-    "wise0855": {"source": "preset (inherited SPHEREx Blink values)", "parallax_mas": None},
-}
+# Known blends at SPHEREx resolution (6.15 arcsec pixels).
+TARGET_LIMITS = {"rwaur": ["limit.blended-binary"], "epsindib": ["limit.blended-binary"]}
+# Targets Gaia DR3 does not list: SIMBAD (CDS first, CfA mirror fallback), with bibcodes.
+SIMBAD_FALLBACK = {"wise0855": "WISE J085510.83-071442.5", "epsindib": "eps Ind B"}
+CATALOGUE_FALLBACK = {"wise0855": {"source": "preset (inherited SPHEREx Blink values)", "parallax_mas": None}}
+
+
+def simbad_star(identifier: str) -> dict | None:
+    """SIMBAD astrometry (J2000 position, motion, parallax) moved to epoch 2016.0."""
+    import csv
+    import io
+
+    from backend import catalogs
+    from backend.coords import propagate
+
+    escaped = identifier.replace("'", "''")
+    query = ("SELECT b.ra, b.dec, b.pmra, b.pmdec, b.plx_value, b.plx_err, b.pm_err_maj, b.coo_bibcode, "
+             "b.pm_bibcode, b.plx_bibcode FROM basic AS b JOIN ident AS i ON i.oidref = b.oid "
+             f"WHERE i.id = '{escaped}'")
+    try:
+        text, url = catalogs.simbad_tap(query)
+    except Exception:  # noqa: BLE001 - fall back to the preset
+        return None
+    rows = list(csv.DictReader(io.StringIO(text)))
+    if not rows or not rows[0].get("pmra"):
+        return None
+    row = rows[0]
+    pmra, pmdec = float(row["pmra"]), float(row["pmdec"])
+    ra16, dec16 = propagate(float(row["ra"]), float(row["dec"]), pmra, pmdec, 2000.0, 57388.5)
+    plx = float(row["plx_value"]) if row.get("plx_value") else None
+    return {"source_id": None, "ra": ra16, "dec": dec16, "pmra": pmra, "pmdec": pmdec, "parallax": plx,
+            "parallax_error": float(row["plx_err"]) if row.get("plx_err") else None,
+            "pmra_error": None, "pmdec_error": None, "phot_g_mean_mag": None,
+            "source": (f"SIMBAD via {url.split('/')[2]}: position {row.get('coo_bibcode')}, motion "
+                       f"{row.get('pm_bibcode')}, parallax {row.get('plx_bibcode')}; moved to 2016.0")}
 
 
 def json_bytes(obj) -> bytes:
@@ -99,11 +131,33 @@ def median_stack(frames) -> np.ndarray:
         return np.nanmedian(stack, axis=0)
 
 
-def build(key: str, out: Path) -> dict:
+def load_cached(job: Job) -> None:
+    """Fill a job from the cache only (no downloads); for checks while acquisition runs."""
+    import httpx
+
+    from backend import archive, framestore
+    from backend.processing import group_visits
+
+    with httpx.Client(timeout=120, follow_redirects=True) as client:
+        exposures = archive.search(client, job.grid.ra, job.grid.dec)
+    job.available = job.total = len(exposures)
+    for exposure, visit in zip(exposures, group_visits([item.mjd for item in exposures])):
+        frame = framestore.load(job.id, archive.exposure_key(exposure), job.cache_tag, visit)
+        if frame is not None:
+            job.frames.append(frame)
+        else:
+            job.failed += 1
+    job.status = "done"
+
+
+def build(key: str, out: Path, cached_only: bool = False) -> dict:
     preset = next(item for item in ALL_TARGETS if item.key == key)
     ra_c, dec_c = preset.centre()
     job = Job(ra_c, dec_c, preset.fov, limit=100000)
-    job.run()
+    if cached_only:
+        load_cached(job)
+    else:
+        job.run()
     if job.status != "done":
         raise RuntimeError(f"{key}: job {job.status}: {job.error}")
     exposures = load_exposures(job)
@@ -111,8 +165,13 @@ def build(key: str, out: Path) -> dict:
 
     stars = gaia.field_stars(ra_c, dec_c, preset.fov * FIELD_RADIUS_FACTOR)
     star = find_target_star(preset, stars)
-    catalogue_source = "Gaia DR3" if star else CATALOGUE_FALLBACK.get(key, {}).get("source", "preset")
-    star = star or preset_star(preset)
+    catalogue_source = "Gaia DR3"
+    if star is None and key in SIMBAD_FALLBACK:
+        star = simbad_star(SIMBAD_FALLBACK[key])
+        catalogue_source = star["source"] if star else None
+    if star is None:
+        catalogue_source = CATALOGUE_FALLBACK.get(key, {}).get("source", "preset")
+        star = preset_star(preset)
 
     # Observations and the quality gate, at the target's catalogue position at each time.
     records, usable = {}, []
@@ -127,7 +186,7 @@ def build(key: str, out: Path) -> dict:
 
     # Viewer bundle: the well-covered display frames of usable exposures.
     viewer_frames = [frames_by_key[item.meta["obsKey"]] for item in usable
-                     if np.isfinite(frames_by_key[item.meta["obsKey"]].pixels).mean() >= VIEWER_MIN_COVERAGE]
+                     if viewer_covered(frames_by_key[item.meta["obsKey"]].pixels)]
     if len(viewer_frames) > VIEWER_MAX_FRAMES:
         keep = np.linspace(0, len(viewer_frames) - 1, VIEWER_MAX_FRAMES).astype(int)
         viewer_frames = [viewer_frames[index] for index in keep]
@@ -153,7 +212,10 @@ def build(key: str, out: Path) -> dict:
     photometry_block, photometry_measurements = measure_brightness(usable, star, comparisons)
     measurements += photometry_measurements
     for measurement in measurements:
+        if measurement["content_type"] == "measured" and key in TARGET_LIMITS:
+            measurement["limitation_keys"] = sorted(set(measurement.get("limitation_keys", [])) | set(TARGET_LIMITS[key]))
         limitations.update(measurement.get("limitation_keys", []))
+    limitations.update(TARGET_LIMITS.get(key, []))
 
     settings = {
         "pipeline": config.PIPELINE_VERSION, "mask_policy": MASK_POLICY, "frame_schema": config.FRAME_SCHEMA,
@@ -217,6 +279,12 @@ def build(key: str, out: Path) -> dict:
     return {"key": key, "observations": len(records), "usable": len(usable), "epochs": len(epochs),
             "comparisons": len(comparisons), "status": status,
             "sha256": hashlib.sha256(payload).hexdigest()}
+
+
+def viewer_covered(pixels: np.ndarray) -> bool:
+    """Exactly the viewer's wellCovered test, so every bundled frame is shown."""
+    sample = pixels.ravel()[::VIEWER_COVERAGE_STRIDE]
+    return int(np.isfinite(sample).sum()) >= VIEWER_MIN_COVERAGE * math.ceil(pixels.size / VIEWER_COVERAGE_STRIDE)
 
 
 def viewer_visits(frames) -> list[dict]:
@@ -287,6 +355,7 @@ def measure_motion(usable, star, stars, mjd_ref, catalogue_source):
     has_parallax = star.get("parallax") is not None
     fixed = inv.fit_star(target_results, star, mjd_ref, floor_value, parallax=True) if has_parallax else None
     linear = inv.fit_star(target_results, star, mjd_ref, floor_value, parallax=False)
+    free = inv.fit_star(target_results, star, mjd_ref, floor_value, parallax=False, free_parallax=True)
     main = fixed or linear
 
     per_exposure = [{
@@ -300,6 +369,19 @@ def measure_motion(usable, star, stars, mjd_ref, catalogue_source):
         limitations.append("limit.saturated-core-wing-fit")
     if not control.get("passes"):
         limitations.append("limit.control-not-passed")
+    parallax_measurement = parallax_from_spherex(free, star)
+    if parallax_measurement.get("checks", {}).get("consistent_with_catalogue") is False:
+        limitations.append("limit.visit-systematics")
+
+    visit_fit = visit_level_fit(measured_points, main, (star.get("parallax") or 0) / 1000 if has_parallax else None)
+
+    def visit_sigma(component):
+        if visit_fit.get("status") != "measured":
+            return None
+        if component == "total":
+            return astrometry.total_motion(visit_fit)[1]
+        index = {"east": 2, "north": 3}[component]
+        return math.sqrt(np.array(visit_fit["cov"])[index, index] * max(1.0, visit_fit["chi2_red"]))
 
     def motion_measurement(mid, quantity, fit, component, method, extra_limits=()):
         if fit.get("status") != "measured":
@@ -312,8 +394,12 @@ def measure_motion(usable, star, stars, mjd_ref, catalogue_source):
             index = {"east": 2, "north": 3}[component]
             value = fit["params"]["pm_east_arcsec_yr" if component == "east" else "pm_north_arcsec_yr"]
             sigma = math.sqrt(np.array(fit["cov"])[index, index] * max(1.0, fit["chi2_red"]))
+        basis = "exposure"
+        conservative = visit_sigma(component) if fit is main else None
+        if conservative is not None and conservative > sigma:
+            sigma, basis = conservative, "visit"
         return {"id": mid, "quantity": quantity, "content_type": "measured", "status": "measured",
-                "value": round(value, 4), "sigma": round(sigma, 4), "method": method,
+                "value": round(value, 4), "sigma": round(sigma, 4), "sigma_basis": basis, "method": method,
                 "inputs": sorted({f"v{row['visit']}-d{row['detector']}" for row in measured_points}),
                 "n_points": fit["n_points"], "chi2_red": round(fit["chi2_red"], 3), "span_days": round(fit["span_days"], 2),
                 "limitation_keys": sorted(set(limitations) | set(extra_limits))}
@@ -338,6 +424,7 @@ def measure_motion(usable, star, stars, mjd_ref, catalogue_source):
                          "content_type": "catalogue", "status": "measured", "value": round(pm_cat, 5),
                          "sigma": round(sigma_cat, 6) if sigma_cat is not None else None,
                          "method": catalogue_source, "inputs": [], "limitation_keys": []})
+    measurements.append(parallax_measurement)
     measurements.append({"id": "m-control", "quantity": "control_fraction_within_95pct", "content_type": "measured",
                          "status": control["status"], "value": control.get("fraction_within_95pct_region"),
                          "sigma": None, "method": "field stars fitted like the target, compared with Gaia DR3",
@@ -360,10 +447,13 @@ def measure_motion(usable, star, stars, mjd_ref, catalogue_source):
         "n_stars": control.get("n_stars"), "fraction": control.get("fraction_within_95pct_region"),
         "passes": control.get("passes")}})
     block = {
+        "visit_residuals": visit_residuals(main, measured_points),
         "reference": main.get("reference"),
         "floor": floor,
         "fit_parallax_fixed": _fit_summary(fixed) if fixed else None,
         "fit_linear": _fit_summary(linear),
+        "fit_parallax_free": _fit_summary(free),
+        "fit_visit_level": _fit_summary(visit_fit),
         "catalogue_agreement": agreement,
         "control": control,
         "per_exposure": per_exposure,
@@ -371,9 +461,72 @@ def measure_motion(usable, star, stars, mjd_ref, catalogue_source):
     return block, measurements, explanation
 
 
+def visit_level_fit(measured_points: list[dict], fit: dict, parallax_arcsec: float | None) -> dict:
+    """Refit on one mean position per visit and array (errors from the scatter inside each group).
+
+    Exposures of one visit share systematics, so this fit's scaled uncertainty is a
+    conservative check on the exposure-level one.
+    """
+    reference = fit.get("reference")
+    if not reference:
+        return {"status": "insufficient_data", "reason_key": "measure.too-few-epochs"}
+    groups = {}
+    for row in measured_points:
+        groups.setdefault((row["visit"], row["detector"]), []).append(row)
+    points = []
+    for members in groups.values():
+        if len(members) < 2:
+            continue
+        offsets = np.array([astrometry.tangent_offsets_arcsec(reference["ra_deg"], reference["dec_deg"],
+                                                              row["ra_deg"], row["dec_deg"]) for row in members])
+        observer = np.mean([astrometry.observer_barycentric_au(row["mjd"], None) for row in members], axis=0)
+        covariance = np.cov(offsets.T) / len(members) + np.eye(2) * 1e-6
+        points.append(astrometry.Point(float(np.mean([row["mjd"] for row in members])), float(offsets[:, 0].mean()),
+                                       float(offsets[:, 1].mean()), covariance, observer))
+    result = astrometry.fit_motion(points, reference["ra_deg"], reference["dec_deg"], reference["mjd"], parallax_arcsec)
+    return result
+
+
+def visit_residuals(fit: dict, measured_points: list[dict]) -> list[dict]:
+    """Mean fit residual per visit and array: a check for visit-level systematics."""
+    residuals = fit.get("residuals_arcsec") or []
+    groups = {}
+    for row, residual in zip(measured_points, residuals):
+        groups.setdefault((row["visit"], row["detector"]), []).append(residual)
+    rows = []
+    for (visit, detector), members in sorted(groups.items()):
+        values = np.array(members)
+        rows.append({"visit": visit, "detector": detector, "n": len(members),
+                     "mean_east_arcsec": round(float(values[:, 0].mean()), 3),
+                     "mean_north_arcsec": round(float(values[:, 1].mean()), 3),
+                     "sem_arcsec": round(float(values.std(ddof=1) / np.sqrt(len(values))) if len(values) > 1 else 0.0, 3)})
+    return rows
+
+
+def parallax_from_spherex(fit: dict, star: dict) -> dict:
+    """Parallax fitted from SPHEREx positions alone (exploratory), compared with the catalogue."""
+    base = {"id": "m-parallax", "quantity": "parallax_arcsec", "content_type": "measured",
+            "method": "native-psf-fit+wls, parallax free", "inputs": [], "exploratory": True,
+            "limitation_keys": ["limit.gaussian-psf-model", "limit.few-visits-parallax"]}
+    if fit.get("status") != "measured":
+        return {**base, "status": "insufficient_data", "value": None, "sigma": None,
+                "status_reason_key": fit.get("reason_key")}
+    variance = np.array(fit["cov"])[4, 4] * max(1.0, fit["chi2_red"])
+    value, sigma = fit["params"]["parallax_arcsec"], math.sqrt(variance)
+    checks = {}
+    if star.get("parallax") is not None:
+        catalogue = star["parallax"] / 1000
+        error = (star.get("parallax_error") or 0.0) / 1000
+        z = (value - catalogue) / math.hypot(sigma, error)
+        checks = {"catalogue_arcsec": round(catalogue, 5), "z": round(z, 2),
+                  "consistent_with_catalogue": bool(abs(z) <= 1.959963984540054)}
+    return {**base, "status": "measured", "value": round(value, 4), "sigma": round(sigma, 4),
+            "n_points": fit["n_points"], "chi2_red": round(fit["chi2_red"], 3), "checks": checks}
+
+
 def _fit_summary(fit: dict) -> dict:
     keep = ("status", "reason_key", "params", "cov", "chi2", "dof", "chi2_red", "n_points", "span_days",
-            "parallax_fixed_arcsec", "floor_arcsec")
+            "parallax_fixed_arcsec", "parallax_fitted", "floor_arcsec")
     return {key: fit.get(key) for key in keep}
 
 
@@ -441,6 +594,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("key")
     parser.add_argument("--out", default="static/data")
+    parser.add_argument("--cached-only", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(build(args.key, Path(args.out))), flush=True)
+    print(json.dumps(build(args.key, Path(args.out), args.cached_only)), flush=True)
     sys.exit(0)

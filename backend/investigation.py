@@ -291,11 +291,12 @@ def motion_points(results: list[dict], ra0: float, dec0: float) -> list[astromet
     return points
 
 
-def fit_star(results: list[dict], star: dict, mjd_ref: float, floor: float, parallax: bool) -> dict:
+def fit_star(results: list[dict], star: dict, mjd_ref: float, floor: float, parallax: bool,
+             free_parallax: bool = False) -> dict:
     ra0, dec0 = catalogue_position(star, mjd_ref)
     points = motion_points(results, ra0, dec0)
     plx = (star.get("parallax") or 0.0) / 1000 if parallax else None
-    fit = astrometry.fit_motion(points, ra0, dec0, mjd_ref, plx, floor)
+    fit = astrometry.fit_motion(points, ra0, dec0, mjd_ref, plx, floor, fit_parallax=free_parallax)
     fit["reference"] = {"ra_deg": ra0, "dec_deg": dec0, "mjd": mjd_ref}
     return fit
 

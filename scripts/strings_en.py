@@ -18,6 +18,7 @@ STRINGS = {
     "quantity.proper_motion_total_linear_arcsec_yr": "Total proper motion, straight-line fit without parallax (arcsec per year)",
     "quantity.control_fraction_within_95pct": "Field-star check: share of comparison stars whose measured motion agrees with Gaia",
     "quantity.flux_ratio_b_over_a": "Brightness ratio, date B over date A, same wavelength",
+    "quantity.parallax_arcsec": "Parallax from SPHEREx positions alone (arcsec, exploratory)",
     "quantity.position_offset_arcsec": "Position offset from the reference (arcsec)",
     # explanations
     "explain.motion-measured": "SPHEREx positions from {n_points} exposures over {days} days give a proper motion of {value} ± {sigma} arcsec per year. Gaia DR3 lists {catalogue} arcsec per year.",
@@ -38,6 +39,9 @@ STRINGS = {
     "limit.saturated-core-wing-fit": "The star's centre is saturated; its position comes from the outer glow only.",
     "limit.control-not-passed": "The field-star check did not pass, so the uncertainty may be underestimated.",
     "limit.no-parallax-baseline": "Straight-line fit that ignores parallax: a simple comparison, not the best model.",
+    "limit.few-visits-parallax": "Only a few visits: the parallax fit is sensitive to small errors that differ from visit to visit.",
+    "limit.visit-systematics": "The free parallax fit disagrees with Gaia, a sign of visit-to-visit errors; uncertainties may be too small.",
+    "limit.blended-binary": "This is a close pair of stars; at SPHEREx resolution both are measured together.",
     "limit.aperture-whole-pixels": "Brightness is summed over whole pixels inside a circle.",
     "limit.wcs-wave-approximate": "Wavelengths come from the approximate lookup table in each file (about 1 nm).",
     "limit.ephemeris-guided": "Cutouts follow the JPL Horizons ephemeris (catalogue-assisted).",

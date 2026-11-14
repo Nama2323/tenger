@@ -1,0 +1,262 @@
+{
+  "schema_version": "tenger.site_index/1",
+  "contract_version": 3,
+  "dataset_version": "a3-2026-11-14",
+  "generated_utc": "2026-11-14T13:30:04Z",
+  "targets": [
+    {
+      "key": "barnard",
+      "name": "Barnard's Star",
+      "name_key": "target.barnard.name",
+      "role": "challenge",
+      "kind": "faststar",
+      "reference": {
+        "ra_deg": 269.44850252544,
+        "dec_deg": 4.73942005111,
+        "epoch_jyear": 2016.0,
+        "pmra_mas_yr": -801.551,
+        "pmdec_mas_yr": 10362.394,
+        "source": "Gaia DR3"
+      },
+      "footprint": {
+        "centre_ra_deg": 269.44648,
+        "centre_dec_deg": 4.768669,
+        "fov_deg": 0.1
+      },
+      "data_status": "available",
+      "measurement_status": "measured",
+      "investigation_path": "barnard/investigation.json",
+      "thumbnails": [
+        {
+          "path": "barnard/epochs/v2-d6.webp",
+          "content_type": "processed",
+          "label_key": "thumb.spherex",
+          "epoch_id": "v2-d6",
+          "time_utc": null
+        }
+      ],
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "map": {
+        "distance": {
+          "value": 1.8282,
+          "unit": "pc",
+          "kind": "parallax_distance",
+          "source": "Gaia DR3 parallax 546.9759 mas"
+        },
+        "angle_deg": 20.0,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "wise0855",
+      "name": "WISE 0855",
+      "name_key": "target.wise0855.name",
+      "role": "challenge",
+      "kind": "browndwarf",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "measurement_status": null,
+      "investigation_path": null,
+      "thumbnails": [],
+      "status_reason_key": "unavailable.no-validated-product",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "map": {
+        "distance": {
+          "value": 2.278,
+          "unit": "pc",
+          "kind": "parallax_distance",
+          "source": "SIMBAD parallax 439.0 mas (2021ApJS..253....7K) via simbad.cfa.harvard.edu"
+        },
+        "angle_deg": 65.0,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "epsindib",
+      "name": "Epsilon Indi B",
+      "name_key": "target.epsindib.name",
+      "role": "challenge",
+      "kind": "browndwarf",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "measurement_status": null,
+      "investigation_path": null,
+      "thumbnails": [],
+      "status_reason_key": "unavailable.no-validated-product",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "map": {
+        "distance": {
+          "value": 3.695,
+          "unit": "pc",
+          "kind": "parallax_distance",
+          "source": "SIMBAD parallax 270.658 mas (2020yCat.1350....0G) via simbad.cfa.harvard.edu"
+        },
+        "angle_deg": 110.0,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "rwaur",
+      "name": "RW Aurigae",
+      "name_key": "target.rwaur.name",
+      "role": "challenge",
+      "kind": "variable",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "measurement_status": null,
+      "investigation_path": null,
+      "thumbnails": [],
+      "status_reason_key": "unavailable.no-validated-product",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "map": {
+        "distance": {
+          "value": 64.851,
+          "unit": "pc",
+          "kind": "parallax_distance",
+          "source": "SIMBAD parallax 15.42 mas (2007A&A...474..653V) via simbad.cfa.harvard.edu"
+        },
+        "angle_deg": 155.0,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "rdra",
+      "name": "R Draconis",
+      "name_key": "target.rdra.name",
+      "role": "challenge",
+      "kind": "variable",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "measurement_status": null,
+      "investigation_path": null,
+      "thumbnails": [],
+      "status_reason_key": "unavailable.no-validated-product",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "map": {
+        "distance": {
+          "value": 799.424,
+          "unit": "pc",
+          "kind": "parallax_distance",
+          "source": "SIMBAD parallax 1.2509 mas (2020yCat.1350....0G) via simbad.cfa.harvard.edu"
+        },
+        "angle_deg": 200.0,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "makemake",
+      "name": "Makemake",
+      "name_key": "target.makemake.name",
+      "role": "extra",
+      "kind": "dwarfplanet",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "measurement_status": null,
+      "investigation_path": null,
+      "thumbnails": [],
+      "status_reason_key": "unavailable.no-validated-product",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "map": {
+        "distance": {
+          "value": 52.743,
+          "unit": "au",
+          "kind": "geocentric_distance",
+          "source": "JPL Horizons 136472, geocentric delta at 2026-01-01 00:00 UTC"
+        },
+        "angle_deg": 245.0,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "pluto",
+      "name": "Pluto",
+      "name_key": "target.pluto.name",
+      "role": "extra",
+      "kind": "dwarfplanet",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "measurement_status": null,
+      "investigation_path": null,
+      "thumbnails": [],
+      "status_reason_key": "unavailable.no-validated-product",
+      "prediction": {
+        "status": null,
+        "trial_ids": []
+      },
+      "map": {
+        "distance": {
+          "value": 36.328,
+          "unit": "au",
+          "kind": "geocentric_distance",
+          "source": "JPL Horizons 999, geocentric delta at 2026-01-01 00:00 UTC"
+        },
+        "angle_deg": 290.0,
+        "angle_is_arbitrary": true
+      }
+    },
+    {
+      "key": "3i-atlas",
+      "name": "3I/ATLAS",
+      "name_key": "target.3i-atlas.name",
+      "role": "extra",
+      "kind": "comet",
+      "reference": null,
+      "footprint": null,
+      "data_status": "unavailable",
+      "measurement_status": null,
+      "investigation_path": null,
+      "thumbnails": [],
+      "status_reason_key": "unavailable.no-validated-product",
+      "prediction": {
+        "status": "see_only",
+        "trial_ids": []
+      },
+      "map": {
+        "distance": null,
+        "angle_deg": 335.0,
+        "angle_is_arbitrary": true
+      }
+    }
+  ],
+  "trials": [],
+  "scoreboard_path": null,
+  "game_rounds": [],
+  "lessons": [],
+  "reserved_path": "reserved.json",
+  "strings_path": "strings.en.json",
+  "releases": [
+    "spherex_dr1",
+    "spherex_qr3"
+  ],
+  "credits_keys": [
+    "credit.irsa",
+    "credit.spherex",
+    "credit.gaia",
+    "credit.horizons",
+    "credit.base-project"
+  ]
+}

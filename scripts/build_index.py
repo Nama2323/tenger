@@ -78,7 +78,7 @@ def target_entry(key: str, name: str, kind: str, role: str, out: Path, distance:
         entry["measurement_status"] = doc.get("measurement_status")
         entry["investigation_path"] = f"{key}/investigation.json"
         epochs = [epoch for epoch in doc.get("epochs", []) if epoch.get("assets", {}).get("preview")]
-        latest = max(epochs, key=lambda epoch: epoch["t_start_mjd"]) if epochs else None
+        latest = max(epochs, key=lambda epoch: (epoch.get("visit") or 0, epoch.get("detector") or 0)) if epochs else None
         entry["thumbnails"] = ([{"path": latest["assets"]["preview"], "content_type": "processed",
                                  "label_key": "thumb.spherex", "epoch_id": latest["id"],
                                  "time_utc": None}] if latest else [])
