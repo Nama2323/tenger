@@ -196,10 +196,22 @@ def forecast(points: list[dict], eval_times: list[float], mode: str) -> dict:
         cross = np.array([-along[1], along[0]])
         rotation = np.column_stack([along, cross])
         c_model = rotation @ error["c_along_cross_arcsec2"] @ rotation.T
-        c_fit = entry["c_parameters"] + np.eye(2) * (result["sigma_g"] ** 2 + forecast_v2.spacecraft_sigma(distance) ** 2)
+        # Excess scatter (amendment 03:40 UB): the formal parameter covariance, already scaled by
+        # max(1, chi2/dof) in postmortem.fit, is a third estimate; the envelope takes the largest along and across.
+        c_formal = postmortem.predict(method.model, result["best"], t, observer)[2]
+        c_params = entry["c_parameters"]
+        basis = dict(entry["basis"])
+        variances = {}
+        for axis, vector in (("along", along), ("cross", cross)):
+            resampled, formal = float(vector @ c_params @ vector), float(vector @ c_formal @ vector)
+            variances[axis] = max(resampled, formal)
+            if formal > resampled:
+                basis[axis] = "formal_scaled_by_chi2"
+        c_envelope = variances["along"] * np.outer(along, along) + variances["cross"] * np.outer(cross, cross)
+        c_fit = c_envelope + np.eye(2) * (result["sigma_g"] ** 2 + forecast_v2.spacecraft_sigma(distance) ** 2)
         cov = c_fit + c_model
         track.append({"t_mjd": t, "ra_deg": entry["ra_deg"], "dec_deg": entry["dec_deg"], "cov_arcsec2": cov,
-                      "c_fit_arcsec2": c_fit, "c_model_arcsec2": c_model, "uncertainty_basis": entry["basis"],
+                      "c_fit_arcsec2": c_fit, "c_model_arcsec2": c_model, "uncertainty_basis": basis,
                       "distance_au": distance,
                       **forecast_v2.along_cross(method, result["best"], t, method.observer_future, cov)})
     return {"mode": mode, "track": track, "best": result["best"], "start": start, "model_error": error,

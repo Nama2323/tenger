@@ -188,3 +188,24 @@ Made before any forecast was frozen and before any evaluation pixel was opened; 
   - **Secondary** (still frozen, scored on the same identified positions, reported next to the
     primary): barycentric two-body, method v2 as originally instructed.
   - The straight-line baseline is unchanged.
+
+## Amendment, 15 Nov 2026 03:40 UB: one frame rule for the whole batch; excess scatter covered (user's instruction)
+
+Made before any forecast was frozen and before any evaluation pixel was opened; no outcome is known.
+
+1. **One rule, not per object.** The heliocentric two-body is the primary model for every object in the
+   batch. Main-belt asteroids orbit inside Jupiter, so the heliocentric two-body is the standard
+   approximation; the barycentric frame suits distant bodies such as Pluto. The frame is never chosen
+   per object from its fit. The barycentric v2 forecast stays the frozen secondary for every object.
+2. **Excess scatter.** The v2 Monte Carlo resamples the real residuals within each visit × detector
+   group, so in principle it reflects scatter beyond the formal errors. To make sure, the formal
+   parameter covariance is used as a third estimate. It is already scaled by max(1, χ²/dof) in
+   `postmortem.fit`, and is propagated to each evaluation time. Along and across the track separately,
+   C_fit takes the largest of the Monte Carlo, the jackknife and this scaled formal estimate. The basis
+   that won is recorded per axis (`formal_scaled_by_chi2` when the scaled formal covariance is the
+   largest).
+3. **Planetary perturbations.** Unchanged: C_model, the synthetic N-body two-body error (Sun, Jupiter,
+   Saturn, Uranus, Neptune; 24 orbits per object), is added to C_fit. C_pred = C_fit + σ_g² + the
+   spacecraft term + C_model.
+4. **Further choices** in A9 are made by Session A as the recommended option and written here (the user
+   is asleep).
