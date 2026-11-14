@@ -1,5 +1,6 @@
 // Every visible string of the interface. English is the default and the only complete language
-// (team decision, 14 Nov 2026). The Russian table is inherited from SPHEREx Blink and kept for a later
+// (team decision, 14 Nov 2026). The Russian table is inherited from the open-source code this repository started
+// from (MIT, see LICENSE) and kept for a later
 // translation; it does not cover the TENGER pages, so it is not offered in the interface.
 // Keys with dots are TENGER keys; data files refer to some of them (`*_key` fields, docs/DATA-CONTRACT.md).
 const TEXT = {
@@ -586,6 +587,7 @@ const TEXT = {
     'note.covered': 'This position is inside the prepared field of {name}. A white cross marks it.',
     'note.preparedFov': 'Prepared images of {name} cover a {fov}° field. Another field needs the live service, which is paused near this target.',
     'note.reserved': 'Live loading is paused within 2° of {name} until its prediction is frozen: new images here could give away the answer of a fair test.',
+    'note.liveUnavailable': 'Live search needs the TENGER server, which is not running on this public site; the prepared targets work.',
     'note.reservedEmpty': 'There are no prepared images at this position, so there is nothing to show yet.',
     'note.unavailable': '{name}: prepared images and checks are not published yet.',
 
@@ -661,7 +663,7 @@ const TEXT = {
     'statusNote.median_all': 'Median of every date: faint stars appear, moving objects smear.',
     'statusNote.difference': 'B minus A, from the same grid. Amber: brighter in B. Blue: fainter in B.',
     'statusNote.context': 'Cross-mission context, not a like-for-like brightness comparison.',
-    'statusNote.legacy': 'Prepared frames from the earlier SPHEREx Blink build (legacy, not yet re-validated).',
+    'statusNote.legacy': 'Prepared frames made by the open-source code this site started from (legacy, not yet re-validated).',
     'statusNote.rebuilt': 'Frames rebuilt from the investigation’s own quality-gated exposures.',
     'statusNote.preview': 'Preview image from the evidence file (240 px, the same stretch for every epoch of one array); measurements use the native data.',
     'statusNote.median_stack': 'Median of the epoch’s exposures on a fixed patch of sky.',
@@ -756,7 +758,7 @@ const TEXT = {
     'evidence.lead': 'What each number rests on: the observations, the checks, and what kind of content each value is.',
     'evidence.waiting': 'The evidence file for this target is not published yet.',
     'evidence.legacyTitle': 'Frames in the viewer',
-    'evidence.legacyLead': 'These prepared frames come from the earlier SPHEREx Blink build. They are real SPHEREx exposures but have not been re-validated (wavelength map, quality flags, variance).',
+    'evidence.legacyLead': 'These prepared frames were made by the open-source code this site started from. They are real SPHEREx exposures but have not been re-validated (wavelength map, quality flags, variance).',
     'evidence.rebuiltLead': 'These frames were rebuilt from the investigation’s own usable exposures (DR1/QR3 products, flagged pixels masked). The pictures are still processed: reprojected, median-combined per date and shown in false colour. Measurements use the native data, not these pictures.',
     'evidence.custom': 'Frames for a custom position come from the live archive service and are not validated.',
     'evidence.frames': 'Exposures shown',
@@ -1414,7 +1416,7 @@ const TEXT = {
     'learn.eyebrow': 'Classroom',
     'about.license': 'Source code: MIT licence, see the LICENSE file in the repository.',
 
-    // ---------- Inherited viewer strings (SPHEREx Blink) ----------
+    // ---------- Inherited viewer strings (from the open-source code this repository started from) ----------
     tryFollow: 'Follow an object',
     unlock: 'Release the camera',
     chooseTitle: 'Lock the camera on:',
@@ -1540,7 +1542,6 @@ const TEXT = {
     'context.service-failed': 'The catalogue service could not be reached when this file was made.',
     'context.twomass-ks': '2MASS Ks (2.2 µm), with its own observation date',
     'credit.allwise': 'Catalogue positions: AllWISE (NASA/IPAC Infrared Science Archive).',
-    'credit.base-project': 'Built on the team\'s earlier SPHEREx Blink project.',
     'credit.comet-table': '3I/ATLAS exposure list: SPHEREx team, via IRSA.',
     'credit.gaia': 'Positions and motions of comparison stars: ESA Gaia DR3.',
     'credit.horizons': 'Ephemerides: JPL Horizons.',

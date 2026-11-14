@@ -1,17 +1,24 @@
-// Client for static target data and, for any other position, the live server.
+// Client for static target data and, for any other position, the TENGER server (backend/api.py) on this origin.
 import { decodeCodes, decodeFrames, decodeStaticFrames } from './stack.js';
 
-const LIVE_SERVER = 'https://spherex-blink.onrender.com';
 const GZIP_MAGIC = [0x1f, 0x8b];
 const STATIC_ATTEMPTS = 4;
 const STATIC_RETRY_MS = 800;
 
-/** On GitHub Pages the live server is elsewhere; when served by it, it is this same origin. */
-export const API_BASE = location.hostname.endsWith('github.io') ? LIVE_SERVER : '';
+/**
+ * Live search needs the TENGER server, which answers on the same origin when the site runs locally
+ * (uvicorn backend.api:app). The public site on GitHub Pages is static and has no server, so there the client
+ * makes no live request at all and says so (user's decision, 15 Nov 2026). The prepared targets need no server.
+ */
+export const liveAvailable = (hostname = globalThis.location?.hostname ?? '') => !String(hostname).endsWith('github.io');
+
+/** The error a live call gives on the public static site; nothing was requested. */
+export const liveUnavailableError = () => Object.assign(new Error('live-unavailable'), { liveUnavailable: true });
 
 async function request(path, params = {}) {
+  if (!liveAvailable()) throw liveUnavailableError();
   const query = new URLSearchParams(params).toString();
-  const response = await fetch(`${API_BASE}${query ? `${path}?${query}` : path}`);
+  const response = await fetch(query ? `${path}?${query}` : path);
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
     const detail = typeof body.detail === 'string' ? body.detail : response.statusText;

@@ -1,5 +1,6 @@
 // TENGER: the page shell (Home, Investigate, Predictions, Beat the physics, Learn, About) and the image viewer
-// inherited from SPHEREx Blink, extended with explicit A/B observations, Swipe, a caption strip and URL state.
+// inherited from the open-source code this repository started from (MIT, see LICENSE), extended with explicit
+// A/B observations, Swipe, a caption strip and URL state.
 import * as api from './api.js';
 import { comparisonWarning, CONTEXT_STEP, describePicture, describePreviewEpoch } from './caption.js';
 import { drawLightCurve, drawSpectrum, drawWingCurve } from './chart.js';
@@ -991,12 +992,19 @@ async function openTarget(target, requestedFov = target.fov ?? DEFAULT_FOV) {
       showViewerEmpty(t('note.reservedEmpty'));
       return;
     }
+    // The public static site has no TENGER server: say so instead of requesting anything.
+    if (!api.liveAvailable()) {
+      showViewerEmpty(t('note.liveUnavailable'));
+      return;
+    }
   }
   try {
     if (target.key && fov === target.fov) await openStatic(target, session);
     else await openLive(ra, dec, fov, session);
-  } catch {
-    if (session === state.session) showLoadProblem(target, fov);
+  } catch (error) {
+    if (session !== state.session) return;
+    if (error?.liveUnavailable) showViewerEmpty(t('note.liveUnavailable'));
+    else showLoadProblem(target, fov);
   }
 }
 
@@ -1370,8 +1378,8 @@ async function toggleGaia() {
   if ($('gaia').checked && !state.gaia.length && state.job) {
     try {
       state.gaia = state.staticMeta?.gaia ?? (await api.getGaia(state.job.ra, state.job.dec, state.job.fov));
-    } catch {
-      $('progress').textContent = t('gaiaFailed');
+    } catch (error) {
+      $('progress').textContent = error?.liveUnavailable ? t('note.liveUnavailable') : t('gaiaFailed');
       $('gaia').checked = false;
     }
   }
@@ -1870,6 +1878,11 @@ async function search(text) {
   const named = findByName(query, app.legacyPresets);
   if (named) {
     openNamed(named);
+    return;
+  }
+  // Names outside the prepared list are looked up by the TENGER server, which the public static site does not have.
+  if (!api.liveAvailable()) {
+    $('search-message').textContent = t('note.liveUnavailable');
     return;
   }
   $('search-message').textContent = t('searchingName');

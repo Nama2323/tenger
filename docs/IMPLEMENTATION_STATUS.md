@@ -3,6 +3,8 @@
 A status file is not a claim of completion. Each entry gives what ran, with what result, and what is
 still open. Session A edits only "Science/data". Session B edits only "Web".
 
+**Correction (15 Nov 2026):** entries below that call SPHEREx Blink "the team's earlier project" or pythonhack000 a "teammate" are wrong; it is the open-source code this repository started from (MIT, see LICENSE), and the entries are left as written.
+
 ---
 
 ## Science/data (Session A)
@@ -1396,3 +1398,39 @@ Session A's verification: 345 Tercidina inside (D² 0.12); 4 ambiguous; 3 insuff
 - **Checks:** 208 tests pass (new: the scored-batch rules; a block that claims to count is refused). Captures
   `predictions-asteroids`, `predictions-asteroids-cards` and `learn-lesson-sure-batch` (now the public page) at
   360/390/768/1280: no console error, no failing request, no horizontal scroll.
+
+### Base-code wording and live search on the public site, 15 Nov 2026 (user's decision; replaces the earlier SPHEREx Blink requests)
+
+- **Website** (`static/`): no page, script, style or data file the site serves names SPHEREx Blink or pythonhack000.
+  - The legacy-frame notes now say "made by the open-source code this site started from"; code comments use the
+    same wording.
+  - Session A removed `credit.base-project` from `strings.en.json` and `index.json`; the copy follows (192 + 3).
+  - The astronomy "Blink" view keeps its name.
+- **Wording outside the site:**
+  - README.md: the "What existed before…" section now says "open-source code (MIT licence; see Licence below and
+    `LICENSE`)".
+  - README.md has exactly one credit line, in a new "Licence" section: "Parts of the code come from SPHEREx Blink
+    (https://github.com/pythonhack000/spherex-blink, MIT licence); see LICENSE."
+  - CLAUDE.md decisions 1 and 6, and docs/PROMPTS.md (5 phrases), no longer call the base code the team's or its
+    author a teammate. docs/EXPOSURE.md was reworded by Session A.
+  - Dated logs and audit records are unchanged; one dated correction line is at the top of this file.
+  - `LICENSE` is byte-identical (a test pins its SHA-256); git history is untouched.
+- **Live search** (`static/js/api.js`, `static/js/main.js`):
+  - `LIVE_SERVER` / `API_BASE` are removed, and `liveAvailable()` is false on `*.github.io`. There every live call
+    throws before any request.
+  - A coordinate search, a name outside the prepared list, or a Gaia overlay with no prepared list shows: "Live
+    search needs the TENGER server, which is not running on this public site; the prepared targets work."
+  - Run locally, live calls go to the same origin as before. `backend/api.py` is unchanged.
+- **Tests:**
+  - `tests/live.test.mjs`: on github.io no live call fetches anything; locally the call goes to `/api/…` on the
+    same origin; no served file names onrender.com.
+  - `tests/release.test.mjs`: no served file names SPHEREx Blink or pythonhack000, while "Blink" stays; README
+    has exactly the one credit line, in the Licence section; the LICENSE hash is unchanged.
+  - 213 pass.
+- **Browser check:**
+  - `docs/screens/github-io-check.mjs` serves `static/` as `https://nama2323.github.io/tenger/` in headless
+    Chrome, so the page really runs on a github.io host. At 360 and 1280: the coordinate search and the name
+    search both show the note; Barnard's Star (prepared) loads its frames; About has no mention.
+  - About 630 requests in all, every one to that origin: none to onrender.com, no `/api/` request, no console
+    error. Screenshots `live-off-coords-*` and `live-off-name-*`.
+  - Captures `home`, `about`, `about-footer` at 360/1280: no horizontal scroll.

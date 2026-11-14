@@ -1,6 +1,6 @@
 # TENGER: Claude Code prompts in send order (MacBook)
 
-Base: the team's SPHEREx Blink code (pythonhack000/spherex-blink). Plan: docs/tenger-context/MERGED-PLAN.md.
+Base: the open-source code this repository started from (pythonhack000/spherex-blink, MIT, see LICENSE). Plan: docs/tenger-context/MERGED-PLAN.md.
 Rules: CLAUDE.md (read its "Team decisions" first; they override the kit: English only, push only to `tenger-dev`).
 These prompts replace the prompts inside START-HERE.md and the PDFs.
 
@@ -34,7 +34,7 @@ The private repo github.com/Nama2323/tenger already exists. Its `main` holds onl
 (an old CLAUDE.md); step 3 replaces it.
 
 ```bash
-# 1. The team's code, with your private repo as "origin"
+# 1. The base code (MIT, see LICENSE), with your private repo as "origin"
 cd ~
 git clone https://github.com/pythonhack000/spherex-blink.git tenger
 cd tenger
@@ -303,8 +303,8 @@ second game round. Never cut: the five-target viewer, honest scoreboard states, 
 
 Decide where the final public site lives before H1:
 - (a) Nama2323/tenger: make it public (Settings, Change visibility), Settings, Pages, Source: GitHub Actions,
-  and ask the teammate to add https://nama2323.github.io to the CORS list of the Render server; or
-- (b) pythonhack000/spherex-blink: the teammate merges `tenger-dev` into their repo, which already has Pages and
+  and ask the owner of the Render server to add https://nama2323.github.io to its CORS list; or
+- (b) pythonhack000/spherex-blink: its owner merges `tenger-dev` into that repo, which already has Pages and
   Render working.
 
 ### Terminal B, `/clear`, prompt H1
@@ -314,7 +314,7 @@ Read CLAUDE.md and docs/IMPLEMENTATION_STATUS.md. Session B. TASK H1 = phase H f
 1. About / Data Sources page: methods, limitations, "What TENGER can and can't see", data credits with DOIs
    (SPHEREx DR1 doi:10.26131/IRSA678, cube doi:10.26131/IRSA679), the IRSA acknowledgement copied exactly
    from docs/tenger-context/context/IRSA-acknowledgement.txt, 2MASS, WISE, Gaia, SIMBAD, JPL, VSX, Aladin
-   Lite, every library and font with its licence, credit to the team's SPHEREx Blink base, and an accurate AI
+   Lite, every library and font with its licence, credit to the open-source code this repository started from (MIT, see LICENSE), and an accurate AI
    disclosure: planning and audit with Codex, implementation with Claude Code (Anthropic), reviewed by the team.
 2. Short guided tour (skippable, once per browser) and embed mode with a "Copy embed code" button.
 3. Full browser pass at 360, 390, 768 and 1280 px: coordinate -> data -> band/A/B/mode -> evidence ->

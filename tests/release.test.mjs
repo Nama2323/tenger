@@ -1,7 +1,8 @@
 // H1a release checks: About credits, guided tour rules, embed code, Open Graph image.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, statSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { has, t } from '../static/js/i18n.js';
 import { embedCode, parseRoute } from '../static/js/route.js';
@@ -10,6 +11,8 @@ import {
 } from '../static/js/tour.js';
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url));
+// LICENSE as it has been since the base code (user, 15 Nov 2026: keep it exactly as it is).
+const LICENSE_SHA256 = 'e33d9b0165e5302dcb46e8eccbed675ca0e5d559ec7f738f6ba19fe5e52f4913';
 const html = readFileSync(`${ROOT}static/index.html`, 'utf8');
 // pages.js imports help.js, which only touches the DOM inside functions; the data arrays are plain exports.
 const about = await import('../static/js/pages.js');
@@ -175,15 +178,38 @@ test('the offline sky tiles are reachable only from the Real sky panel', () => {
   assert.match(main, /if \(open\) openSkyContext\(\);/);
 });
 
-test('the pages no longer carry the SPHEREx Blink footer line or About card; the data credit stays (user, 15 Nov)', () => {
+test('no footer or About credit for the base code; the data credit stays (user, 15 Nov)', () => {
   assert.doesNotMatch(html, /footer\.base|about-base|about\.baseTitle/);
-  for (const key of ['footer.base', 'about.baseTitle', 'about.base']) assert.equal(has(key), false, key);
+  for (const key of ['footer.base', 'about.baseTitle', 'about.base', 'credit.base-project']) assert.equal(has(key), false, key);
   const footer = html.slice(html.indexOf('<footer'), html.indexOf('</footer>'));
   assert.match(footer, /data-t="footer\.credit"/);
   assert.match(t('footer.credit'), /NASA SPHEREx/);
-  // The honest record of what existed before the hackathon lives in README.md and LICENSE instead.
+});
+
+test('no page, script, style or data file the site serves names SPHEREx Blink or pythonhack000; the astronomy Blink view stays', () => {
+  const NAMES = /spherex[\s_-]*blink|pythonhack000/i;
+  const files = [];
+  const walk = (dir) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const path = `${dir}/${entry.name}`;
+      if (entry.isDirectory()) walk(path);
+      else if (/\.(html|js|mjs|css|json|txt|md|svg|webmanifest)$/.test(entry.name)) files.push(path);
+    }
+  };
+  walk(`${ROOT}static`);
+  assert.ok(files.length > 100, `${files.length} files scanned`);
+  const named = files.filter((path) => NAMES.test(readFileSync(path, 'utf8')));
+  assert.deepEqual(named.map((path) => path.slice(ROOT.length)), []);
+  assert.equal(t('mode.blink'), 'Blink', 'the view that flips between two frames keeps its name');
+});
+
+test('README credits the base code in exactly one line, in its Licence section; LICENSE is unchanged', () => {
   const readme = readFileSync(`${ROOT}README.md`, 'utf8');
-  assert.match(readme, /## What existed before Space Apps, and what we built/);
-  assert.match(readme, /SPHEREx Blink/);
-  assert.match(readFileSync(`${ROOT}LICENSE`, 'utf8'), /MIT License/i);
+  const lines = readme.split('\n').filter((line) => /spherex[\s_-]*blink|pythonhack000/i.test(line));
+  assert.deepEqual(lines, ['Parts of the code come from SPHEREx Blink (https://github.com/pythonhack000/spherex-blink, MIT licence); see LICENSE.']);
+  const licence = readme.slice(readme.indexOf('\n## Licence\n'));
+  assert.ok(readme.includes('\n## Licence\n') && licence.includes(lines[0]), 'the line sits in the Licence section');
+  assert.doesNotMatch(readme, /team['’]s (earlier|own) (project|SPHEREx)|teammate pythonhack000/i);
+  const sha = createHash('sha256').update(readFileSync(`${ROOT}LICENSE`)).digest('hex');
+  assert.equal(sha, LICENSE_SHA256, 'LICENSE byte for byte as before');
 });

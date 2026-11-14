@@ -132,15 +132,13 @@ Narmandakh Garam, Erkhes Orgil, Anu-Ujin Bayarbaatar, Sonomlegtsog Zolzaya.
 
 ## What existed before Space Apps, and what we built
 
-TENGER started from **SPHEREx Blink**
-([pythonhack000/spherex-blink](https://github.com/pythonhack000/spherex-blink)), the team's earlier
-open-source SPHEREx viewer (MIT licence; its notice is kept in `LICENSE`). We reused its viewer, plate
-renderer, stacking code and archive client.
+This repository started from open-source code (MIT licence; see Licence below and `LICENSE`). We reused
+its viewer, plate renderer, stacking code and archive client.
 
-**Before the hackathon:** SPHEREx Blink's own 43 commits, 6–9 Nov 2026. They are by pythonhack000, merges
-by sabr.sf and the automated frame-baking job. No TENGER-specific commit is older than the start (14 Nov
-2026, 09:00 Ulaanbaatar time). The first is `58f993b` at 19:01 that day. Times are author times: some later
-commits were rebased, so their commit times are a few minutes later.
+**Before the hackathon:** that code's own 43 commits, 6–9 Nov 2026, including merges and an automated
+frame-baking job. No TENGER-specific commit is older than the start (14 Nov 2026, 09:00 Ulaanbaatar time).
+The first is `58f993b` at 19:01 that day. Times are author times: some later commits were rebased, so their
+commit times are a few minutes later.
 
 **Built during the hackathon** (every commit from `58f993b` on), in plain words:
 
@@ -184,3 +182,7 @@ commits were rebased, so their commit times are a few minutes later.
 
 Planning and audit were done with OpenAI Codex and Claude. The implementation was written with Claude
 Code. The team reviewed the work, made the decisions and is responsible for the result.
+
+## Licence
+
+Parts of the code come from SPHEREx Blink (https://github.com/pythonhack000/spherex-blink, MIT licence); see LICENSE.

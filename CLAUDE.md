@@ -2,9 +2,11 @@
 
 ## Team decisions (14 Nov 2026). These override anything below and anything in docs/tenger-context/
 
-1. **Base code.** This repository is the team's own SPHEREx Blink project by teammate pythonhack000
-   (github.com/pythonhack000/spherex-blink, MIT). Extend it; keep its git history, LICENSE and credits.
-   Credit it as the team's earlier work, not as a third-party project.
+1. **Base code.** This repository started from open-source code (github.com/pythonhack000/spherex-blink, MIT,
+   see LICENSE). It is not the team's project and its author is not a teammate. Extend it; keep its git
+   history and LICENSE. Refer to it as "the open-source code this repository started from (MIT, see LICENSE)";
+   the website does not name it, and README.md has exactly one credit line, in its Licence section
+   (user's decision, 15 Nov 2026).
 2. **Language: English only.** Ignore every Mongolian/bilingual (MN/EN) requirement in MERGED-PLAN.md,
    START-HERE.md and the PDFs. Keep visible strings in one English resource file so a translation could be
    added later. Existing Russian strings may stay, but English is the default.
@@ -27,8 +29,9 @@
 6. **Testing without Pages.** The repo is private, so GitHub Pages will not work until it is public.
    Run locally: `.venv/bin/uvicorn backend.api:app --host 0.0.0.0 --port 8765`, then open
    http://localhost:8765 (or http://<mac-ip>:8765 on phones on the same Wi-Fi).
-   `backend/api.py` CORS and `static/js/api.js` LIVE_SERVER point at the teammate's existing
-   GitHub Pages / Render deployment; do not change them without asking.
+   `backend/api.py` CORS points at the original project's GitHub Pages / Render deployment, which the team
+   does not run; do not change it without asking. On github.io, `static/js/api.js` makes no live request and
+   the coordinate search says live search needs the TENGER server (user's decision, 15 Nov 2026).
 7. **Known baseline (14 Nov, cloud check):** 54 pytest and 39 `node --test` tests pass on a clean clone.
 8. **Exposure.** Teammates already viewed the bundled frames, thumbnails and results of the five challenge
    targets (see docs/tenger-context/context/KNOWN-STATE.md). Treat all bundled/cached data as exposed.
