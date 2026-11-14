@@ -69,8 +69,9 @@ function setMode(mode, { shown = mode === '2d' } = {}) {
     document.body.classList.toggle('space-3d', mode === '3d');
     $('space3d').hidden = mode !== '3d';
   }
-  const toggle = $('space-toggle');
-  toggle.textContent = t(mode === '3d' ? 'space.view2d' : 'space.view3d');
+  // The button names the other view than the one on screen: "3D view" also while the 3D scene is still waiting
+  // to start (the 2D map is what the visitor sees then).
+  $('space-toggle').textContent = t(document.body.classList.contains('space-3d') ? 'space.view2d' : 'space.view3d');
 }
 
 function stop3d() {
@@ -79,6 +80,8 @@ function stop3d() {
 }
 
 async function start3d() {
+  // Once only: a click on "3D view" and the idle start can both ask for it.
+  if (state.controller) return null;
   if (state.loading) return state.loading;
   const { hooks } = state;
   state.loading = (async () => {
@@ -148,7 +151,7 @@ export function initSpace(hooks) {
   setMode(choice.mode);
   showNote(choice.reason);
   $('space-toggle').addEventListener('click', () => {
-    if (state.mode === '3d') {
+    if (state.controller) {
       saveView('2d');
       stop3d();
       setMode('2d');
@@ -165,15 +168,30 @@ export function initSpace(hooks) {
   state.pending = choice.mode === '3d';
 }
 
+/** After the page has loaded and stayed idle this long, the 3D view starts even without an interaction. */
+export const IDLE_START_MS = 4000;
+const WAKE_EVENTS = ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart'];
+
 /**
  * main.js calls this whenever Home (or an investigation over it) is on screen. The first time, and only if the
- * 3D view was chosen, three.js is fetched: after the first paint and the page's own work, when the browser is idle.
+ * 3D view was chosen, three.js is fetched: on the visitor's first interaction, or once the page has loaded and
+ * then stayed idle for IDLE_START_MS. Until then the 2D map is the page.
  */
 export function homeShown() {
   if (!state.pending) return;
   state.pending = false;
-  const later = window.requestIdleCallback ?? ((callback) => setTimeout(callback, 300));
-  later(() => start3d(), { timeout: 2000 });
+  let started = false;
+  const wake = () => {
+    if (started) return;
+    started = true;
+    for (const name of WAKE_EVENTS) removeEventListener(name, wake);
+    start3d();
+  };
+  for (const name of WAKE_EVENTS) addEventListener(name, wake, { passive: true });
+  const idle = window.requestIdleCallback ?? ((callback) => setTimeout(callback, 50));
+  const afterLoad = () => setTimeout(() => idle(wake, { timeout: 2000 }), IDLE_START_MS);
+  if (document.readyState === 'complete') afterLoad();
+  else addEventListener('load', afterLoad, { once: true });
 }
 
 /** Flies to a target in the 3D view, then runs `then`; without a 3D view (or that target) runs `then` at once. */

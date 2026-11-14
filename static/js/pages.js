@@ -5,6 +5,7 @@
 import { $, el } from './dom.js';
 import { t } from './i18n.js';
 import { CAN_SEE, CANNOT_SEE } from './help.js';
+import { reservedRegions, reservedSource } from './reserved.js';
 
 export const METHODS = ['seasons', 'quality', 'matching', 'holdout', 'receipts', 'recovery', 'scoring'];
 export const LIMITS = ['saturation', 'contaminated', 'parallax', 'trials', 'approx'];
@@ -130,4 +131,19 @@ export function renderAbout() {
   $('about-base-link').replaceChildren(external(BASE_PROJECT, t('about.link.source')));
   $('about-team').replaceChildren(...TEAM.map((key) => el('li', { text: t(key) })));
   $('about-ai').replaceChildren(...AI_DISCLOSURE.map((key) => el('li', { text: t(key) })));
+}
+
+/**
+ * The reserved sky regions in force (from reserved.json, V10): released paths no longer block live loading;
+ * the others still do. Called after the data load. nameOf(key) gives a target's display name.
+ */
+export function renderReserved(nameOf) {
+  const items = reservedRegions().map((region) => el('li', { class: `reserved-item is-${region.status}` }, [
+    el('strong', { text: nameOf(region.key) ?? region.key }),
+    el('span', { class: `chip chip-reserved-${region.status}`, text: t(`about.reserved.${region.status}`) }),
+    region.reasonKey ? el('span', { class: 'note', text: t(region.reasonKey) }) : null,
+    region.untilKey ? el('span', { class: 'note', text: t(region.untilKey) }) : null,
+  ]));
+  $('about-reserved').replaceChildren(...items);
+  $('about-reserved-source').textContent = reservedSource() === 'file' ? '' : t('about.reserved.builtIn');
 }

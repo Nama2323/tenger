@@ -79,10 +79,38 @@ test('the published reserved.json (A3) is valid: holdout and see-only paths, cha
   try {
     useReserved(parsed);
     assert.deepEqual(parsed.regions.map((region) => region.key).sort(), ['3i-atlas', 'makemake', 'pluto']);
-    const pluto = real.regions.find((region) => region.key === 'pluto').path[0];
-    assert.equal(reservedRegionNear(pluto.ra_deg, pluto.dec_deg, 0.1)?.key, 'pluto');
-    assert.equal(reservedRegionNear(pluto.ra_deg + 1.9, pluto.dec_deg, 0)?.key, 'pluto', 'within the 2 degree margin');
+    // V10: Pluto (verified) and Makemake (nothing to verify) are released; 3I/ATLAS stays reserved.
+    for (const key of ['pluto', 'makemake']) {
+      const region = real.regions.find((item) => item.key === key);
+      assert.equal(region.status, 'released');
+      const point = region.path[0];
+      assert.equal(reservedRegionNear(point.ra_deg, point.dec_deg, 0.1), null, `${key} no longer blocks`);
+    }
+    const comet = real.regions.find((region) => region.key === '3i-atlas');
+    assert.notEqual(comet.status, 'released');
+    assert.equal(reservedRegionNear(comet.path[0].ra_deg, comet.path[0].dec_deg, 0.1)?.key, '3i-atlas');
+    assert.equal(reservedRegionNear(comet.path[0].ra_deg + 1.9, comet.path[0].dec_deg, 0)?.key, '3i-atlas', 'within the 2 degree margin');
     assert.equal(reservedRegionNear(269.4465, 4.7687, 0.1), null, 'Barnard data were all opened in A3');
+  } finally {
+    useReserved(null);
+  }
+});
+
+test('only an explicit release with a reason lifts a region; anything else stays reserved', () => {
+  const path = [{ ra_deg: 306, dec_deg: -23.7 }];
+  const doc = (extra) => ({ schema_version: 'tenger.reserved/1', margin_deg: 2, regions: [{ key: 'pluto', path, ...extra }] });
+  const cases = [
+    [{}, 'pluto'],
+    [{ status: 'reserved' }, 'pluto'],
+    [{ status: 'open' }, 'pluto'],
+    [{ status: 'released' }, 'pluto'],
+    [{ status: 'released', release_reason_key: 'reserved.released-verified' }, null],
+  ];
+  try {
+    for (const [extra, expected] of cases) {
+      useReserved(parseReserved(doc(extra)));
+      assert.equal(reservedRegionNear(306, -23.7, 0.1)?.key ?? null, expected, JSON.stringify(extra));
+    }
   } finally {
     useReserved(null);
   }

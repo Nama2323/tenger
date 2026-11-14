@@ -11,6 +11,8 @@ import {
 } from './ledger.js';
 import { dateOfMjd, labelChips, receiptLine, residualTable, statusChip, utcText } from './ledger-parts.js';
 import { closeReveal, initReveal, openReveal, revealTrialId } from './reveal.js';
+import { forecastRows, HINDCAST_PATH, POSTMORTEM_PATH, readHindcast, readPostmortem } from './postmortem.js';
+import { whyWeMissed } from './postmortem-ui.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const CHART = 260;
@@ -33,6 +35,27 @@ const nameOf = (key) => context?.nameOf(key) ?? key ?? '—';
 
 // ---------- Loading ----------
 
+/** An optional JSON file next to the trials (the Pluto post-mortem and hindcast); null when absent or unreadable. */
+async function optionalJson(path) {
+  const url = context.source.url(path);
+  if (!url) return null;
+  try {
+    const response = await fetch(url);
+    return response.ok ? await response.json() : null;
+  } catch {
+    return null;
+  }
+}
+
+/** "Why we missed" for a trial the post-mortem explains (null for every other trial). */
+function whyFor(trialId, { open = false } = {}) {
+  const why = ledgerWhy;
+  if (!why?.postmortem || why.postmortem.trialId !== trialId) return null;
+  return whyWeMissed(why, { open });
+}
+
+let ledgerWhy = null;
+
 async function load() {
   const { source } = context;
   const index = await source.index();
@@ -47,6 +70,13 @@ async function load() {
     const card = { bundle, row: rowOf(bundle.id), status: trialStatus(bundle, rowOf(bundle.id)) };
     if (isOpenForecast(bundle, boardDoc)) forecasts.push(card);
     else cards.push(card);
+  }
+  // Real files only: the example fixtures have no post-mortem.
+  if (!context.fallback && !context.fixtures) {
+    const [postmortem, hindcast] = await Promise.all([optionalJson(POSTMORTEM_PATH), optionalJson(HINDCAST_PATH)]);
+    ledgerWhy = { postmortem: readPostmortem(postmortem), hindcast: readHindcast(hindcast), forecasts: forecastRows(bundles) };
+  } else {
+    ledgerWhy = null;
   }
   const seeOnly = Array.isArray(boardDoc?.see_only)
     ? boardDoc.see_only
@@ -186,6 +216,7 @@ function trialCard(card) {
       position, limit: Number.isFinite(threshold) ? Math.sqrt(threshold) : null, unit: verification.observed?.unit ?? '',
     }) : null,
     verification ? el('p', { class: 'note', text: t('ledger.checkedOn', { utc: utcText(verification.revealed_utc) }) }) : null,
+    verification ? whyFor(bundle.id) : null,
     ...warnings.map((text) => el('p', { class: 'panel-note warn', text })),
     el('div', { class: 'card-actions' }, [
       canReveal ? el('button', {
@@ -193,6 +224,7 @@ function trialCard(card) {
         onclick: () => showReveal(bundle.id),
       }) : null,
       el('a', { class: 'button-link', href: context.investigateHref(trial.target_key), text: t('ledger.openInvestigation', { name: nameOf(trial.target_key) }) }),
+      trial.target_key === 'pluto' ? el('a', { class: 'button-link', href: '?page=loop', text: t('loop.link') }) : null,
     ]),
   ]);
 }
@@ -320,8 +352,10 @@ function forecastCard(card) {
     })]),
     receiptLine(bundle.receipt),
     insufficient && prediction.status_reason_key ? el('p', { class: 'panel-note', text: tData(prediction.status_reason_key, 'explain.unknown') }) : null,
+    trial.forecast_label_key ? el('p', { class: 'note', text: tData(trial.forecast_label_key, 'explain.unknown') }) : null,
     prediction && !insufficient ? forecastChart(prediction, trial, name) : null,
     el('p', { class: 'note', text: t('ledger.forecast.notCounted') }),
+    trial.target_key === 'pluto' ? el('p', {}, el('a', { class: 'button-link', href: '?page=loop', text: t('loop.link') })) : null,
   ]);
 }
 
@@ -358,6 +392,7 @@ export function initLedger(options) {
   context = options;
   ledger = null;
   initReveal({
+    afterVerdict: (bundle) => whyFor(bundle.id, { open: true }),
     imageUrl: (path) => context.source.url(path),
     nameOf,
     loadTraining: (id) => context.source.training(id),

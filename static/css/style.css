@@ -439,6 +439,72 @@ button.map-marker:hover span, button.map-marker:focus-visible span { color: var(
 .map-key[open] { padding-bottom: var(--s2); }
 .map-key .note { margin-top: var(--s1); }
 
+/* ---------- Why Pluto loops ---------- */
+
+.page-loop { max-width: 1280px; margin: 0 auto; display: grid; gap: var(--s2); }
+.loop-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--s2); align-items: start; }
+.loop-main { display: grid; gap: var(--s1); }
+.loop-stage { position: relative; height: min(62vh, 620px); min-height: 340px; overflow: hidden; padding: 0; isolation: isolate; }
+.loop3d { position: absolute; inset: 0; }
+.loop-scale { position: absolute; left: 12px; bottom: 10px; right: 12px; margin: 0; padding: 6px 10px; border-left: 2px solid var(--miss); background: rgba(5, 7, 13, 0.72); color: var(--miss); font: 500 12px/1.4 var(--font-mono); pointer-events: none; z-index: 2; }
+.loop-controls { display: grid; gap: var(--s1); padding: 12px var(--s2); }
+.loop-time { display: flex; gap: var(--s1); align-items: baseline; font-weight: 600; }
+.loop-controls input[type="range"] { width: 100%; min-height: var(--tap); }
+.loop-buttons { display: flex; flex-wrap: wrap; gap: var(--s1); }
+.loop-side { padding: var(--s2); display: grid; gap: 12px; }
+.loop-steps { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 14.5px; }
+.loop-legend { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 13.5px; color: var(--muted); }
+.loop-legend li::before { content: ''; display: inline-block; width: 18px; height: 3px; margin-right: 8px; vertical-align: middle; border-radius: 2px; }
+.loop-legend .lg-sun::before { background: var(--star); height: 8px; width: 8px; border-radius: 50%; }
+.loop-legend .lg-orbit::before { background: var(--accent); }
+.loop-legend .lg-training::before { background: var(--solar); height: 7px; width: 7px; border-radius: 50%; }
+.loop-legend .lg-evaluation::before { background: var(--miss); height: 7px; width: 7px; border-radius: 50%; }
+.loop-legend .lg-v1::before { background: repeating-linear-gradient(90deg, var(--star) 0 5px, transparent 5px 8px); }
+.loop-legend .lg-v2::before { background: var(--variable); }
+.loop-links { display: flex; flex-wrap: wrap; gap: 0 var(--s2); font-size: 14px; }
+.loop-links a { display: inline-flex; align-items: center; min-height: var(--tap); }
+.loop-chart { padding: var(--s2); display: grid; gap: var(--s1); }
+.loop-chart-host { overflow-x: auto; }
+.loop-chart-svg { width: 100%; min-width: 560px; height: auto; display: block; }
+.loop-chart-svg .grid, .loop-inset-svg .grid { stroke: var(--border); stroke-width: 1; }
+.loop-chart-svg .tick, .loop-inset-svg .tick { fill: var(--muted); font: 11px var(--font-mono); }
+.loop-chart-svg .path { fill: none; stroke: var(--accent); stroke-width: 2; opacity: 0.85; }
+.loop-chart-svg .track { fill: none; stroke-width: 2; }
+.loop-chart-svg .track.v1 { stroke: var(--star); stroke-dasharray: 5 4; }
+.loop-chart-svg .track.v2 { stroke: var(--variable); }
+.loop-chart-svg .pt.training, .loop-inset-svg .pt.forecast { fill: var(--solar); }
+.loop-chart-svg .pt.evaluation { fill: var(--miss); }
+.loop-chart-svg .pt.v1 { fill: var(--star); }
+.loop-chart-svg .pt.v2 { fill: var(--variable); }
+.loop-chart-svg .now-marker circle { fill: none; stroke: #fff; stroke-width: 2; }
+.loop-inset { display: grid; gap: 6px; justify-items: start; }
+.loop-inset-svg { width: 220px; height: 220px; background: rgba(5, 7, 13, 0.6); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.loop-inset-svg .region { fill: rgba(255, 224, 138, 0.12); stroke: var(--star); stroke-width: 1.5; }
+.loop-inset-svg .observed { stroke: #fff; stroke-width: 2.2; }
+.loop-inset-svg .scalebar { stroke: var(--text); stroke-width: 2; }
+.space-label.loop-v1 { color: var(--star); }
+.space-label.loop-v2 { color: var(--variable); }
+.loop-link { margin: 0; }
+.loop-link a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 600; }
+@media (max-width: 900px) {
+  .loop-layout { grid-template-columns: 1fr; }
+  .loop-stage { height: min(70vh, 520px); }
+}
+
+/* ---------- Why we missed (exploratory post-mortem) ---------- */
+
+.why-missed { display: grid; gap: 10px; padding: 0 var(--s2) var(--s1); border: 1px dashed rgba(255, 169, 77, 0.55); border-radius: var(--radius-sm); background: rgba(255, 169, 77, 0.04); }
+.why-missed > summary { min-height: var(--tap); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1); cursor: pointer; font: 600 15px var(--font-head); color: var(--text); }
+.why-missed[open] { padding-bottom: var(--s2); }
+.chip-exploratory { color: var(--hypothetical); border-color: rgba(255, 169, 77, 0.55); font-family: var(--font-text); }
+.why-points { display: grid; gap: var(--s1); padding-left: 18px; margin: 0; }
+.why-points li { font-size: 14.5px; }
+.why-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.why-table caption { text-align: left; color: var(--muted); padding: 4px 0; font-weight: 600; }
+.why-table th, .why-table td { text-align: left; padding: 6px 10px 6px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.why-table thead th { color: var(--muted); font-weight: 500; }
+.reveal-text .why-missed { margin-top: var(--s1); }
+
 /* ---------- Home: the 3D view (three.js) and its 2D fallback ---------- */
 
 body:not(.space-3d) .space-3d-only, body.space-3d .map-2d-only { display: none !important; }
@@ -1013,6 +1079,10 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 .software-list li { font-size: 14.5px; }
 .software-list code, .about-packages code, #about-packages code { font: 12.5px var(--font-mono); color: var(--muted); }
 .team-list li { color: var(--muted); }
+.reserved-list { list-style: none; padding-left: 0 !important; display: grid; gap: var(--s1); }
+.reserved-item { display: grid; gap: 4px; justify-items: start; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+.chip-reserved-released { color: var(--hit); border-color: rgba(95, 211, 141, 0.45); }
+.chip-reserved-reserved { color: var(--miss); border-color: rgba(255, 181, 71, 0.45); }
 .font-list { list-style: none; padding-left: 0 !important; }
 .font-list li { display: grid; gap: 2px; }
 .font-list strong { font-size: 17px; }

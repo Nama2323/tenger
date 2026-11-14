@@ -6,7 +6,7 @@
 // somewhere else is ignored, and the page says so.
 import { separationDeg } from './coords.js';
 
-export const PAGES = ['home', 'investigate', 'predictions', 'game', 'learn', 'about'];
+export const PAGES = ['home', 'investigate', 'predictions', 'game', 'learn', 'about', 'loop'];
 export const PANELS = ['see', 'changed', 'prediction', 'evidence', 'spectrum'];
 export const MODES = ['blink', 'side', 'swipe', 'diff'];
 export const MAX_FOV_DEG = 2;

@@ -19,7 +19,8 @@ import { currentLearnView, initLearn, showLearn } from './learn-ui.js';
 import { initHelp } from './help.js';
 import { hasPublishedTrials } from './ledger.js';
 import { currentReveal, initLedger, showLedger, syncRevealFromUrl } from './ledger-ui.js';
-import { renderAbout } from './pages.js';
+import { renderAbout, renderReserved } from './pages.js';
+import { POSTMORTEM_PATH, readPostmortem } from './postmortem.js';
 import {
   drawPlate, limitsFor, paintComposite, paintDifference, paintFalseColour, paintMono, stacksFor, StackCache, tintFor,
 } from './plate.js';
@@ -28,6 +29,7 @@ import { bandToParam, buildRoute, embedCode, PAGES, parseRoute, resolveRoute } f
 import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometry } from './science.js';
 import { createSky } from './sky.js';
 import { flyThen, homeShown, initSpace } from './space-ui.js';
+import { showLoopPage } from './loop-ui.js';
 import { isTourRunning, nextTourStep, runTour, shouldAutoStart, stopTour } from './tour.js';
 import {
   channelWavelength, CHANNELS, colourGroupsPresent, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
@@ -1104,6 +1106,7 @@ function describeTarget(target, fov) {
     chips.push(chip(t('kindcustom')));
   }
   $('object-status').replaceChildren(...chips);
+  $('loop-link-wrap').hidden = entry?.key !== 'pluto';
   document.title = `${$('object-name').textContent} · ${t('site.title')}`;
 }
 
@@ -1533,6 +1536,10 @@ function showPage(page, { push = true, focus = true } = {}) {
     homeShown();
   }
   if (page === 'predictions') showLedger();
+  if (page === 'loop' && app.source) {
+    const pluto = app.indexState?.state === 'ok' ? app.indexState.doc.targets?.find((target) => target.key === 'pluto') : null;
+    showLoopPage({ source: app.source.fixtures ? createSource({ fixtures: false }) : app.source, openForecastIds: pluto?.prediction?.open_forecast_ids ?? [], embed: app.embed });
+  }
   else syncRevealFromUrl(null);
   if (page !== 'investigate') {
     setPlaying(false);
@@ -1732,6 +1739,7 @@ function describeEntryOnly(entry) {
   $('object-kind').textContent = kindLabel(entry.kind);
   $('object-coords').textContent = '';
   $('object-status').replaceChildren(chip(t(`role.${entry.role}`)), chip(t(`data.${entry.dataStatus}`)), chip(predictionLabel(entry)));
+  $('loop-link-wrap').hidden = entry.key !== 'pluto';
   document.title = `${entryName(entry)} · ${t('site.title')}`;
 }
 
@@ -2207,9 +2215,12 @@ async function loadData() {
       if (app.page === 'game') writeUrl();
     },
   });
+  // The exploratory Pluto post-mortem (V8) for Lesson 3; always the real file, never a fixture.
+  const postmortem = fixtures ? null : await fetch(real.url(POSTMORTEM_PATH) ?? '').then((response) => (response.ok ? response.json() : null)).catch(() => null);
   initLearn({
     records: lessons,
     scoreboard: app.scoreboard,
+    postmortem: readPostmortem(postmortem),
     nameOf: (key) => {
       const entry = key ? app.allTargets.find((item) => item.key === canonicalKey(key)) : null;
       return entry ? entryName(entry) : null;
@@ -2322,6 +2333,7 @@ async function start() {
     onOpen: openFromHome,
   });
   delete $('page-home').dataset.loading;
+  renderReserved((key) => (findEntry(key) ? entryName(findEntry(key)) : null));
   startSpace();
   startBlinking();
   applyLocation();

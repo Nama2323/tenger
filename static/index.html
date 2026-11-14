@@ -174,6 +174,7 @@
           <h1 id="object-name" tabindex="-1"></h1>
           <p id="object-coords" class="object-coords mono"></p>
           <p id="object-status" class="stamps"></p>
+          <p id="loop-link-wrap" class="loop-link" hidden><a href="?page=loop" data-t="loop.link"></a></p>
           <span id="share-status" class="note" role="status"></span>
         </div>
       </header>
@@ -402,6 +403,62 @@
       <section id="lab-view" class="lab-view glass" hidden aria-labelledby="lab-view-title"></section>
     </section>
 
+    <!-- ======================= Why Pluto loops ======================= -->
+    <section id="page-loop" class="page page-loop" hidden aria-labelledby="loop-title">
+      <header class="page-head">
+        <p class="eyebrow" data-t="loop.eyebrow"></p>
+        <h1 id="loop-title" tabindex="-1" data-t="loop.title"></h1>
+        <p class="lead" data-t="loop.lead"></p>
+      </header>
+      <div class="loop-layout">
+        <div class="loop-main">
+          <div id="loop-stage" class="loop-stage glass" hidden>
+            <div id="loop3d" class="loop3d"></div>
+            <p id="loop-scale" class="loop-scale"></p>
+          </div>
+          <div class="loop-controls glass">
+            <label class="loop-time" for="loop-slider"><span data-t="loop.time"></span> <output id="loop-date" for="loop-slider" class="mono"></output></label>
+            <input id="loop-slider" type="range" step="1" data-t-label="loop.time">
+            <div class="loop-buttons" role="group" data-t-label="loop.viewLabel">
+              <button id="loop-from-spherex" type="button" class="quiet" data-t="loop.fromSpherex"></button>
+              <button id="loop-top" type="button" class="quiet" data-t="loop.top"></button>
+              <button id="loop-reset" type="button" class="quiet" data-t="loop.reset"></button>
+              <button id="loop-toggle" type="button" class="quiet"></button>
+            </div>
+            <p id="loop-note" class="note" aria-live="polite"></p>
+          </div>
+        </div>
+        <aside class="loop-side glass" aria-labelledby="loop-how-title">
+          <h2 id="loop-how-title" data-t="loop.howTitle"></h2>
+          <ol class="loop-steps">
+            <li data-t="loop.step1"></li>
+            <li data-t="loop.step2"></li>
+            <li data-t="loop.step3"></li>
+            <li data-t="loop.step4"></li>
+          </ol>
+          <ul class="loop-legend">
+            <li class="lg-sun" data-t="loop.lg.sun"></li>
+            <li class="lg-orbit" data-t="loop.lg.orbit"></li>
+            <li class="lg-training" data-t="loop.lg.training"></li>
+            <li class="lg-evaluation" data-t="loop.lg.evaluation"></li>
+            <li class="lg-v1" data-t="loop.lg.v1"></li>
+            <li class="lg-v2" data-t="loop.lg.v2"></li>
+          </ul>
+          <p class="loop-links"><a href="?page=predictions" data-t="loop.toPredictions"></a><a href="?page=learn&amp;lesson=distance" data-t="loop.toLesson"></a></p>
+        </aside>
+      </div>
+      <section class="loop-chart glass" aria-labelledby="loop-chart-title">
+        <h2 id="loop-chart-title" data-t="loop.chartTitle"></h2>
+        <p id="loop-chart-lead" class="note" data-t="loop.chartLead"></p>
+        <div id="loop-chart" class="loop-chart-host"></div>
+        <div id="loop-inset-wrap" class="loop-inset" hidden>
+          <h3 data-t="loop.insetTitle"></h3>
+          <div id="loop-inset"></div>
+          <p id="loop-inset-note" class="note"></p>
+        </div>
+      </section>
+    </section>
+
     <!-- ======================= About ======================= -->
     <section id="page-about" class="page page-about" hidden aria-labelledby="about-title">
       <header class="page-head">
@@ -418,6 +475,12 @@
         <section class="about-card glass" aria-labelledby="about-limits-title">
           <h2 id="about-limits-title" data-t="about.limitsTitle"></h2>
           <dl id="about-limits" class="about-dl"></dl>
+        </section>
+        <section class="about-card glass" aria-labelledby="about-reserved-title">
+          <h2 id="about-reserved-title" data-t="about.reservedTitle"></h2>
+          <p class="note" data-t="about.reservedLead"></p>
+          <ul id="about-reserved" class="reserved-list"></ul>
+          <p id="about-reserved-source" class="note warn"></p>
         </section>
         <section class="about-card glass" aria-labelledby="about-see-title">
           <h2 id="about-see-title" data-t="about.seeTitle"></h2>

@@ -5,6 +5,7 @@ import { $, chip, el, formatNumber, prefersReducedMotion, withUnit } from './dom
 import { has, t, tData } from './i18n.js';
 import { categoryLabel } from './labels.js';
 import { LESSONS, planetModel, readLessonRecord, scoreboardSummary, syntheticLesson } from './lessons.js';
+import { correlatedInflation } from './postmortem.js';
 
 const LAB = 'lab';
 const LAB_DEFAULTS = { distanceAu: 500, diameterKm: 20000, albedo: 0.4 };
@@ -124,6 +125,30 @@ function scoreboardSection() {
   ]);
 }
 
+/**
+ * Lesson 3's second worked example: the Pluto miss as overconfidence (independent versus correlated errors).
+ * Every number comes from the exploratory post-mortem (postmortem.json); without it the section is left out.
+ */
+function plutoSection() {
+  const pm = context.postmortem;
+  if (!pm?.frozenRegion || !pm.jackknife || !Number.isInteger(pm.groups)) return null;
+  const factor = correlatedInflation(pm.nExposures, pm.groups);
+  return el('section', { class: 'lesson-part pluto-example' }, [
+    el('h3', { text: t('lesson.sure.plutoTitle') }),
+    chip(t('why.chip'), 'chip-exploratory'),
+    el('p', { text: t('lesson.sure.plutoIdea') }),
+    el('p', { text: factor
+      ? t('lesson.sure.plutoCount', { n: String(pm.nExposures), groups: String(pm.groups), factor: formatNumber(factor, 1) })
+      : t('lesson.sure.plutoGroups', { groups: String(pm.groups) }) }),
+    el('p', { text: t('lesson.sure.plutoNumbers', {
+      major: formatNumber(pm.frozenRegion.major, 2), minor: formatNumber(pm.frozenRegion.minor, 2), error: formatNumber(pm.error, 1),
+      d2: formatNumber(pm.d2, 2), jkMajor: formatNumber(pm.jackknife.major, 1), jkMinor: formatNumber(pm.jackknife.minor, 1), jkD2: formatNumber(pm.jackknife.d2, 2),
+    }) }),
+    el('p', { class: 'worked-answer', text: t('lesson.sure.plutoLesson') }),
+    el('p', { class: 'note', text: t('lesson.sure.plutoSource') }),
+  ]);
+}
+
 function renderLesson(lesson) {
   const index = LESSONS.indexOf(lesson) + 1;
   const content = lessonContent(lesson);
@@ -159,6 +184,12 @@ function renderLesson(lesson) {
       fillsAll(stepsKey, workedParams) && content.source === 'synthetic' ? el('p', { class: 'worked-steps', text: t(stepsKey, workedParams) }) : null,
       el('p', { class: 'worked-answer', text: t('learn.answerIs', { value: workedParams.answer }) }),
     ]) : el('section', { class: 'lesson-part' }, [el('h3', { text: t('learn.worked') }), el('p', { class: 'panel-note', text: t('learn.workedMissing') })]),
+    lesson.id === 'sure' ? plutoSection() : null,
+    lesson.id === 'distance' ? el('section', { class: 'lesson-part loop-part' }, [
+      el('h3', { text: t('lesson.distance.loopTitle') }),
+      el('p', { text: t('lesson.distance.loopText') }),
+      el('p', {}, el('a', { class: 'button-link', href: '?page=loop', text: t('loop.link') })),
+    ]) : null,
     el('section', { class: 'lesson-part' }, [
       el('h3', { text: t('learn.exercises') }),
       el('ol', { class: 'exercises' }, exercises.map((exercise) => el('li', {}, [
@@ -293,13 +324,13 @@ export function showLearn(id, { notify = true, focus = true } = {}) {
 export const currentLearnView = () => view;
 
 /** records: contract load results of lessons/*.json; scoreboard: the scoreboard doc or null. */
-export function initLearn({ records, scoreboard, nameOf, onNavigate }) {
+export function initLearn({ records, scoreboard, postmortem = null, nameOf, onNavigate }) {
   const usable = new Map();
   for (const result of records) {
     const read = result.state === 'ok' ? readLessonRecord(result.doc) : null;
     if (read && !usable.has(read.id)) usable.set(read.id, read);
   }
-  context = { records: usable, scoreboard, nameOf, onNavigate };
+  context = { records: usable, scoreboard, postmortem, nameOf, onNavigate };
   renderIndex();
   $('lab-open').onclick = () => showLearn(LAB);
 }

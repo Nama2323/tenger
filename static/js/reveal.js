@@ -341,6 +341,9 @@ function stepContent() {
       paragraphs.push(t('reveal.t.verdictOther'));
       if (model.statusReasonKey) paragraphs.push(tData(model.statusReasonKey, 'explain.unknown'));
     }
+    // An exploratory explanation published after the reveal (the Pluto post-mortem), labelled as such.
+    const after = context?.afterVerdict?.(bundle);
+    if (after) extra.push(after);
   }
   return { paragraphs, extra };
 }

@@ -68,6 +68,13 @@ const PAGES = [
   { name: 'learn-lesson-sure', path: '/?page=learn&lesson=sure&fixtures=1', ready: '#lesson-view .answer-key', act: "document.querySelectorAll('.answer-toggle').forEach((d) => { d.open = true; })" },
   { name: 'learn-lab', path: '/?page=learn&lesson=lab', ready: '#lab-results dl' },
   { name: 'about', path: '/?page=about', ready: '#about-data li' },
+  { name: 'about-reserved', path: '/?page=about', ready: '#about-reserved li', scrollTo: '#about-reserved-title' },
+  { name: 'predictions-why', path: '/?page=predictions', ready: '.why-missed', act: "(() => { const d = document.querySelector('#trial-pluto-position-2026b .why-missed'); d.open = true; })()", scrollTo: '#trial-pluto-position-2026b .why-missed', sizes: ['360', '390', '768', '1280', '720p'] },
+  { name: 'reveal-pluto-why', path: '/?page=predictions&trial=pluto-position-2026b', ready: '.reveal-svg', act: "document.querySelector('#reveal').dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))", sizes: ['390', '1280', '720p'] },
+  { name: 'learn-lesson-sure-pluto', path: '/?page=learn&lesson=sure', ready: '.pluto-example', scrollTo: '.pluto-example' },
+  { name: 'learn-lesson-distance-loop', path: '/?page=learn&lesson=distance', ready: '.loop-part', scrollTo: '.loop-part' },
+  { name: 'loop', path: '/?page=loop', ready: '#loop-chart svg' },
+  { name: 'loop-chart', path: '/?page=loop', ready: '#loop-chart svg', scrollTo: '#loop-chart-title' },
   { name: 'about-see', path: '/?page=about', ready: '#about-data li', scrollTo: '#about-limits-title' },
   { name: 'about-credits', path: '/?page=about', ready: '#about-data li', scrollTo: '#about-data-title' },
   { name: 'tour-home', path: '/', ready: '.map-marker', act: "document.getElementById('tour-start').click()" },
@@ -81,6 +88,10 @@ const PAGES = [
   { name: 'home-3d', path: '/', ready: '.map-marker', act: "(() => { if (!document.body.classList.contains('space-3d')) document.getElementById('space-toggle').click(); })()", wait: 2500 },
   { name: 'home-3d-top', path: '/', ready: '.space-canvas', act: "document.getElementById('space-top').click()", wait: 800 },
   { name: 'home-3d-pluto', path: '/', ready: '.space-canvas', act: "document.querySelector('.space-label[data-key=pluto]').click()", wait: 2500 },
+  // After the 3D Home captures switched the 3D view on for this run, the loop page starts in 3D too.
+  { name: 'loop-3d', path: '/?page=loop', ready: '#loop3d canvas', wait: 1500, act: 'void 0', sizes: ['360', '390', '768', '1280', '720p'] },
+  { name: 'loop-3d-spherex', path: '/?page=loop', ready: '#loop3d canvas', act: "document.getElementById('loop-from-spherex').click()", wait: 1500, sizes: ['390', '1280', '720p'] },
+  { name: 'loop-3d-top', path: '/?page=loop', ready: '#loop3d canvas', act: "document.getElementById('loop-top').click()", wait: 1500, sizes: ['1280', '720p'] },
 ];
 
 const AUDIT = `(() => {

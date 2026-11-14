@@ -132,3 +132,17 @@ test('Open Graph tags point at a real 1200×630 og.png under 200 KB', () => {
   assert.equal(png.readUInt32BE(20), 630);
   assert.ok(statSync(`${ROOT}static/og.png`).size < 200 * 1024);
 });
+
+test('the offline sky tiles are reachable only from the Real sky panel', () => {
+  const read = (name) => readFileSync(`${ROOT}static/${name}`, 'utf8');
+  const scripts = ['js/main.js', 'js/home.js', 'js/space-ui.js', 'js/space3d.js', 'js/pages.js', 'index.html', 'css/style.css'];
+  for (const name of scripts) assert.doesNotMatch(read(name), /data\/sky/, `${name} must not reference the offline tiles`);
+  const sky = read('js/sky.js');
+  // sky.js tries the online survey first and falls back to the local copy only if that is unreachable.
+  assert.ok(sky.indexOf('TILES_ONLINE') < sky.indexOf("'data/sky'"));
+  const main = read('js/main.js');
+  assert.equal(main.match(/createSky\(/g).length, 1, 'one call');
+  assert.match(main, /async function openSkyContext\(\) \{[\s\S]*?createSky\(/);
+  assert.equal(main.match(/openSkyContext\(\)/g).length, 2, 'defined once, called once (when the panel opens)');
+  assert.match(main, /if \(open\) openSkyContext\(\);/);
+});
