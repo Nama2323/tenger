@@ -26,6 +26,15 @@ export const DETECTOR_RANGES = {
 /** Composite colour channels: long wavelengths red, short ones blue. */
 export const COMPOSITE = { red: [5, 6], green: [3, 4], blue: [1, 2] };
 
+/**
+ * Whether these frames can make the display-colour composite: every colour group (long, middle and short arrays)
+ * has at least one frame. Display colours only; measurements never use them.
+ */
+export function colourGroupsPresent(frames) {
+  const detectors = new Set((frames ?? []).map((frame) => frame.detector));
+  return Object.values(COMPOSITE).every((group) => group.some((detector) => detectors.has(detector)));
+}
+
 export function detectorOfChannel(channel) {
   return Math.floor(channel / CHANNELS_PER_DETECTOR) + 1;
 }

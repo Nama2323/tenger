@@ -75,7 +75,20 @@
           <div id="map-canvas" class="map-canvas" role="group" data-t-label="map.label" hidden></div>
           <p id="map-waiting" class="map-waiting glass" data-t="map.waiting"></p>
         </div>
-        <p class="map-caption glass" data-t="map.caption"></p>
+        <!-- 3D view (three.js), loaded after the page is usable; the 2D map above is its fallback. -->
+        <div id="space3d" class="space3d" hidden></div>
+        <div id="space-tools" class="space-tools" role="group" data-t-label="space.label" hidden>
+          <button id="space-reset" type="button" class="quiet space-3d-only" data-t="space.reset"></button>
+          <button id="space-top" type="button" class="quiet space-3d-only" data-t="space.top"></button>
+          <button id="space-toggle" type="button" class="quiet"></button>
+        </div>
+        <div id="space-hud" class="space-hud space-3d-only">
+          <p id="space-date"></p>
+          <p id="space-target" aria-live="polite"></p>
+          <p data-t="space.scaleNote"></p>
+        </div>
+        <p class="map-caption glass map-2d-only" data-t="map.caption"></p>
+        <p class="map-caption glass space-3d-only" data-t="space.caption"></p>
         <details id="map-key" class="map-key glass">
           <summary data-t="map.legend"></summary>
           <ul id="map-legend" class="legend" hidden>
@@ -84,8 +97,10 @@
             <li class="colour-solar"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.solar"></span></li>
             <li class="colour-hypothetical"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.hypothetical"></span></li>
           </ul>
-          <p class="note" data-t="map.scale"></p>
-          <div id="map-notes" class="note"></div>
+          <p class="note map-2d-only" data-t="map.scale"></p>
+          <p id="space-key-note" class="note space-3d-only"></p>
+          <div id="map-notes" class="note map-2d-only"></div>
+          <p id="space-note" class="note" hidden></p>
         </details>
       </div>
 
@@ -169,6 +184,7 @@
             <div id="frame-a" class="plate-frame">
               <canvas id="plate" width="1600" height="1600" tabindex="0" data-t-label="viewer.label"></canvas>
               <p id="plate-date" class="plate-date"></p>
+              <p id="plate-colour" class="plate-colour" hidden data-t="colour.badge"></p>
               <p id="lock" class="lock" hidden></p>
               <p id="plate-empty" class="plate-empty" hidden></p>
               <p class="plate-hint" data-t="zoomHint"></p>
@@ -176,6 +192,7 @@
             <div id="second-frame" class="plate-frame plate-b" hidden>
               <canvas id="plate-b" width="1600" height="1600"></canvas>
               <p id="plate-date-b" class="plate-date"></p>
+              <p id="plate-colour-b" class="plate-colour" hidden data-t="colour.badge"></p>
               <i id="swipe-line" class="swipe-line" aria-hidden="true"></i>
             </div>
           </div>
@@ -195,6 +212,7 @@
               <button type="button" data-mode="side" data-t="mode.side"></button>
               <button type="button" data-mode="diff" data-t="mode.diff"></button>
             </div>
+            <button id="colour-toggle" type="button" class="quiet colour-toggle" aria-pressed="false" data-t="colour.grayscale"></button>
             <p id="explain" class="explain" aria-live="polite"></p>
           </div>
           <p id="diff-note" class="note warn" hidden data-t="mode.diffOff"></p>

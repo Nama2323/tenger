@@ -8,7 +8,7 @@ import { allowsDifference, comparisonReasons, epochCoverage, pairComparison } fr
 import { parseCoordinates, separationDeg } from './coords.js';
 import { $, chip, dataTable, el, formatNumber, formatUtc, prefersReducedMotion } from './dom.js';
 import {
-  buildFovOptions, drawStarfield, entryName, fillCoordinates, kindLabel, placeMapLabels, predictionLabel, renderHome, startBlinking,
+  buildFovOptions, drawStarfield, entryName, fillCoordinates, formatDistance, kindLabel, placeMapLabels, predictionLabel, renderHome, startBlinking,
   statusLabel,
 } from './home.js';
 import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
@@ -21,15 +21,16 @@ import { hasPublishedTrials } from './ledger.js';
 import { currentReveal, initLedger, showLedger, syncRevealFromUrl } from './ledger-ui.js';
 import { renderAbout } from './pages.js';
 import {
-  drawPlate, limitsFor, paintComposite, paintDifference, paintMono, stacksFor, StackCache, tintFor,
+  drawPlate, limitsFor, paintComposite, paintDifference, paintFalseColour, paintMono, stacksFor, StackCache, tintFor,
 } from './plate.js';
 import { loadReserved, reservedRegionNear } from './reserved.js';
 import { bandToParam, buildRoute, embedCode, PAGES, parseRoute, resolveRoute } from './route.js';
 import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometry } from './science.js';
 import { createSky } from './sky.js';
+import { flyThen, homeShown, initSpace } from './space-ui.js';
 import { isTourRunning, nextTourStep, runTour, shouldAutoStart, stopTour } from './tour.js';
 import {
-  channelWavelength, CHANNELS, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
+  channelWavelength, CHANNELS, colourGroupsPresent, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
   selectBand, skyToPixel, visitsOf, wellCovered,
 } from './stack.js';
 import {
@@ -113,6 +114,8 @@ const state = {
   wiseFrame: null,
   position: 0,
   band: { kind: 'composite' },
+  // "All bands" in display colours when a date has all three array groups; grayscale is one click away.
+  colour: true,
   mode: 'blink',
   excludeFlags: false,
   gaia: [],
@@ -254,6 +257,9 @@ function render() {
   $('plate-empty').textContent = t('noFrames');
   drawPlate($('plate'), buffer, overlayFor(left));
   $('plate-date').textContent = mode === 'diff' ? t('plate.diff') : two ? t('plate.a', { date: stepLabel(aStep) }) : plateLabel(left);
+  $('plate-colour').hidden = !shown || mode === 'diff' || !colourShown(left);
+  $('colour-toggle').hidden = state.band.kind !== 'composite';
+  $('colour-toggle').setAttribute('aria-pressed', String(!state.colour));
   $('second-frame').hidden = !two;
   if (two) renderSecond(bStep, size);
   $('arrays').hidden = mode !== 'blink';
@@ -273,6 +279,7 @@ function renderSecond(step, size) {
   paintStep(step, size, state.band);
   drawPlate($('plate-b'), buffer, overlayFor(step));
   $('plate-date-b').textContent = t('plate.b', { date: stepLabel(step) });
+  $('plate-colour-b').hidden = !colourShown(step);
 }
 
 /** Six live plates, one per detector array, for the date on the main plate. */
@@ -311,7 +318,13 @@ function paintAmbient() {
   if (ambient) ambient.getContext('2d').drawImage($('plate'), 0, 0, ambient.width, ambient.height);
 }
 
-const paintKey = (prefix, wanted) => `${prefix}|${wanted.kind}${wanted.detector ?? wanted.channel ?? ''}|${state.excludeFlags}|${state.contrast}`;
+const paintKey = (prefix, wanted) => `${prefix}|${wanted.kind}${wanted.detector ?? wanted.channel ?? ''}|${state.excludeFlags}|${state.contrast}|${wanted.kind === 'composite' && state.colour ? 'rgb' : 'grey'}`;
+
+/** True when this step is painted in display colours (All bands, colour on, all three array groups present). */
+function colourShown(step, band = state.band) {
+  if (band.kind !== 'composite' || !state.colour || step?.key === WISE_STEP || state.previews) return false;
+  return colourGroupsPresent(step ? step.frames : state.frames);
+}
 
 /** Painting is the slow part, so finished pictures are kept and only copied afterwards. */
 function remembered(key, paint) {
@@ -350,6 +363,7 @@ function paintFresh(step, size, wanted) {
   const key = step ? `v${step.key}` : ALL_DATES;
   const stacks = stacksFor(frames, band, size, state.excludeFlags, cache, key);
   if (stacks.image) paintMono(buffer, size, stacks.image, sharedLimits(size, band), tintFor(band));
+  else if (state.colour && colourGroupsPresent(frames)) paintFalseColour(buffer, size, stacks, sharedLimits(size, band));
   else paintComposite(buffer, size, stacks, sharedLimits(size, band));
   return true;
 }
@@ -427,9 +441,13 @@ function releaseText(releases) {
 }
 
 function wavelengthText(picture) {
+  if (picture.compositeVisit !== null && picture.compositeVisit !== undefined) return t('caption.compositePreview');
   const w = picture.wavelength;
   if (w.kind === 'allwise') return t('caption.allwise', { um: String(w.centre) });
-  if (w.kind === 'composite') return t('caption.composite', { low: String(w.low), high: String(w.high) });
+  if (w.kind === 'composite') {
+    const key = picture.colour ? 'caption.compositeColour' : state.colour && !picture.colour ? 'caption.compositeGreyMissing' : 'caption.composite';
+    return t(key, { low: String(w.low), high: String(w.high) });
+  }
   if (w.kind === 'detector') return t('caption.detector', { detector: String(w.detector), low: String(w.low), high: String(w.high) });
   const values = { um: w.wavelength.toFixed(2), channel: String(w.channel) };
   return t(w.present ? 'caption.channel' : 'caption.channelNone', values);
@@ -501,12 +519,12 @@ function captionColumn(letter, picture, side) {
 /** A and B columns (plus the date on the plate when Blink shows another one); rebuilt only when they change. */
 function renderCaption(left, aStep, bStep) {
   const describe = (step, difference = false) => (step?.epoch
-    ? describePreviewEpoch(step.epoch)
-    : describePicture({ step, allFrames: state.frames, band: state.band, difference }));
+    ? { ...describePreviewEpoch(step.epoch), compositeVisit: state.colour && step.composite ? step.composite.visit : null }
+    : { ...describePicture({ step, allFrames: state.frames, band: state.band, difference }), colour: !difference && colourShown(step) });
   const blink = state.mode === 'blink';
   const shownSide = !blink ? null : left && left.id === aStep?.id ? 'a' : left && left.id === bStep?.id ? 'b' : 'other';
   const key = [state.mode, aStep?.id, bStep?.id, shownSide === 'other' ? (left?.id ?? ALL_DATES) : '',
-    bandToParam(state.band), state.target?.key ?? '', state.frames.length].join('|');
+    bandToParam(state.band), state.target?.key ?? '', state.frames.length, state.colour].join('|');
   if (key !== captionKey) {
     captionKey = key;
     const a = describe(aStep);
@@ -1510,7 +1528,10 @@ function showPage(page, { push = true, focus = true } = {}) {
     const current = link.dataset.pageLink === page || (page === 'investigate' && link.dataset.pageLink === 'home');
     link.setAttribute('aria-current', current ? 'page' : 'false');
   }
-  if (page === 'home' || page === 'investigate') requestAnimationFrame(placeMapLabels);
+  if (page === 'home' || page === 'investigate') {
+    requestAnimationFrame(placeMapLabels);
+    homeShown();
+  }
   if (page === 'predictions') showLedger();
   else syncRevealFromUrl(null);
   if (page !== 'investigate') {
@@ -1565,6 +1586,31 @@ function openEntry(entry, { fov = null, requested = null, push = true } = {}) {
 
 const previewImages = new Map();
 
+/**
+ * V10 composites: for each preview step, the display-colour picture of its visit (matched by the epoch ids the
+ * composite file lists). Missing or unreadable files leave the grey single-array previews.
+ */
+async function attachComposites(entry, steps) {
+  const url = entry.compositesPath ? app.source.url(entry.compositesPath) : null;
+  if (!url) return;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return;
+    const doc = await response.json();
+    if (doc?.schema_version !== 'tenger.composites/1' || !Array.isArray(doc.visits)) return;
+    for (const visit of doc.visits) {
+      const src = visit?.path && visit.display_only ? app.source.url(visit.path) : null;
+      if (!src) continue;
+      for (const step of steps) if ((visit.epoch_ids ?? []).includes(step.id)) step.composite = { src, visit: visit.visit };
+    }
+  } catch {
+    // Colour is optional: the grey previews stay.
+  }
+}
+
+/** The picture a preview step shows: its visit's display colours when chosen and available, else its own preview. */
+const previewSource = (step) => (state.colour && step?.composite ? step.composite.src : step?.preview);
+
 function previewStepsOf(doc) {
   return (doc?.epochs ?? []).filter((epoch) => epoch?.assets?.preview && typeof epoch.id === 'string')
     .map((epoch) => ({
@@ -1584,8 +1630,9 @@ function drawPreview(canvas, step) {
   const context = canvas.getContext('2d');
   context.fillStyle = '#05070d';
   context.fillRect(0, 0, canvas.width, canvas.height);
-  if (!step?.preview) return;
-  let image = previewImages.get(step.preview);
+  const source = previewSource(step);
+  if (!source) return;
+  let image = previewImages.get(source);
   if (!image) {
     image = new Image();
     image.decoding = 'async';
@@ -1594,11 +1641,11 @@ function drawPreview(canvas, step) {
       for (const tile of $('dates').children) {
         const index = Number(tile.dataset.position);
         const tileStep = sequence()[index];
-        if (tileStep?.preview === step.preview) drawPreview(tile.querySelector('canvas'), tileStep);
+        if (tileStep && previewSource(tileStep) === source) drawPreview(tile.querySelector('canvas'), tileStep);
       }
     });
-    image.src = step.preview;
-    previewImages.set(step.preview, image);
+    image.src = source;
+    previewImages.set(source, image);
   }
   if (image.complete && image.naturalWidth) {
     context.imageSmoothingEnabled = true;
@@ -1614,6 +1661,10 @@ function renderPreview() {
   const left = two ? aStep : currentStep();
   drawPreview($('plate'), left);
   $('plate-date').textContent = two ? t('plate.a', { date: stepLabel(aStep) }) : plateLabel(left);
+  $('plate-colour').hidden = !(state.colour && left?.composite);
+  $('plate-colour-b').hidden = !(two && state.colour && bStep?.composite);
+  $('colour-toggle').hidden = !state.previews.some((step) => step.composite);
+  $('colour-toggle').setAttribute('aria-pressed', String(!state.colour));
   $('second-frame').hidden = !two;
   if (two) {
     drawPreview($('plate-b'), bStep);
@@ -1650,6 +1701,8 @@ async function openPreview(entry) {
     scrollToLinkedPanel();
     return;
   }
+  await attachComposites(entry, steps);
+  if (session !== state.session) return;
   state.previews = steps;
   const ids = new Set(steps.map((step) => step.id));
   const pair = (app.investigation.doc.comparisons ?? []).find((item) => ids.has(item.a) && ids.has(item.b));
@@ -1820,7 +1873,7 @@ async function search(text) {
 function openNamed(found) {
   const entry = found.key ? app.allTargets.find((item) => item.key === found.key) : null;
   if (entry) {
-    openEntry(entry);
+    flyThen(entry.key, () => openEntry(entry));
     return;
   }
   const covering = findCoveringTarget(app.allTargets, found.ra, found.dec);
@@ -1969,9 +2022,11 @@ const tourActions = {
     app.panel = 'see';
     app.scrollToPanel = false;
     // Opening a target moves focus to its name; a keyboard user stepping through the tour keeps "Next".
-    const keep = document.activeElement === $('tour-next');
-    openEntry(entry);
-    if (keep) $('tour-next').focus({ preventScroll: true });
+    flyThen(key, () => {
+      const keep = document.activeElement === $('tour-next');
+      openEntry(entry);
+      if (keep) $('tour-next').focus({ preventScroll: true });
+    });
   },
   /** Runs `callback` once the opened target has two dates to compare, unless the tour has moved on. */
   whenReady(callback) {
@@ -2061,6 +2116,11 @@ function bindControls() {
     if (mode) setMode(mode);
   });
   $('composite').addEventListener('click', () => setBand({ kind: 'composite' }));
+  $('colour-toggle').addEventListener('click', () => {
+    state.colour = !state.colour;
+    if (state.previews) renderDates();
+    render();
+  });
   $('band').addEventListener('input', () => setBand({ kind: 'channel', channel: Number($('band').value) }));
   $('fov').addEventListener('change', () => openTarget(state.target, Number($('fov').value)));
   $('gaia').addEventListener('change', toggleGaia);
@@ -2194,10 +2254,33 @@ function thumbsOf(entry) {
   return app.thumbs.get(entry.key) ?? null;
 }
 
+/** From Home: in the 3D view the camera flies to the target first, then its investigation opens. */
 function openFromHome(entry) {
-  app.panel = 'see';
-  app.scrollToPanel = false;
-  openEntry(entry);
+  flyThen(entry.key, () => {
+    app.panel = 'see';
+    app.scrollToPanel = false;
+    openEntry(entry);
+  });
+}
+
+const findEntry = (key) => app.allTargets.find((item) => item.key === key) ?? null;
+
+function startSpace() {
+  initSpace({
+    embed: app.embed,
+    entries: () => app.entries,
+    nameOf: (key) => (findEntry(key) ? entryName(findEntry(key)) : null),
+    nameOfEntry: entryName,
+    distanceOf: (star) => formatDistance({ value: star.distance_pc, unit: 'pc' }),
+    // On wide screens the search console covers the left of the scene; the Sun is centred in the rest.
+    insetLeft: () => (matchMedia('(min-width: 901px)').matches
+      ? Math.max(0, document.querySelector('.console-left').getBoundingClientRect().right - $('space3d').getBoundingClientRect().left)
+      : 0),
+    onPick: (key) => {
+      const entry = findEntry(key);
+      if (entry && isOpenable(entry)) openFromHome(entry);
+    },
+  });
 }
 
 /**
@@ -2239,8 +2322,10 @@ async function start() {
     onOpen: openFromHome,
   });
   delete $('page-home').dataset.loading;
+  startSpace();
   startBlinking();
   applyLocation();
+  if (app.page === 'home' || app.page === 'investigate') homeShown();
   // The tour starts by itself once per browser, on a plain visit to Home.
   const storage = browserStorage();
   if (shouldAutoStart({ storage, route: parseRoute(location.search) })) runTour(tourActions, { storage });

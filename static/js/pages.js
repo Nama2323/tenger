@@ -37,11 +37,13 @@ export const SOURCES = [
   { id: 'vsx', links: [['https://www.aavso.org/vsx/', 'about.link.website']] },
   { id: 'horizons', links: [['https://ssd.jpl.nasa.gov/horizons/', 'about.link.website']] },
   { id: 'sbdb', links: [['https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html', 'about.link.website']] },
+  { id: 'standish', links: [['https://ssd.jpl.nasa.gov/planets/approx_pos.html', 'about.link.website']] },
   { id: 'aladin', ack: 'ack.aladin', links: [['https://aladin.cds.unistra.fr/AladinLite/', 'about.link.website']] },
 ];
 
 /** Libraries and tools, with the licence of the version in use (Python: installed package metadata, 14 Nov 2026). */
 export const SOFTWARE = [
+  { name: 'three.js 0.187.0', use: 'about.sw.three', licence: 'MIT', href: 'https://threejs.org/' },
   { name: 'Aladin Lite 3.8.2', use: 'about.sw.aladin', licence: 'GPL-3.0', href: 'https://github.com/cds-astro/aladin-lite' },
   { name: 'Python 3.12', use: 'about.sw.python', licence: 'PSF-2.0', href: 'https://www.python.org/' },
   { name: 'Astropy', use: 'about.sw.astropy', licence: 'BSD-3-Clause', href: 'https://www.astropy.org/', ack: 'ack.astropy' },

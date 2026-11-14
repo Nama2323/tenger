@@ -105,6 +105,8 @@ function fromIndex(target, preset) {
     map: target.map ?? null,
     investigationPath: target.investigation_path ?? null,
     thumbnails: Array.isArray(target.thumbnails) ? target.thumbnails : [],
+    // V10: per-visit display-colour previews for targets shown in preview mode (Pluto, Makemake, 3I/ATLAS).
+    compositesPath: typeof target.composites_path === 'string' ? target.composites_path : null,
     legacy: preset ?? null,
     fromIndex: true,
     measurementStatus: target.measurement_status ?? null,

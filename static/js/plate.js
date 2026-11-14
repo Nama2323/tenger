@@ -95,6 +95,24 @@ export function paintComposite(buffer, size, stacks, limits) {
   });
 }
 
+/**
+ * Display colours: the longest-wavelength arrays (D5–D6) in red, the middle ones (D3–D4) in green, the shortest
+ * (D1–D2) in blue, each with its own stretch; bright cores burn towards white. Not for measurement.
+ */
+export function paintFalseColour(buffer, size, stacks, limits) {
+  const red = sharpenForDisplay(stacks.red, size);
+  const green = sharpenForDisplay(stacks.green, size);
+  const blue = sharpenForDisplay(stacks.blue, size);
+  paint(buffer, size, (pixel) => {
+    if (Number.isNaN(red[pixel]) && Number.isNaN(green[pixel]) && Number.isNaN(blue[pixel])) return [0, 0, 0, 0];
+    const part = (image, limit) => (Number.isNaN(image[pixel]) ? 0 : asinhScale(image[pixel], limit));
+    const levels = [part(red, limits.red), part(green, limits.green), part(blue, limits.blue)];
+    const peak = Math.max(...levels);
+    const burn = peak > HOT_KNEE ? ((peak - HOT_KNEE) / (1 - HOT_KNEE)) * 0.7 : 0;
+    return levels.map((level) => 255 * (level + (1 - level) * burn));
+  });
+}
+
 export function paintDifference(buffer, size, later, earlier) {
   const image = subtract(later, earlier);
   const limit = differenceLimit(image);

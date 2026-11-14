@@ -76,6 +76,11 @@ const PAGES = [
   { name: 'embed-code', path: '/?target=barnard', ready: '#caption-body .caption-col', act: "document.getElementById('embed-copy').click()" },
   { name: 'og-home', path: '/', ready: '.map-marker', sizes: ['og'] },
   { name: 'og-barnard', path: '/?target=barnard&mode=side', ready: '#caption-body .caption-col', sizes: ['og'] },
+  // 3D Home (last: switching it on is remembered for the rest of this run). Reduced motion stays forced, so the
+  // view is switched on with its button and camera moves are instant.
+  { name: 'home-3d', path: '/', ready: '.map-marker', act: "(() => { if (!document.body.classList.contains('space-3d')) document.getElementById('space-toggle').click(); })()", wait: 2500 },
+  { name: 'home-3d-top', path: '/', ready: '.space-canvas', act: "document.getElementById('space-top').click()", wait: 800 },
+  { name: 'home-3d-pluto', path: '/', ready: '.space-canvas', act: "document.querySelector('.space-label[data-key=pluto]').click()", wait: 2500 },
 ];
 
 const AUDIT = `(() => {
@@ -111,7 +116,9 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function main() {
   const chrome = spawn(CHROME, [
     '--headless=new', `--remote-debugging-port=${PORT}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), 'tenger-chrome-'))}`,
-    '--no-first-run', '--no-default-browser-check', '--hide-scrollbars', '--force-prefers-reduced-motion', 'about:blank',
+    '--no-first-run', '--no-default-browser-check', '--hide-scrollbars', '--force-prefers-reduced-motion',
+    // WebGL for the 3D Home view in headless Chrome (software rendering).
+    '--enable-unsafe-swiftshader', '--use-angle=swiftshader', 'about:blank',
   ], { stdio: 'ignore' });
   let info;
   for (let attempt = 0; attempt < 50 && !info; attempt += 1) {
@@ -164,7 +171,7 @@ async function main() {
       await sleep(900);
       if (page.act) {
         await send('Runtime.evaluate', { expression: page.act });
-        await sleep(500);
+        await sleep(page.wait ?? 500);
       }
       if (page.scrollTo) {
         await send('Runtime.evaluate', { expression: `document.querySelector(${JSON.stringify(page.scrollTo)}).scrollIntoView({block:'start'})` });

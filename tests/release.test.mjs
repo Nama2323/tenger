@@ -29,7 +29,7 @@ test('About lists both SPHEREx DOIs and every service the code uses', () => {
   const links = about.SOURCES.flatMap((source) => source.links.map(([href]) => href));
   for (const doi of ['10.26131/IRSA678', '10.26131/IRSA679']) assert.ok(links.includes(`https://doi.org/${doi}`), doi);
   const ids = about.SOURCES.map((source) => source.id);
-  for (const id of ['spherex', 'irsa', 'wise', 'twomass', 'gaia', 'simbad', 'vizier', 'sesame', 'vsx', 'horizons', 'sbdb', 'aladin']) {
+  for (const id of ['spherex', 'irsa', 'wise', 'twomass', 'gaia', 'simbad', 'vizier', 'sesame', 'vsx', 'horizons', 'sbdb', 'standish', 'aladin']) {
     assert.ok(ids.includes(id), id);
   }
   for (const source of about.SOURCES) {
@@ -48,6 +48,7 @@ test('About gives every library a licence, and every method, limit and disclosur
     assert.ok(has(item.use), item.use);
   }
   assert.ok(about.SOFTWARE.some((item) => item.name.startsWith('Aladin Lite') && item.licence === 'GPL-3.0'));
+  assert.ok(about.SOFTWARE.some((item) => item.name.startsWith('three.js') && item.licence === 'MIT'));
   assert.ok(about.PYTHON_PACKAGES.length > 20 && about.PYTHON_PACKAGES.every(([name, licence]) => name && licence));
   for (const id of about.METHODS) assert.ok(has(`about.m.${id}`) && has(`about.m.${id}.title`), id);
   for (const id of about.LIMITS) assert.ok(has(`about.l.${id}`) && has(`about.l.${id}.title`), id);
