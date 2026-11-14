@@ -1507,7 +1507,7 @@ const TEXT = {
     'tour.game': 'Beat the physics. Guess where the target will be, then see the straight line, the frozen physics model and the real observation. The physics is allowed to lose.',
     'tour.learn': 'Learn. Three printable lessons (distance, brightness, how sure are we) and the Planet X Lab, with every assumption written out. That is the tour: “Guided tour” on the Home page plays it again.',
     credit: 'Data: NASA SPHEREx, AllWISE and ESA Gaia DR3, served by NASA/IPAC IRSA. Colours are false colour.',
-    // ---------- Data keys copied from static/data/strings.en.json (Session A, DATA-CONTRACT V13) ----------
+    // ---------- Data keys copied from static/data/strings.en.json (Session A, DATA-CONTRACT V14) ----------
     // Session A owns this wording. Re-copy when that file changes: tests/i18n.test.mjs fails on a missing key.
     'abandoned.freeze-defect': 'Abandoned before any prediction: the frozen file was incomplete; a corrected version replaced it.',
     'batch.asteroids.title': 'Blind asteroid forecasts: how often does the truth land inside our 95% regions?',
@@ -1661,7 +1661,7 @@ const TEXT = {
     'planetx.scenario.lm16-aphelion': 'Linder & Mordasini 2016, 10 Earth masses at aphelion (1120 AU)',
     'planetx.scenario.lm16-nominal': 'Linder & Mordasini 2016, 10 Earth masses at 700 AU',
     'planetx.scenario.lm16-perihelion': 'Linder & Mordasini 2016, 10 Earth masses at perihelion (280 AU)',
-    'planetx.verdict.partial': 'Below our 50% depth: one exposure finds about {percent}% of artificial sources this faint (gap = prediction minus our 50% depth, positive).',
+    'planetx.verdict.partial': 'Partly within reach: one exposure finds about {percent}% of artificial sources this faint, although the prediction is below our 50% depth (gap = prediction minus our 50% depth, positive).',
     'planetx.verdict.summary': 'One SPHEREx exposure finds half of the artificial sources at AB {depth_i} near 0.8 µm, AB {depth_w1} near 3.4 µm and AB {depth_w2} near 4.6 µm. The nominal Planet Nine of Linder & Mordasini (2016) would be AB {model_i}, {model_w1} and {model_w2}: {gap_w1} magnitudes too faint at 3.4 µm. Only the closest published case comes within reach, and one exposure would catch it about 1 time in {one_in}. The planet also moves too far between exposures to pile up its light without a shift-and-stack search.',
     'planetx.verdict.too-faint': 'Too faint for one exposure: fewer than 5% of artificial sources that faint were found (gap = prediction minus our 50% depth, positive).',
     'planetx.verdict.within-depth': 'Within reach of one exposure: the prediction is brighter than the magnitude at which one SPHEREx exposure finds half of the artificial sources (gap = prediction minus our 50% depth, negative).',
