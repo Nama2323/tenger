@@ -122,10 +122,13 @@ test('the embed code is an escaped, lazy, responsive iframe of an embed=1 link',
 });
 
 test('Open Graph tags point at a real 1200×630 og.png under 200 KB', () => {
-  for (const property of ['og:title', 'og:description', 'og:image', 'og:image:alt', 'og:type']) {
+  for (const property of ['og:title', 'og:description', 'og:image', 'og:image:alt', 'og:type', 'og:url']) {
     assert.match(html, new RegExp(`<meta property="${property}" content="[^"]+">`), property);
   }
   assert.match(html, /<meta name="twitter:card" content="summary_large_image">/);
+  // Absolute addresses for the public site (GitHub Pages).
+  assert.match(html, /<meta property="og:url" content="https:\/\/nama2323\.github\.io\/tenger\/">/);
+  assert.match(html, /<meta property="og:image" content="https:\/\/nama2323\.github\.io\/tenger\/og\.png">/);
   const png = readFileSync(`${ROOT}static/og.png`);
   assert.equal(png.subarray(1, 4).toString('latin1'), 'PNG');
   assert.equal(png.readUInt32BE(16), 1200);

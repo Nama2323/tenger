@@ -966,3 +966,11 @@ Screenshots: `docs/screens/loop*.png` (2D at four widths; 3D default, from SPHER
 - Not checked on a real phone or a real GPU-less device.
 
 `python -m scripts.validate_release` (Session A's validator) on this tree: 77 contract files checked, 0 failures.
+
+### B5 part 0, 15 Nov 2026: public address (site live at https://nama2323.github.io/tenger/)
+
+- `og:url` and `og:image` are now absolute (`https://nama2323.github.io/tenger/`, `…/og.png`); a test checks both. The live
+  page and `og.png` answer 200.
+- Receipt links checked on the public repository: all 11 receipts open `github.com/Nama2323/tenger/commit/<full sha>` with
+  HTTP 200, and each SHA is the matching "predict: freeze …" commit (the two v2 Pluto open forecasts share `fd758e5`).
+- `node --test tests/`: 165 passed.
