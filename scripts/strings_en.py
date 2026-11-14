@@ -142,6 +142,10 @@ STRINGS = {
     "lesson.how-sure.q2": "What is the chance that all {n_trials} hit?",
     "lesson.how-sure.q3": "We scored {n_hits} hits out of {n_trials}. What fraction is that? Can 3 trials prove the regions are right?",
     "lesson.how-sure.teacher": "Two of our three checked forecasts were retrospective (the data had been seen) and catalogue-assisted; the only prospective one (Pluto) missed narrowly. A handful of trials cannot prove a 95% calibration; misses are reported, not hidden.",
+    # open forecast v2 and hindcast
+    "forecast.after-2026-miss": "Made after the 2026 miss, using its lessons; check when IRSA releases the data.",
+    "hindcast.v2-label": "Exploratory, after the reveal: the new method tried on the 2026 visit. It does not count.",
+    "limit.single-group-latest-visit": "The newest visit has only one detector group, so the forecast leans on few pictures.",
     # colour previews
     "composite.display-colours": "Display colours, not for measurement: red = arrays 5-6, green = 3-4, blue = 1-2.",
     "composite.missing-array-group": "No colour picture for this date: one of the three array groups has no pictures.",
