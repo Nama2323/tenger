@@ -9,8 +9,8 @@ still open. Session A edits only "Science/data". Session B edits only "Web".
 
 ### Current phase
 
-**Phase F part 1 done (Task A4): predictions frozen and pushed; nothing verified.** See "Task A4".
-Next: Task A5, verification of the released evaluation visits.
+**Phase F done (Tasks A4–A5): predictions frozen, then verified; scoreboard, game and lesson records
+published.** See "Task A5". Open: teammates' confirmation for Pluto; the 2027 open forecast.
 
 ### Task A1, 14 Nov 2026 (git base `58f993b`, branch `tenger-dev`)
 
@@ -72,6 +72,95 @@ prediction, receipt, verification, scoreboard, game round and lesson. Enums, pat
 **Files added in A1**: `docs/EXPOSURE.md`, `docs/exposure/{summary,barnard,wise0855,epsindib,rwaur,rdra,makemake,pluto,3i_atlas}.json`,
 `docs/exposure/SHA256SUMS`, `docs/DATA-CONTRACT.md`, `docs/IMPLEMENTATION_STATUS.md`,
 `scripts/exposure_inventory.py`, `tests/test_exposure_inventory.py`. No application file changed.
+
+### Task A5, 14 Nov 2026 (phase F part 2: verify, scoreboard, game, lessons; branch `tenger-dev`)
+
+**Before opening anything.** The team update was recorded and pushed first (`63d53bd`):
+- **Narmandakh** did the earlier research. That covers the Makemake viewing and five Pluto training
+  cutouts (exact UTC times in `docs/EXPOSURE.md`).
+- For Pluto's evaluation dates he saw **listing metadata only** (possibly JPL-predicted positions),
+  never pixels.
+- The other three teammates have not answered, so Pluto stays `prospective_unexposed` with
+  `confirmation_pending`.
+
+**Integrity gate.** `scripts/verify.py` refuses a trial unless all of these hold:
+- the trial → training → prediction → receipt hashes match;
+- `prediction.json` is byte-identical to the file in the receipt's commit (`git show`);
+- the model code still has the frozen hash.
+
+All three predicted trials passed. Pluto's evaluation visit was opened only afterwards, at
+15:17:11 UTC, with cutouts centred on the **frozen model** (never on the listing's positions).
+
+**Outcomes** (model = frozen physics model; baseline = frozen straight line, scored on the same data
+with the same C_obs)
+
+| Trial | Category | Exposures used | Model: mean residual (E, N) | Model error, D² | Verdict | Baseline error, D² |
+|---|---|---|---|---|---|---|
+| `barnard-position-2026b` | retrospective (+ catalogue-assisted) | 28 of 117 (89 refused: saturated-core fits) | (−1.31″, −0.78″) | 1.52″, **2.62** | **hit** | 3.11″, 786 (miss) |
+| `epsindib-position-2026b` | retrospective (+ catalogue-assisted) | 113 of 120 | (+0.010″, −0.075″) | 0.076″, **0.21** | **hit** | 0.26″, 18.1 (miss) |
+| `pluto-position-2026b` | **prospective, confirmation pending** | 4 of 20 (all D3; D6 never detected, as in training) | (−5.37″, −2.45″) | 5.90″, **6.77** | **miss** (threshold 5.991) | 5.5°, 1.3×10⁵ (miss) |
+| `makemake-position-2026a`, `wise0855-position-2026a`, `rwaur-brightness-2026a`, `rdra-brightness-2026a` | retrospective | — | — | — | **insufficient_data** (frozen so at A4) | — |
+| `pluto-position-open-2027a`, `makemake-position-open-2027a` | open forecasts | — | — | — | not counted; IRSA has not released the data | — |
+
+**Pluto recovery.**
+- **Pre-registered rules:** S/N ≥ 10 within 15″ of the frozen model, plus the static-source check on
+  another date. Every peak with S/N ≥ 5 within 30″ is kept as an alternative (20 listed).
+- **Result:** 4 exposures identified; none had two passing sources.
+- **Motion consistency** (added at verification by the task instruction, and recorded as such):
+  χ² 12.3 on 6 degrees of freedom, against a limit of 19.8. The identification passes.
+- **After the verdict:** JPL Horizons, moved to the spacecraft position, sits 0.22″ E, 0.27″ N from
+  the identified source, so the identification is right. The frozen orbit sits 5.59″ E, 2.72″ N from
+  Horizons: the miss is the two-visit orbit's extrapolation over 5 months, not an identification
+  error. This comparison is in `after_verdict_comparison` and does not affect the status.
+
+**Correction made before Session B used the files.** The first baseline D² values were computed with
+the baseline residuals' own scatter. The trial defines C_obs as the observed-position covariance,
+which is the same for model and baseline. The baseline D² values were recomputed: Barnard
+774 → 786, Eps Ind B 18.08 → 18.08, Pluto 74,423 → 133,738. All three remain misses. The old
+values are kept in each file's `corrections` list. Model numbers and statuses are unchanged.
+`verify.py` now scores the baseline with the model's C_obs.
+
+**Scoreboard (derived).**
+- Retrospective: 2 hits, 0 misses, 4 insufficient_data.
+- Prospective: 1 miss (Pluto, `counts_as_prospective: false` until all four teammates confirm;
+  `counts_as_prospective_if_confirmed: true`).
+- Open forecasts listed separately, never counted.
+
+No success rate is computed. Three checked trials cannot establish 95% calibration.
+
+**Game and lessons** (Session B's lesson ids; every input has a `source_ref`):
+
+| Record | Content |
+|---|---|
+| `game/barnard-position.json`, `game/epsindib-position.json`, `game/pluto-position.json` | Frame centred on the frozen model at the reveal time; training points = per-visit-and-array means; baseline, model (C_pred), actual (r̄, C_obs, image); scale = frozen 95% semi-major axis (2.32″, 0.41″, 6.06″). There is no brightness round because no verified brightness trial exists |
+| `lessons/distance.json` | Pluto moved 4.09° between the two training visits (0.0200°/day). Sunlight takes 4.90 h to reach it at the fitted 35.34 au (modelled). Barnard's Star is 1.83 pc away (Gaia parallax) |
+| `lessons/brightness.json` | Two Eps Ind B wavelength-matched, field-star-calibrated ratios as magnitudes with z (both: no clear change). Barnard: saturated in 356 of 356 pictures, so no brightness can be measured |
+| `lessons/how-sure.json` | Pluto D² 6.77 vs 5.991 → miss. For N = 3: expected 2.85 hits, P(all) = 0.857 if independent; observed 2/3. The teacher note says what 3 trials can and cannot show |
+
+**`reserved.json`.** The Makemake and Pluto regions stay listed (readers may keep blocking), with
+`status: "released"` and a reason. Pluto is verified; Makemake was frozen as insufficient, so it has
+nothing to protect. 3I/ATLAS stays reserved.
+
+**Tests** (`tests/test_verify.py` plus the extended `tests/test_static_data.py`):
+- **Tamper refusal:** a changed prediction, a missing receipt, and no rewrite of verification files.
+- **Scoring:** D² from the mean residual and combined covariance; the C_obs fit floor; a singular
+  covariance gives `invalid_comparison`; fewer than 3 identified gives `insufficient_data`; the
+  baseline uses the same C_obs; published D² values match the published covariances to 2%.
+- **Scoreboard:** counts, open forecasts excluded, a pending prospective trial not counted.
+- **Recovery:** a static star near the forecast is listed and rejected; two passing sources make the
+  trial ambiguous; inconsistent motion makes it ambiguous.
+- **Strings:** every key in the trial, verification, game and lesson files has English text.
+
+`.venv/bin/python -m pytest`: **158 passed, 2 skipped**. `node --test`: 132 of 133. The one failure
+is Session B's check that the new strings are copied into `i18n.js`.
+
+**Limits.**
+- Pluto's category depends on three teammates who haven't answered yet.
+- The verifier fits single sources: close pairs (≲15″) fail to fit, and in Pluto's crowded field
+  several strong peaks were therefore not identified. They are kept as alternatives, not used.
+- Barnard's holdout used only 28 of 117 exposures (saturated-core wing fits).
+- Both hits are retrospective and catalogue-assisted, so they are demonstrations, not independent
+  validations.
 
 ### Task A4, 14 Nov 2026 (phase F part 1: freeze and predict; branch `tenger-dev`)
 
@@ -322,12 +411,13 @@ neutral position (0, 0). Bake and live jobs were not run.
 
 ### Next action (proposed)
 
-Task A5 (phase F part 2): verify the three eligible trials.
-- Open the evaluation visits only through a verification script. It first checks every hash chain,
-  centres Pluto cutouts on the frozen model, applies the pre-registered identification and exclusion
-  rules, writes `verification.json` and regenerates `scoreboard.json`.
-- Get the remaining teammates' statements for Pluto before or during A5.
-- Then build game rounds and lesson records from the verified trials.
+- Collect the three remaining teammates' statements on Pluto's evaluation visit. When all four
+  confirm, regenerate `scoreboard.json` so the Pluto row counts as prospective. Never edit the trial
+  files.
+- Release preparation (phase H): check the published files against the contract, credits and
+  licences, and a final rebuild-and-compare.
+- When IRSA releases Pluto's spring-2027 visit, check `pluto-position-open-2027a` with the same
+  verifier.
 
 ---
 

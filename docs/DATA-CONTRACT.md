@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 7 | 2026-11-14 | Additive (Task A5). Verification extras, reserved.json status, scoreboard and game additions. |
 | 6 | 2026-11-14 | Additive. Verification residual fields agreed with Session B before A5 (reference position, C_pred, C_obs). |
 | 5 | 2026-11-14 | Additive (Task A4). Trial labels and precedence, confirmation_pending, open forecasts, training.json, prediction_status, model_state, receipts with full SHA; names agreed with Session B. |
 | 4 | 2026-11-14 | Additive (Task A3). Brightness game round shape (`quantity: "brightness"`), confirmed with Session B. |
@@ -662,3 +663,15 @@ Agreed with Session B before any verification, so the page can redraw exactly wh
 | `residuals.model.c_pred_arcsec2` | **C_pred as scored** at `t_mjd` (including sigma_sys and, for orbits, without the spacecraft term because the real observer is used) |
 | `residuals.model.east_arcsec`, `north_arcsec`, `d2`, `error_arcsec` | r̄ and D² = r̄ᵀ (C_pred + C_obs)⁻¹ r̄; `error_arcsec` = |r̄| |
 | `residuals.baseline.*` | The same four fields plus `reference` and `c_pred_arcsec2` for the baseline |
+
+---
+
+# Version 7 (additive, Task A5, 14 Nov 2026)
+
+| File | New fields |
+|---|---|
+| `verification.json` | `residuals.*.c_obs_arcsec2` (the same C_obs for model and baseline); `residuals.*.status` (the baseline's own hit/miss on the same data); `per_exposure[]` residuals; `identification` (rules applied, counts, motion check, `added_at_verification`); `candidates[]` (Pluto: every exposure with every listed peak, its fit, static check and whether it passed); `after_verdict_comparison` (JPL Horizons, separate from the status); `exposure_note`; `measurement_source` (stars: the A3 file and hash); `corrections[]` (what was recomputed, when, previous values, whether a status changed) |
+| `reserved.json` | `regions[].status`: `"reserved"` or `"released"`, with `release_reason_key`; `released`: keys no longer protecting anything. Regions are kept so readers that block them keep working |
+| `scoreboard.json` | rows gain `counts_as_prospective_if_confirmed`, `model_d2`, `baseline_d2`, `baseline_status`. `counts_as_prospective` is `false` while `confirmation_pending` |
+| `game/<round>.json` | `contract_version`, `labels`, `confirmation_pending`, `frame` (centre = frozen model at the reveal time), `training_points[].n_exposures/visit/detector`, `model.cov_arcsec2` (C_pred), `baseline.cov_arcsec2`, `actual.cov_arcsec2` (C_obs), `outcome`, `scoring.scale_source` |
+| `lessons/<id>.json` | `worked_example.prompt_key`; answers may add `z` or `note` |
