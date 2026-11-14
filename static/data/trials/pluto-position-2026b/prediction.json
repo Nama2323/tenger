@@ -1,0 +1,167 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "contract_version": 5,
+  "trial_id": "pluto-position-2026b",
+  "trial_ref": {
+    "path": "trials/pluto-position-2026b/trial.json",
+    "sha256": "52ef8d173053c02d788825ddc895c9f6ffca9cd6004b5996777728433f8b373d"
+  },
+  "training_sha256": "1bd012f933012389d0b63285108e396ddb6ef672efe5c0d1c25c0af8d5ef3d37",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "open_forecast": false,
+  "created_utc": "2026-11-14T14:49:30Z",
+  "prediction_status": "predicted",
+  "status_reason_key": null,
+  "t_mjd": 61314.65428,
+  "model": {
+    "ra_deg": 306.09275773,
+    "dec_deg": -23.71972738,
+    "cov_arcsec2": [
+      [
+        5.914357,
+        1.034913
+      ],
+      [
+        1.034913,
+        1.287916
+      ]
+    ],
+    "observer": "geocentre; spacecraft offset folded into the covariance",
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "ra_deg": 311.86877079,
+    "dec_deg": -22.25807734,
+    "cov_arcsec2": [
+      [
+        2885.102255,
+        92.533145
+      ],
+      [
+        92.533145,
+        3378.911382
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "track": null,
+  "baseline_track": null,
+  "model_state": {
+    "kind": "heliocentric_two_body",
+    "frame": "ICRS heliocentric",
+    "t0_mjd_utc": 60943.016342,
+    "state_au_au_per_day": [
+      18.95519723925663,
+      -26.37161160839608,
+      -13.939224903877653,
+      0.002799150986138945,
+      0.0011677434715960998,
+      -0.0004806059401767115
+    ],
+    "covariance": [
+      [
+        0.00011162662201727756,
+        -0.00016428683920006575,
+        -8.681568375160422e-05,
+        -6.490728900175479e-07,
+        9.280054950990295e-07,
+        4.921876553739864e-07
+      ],
+      [
+        -0.00016428683920011162,
+        0.00024179098041769923,
+        0.00012777181996483973,
+        9.547772652163877e-07,
+        -1.3651759228287787e-06,
+        -7.240438929256977e-07
+      ],
+      [
+        -8.68156837516238e-05,
+        0.00012777181996483287,
+        6.751971862159883e-05,
+        5.045810131178295e-07,
+        -7.214612840309473e-07,
+        -3.8263994027063193e-07
+      ],
+      [
+        -6.490728899983945e-07,
+        9.547772651879364e-07,
+        5.045810131028148e-07,
+        3.9849249041694285e-09,
+        -5.6584331332499525e-09,
+        -3.003748946242075e-09
+      ],
+      [
+        9.280054950751952e-07,
+        -1.3651759227933253e-06,
+        -7.21461284012242e-07,
+        -5.658433133270605e-09,
+        8.041577526015725e-09,
+        4.2683552105962495e-09
+      ],
+      [
+        4.92187655361093e-07,
+        -7.240438929065229e-07,
+        -3.8263994026051497e-07,
+        -3.0037489462516147e-09,
+        4.268355210594219e-09,
+        2.2656178040264187e-09
+      ]
+    ],
+    "gm_sun_au3_day2": 0.00029591220828559115,
+    "light_time": true,
+    "aberration": false,
+    "sigma_sys_arcsec": 0.0842
+  },
+  "diagnostics": {
+    "n_training_points": 50,
+    "chi2": 187.3022,
+    "dof": 94,
+    "chi2_red": 1.9926,
+    "heliocentric_distance_au": 35.3421,
+    "bound": true,
+    "start_distances_au": [
+      5.0,
+      10.0,
+      20.0,
+      30.0,
+      40.0,
+      50.0,
+      70.0,
+      100.0
+    ],
+    "converged_chi2": [
+      187.303,
+      187.302,
+      187.302,
+      187.302,
+      187.302,
+      187.302,
+      187.302,
+      187.302
+    ],
+    "near_best_prediction_spread_arcsec": 0.014466,
+    "training_residuals_rms_arcsec": [
+      0.2886,
+      0.2999
+    ],
+    "baseline": {
+      "chi2_red": 1348864.8008,
+      "params_arcsec": [
+        5275.61763,
+        874.52535,
+        26150.21574,
+        4274.5046
+      ]
+    },
+    "spacecraft_sigma_arcsec": 0.1598
+  },
+  "limitation_keys": [
+    "limit.two-body-only",
+    "limit.gaussian-psf-model",
+    "limit.ephemeris-guided-training"
+  ]
+}
