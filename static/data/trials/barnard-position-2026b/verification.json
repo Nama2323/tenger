@@ -90,7 +90,17 @@
       "d2": 2.6175,
       "error_arcsec": 1.5188,
       "status": "hit",
-      "c_obs_basis": "sample"
+      "c_obs_basis": "sample",
+      "c_obs_arcsec2": [
+        [
+          0.004881,
+          -0.001582
+        ],
+        [
+          -0.001582,
+          0.004162
+        ]
+      ]
     },
     "baseline": {
       "reference": {
@@ -110,10 +120,20 @@
       ],
       "east_arcsec": -3.0589,
       "north_arcsec": -0.5465,
-      "d2": 774.3831,
+      "d2": 786.1725,
       "error_arcsec": 3.1073,
       "status": "miss",
-      "c_obs_basis": "sample"
+      "c_obs_basis": "given",
+      "c_obs_arcsec2": [
+        [
+          0.004881,
+          -0.001582
+        ],
+        [
+          -0.001582,
+          0.004162
+        ]
+      ]
     }
   },
   "per_exposure": [
@@ -468,5 +488,17 @@
   },
   "identification": {
     "method_key": "ident.catalogue-gate"
-  }
+  },
+  "corrections": [
+    {
+      "utc": "2026-11-14T15:24:02Z",
+      "what": "baseline D^2 recomputed with the observed-position covariance C_obs (the model's, as trial.scoring defines); it had been computed with the baseline residuals' own scatter. Added c_obs_arcsec2 to both residual blocks (contract V6). Model numbers and status unchanged.",
+      "previous_baseline": {
+        "d2": 774.3831,
+        "status": "miss",
+        "c_obs_basis": "sample"
+      },
+      "baseline_status_changed": false
+    }
+  ]
 }

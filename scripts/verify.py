@@ -72,7 +72,7 @@ def integrity_problems(trial_id: str, root: Path = TRIALS_DIR, git_root: Path = 
     data = (folder / "prediction.json").read_bytes()
     if _sha(data) != receipt.get("prediction_sha256"):
         problems.append("prediction.json hash differs from the receipt")
-    relative = (folder / "prediction.json").resolve().relative_to(git_root.resolve())
+    relative = f"static/data/trials/{trial_id}/prediction.json"  # where the receipt's commit stored it
     committed = subprocess.run(["git", "show", f"{receipt.get('commit')}:{relative}"], cwd=git_root,
                                capture_output=True)
     if committed.returncode != 0 or committed.stdout != data:
@@ -128,23 +128,28 @@ def orbit_model_at(prediction: dict, t: float, observer: np.ndarray) -> tuple[fl
 # ------------------------------------------------------------------ scoring
 
 
-def score(residuals: np.ndarray, fit_covs: np.ndarray, c_pred: np.ndarray) -> dict:
-    """Mean residual, C_obs and D^2 exactly as frozen (trial.scoring)."""
+def score(residuals: np.ndarray, fit_covs: np.ndarray, c_pred: np.ndarray, c_obs: np.ndarray | None = None) -> dict:
+    """Mean residual, C_obs and D^2 exactly as frozen (trial.scoring).
+
+    C_obs is the uncertainty of the observed position: computed once from the model residuals
+    (trial.scoring.c_obs) and passed unchanged when the baseline is scored on the same data.
+    """
     n = len(residuals)
     if n < MIN_IDENTIFIED:
         return {"status": "insufficient_data", "status_reason_key": "verify.fewer-than-3", "n": n}
     mean = residuals.mean(axis=0)
-    sample = np.cov(residuals.T, ddof=1) / n
-    floor = fit_covs.mean(axis=0) / n
-    c_obs = sample if np.trace(sample) >= np.trace(floor) else floor
+    basis = "given"
+    if c_obs is None:
+        sample = np.cov(residuals.T, ddof=1) / n
+        floor = fit_covs.mean(axis=0) / n
+        c_obs, basis = (sample, "sample") if np.trace(sample) >= np.trace(floor) else (floor, "fit-floor")
     total = c_pred + c_obs
     eigenvalues = np.linalg.eigvalsh(total)
     if not np.all(np.isfinite(total)) or eigenvalues.min() <= 0:
         return {"status": "invalid_comparison", "status_reason_key": "verify.singular-covariance", "n": n}
     d2 = float(mean @ np.linalg.inv(total) @ mean)
     return {"status": "hit" if d2 <= CHI2_95_2D else "miss", "status_reason_key": None, "n": n,
-            "mean": mean, "c_obs": c_obs, "c_obs_basis": "sample" if c_obs is sample else "fit-floor",
-            "d2": d2, "error_arcsec": float(math.hypot(*mean))}
+            "mean": mean, "c_obs": c_obs, "c_obs_basis": basis, "d2": d2, "error_arcsec": float(math.hypot(*mean))}
 
 
 def _cov(matrix) -> list:
@@ -154,6 +159,7 @@ def _cov(matrix) -> list:
 def residual_block(reference: tuple, c_pred: np.ndarray, scored: dict, t_mean: float) -> dict:
     return {"reference": {"ra_deg": _r(reference[0], 8), "dec_deg": _r(reference[1], 8), "t_mjd": _r(t_mean)},
             "c_pred_arcsec2": _cov(c_pred),
+            "c_obs_arcsec2": _cov(scored["c_obs"]),
             "east_arcsec": _r(scored["mean"][0], 4), "north_arcsec": _r(scored["mean"][1], 4),
             "d2": _r(scored["d2"], 4), "error_arcsec": _r(scored["error_arcsec"], 4),
             "status": scored["status"], "c_obs_basis": scored["c_obs_basis"]}
@@ -258,7 +264,7 @@ def assemble(trial, prediction, rows, model_res, base_res, fit_covs, times, mode
     model_ref = model_at(t_mean)
     base_ref = base_at(t_mean)
     model_scored = score(model_res, fit_covs, model_ref[2])
-    base_scored = score(base_res, fit_covs, base_ref[2])
+    base_scored = score(base_res, fit_covs, base_ref[2], c_obs=model_scored.get("c_obs"))
     if model_scored["status"] in ("insufficient_data", "invalid_comparison"):
         return {**base, "observed": None, "residuals": None, "status": model_scored["status"],
                 "status_reason_key": model_scored["status_reason_key"], "n_identified": len(rows), **extra}
