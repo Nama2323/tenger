@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 2 | 2026-11-14 | Additive (Task A2). Live/bake frame metadata fields, flag mask policy, comparison and measurement reason keys, the comparison rule for the viewer. Version 1 file kinds and their `schema_version` values are unchanged. |
 
 ---
 
@@ -406,3 +407,74 @@ Worked examples and answers come from sourced records or are clearly marked synt
 An input with `"synthetic": false` needs a `source_ref` (a measurement id in an investigation, a
 trial id, or a catalogue citation). If a real value does not exist yet, the lesson uses a synthetic
 input marked as such. It never uses a measured-looking number.
+
+---
+
+# Version 2 (additive, Task A2, 14 Nov 2026)
+
+Nothing in Version 1 changes. Every file kind keeps `schema_version` `…/1`. This version adds the
+following.
+
+## V2.1 Live and bake frame metadata
+
+Each frame's JSON object in `GET /api/job/{id}/frames` (and in the `meta` of a cached frame) keeps
+its old fields and gains these. Old bundled `meta.json` files do not have them. A reader must treat
+a missing field as unknown, never as "passed".
+
+| Field | Type | Meaning |
+|---|---|---|
+| `obsKey` | string | `"<collection>:<obs_id>:D<detector>"` (§1 rule 7) |
+| `release` | string | Collection, e.g. `spherex_dr1`, `spherex_qr3_deep` (unchanged name, now DR1 too) |
+| `processing` | string or null | Product version from the file name, e.g. `l2b-v27-2026-228` |
+| `releaseDate` | string or null | IRSA `obs_release_date` |
+| `mjd`, `mjdEnd`, `timeScale` | number, number or null, `"UTC"` | Exposure start and end (IRSA `t_min`, `t_max`) |
+| `response` | object or null | `{"centre_um", "width_um", "source": "WCS-WAVE"}` at the request centre. `null` = unknown |
+| `responseStatus` | `known` / `unknown` | If `unknown`, `wavelength` is the array midpoint for display placement only |
+| `wavelength`, `waveDx`, `waveDy` | number | Display placement (unchanged). Not a validity proof |
+| `channel` | integer | Approximate display bin 0–101. A label, never a response |
+| `flagSchema` | `MSKN/MSKM` or `MP` | Which FLAGS header schema was decoded |
+| `maskPolicy` | string | `tenger-mask-v1` (table in `backend/flags.py`) |
+| `flagCounts` | object | Pixels per flag name in the native cutout, plus `UNDEFINED_BITS` if any |
+| `source` | object | `{"url", "sha256", "bytes", "software", "native"}`: cutout request, SHA-256 of the bytes received, pipeline software version, cached native product path (or null) |
+| `cache` | object | `{"tag", "pipeline", "frame_schema", "mask_policy", "grid"}` |
+
+The job summary (`/api/observe`, `/api/job/{id}`) gains `rejected`: `{reason_key: count}` for
+exposures refused before display, e.g. `product.unusable-quality-metadata` (no known flag schema
+or a missing extension).
+
+## V2.2 Flag mask policy `tenger-mask-v1`
+
+Kept: `SOURCE`, `FULLSAMPLE`. Rejected: every other named flag, any name not in the policy and any
+bit set without a header definition. The display mask (`mask` in frames) uses the same rejection.
+A display setting can hide or show the mask overlay. It cannot change which pixels a measurement
+uses.
+
+## V2.3 Comparison and measurement reason keys
+
+`comparison_grade` (V1 §2) is assigned by `backend/spectral.py`. Reason keys for the English
+resource file:
+
+| Key | Grade | Meaning |
+|---|---|---|
+| `compare.response-matched` | quantitative | Same array, centres within 10% of the narrower bandwidth (TENGER tolerance, not an official criterion) |
+| `compare.matched-pairs` | quantitative | Two epochs compared only through the listed matched exposure pairs |
+| `compare.field-matched` | quantitative | Responses match at every corner of the plate |
+| `compare.response-shifted` | qualitative | Same array, overlapping passbands, centres too far apart for a brightness comparison |
+| `compare.field-shifted` | qualitative | Matched at the source but not across the whole plate. No difference image |
+| `compare.position-different-response` | qualitative | Position compared across wavelengths. Chromatic effects not modelled |
+| `compare.response-unknown` | invalid | One side has no WCS-WAVE response |
+| `compare.no-spectral-overlap` | invalid | Passbands do not overlap (or different arrays for brightness) |
+| `compare.field-gradient-unknown` | invalid | Wavelength gradient across the plate unknown |
+| `compare.no-exposures` | invalid | One epoch has no exposure |
+| `measure.flagged-pixels-in-aperture` | `insufficient_data` | A rejected pixel lies inside the aperture. Counts per flag are given |
+| `measure.outside-cutout`, `measure.aperture-empty`, `measure.annulus-too-small` | `insufficient_data` | Geometry prevents a measurement |
+
+## V2.4 Viewer rule for time comparisons
+
+- Blink and side-by-side may show any pair. They are labelled with the comparison grade.
+- A difference image, or any brightness change, needs `quantitative`. A difference image also
+  needs the field grade (`compare.field-*`) to be `quantitative`.
+- Choosing a band must never silently substitute the nearest channel that has data in one epoch
+  and not the other. If an epoch has no exposure with a matching response, show that instead.
+  (`resolveBand` in `static/js/stack.js` currently does this substitution. That file belongs to
+  Session B.)
