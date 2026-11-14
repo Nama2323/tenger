@@ -1,0 +1,28 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "contract_version": 5,
+  "trial_id": "wise0855-position-2026a",
+  "trial_ref": {
+    "path": "trials/wise0855-position-2026a/trial.json",
+    "sha256": "2c84dd85e951f218b6f204c311c236c03f091c8659e29d59543838176c9914fc"
+  },
+  "training_sha256": "24d08a7de3922a63c01214305e0498497e90fc7424efba169e7b13195845c71b",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "open_forecast": false,
+  "created_utc": "2026-11-14T14:49:57Z",
+  "prediction_status": "insufficient_data",
+  "status_reason_key": "predict.no-training-positions",
+  "t_mjd": 61162.402278,
+  "model": null,
+  "baseline": null,
+  "track": null,
+  "diagnostics": {
+    "n_training_points": 0,
+    "n_training_visits": 0
+  },
+  "limitation_keys": []
+}
