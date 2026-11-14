@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 6 | 2026-11-14 | Additive. Verification residual fields agreed with Session B before A5 (reference position, C_pred, C_obs). |
 | 5 | 2026-11-14 | Additive (Task A4). Trial labels and precedence, confirmation_pending, open forecasts, training.json, prediction_status, model_state, receipts with full SHA; names agreed with Session B. |
 | 4 | 2026-11-14 | Additive (Task A3). Brightness game round shape (`quantity: "brightness"`), confirmed with Session B. |
 | 3 | 2026-11-14 | Additive (Task A3). Real investigation fields (provenance, quality gate, epochs mapped to viewer frames and previews, graded comparisons, astrometry and photometry blocks), `reserved.json`, `strings.en.json`, index additions. `schema_version` majors unchanged. |
@@ -645,3 +646,19 @@ input (e.g. to centre training cutouts).
 `verification.observed.image` = `{"path", "content_type": "processed", "epoch_id", "centre_ra_deg",
 "centre_dec_deg", "scale_arcsec_px", "width_px", "height_px", "north_up": true, "east_left": true}`
 or `null`.
+
+---
+
+# Version 6 (additive, 14 Nov 2026): verification residual fields (for Task A5)
+
+Agreed with Session B before any verification, so the page can redraw exactly what was scored.
+
+| Field (`verification.json`) | Meaning |
+|---|---|
+| `t_mjd` | Mean time of the identified holdout exposures |
+| `observed.ra_deg`, `observed.dec_deg` | `residuals.model.reference` shifted by the mean residual r̄ in the tangent plane |
+| `observed.cov_arcsec2` | **C_obs as scored**: sample covariance of the per-exposure residuals / N (never below the mean fit covariance / N) |
+| `residuals.model.reference` | `{ra_deg, dec_deg, t_mjd}`: the frozen model evaluated at `t_mjd` with the real observer positions. D² is computed against this, not against `prediction.json`'s headline position (geocentric observer, median start time) |
+| `residuals.model.c_pred_arcsec2` | **C_pred as scored** at `t_mjd` (including sigma_sys and, for orbits, without the spacecraft term because the real observer is used) |
+| `residuals.model.east_arcsec`, `north_arcsec`, `d2`, `error_arcsec` | r̄ and D² = r̄ᵀ (C_pred + C_obs)⁻¹ r̄; `error_arcsec` = |r̄| |
+| `residuals.baseline.*` | The same four fields plus `reference` and `c_pred_arcsec2` for the baseline |
