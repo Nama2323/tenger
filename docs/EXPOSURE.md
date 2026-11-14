@@ -250,8 +250,23 @@ statement in chat.
 **Opened so far:**
 - **Training pixels** (02:56–05:45 UB): every training exposure listed by MOST, 2,041 cutouts centred
   on the MOST training-time positions (`cache/asteroids/<number>/train/`).
-- **Evaluation pixels: none.** They are opened only after "predict: freeze asteroid batch" is committed
-  and pushed with its receipts.
+- **Evaluation pixels:** none before the freeze.
+  - "predict: freeze asteroid batch" (`61b3cb7`) was pushed at 06:03 UB.
+  - The receipts (`ffe833f`) were pushed right after.
+
+**Integrity check after the freeze (06:05–06:15 UB).** The full MOST tables (evaluation rows included)
+were saved only after the receipts were pushed (`docs/exposure/asteroids/raw/`).
+`tests/test_asteroids_integrity.py` then searched every file in the freeze commit for the evaluation
+positions.
+- **Result: no file holds both coordinates of any evaluation-row position** (whole numbers at 4–6
+  decimals).
+- A first, looser version of the test searched for single coordinates as substrings. It flagged:
+  - substrings of longer numbers in three files;
+  - one exact single-coordinate coincidence: 1021 Flammario's evaluation declination −16.49581 also
+    appears on the 3I/ATLAS path in `reserved.json` and `3i-atlas/investigation.json`. The right
+    ascensions differ by 102° (346.70° vs 244.56°), so the sky positions are unrelated.
+- The test now requires both coordinates of the same row.
+- No object is affected.
 
 ## Who has seen what
 

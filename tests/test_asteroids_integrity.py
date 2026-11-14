@@ -51,22 +51,39 @@ def test_training_files_hold_training_rows_only():
         assert rows and all(float(row["mjd_start"]) < evaluation_start - asteroids.VISIT_GAP_DAYS for row in rows)
 
 
+def _tokens(value: float) -> set[str]:
+    return {f"{value:.4f}", f"{value:.5f}", f"{value:.6f}"}
+
+
+def _has_token(text: str, token: str) -> bool:
+    import re
+    return re.search(r"(?<![0-9.])" + re.escape(token) + r"(?![0-9])", text) is not None
+
+
 def test_nothing_committed_before_the_freeze_holds_evaluation_ephemeris():
-    """After the freeze, the raw MOST tables are saved; no evaluation RA/Dec may occur in the freeze commit."""
+    """No file in the freeze commit holds both coordinates of any evaluation-row position (whole numbers, 4-6
+    decimals). A single coordinate equal to five decimals happens by chance in large files (for example the
+    3I/ATLAS path shares 1021's evaluation declination -16.49581 at RA 244.6 vs 346.7), so pairs are required."""
     raw_dir = asteroids.OUT / "raw"
     if not raw_dir.exists() or not list(raw_dir.glob("*.json")):
         pytest.skip("batch not frozen yet")
-    first = sorted(raw_dir.glob("*.json"))[0]
-    commit = json.loads(first.read_text())["after_freeze_commit"]
-    patterns = set()
+    commit = json.loads(sorted(raw_dir.glob("*.json"))[0].read_text())["after_freeze_commit"]
+    pairs = []
     for path in raw_dir.glob("*.json"):
         raw = json.loads(path.read_text())
-        for row in raw["evaluation_rows"]:
-            for key in ("ra_obj", "dec_obj"):
-                value = float(row[key])
-                patterns.update({f"{value:.5f}", f"{value:.6f}"})
-    assert patterns
-    found = subprocess.run(["git", "grep", "-F", "-l", *sum((["-e", p] for p in sorted(patterns)), []), commit],
-                           cwd=ROOT, capture_output=True, text=True)
-    hits = [line for line in found.stdout.splitlines() if "/raw/" not in line]
-    assert hits == [], f"evaluation ephemeris values found in the freeze commit: {hits[:5]}"
+        pairs += [(_tokens(float(row["ra_obj"])), _tokens(float(row["dec_obj"]))) for row in raw["evaluation_rows"]]
+    assert pairs
+    every_ra = sorted({token for ra, _ in pairs for token in ra})
+    listed = subprocess.run(["git", "grep", "-F", "-l", *sum((["-e", t] for t in every_ra), []), commit],
+                            cwd=ROOT, capture_output=True, text=True).stdout.splitlines()
+    hits = []
+    for entry in listed:
+        path = entry.split(":", 1)[1]
+        if "/raw/" in path:
+            continue
+        text = subprocess.run(["git", "show", f"{commit}:{path}"], cwd=ROOT, capture_output=True, text=True).stdout
+        for ra_tokens, dec_tokens in pairs:
+            if any(_has_token(text, t) for t in ra_tokens) and any(_has_token(text, t) for t in dec_tokens):
+                hits.append(path)
+                break
+    assert hits == [], f"evaluation ephemeris positions found in the freeze commit: {hits[:5]}"
