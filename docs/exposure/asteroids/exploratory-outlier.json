@@ -1,0 +1,68 @@
+{
+ "exploratory": true,
+ "counts": false,
+ "change": "OUTLIER-only rejections kept; every other frozen rule unchanged",
+ "results": {
+  "491": {
+   "status_if_outlier_allowed": "hit",
+   "reason": null,
+   "d2": 0.081,
+   "error_arcsec": 3.2248,
+   "n_identified": 4,
+   "observed_minus_horizons_arcsec": [
+    -0.108,
+    0.139
+   ]
+  },
+  "1021": {
+   "status_if_outlier_allowed": "hit",
+   "reason": null,
+   "d2": 1.9355,
+   "error_arcsec": 6.3663,
+   "n_identified": 4,
+   "observed_minus_horizons_arcsec": [
+    0.184,
+    -0.088
+   ]
+  },
+  "363": {
+   "status_if_outlier_allowed": "ambiguous",
+   "reason": "verify.multiple-candidates",
+   "d2": null,
+   "error_arcsec": null,
+   "n_identified": 9
+  },
+  "714": {
+   "status_if_outlier_allowed": "ambiguous",
+   "reason": "verify.multiple-candidates",
+   "d2": null,
+   "error_arcsec": null,
+   "n_identified": 2
+  },
+  "345": {
+   "status_if_outlier_allowed": "hit",
+   "reason": null,
+   "d2": 0.1185,
+   "error_arcsec": 6.5249,
+   "n_identified": 5,
+   "observed_minus_horizons_arcsec": [
+    0.016,
+    -0.118
+   ]
+  },
+  "162": {
+   "status_if_outlier_allowed": "ambiguous",
+   "reason": "verify.multiple-candidates",
+   "d2": null,
+   "error_arcsec": null,
+   "n_identified": 0
+  },
+  "379": {
+   "status_if_outlier_allowed": "ambiguous",
+   "reason": "verify.multiple-candidates",
+   "d2": null,
+   "error_arcsec": null,
+   "n_identified": 2
+  }
+ }
+}

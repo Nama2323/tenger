@@ -650,7 +650,26 @@ def acquire_evaluation(number: str) -> list[dict]:
     return out
 
 
-def verify_object(number: str) -> dict:
+OUTLIER_BIT = 19  # FLAGS bit "OUTLIER" (Pixel flagged by Detect Outliers) in the MSKN/MSKM schema
+
+
+def relaxed(product):
+    """Exploratory only: the same product with pixels whose only rejection reason is OUTLIER kept."""
+    from dataclasses import replace
+
+    import numpy as np
+
+    from backend import flags as flagdefs
+
+    definition = next((d for d in product.flag_schema.definitions if d.name == "OUTLIER"), None)
+    if definition is None:
+        return product
+    cleared = product.flags & ~np.int64(1 << definition.bit)
+    finite = np.isfinite(product.image) & np.isfinite(product.variance) & np.isfinite(product.zodi) & (product.variance >= 0)
+    return replace(product, reject=flagdefs.reject_mask(cleared, product.flag_schema) | ~finite)
+
+
+def verify_object(number: str, relax_outlier: bool = False) -> dict:
     import numpy as np
 
     from backend import astrometry, orbit
@@ -678,6 +697,8 @@ def verify_object(number: str) -> dict:
         if entry["meta"].get("status") != "ok":
             continue
         product = load_product((WORK / number / "eval" / f"{entry['key']}.fits").read_bytes())
+        if relax_outlier:
+            product = relaxed(product)
         if product.info.get("L2DQAFLG") not in (None, "Pass", "PASS", "pass"):
             continue
         t = float(product.info.get("MJD-AVG", entry["obs"]["t_mjd"]))
@@ -686,6 +707,8 @@ def verify_object(number: str) -> dict:
         reference = None
         if entry["reference"] and entry["reference"].get("status") == "ok":
             reference = load_product((WORK / number / "eval" / "ref" / f"{entry['key']}.fits").read_bytes())
+            if relax_outlier:
+                reference = relaxed(reference)
         items.append({"obs_key": entry["key"], "detector": entry["obs"]["detector"], "product": product, "t": t,
                       "observer": observer, "model": frozen_position(prediction, "model_state", t, observer),
                       "secondary": frozen_position(prediction, "secondary_state", t, observer),
@@ -1033,6 +1056,29 @@ def main(argv: list[str]) -> int:
         document = build_batch(argv[1:])
         refresh_index()
         print(json.dumps(document["calibration"]), json.dumps(document["secondary_calibration"]))
+        return 0
+    if stage == "explore-outlier":
+        results = {}
+        for number in argv[1:]:
+            document = verify_object(number, relax_outlier=True)
+            horizons = json.loads((TRIALS / trial_id(number) / "verification.json").read_text()).get("horizons_after_verdict") or {}
+            residual = (document.get("residuals") or {}).get("model") or {}
+            observed = document.get("observed")
+            entry = {"status_if_outlier_allowed": document["status"], "reason": document.get("status_reason_key"),
+                     "d2": residual.get("d2"), "error_arcsec": residual.get("error_arcsec"),
+                     "n_identified": (document.get("identification") or {}).get("n_identified")}
+            if observed and horizons:
+                from backend.astrometry import tangent_offsets_arcsec
+                keys = set(observed["obs_keys"])
+                rows = [r for r in horizons["per_exposure"] if r["obs_key"] in keys]
+                h_ra = sum(r["horizons_ra_deg"] for r in rows) / len(rows)
+                h_dec = sum(r["horizons_dec_deg"] for r in rows) / len(rows)
+                entry["observed_minus_horizons_arcsec"] = [round(v, 3) for v in tangent_offsets_arcsec(h_ra, h_dec, observed["ra_deg"], observed["dec_deg"])]
+            results[number] = entry
+            print(number, entry, flush=True)
+        write_json(WORK / "exploratory-outlier.json", {"exploratory": True, "counts": False,
+                                                      "change": "OUTLIER-only rejections kept; every other frozen rule unchanged",
+                                                      "results": results})
         return 0
     if stage == "horizons":
         from scripts import predict

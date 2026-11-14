@@ -250,7 +250,9 @@ statement in chat.
 **Opened so far:**
 - **Training pixels** (02:56–05:45 UB): every training exposure listed by MOST, 2,041 cutouts centred
   on the MOST training-time positions (`cache/asteroids/<number>/train/`).
-- **Evaluation pixels:** none before the freeze.
+- **Evaluation pixels:** opened 06:10–06:30 UB, after the freeze and the receipts were pushed. There
+  were 54 evaluation cutouts on the frozen primary forecast and 54 static references
+  (`cache/asteroids/<number>/eval/`). Verification was published at 06:36 UB (`9cf2bfd`).
   - "predict: freeze asteroid batch" (`61b3cb7`) was pushed at 06:03 UB.
   - The receipts (`ffe833f`) were pushed right after.
 

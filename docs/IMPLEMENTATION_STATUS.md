@@ -9,10 +9,37 @@ still open. Session A edits only "Science/data". Session B edits only "Web".
 
 ### Current phase
 
-**Phase H data checks done (Task H2); Planet X depth measured (Task A8, contract V12).** Release candidate on
-`tenger-dev`, not on `main`, not deployed.
+**Phase H data checks done (Task H2); Planet X depth measured (A8, V12); asteroid batch frozen and verified
+(A9, V13).** Release work continues on `tenger-dev`; the user fast-forwarded `main` to `8fea8b9` at 05:57 UB.
 `bake.yml` disabled on GitHub. Open: three teammates' confirmation for Pluto; updating `main`; making
 the repository public and enabling Pages (`docs/RELEASE.md`).
+
+### Task A9, 15 Nov 2026 (blind asteroid batch with a calibration result; contract V13)
+
+| Step | Files and commits | Result |
+|---|---|---|
+| Rules first | `docs/asteroid-batch.md`, `scripts/asteroids.py` (`b9ef625`, 02:4x UB) | The selection rule, training, models, freeze-then-verify, scoring and calibration were committed and pushed before the selection ran. The user's MOST integrity rule is in `docs/EXPOSURE.md`: evaluation rows are cut to identifiers and times in memory, the star check is blind, and raw tables are saved only after the freeze. 1000 Piazzia was excluded (its full table had been fetched during a feasibility test). |
+| Selection | `docs/exposure/asteroids/selection.json` (`0def564`, 02:55 UB) | JPL SBDB numbered MBAs with 9 ≤ H ≤ 11, by H. MOST footprint rows; ≥ 3 DR1/QR3 visits; training-visit V 11.5–16; blind 15″ star check (Gaia G < 18, AllWISE W1 < 15). 32 examined; first 8: 491, 1021, 363, 714, 345, 286, 162, 379 |
+| Model code before data | `scripts/asteroid_forecast.py` (`8268808`) | v2 `MethodV2` with the frame as a parameter; start from our first-visit motion over a 0.8–4.0 AU grid; synthetic N-body model error (24 orbits with our fitted a, e, i; Sun + 4 giants); spacecraft term |
+| Amendments before the freeze | `3dfd962` 05:52, `4d7a076` 05:53, `8fea8b9` (timestamps corrected) | The user chose the heliocentric primary for every object (barycentric v2 χ²/dof 332 on 345; heliocentric 4.5) and stated the one-rule wording. Barycentric v2 is the frozen secondary. C_fit is the largest of MC, jackknife and the χ²-scaled formal covariance, per axis; resampling won on every axis of every object |
+| Training | `cache/asteroids/<n>/training-measured.json` → `trials/asteroid-<n>-position/training.json` | Every training exposure from MOST (2,041 cutouts). A3 fit, S/N ≥ 10, ≤ 3″ from MOST, no Gaia G < 18 within 12″. Kept per object: 97, 81, 92, 159, 80, 43 (286: visit 2 dropped), 51, 59 |
+| Freeze | `61b3cb7` "predict: freeze asteroid batch" (06:03 UB), receipts `ffe833f`, raw MOST + integrity test `358d487` | Primary heliocentric 95% regions from 16″ × 10″ to 286″ × 22″; 286 frozen insufficient. The integrity test (both coordinates of any evaluation row, whole numbers) passes |
+| Verification | `9cf2bfd` (06:36 UB) | 345 hit (D² 0.12, 6.5″); 491 and 1021 insufficient; 363, 714, 162, 379 ambiguous; 286 insufficient. **Calibration 1 of 1 inside (Clopper–Pearson 0.025–1.0)**. Secondary 1/1; straight line 0/1 (3.1° off) |
+| After the verdicts (exploratory, not counted) | `verification.json` `horizons_after_verdict`; `docs/exposure/asteroids/exploratory-outlier.json` | JPL Horizons lies inside the frozen primary 95% region for 7 of 7 (median errors 3.4–62″). Cause of the failures: SPHEREx flags moving asteroids' pixels OUTLIER and `tenger-mask-v1` rejects them. With only OUTLIER kept, 491 and 1021 become hits (D² 0.08, 1.94; measured − Horizons ≤ 0.2″); 363, 714, 162 and 379 stay ambiguous (large regions, one static reference) |
+| Site data | `batches/asteroids-2026a.json`, `scoreboard.json` `asteroid_batch`, `index.json` `batch_paths`, strings (196 keys) | Batch trials are kept out of the per-category counts. Validator: 120 files, 0 failures |
+
+**Checks:** `pytest` 203 passed, 2 skipped (network); validator 120 files, 0 failures;
+`predict check` all trials intact; `tests/test_asteroids_integrity.py` passes after the freeze.
+
+**Limits:**
+- N = 1 scored, so calibration is not tested.
+- The team statement is pending for all eight objects.
+- Training identification was guided by JPL positions; the fit and the forecast used none.
+- The synthetic model-error fits start from the true orbit, so they may understate fit failures.
+- Static rejection uses one reference image.
+- Planet X wording follow-up (Session B's request): `planetx/depth.json` verdicts carry
+  `recovered_fraction`. One row is `planetx.verdict.partial` (28%); the summary matches the website
+  (`f1d0cc4`).
 
 ### Task A8, 15 Nov 2026 ("Could SPHEREx see Planet X? We measured it."; contract V12)
 

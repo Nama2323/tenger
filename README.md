@@ -50,6 +50,17 @@ sources to 126 real exposures of already-opened fields, then ran the site's own 
 
 The game's "hidden planet" rounds use these artificial sources and are labelled as such.
 
+**Blind asteroid forecasts** (`docs/asteroid-batch.md`):
+- **Selection and freeze.** Eight main-belt asteroids were chosen by a rule committed before it ran.
+  Their positions were forecast from our own SPHEREx measurements only, and the forecasts were frozen in
+  git before any evaluation image was opened.
+- **Scored.** One forecast could be checked under the frozen rules: a hit, 6.5″ off, inside its 95%
+  region. Calibration is 1 of 1 (95% interval 0.025–1.0), too few to test anything.
+- **Not scored.** The other six were not recovered: four ambiguous, two with too few detections.
+- **After the verdicts.** JPL's positions lay inside all seven frozen regions. The recovery failed
+  because SPHEREx flags moving asteroids as "outlier" pixels and our frozen rules discarded those pixels.
+  We report that as the lesson, and the verdicts stand.
+
 ## Run it locally
 
 ```

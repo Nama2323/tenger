@@ -214,3 +214,61 @@ Made before any forecast was frozen and before any evaluation pixel was opened; 
 Those were Session A's mistaken estimates of the clock. The git commit times are authoritative:
 `3dfd962` at 05:52:43 and `4d7a076` at 05:53:38 UB. Both amendments were still made before any
 forecast was frozen and before any evaluation pixel was opened.
+
+## Results (verified 15 Nov 2026, 06:10–06:36 UB; published in `9cf2bfd`)
+
+- **Freeze:** `61b3cb7`, pushed 06:03 UB. **Receipts:** `ffe833f`. **Raw MOST tables and integrity
+  test:** `358d487`. No file in the freeze commit holds an evaluation-row position.
+- **Evaluation pixels** were opened only afterwards (06:10–06:30 UB). Cutouts were centred on the frozen
+  primary forecast, each with a static reference image of the same detector.
+
+**Primary (heliocentric two-body) under the frozen Pluto rules**
+
+| Object | Status | Why | Frozen 95% region (along × across) | Horizons − forecast (after the verdict) |
+|---|---|---|---|---|
+| 345 Tercidina | **hit** (D² 0.12, error 6.5″) | 5 of 5 exposures identified, motion consistent | 66″ × 14″ | 6.4″; observed − Horizons 0.12″ |
+| 491 Carina | insufficient data | no source fitted within the 34″ search radius in 4 exposures | 28″ × 7″ | 3.4″ (D² 0.09) |
+| 1021 Flammario | insufficient data | forecast 2–4 px from the detector edge; no fit succeeded | 16″ × 10″ | 6.5″ (D² 2.0) |
+| 363 Padua | ambiguous | motion inconsistent (3 exposures agree at 6.7″, one other passing candidate at 42″) | 56″ × 11″ | 6.8″ (D² 0.39) |
+| 714 Ulula | ambiguous | several passing candidates in 5 exposures | 103″ × 65″ | 35″ (D² 0.70) |
+| 162 Laurentia | ambiguous | several passing candidates in 7 exposures | 286″ × 22″ | 55″ (D² 0.23) |
+| 379 Huenna | ambiguous | several passing candidates in 7 exposures | 143″ × 9″ | 62″ (D² 1.45) |
+| 286 Iclea | insufficient data (frozen) | one training visit left | — | — |
+
+**Calibration (pre-registered):**
+- Primary: **1 of 1 scored forecast inside its 95% region.** The 95% Clopper–Pearson interval for the
+  true coverage is 0.025–1.0 (Wilson 0.21–1.0); a perfectly calibrated method expects 0.95.
+- One scored object cannot test calibration. The independence assumption (section 6) is moot at N = 1.
+- Secondary (barycentric v2) on the same position: also inside (D² 0.32), with a 932″ region and a
+  186″ error.
+- Straight line: missed by 3.1° (D² 32).
+
+**Exploratory, not counted: the catalogue truth inside the frozen regions.** After the verdicts, JPL
+Horizons (moved to the spacecraft) was compared with the frozen forecast at every evaluation exposure.
+- Primary: the median D² against the frozen C_pred is ≤ 5.991 for **7 of 7** objects (Clopper–Pearson
+  0.59–1.0). Secondary: also 7 of 7.
+- Median position errors of the primary: 3.4–62″.
+- The forecasts and their regions were right. The recovery step failed.
+
+**Why recovery failed (exploratory diagnosis):**
+- SPHEREx's pipeline flags a moving asteroid's pixels as **OUTLIER** ("Pixel flagged by Detect
+  Outliers") in many exposures, because it appears only once on that patch of sky. Our frozen mask
+  policy (`tenger-mask-v1`) rejects OUTLIER pixels.
+- At 491 Carina's true position the asteroid has S/N 41–48 in the D2 exposures, but its pixels carry
+  OUTLIER.
+- Re-running the identical recovery with only OUTLIER-flagged pixels kept
+  (`docs/exposure/asteroids/exploratory-outlier.json`):
+
+  | Object | With OUTLIER kept | Measured − Horizons |
+  |---|---|---|
+  | 491 | **hit**, D² 0.08 | 0.18″ |
+  | 1021 | **hit**, D² 1.94 | 0.20″ |
+  | 345 | unchanged hit | — |
+  | 363, 714, 162, 379 | still ambiguous | — |
+
+- The four still-ambiguous objects have large search regions (127–350″ radius) in crowded fields,
+  where one static reference image (another wavelength, another depth) does not reject every real star.
+- None of this counts. It says what to change next time:
+  - keep OUTLIER pixels when searching for a moving object;
+  - use several static references;
+  - use an N-body model instead of a two-body model plus model error, to shrink the regions.
