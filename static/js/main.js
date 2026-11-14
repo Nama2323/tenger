@@ -15,7 +15,8 @@ import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
 import { findByName, searchMatches } from './names.js';
 import { renderChanged, renderEvidence, renderPrediction, renderSpectrumNote } from './panels.js';
 import { currentRoundId, renderGamePage, selectRound } from './game-ui.js';
-import { renderAbout, renderLearn } from './pages.js';
+import { currentLearnView, initLearn, showLearn } from './learn-ui.js';
+import { renderAbout } from './pages.js';
 import {
   drawPlate, limitsFor, paintComposite, paintDifference, paintMono, stacksFor, StackCache, tintFor,
 } from './plate.js';
@@ -1454,7 +1455,13 @@ function renderNotices() {
 const dataVersion = () => (app.indexState?.state === 'ok' ? app.indexState.doc.dataset_version : 'legacy');
 
 function routeState() {
-  const base = { page: app.page, embed: app.embed, fixtures: app.source?.fixtures, round: app.page === 'game' ? currentRoundId() : null };
+  const base = {
+    page: app.page,
+    embed: app.embed,
+    fixtures: app.source?.fixtures,
+    round: app.page === 'game' ? currentRoundId() : null,
+    lesson: app.page === 'learn' ? currentLearnView() : null,
+  };
   if (app.page !== 'investigate' || !state.target) return base;
   const centre = app.requested ?? centreOf(state.target);
   return {
@@ -1721,6 +1728,7 @@ function applyLocation({ push = false } = {}) {
   renderNotices();
   if (resolved.page !== 'investigate') {
     if (resolved.page === 'game' && route.round && route.round !== currentRoundId()) selectRound(route.round);
+    if (resolved.page === 'learn' && (route.lesson ?? null) !== currentLearnView()) showLearn(route.lesson, { notify: false, focus: false });
     showPage(resolved.page, { push, focus: false });
     return;
   }
@@ -2062,7 +2070,18 @@ async function loadData() {
       if (app.page === 'game') writeUrl();
     },
   });
-  renderLearn(lessons);
+  initLearn({
+    records: lessons,
+    scoreboard: app.scoreboard,
+    nameOf: (key) => {
+      const entry = key ? app.allTargets.find((item) => item.key === canonicalKey(key)) : null;
+      return entry ? entryName(entry) : null;
+    },
+    onNavigate: () => {
+      if (app.page === 'learn') writeUrl();
+    },
+  });
+  showLearn(parseRoute(location.search).lesson, { notify: false, focus: false });
 }
 
 /** Index thumbnails (V3.2) when the index lists them; otherwise the prepared legacy pair. */

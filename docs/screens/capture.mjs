@@ -44,6 +44,9 @@ const PAGES = [
   { name: 'game-example-revealed', path: '/?page=game&fixtures=1&round=barnard-position-example', ready: '.game-plot', act: "(() => { const v = document.getElementById('guess-value'); if (v) { v.value = '5.8'; v.dispatchEvent(new Event('change')); } const e = document.getElementById('guess-east'); if (e) { e.value = '-2'; e.dispatchEvent(new Event('change')); const n = document.getElementById('guess-north'); n.value = '14.6'; n.dispatchEvent(new Event('change')); } document.getElementById('lock-guess').click(); for (let i = 0; i < 3; i += 1) document.getElementById('reveal-next').click(); })()", scrollTo: '.round-grid' },
   { name: 'game-rdra-revealed', path: '/?page=game&fixtures=1&round=rdra-brightness-example', ready: '.game-plot', act: "(() => { const v = document.getElementById('guess-value'); if (v) { v.value = '5.8'; v.dispatchEvent(new Event('change')); } const e = document.getElementById('guess-east'); if (e) { e.value = '-2'; e.dispatchEvent(new Event('change')); const n = document.getElementById('guess-north'); n.value = '14.6'; n.dispatchEvent(new Event('change')); } document.getElementById('lock-guess').click(); for (let i = 0; i < 3; i += 1) document.getElementById('reveal-next').click(); })()", scrollTo: '.round-grid' },
   { name: 'learn', path: '/?page=learn', ready: '#lesson-list li' },
+  { name: 'learn-lesson-distance', path: '/?page=learn&lesson=distance', ready: '#lesson-view .answer-key' },
+  { name: 'learn-lesson-sure', path: '/?page=learn&lesson=sure&fixtures=1', ready: '#lesson-view .answer-key', act: "document.querySelectorAll('.answer-toggle').forEach((d) => { d.open = true; })" },
+  { name: 'learn-lab', path: '/?page=learn&lesson=lab', ready: '#lab-results dl' },
   { name: 'about', path: '/?page=about', ready: '#about-credits li' },
 ];
 

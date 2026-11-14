@@ -310,6 +310,7 @@
         <h1 id="learn-title" tabindex="-1" data-t="learn.title"></h1>
         <p class="lead" data-t="learn.lead"></p>
       </header>
+      <div id="learn-index" class="learn-index">
       <ul id="lesson-list" class="cards-list lessons"></ul>
       <article id="lab" class="page-card lab glass" aria-labelledby="lab-title">
         <svg class="lab-orbit" viewBox="0 0 120 60" aria-hidden="true" focusable="false">
@@ -320,9 +321,12 @@
         <div class="lab-words">
           <h2 id="lab-title" data-t="lab.title"></h2>
           <p data-t="lab.text"></p>
-          <p class="panel-note" data-t="lab.preparing"></p>
+          <p><button id="lab-open" type="button" class="primary" data-t="lab.open"></button></p>
         </div>
       </article>
+      </div>
+      <article id="lesson-view" class="lesson glass" hidden aria-labelledby="lesson-title"></article>
+      <section id="lab-view" class="lab-view glass" hidden aria-labelledby="lab-view-title"></section>
     </section>
 
     <!-- ======================= About ======================= -->

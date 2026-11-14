@@ -78,6 +78,7 @@ export function parseRoute(search) {
     fov,
     band,
     round: cleanId(params.get('round')),
+    lesson: cleanId(params.get('lesson')),
     a: cleanId(params.get('a')),
     b: cleanId(params.get('b')),
     v: cleanId(params.get('v')),
@@ -125,6 +126,7 @@ export function buildRoute(state) {
   const page = state.page ?? 'home';
   if (page !== 'home') params.set('page', page);
   if (page === 'game' && state.round) params.set('round', state.round);
+  if (page === 'learn' && state.lesson) params.set('lesson', state.lesson);
   if (page === 'investigate') {
     if (state.target) params.set('target', state.target);
     if (Number.isFinite(state.ra) && Number.isFinite(state.dec)) {

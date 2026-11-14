@@ -30,7 +30,7 @@ export function formatUtc(date, { time = true } = {}) {
   return time ? `${iso.slice(0, 10)} ${iso.slice(11, 16)}` : iso.slice(0, 10);
 }
 
-const SYMBOL_UNITS = new Set(['arcsec', 'arcmin', 'deg']);
+const SYMBOL_UNITS = new Set(['arcsec', 'arcmin', 'deg', 'percent']);
 
 /** A number with its unit from the resource file: symbols stick to the number (1.2″), words get a space. */
 export function withUnit(value, unit, digits = 2) {

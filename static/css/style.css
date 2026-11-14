@@ -929,6 +929,68 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 .font-list .font-mono { font-family: var(--font-mono); }
 .font-list a { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 13.5px; }
 
+/* ---------- Lessons and the Planet X Lab ---------- */
+
+.learn-index { display: grid; gap: var(--s2); }
+.lessons .page-card button { justify-self: start; margin-top: var(--s1); }
+.lesson, .lab-view { padding: var(--s4); display: grid; gap: var(--s3); max-width: 920px; }
+.lesson-actions { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s1); }
+.lesson-head { display: grid; gap: var(--s1); }
+.lesson-head h2 { font-size: clamp(24px, 3vw, 32px); }
+.lesson-part { display: grid; gap: 12px; }
+.lesson-part h3 { font-size: 18px; }
+.lesson-part ul { display: grid; gap: 6px; }
+.formula { margin: 0; display: grid; gap: 12px; padding: var(--s2); border: 1px solid var(--border-strong); border-radius: var(--radius); background: rgba(5, 7, 13, 0.55); }
+.formula figcaption { color: var(--muted); font-size: 14px; }
+.math { display: grid; gap: 12px; overflow-x: auto; }
+.math math { font-size: 1.35em; color: var(--text); }
+.lesson-inputs dd { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.worked-steps, .worked-answer { font-family: var(--font-mono); font-size: 14px; }
+.worked-answer { color: var(--accent); }
+.exercises { display: grid; gap: var(--s2); padding-left: 32px; }
+.exercises li { margin: 0; padding-left: 4px; }
+.exercises li > * + * { margin-top: 6px; }
+.exercises li::marker { color: var(--accent); font-family: var(--font-mono); font-weight: 600; }
+.answer-toggle summary { min-height: var(--tap); display: inline-flex; align-items: center; cursor: pointer; color: var(--accent); font-weight: 600; }
+.answer-toggle p { padding: 10px 14px; border-left: 3px solid var(--hit); background: var(--raise); border-radius: var(--radius-sm); }
+.answer-key { display: none; }
+.chip-hypothetical { border-color: var(--hypothetical); color: var(--hypothetical); border-style: dashed; }
+.lab-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: var(--s3); align-items: start; }
+.lab-controls { display: grid; gap: var(--s2); padding: var(--s2); border: 1px solid var(--border-strong); border-radius: var(--radius); }
+.lab-controls > button { justify-self: start; }
+.lab-slider { display: grid; gap: 4px; }
+.lab-slider label { display: flex; justify-content: space-between; gap: var(--s1); font-size: 14px; }
+.lab-slider output { color: var(--accent); font-size: 13px; }
+.lab-slider input { width: 100%; min-height: var(--tap); accent-color: var(--hypothetical); }
+.lab-results h3 { font-size: 16px; margin-bottom: var(--s1); }
+.lab-list { display: grid; gap: 10px; margin: 0; }
+.lab-row { display: grid; grid-template-columns: minmax(130px, 0.8fr) minmax(0, 1.4fr); gap: 4px 12px; padding: 10px 12px; background: var(--raise); border-radius: var(--radius-sm); }
+.lab-row dt { color: var(--muted); font-size: 13.5px; }
+.lab-row dd { margin: 0; display: grid; gap: 2px; }
+.lab-value { color: var(--text); font-size: 16px; }
+.lab-row small { color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+
+/* Printing from Learn: a plain white worksheet; answers on their own last page. */
+@media print {
+  @page { margin: 16mm; }
+  body[data-page="learn"] { background: #fff !important; color: #000; font-size: 11pt; }
+  body[data-page="learn"] :is(.topbar, .skip, .starfield, .example-banner, .notices, .caption, .tour-bar, .site-footer,
+    .page:not(.page-learn), .page-head, .lesson-actions, .answer-toggle) { display: none !important; }
+  body[data-page="learn"][data-lesson]:not([data-lesson=""]) .learn-index { display: none !important; }
+  body[data-page="learn"] main { padding: 0; max-width: none; }
+  body[data-page="learn"] :is(.glass, .lesson, .lab-view, .page-card) { background: #fff !important; box-shadow: none !important; border-color: #999 !important; backdrop-filter: none !important; }
+  body[data-page="learn"] :is(.lesson, .lab-view) { border: 0 !important; padding: 0 !important; }
+  body[data-page="learn"] :is(.lesson, .lab-view, .learn-index) * { color: #000 !important; }
+  body[data-page="learn"] :is(.formula, .panel-note, .lab-row, .chip) { background: #fff !important; border-color: #888 !important; }
+  body[data-page="learn"] .lesson-part, body[data-page="learn"] .exercises li { break-inside: avoid; }
+  body[data-page="learn"] .exercises li { min-height: 50mm; }
+  body[data-page="learn"] .exercises li::marker { color: #000; }
+  body[data-page="learn"] .lesson a { text-decoration: none; }
+  body[data-page="learn"] .lesson a::after { content: " (" attr(href) ")"; font-size: 9pt; }
+  body[data-page="learn"] .answer-key { display: block; break-before: page; }
+  body[data-page="learn"] .answer-key h3 { margin-bottom: 8mm; }
+}
+
 /* ---------- Text pages share a header ---------- */
 
 .page-head { display: grid; gap: var(--s1); max-width: 860px; margin-bottom: var(--s3); }
@@ -1100,6 +1162,9 @@ body.embed main { padding: 0 12px 12px; }
   .pred-figure { grid-template-columns: 1fr; }
   .round { padding: 12px; }
   .about-grid { grid-template-columns: 1fr; }
+  .lesson, .lab-view { padding: var(--s2); }
+  .lab-grid { grid-template-columns: 1fr; }
+  .lab-row { grid-template-columns: 1fr; }
   .page-card.lab { grid-template-columns: 1fr; }
   .round-grid { grid-template-columns: minmax(0, 1fr); }
   .ring-label.minor { display: none; }
