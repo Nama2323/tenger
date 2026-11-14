@@ -400,7 +400,7 @@ def measure_training(number: str) -> dict:
 BATCH_ID = "asteroids-2026a"
 TRIALS = ROOT / "static" / "data" / "trials"
 CONTRACT = 13
-PRIMARY, SECONDARY = "barycentric_two_body", "heliocentric_two_body"
+PRIMARY, SECONDARY = "heliocentric_two_body", "barycentric_two_body"  # user decision, 03:25 UB (docs/asteroid-batch.md)
 
 
 def trial_id(number: str) -> str:
@@ -936,8 +936,8 @@ def save_raw(numbers: list[str]) -> None:
         start = record["evaluation_visit"]["first_mjd"]
         write_json(OUT / "raw" / f"{number}.json", {
             "number": number, "saved_utc": _now(), "after_freeze_commit": commit,
-            "training_rows": [r for r in rows if float(r["mjd_start"]) < start - 1e-6],
-            "evaluation_rows": [r for r in rows if float(r["mjd_start"]) >= start - 1e-6]})
+            "training_rows": [r for r in rows if float(r["mjd_start"]) < start - VISIT_GAP_DAYS / 2],
+            "evaluation_rows": [r for r in rows if float(r["mjd_start"]) >= start - VISIT_GAP_DAYS / 2]})
 
 
 def main(argv: list[str]) -> int:

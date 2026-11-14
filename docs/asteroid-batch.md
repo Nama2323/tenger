@@ -164,3 +164,27 @@ Category: `prospective_unexposed` (pending), plus `catalogue_assisted` for the t
    the count). The model error uses the mean evaluation time. Synthetic orbits keep e ≤ 0.6.
 3. **Batch trials are not mixed into the scoreboard's per-category counts.** They form a separate
    `asteroid_batch` block (contract V13).
+
+## Amendment, 15 Nov 2026 03:25 UB: the heliocentric frame is the primary (user's decision)
+
+Made before any forecast was frozen and before any evaluation pixel was opened; no outcome is known.
+
+- **Evidence.** A dry run of both frames was made on the first measured object (345 Tercidina, 80
+  training points, two visits). Nothing was written or frozen.
+
+  | Frame | χ²/dof of the fit to our training positions | Residual RMS (E, N) | Synthetic two-body error, RMS along / across | 95% region along × across |
+  |---|---|---|---|---|
+  | Barycentric (v2) | 332 | 1.35″, 2.86″ | 381″ / 194″ | 932″ × 476″ |
+  | Heliocentric | 4.45 | 0.23″, 0.34″ | 27″ / 5″ | 66″ × 14″ |
+
+- **Why this matters.** The barycentric frame cannot fit a main-belt arc: the Sun's own motion around
+  the barycentre is not a small correction inside Jupiter's orbit. Its 15′ region would make the
+  identification radius larger than the 0.5° cutout cap, so recovery would almost certainly be
+  ambiguous.
+- **Decision.** The user chose the heliocentric two-body as the primary model, at 03:25 UB in chat.
+- **What changes:**
+  - **Primary** (identification region, scoring, calibration): heliocentric two-body, with everything
+    else in section 4 unchanged (v2 resampling envelope, synthetic model error, spacecraft term).
+  - **Secondary** (still frozen, scored on the same identified positions, reported next to the
+    primary): barycentric two-body, method v2 as originally instructed.
+  - The straight-line baseline is unchanged.
