@@ -1,7 +1,7 @@
 // Learn: three printable lessons and the Planet X Lab. Numbers come from lessons.js (tested); text, formulas
 // (MathML) and labels come from the English resource. Lesson records (DATA-CONTRACT §12) replace the
 // synthetic practice values automatically once Session A publishes them.
-import { $, chip, el, formatNumber, prefersReducedMotion, withUnit } from './dom.js';
+import { $, chip, el, formatNumber, prefersReducedMotion, unitSuffix, withUnit } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { categoryLabel } from './labels.js';
 import { LESSONS, planetModel, readLessonRecord, scoreboardSummary, syntheticLesson } from './lessons.js';
@@ -29,9 +29,20 @@ const valueText = (value, unit, digits) => {
   return unit ? withUnit(value, unit, places) : formatNumber(value, places);
 };
 
-/** Input values as template parameters: {baseline_au} becomes "1 au". */
-function inputParams(inputs) {
-  return Object.fromEntries(inputs.map((input) => [input.name, valueText(input.value, input.unit, String(input.value).split('.')[1]?.length ?? 0)]));
+/** A record's number to at most four significant figures, without trailing zeros: 4.086182 → "4.086", 0.064 → "0.064". */
+const SIG4 = new Intl.NumberFormat('en', { maximumSignificantDigits: 4 });
+export const sig4 = (value) => (Number.isFinite(value) ? SIG4.format(value) : '—');
+const sig4Unit = (value, unit) => (Number.isFinite(value) ? `${sig4(value)}${unitSuffix(unit)}` : '—');
+
+/**
+ * Input values as template parameters. The web's own example templates take the unit from the value
+ * ({baseline_au} becomes "1 au"); Session A's record templates write the unit in the sentence ("{days} days"),
+ * so record values are bare numbers to four significant figures.
+ */
+export function inputParams(inputs, { bare = false } = {}) {
+  return Object.fromEntries(inputs.map((input) => [input.name, bare
+    ? sig4(input.value)
+    : valueText(input.value, input.unit, String(input.value).split('.')[1]?.length ?? 0)]));
 }
 
 /** True when every {placeholder} of a template has a value, so a sentence is never printed with holes. */
@@ -59,7 +70,7 @@ function lessonContent(lesson) {
     source: 'synthetic',
     record: null,
     worked: mark(synthetic.worked),
-    exercises: synthetic.exercises.map((item) => ({ ...mark(item), promptKey: `lesson.${lesson.id}.${item.id}` })),
+    exercises: synthetic.exercises.map((item) => ({ ...mark(item), promptKey: `lesson.${lesson.id}.synthetic.${item.id}` })),
     investigation: lesson.investigation,
   };
 }
@@ -79,8 +90,11 @@ function inputList(inputs) {
 /** The answer sentence of an exercise: a dedicated text when one exists, else "Answer: value". */
 function answerText(lessonId, exercise, synthetic) {
   const answer = exercise.answer ?? {};
+  if (!synthetic) {
+    const value = sig4Unit(answer.value, answer.unit);
+    return Number.isFinite(answer.z) ? t('learn.answerWithZ', { value, z: sig4(answer.z) }) : t('learn.answerIs', { value });
+  }
   const value = valueText(answer.value, answer.unit);
-  if (!synthetic) return t('learn.answerIs', { value });
   const key = answer.textKey ?? `lesson.${lessonId}.a${exercise.id?.replace(/^q/, '')}`;
   const params = {
     ...inputParams(exercise.inputs ?? []),
@@ -93,8 +107,8 @@ function answerText(lessonId, exercise, synthetic) {
   return fillsAll(key, params) ? t(key, params) : t('learn.answerIs', { value });
 }
 
-function promptText(exercise) {
-  const params = inputParams(exercise.inputs);
+function promptText(exercise, synthetic) {
+  const params = inputParams(exercise.inputs, { bare: !synthetic });
   if (exercise.promptKey && fillsAll(exercise.promptKey, params)) return t(exercise.promptKey, params);
   if (exercise.promptKey && has(exercise.promptKey)) return t(exercise.promptKey, params);
   return t('learn.promptMissing', { key: exercise.promptKey ?? exercise.id });
@@ -175,7 +189,7 @@ function renderLesson(lesson) {
     el('section', { class: 'lesson-part' }, [el('h3', { text: t('learn.idea') }), el('p', { text: t(`lesson.${lesson.id}.idea`) })]),
     el('section', { class: 'lesson-part formula-part' }, [
       el('h3', { text: t('learn.formula') }),
-      mathBlock(`lesson.${lesson.id}.formula`, `lesson.${lesson.id}.words`),
+      mathBlock(`lesson.${lesson.id}.math`, `lesson.${lesson.id}.words`),
       content.record?.formulaKey && has(content.record.formulaKey) ? el('p', { text: t(content.record.formulaKey) }) : null,
       el('h4', { text: t('learn.assumptions') }),
       el('ul', {}, [1, 2, 3].filter((n) => has(`lesson.${lesson.id}.assume${n}`)).map((n) => el('li', { text: t(`lesson.${lesson.id}.assume${n}`) }))),
@@ -200,14 +214,14 @@ function renderLesson(lesson) {
     el('section', { class: 'lesson-part' }, [
       el('h3', { text: t('learn.exercises') }),
       el('ol', { class: 'exercises' }, exercises.map((exercise) => el('li', {}, [
-        el('p', { text: promptText(exercise) }),
+        el('p', { text: promptText(exercise, content.source === 'synthetic') }),
         el('details', { class: 'answer-toggle' }, [el('summary', { text: t('learn.showAnswer') }), el('p', { text: answerText(lesson.id, exercise, content.source === 'synthetic') })]),
       ]))),
     ]),
     lesson.id === 'sure' ? scoreboardSection() : null,
     el('section', { class: 'lesson-part' }, [
       el('h3', { text: t('learn.teacher') }),
-      el('p', { text: content.record?.teacherKey && has(content.record.teacherKey) ? t(content.record.teacherKey) : t(`lesson.${lesson.id}.teacher`) }),
+      el('p', { text: content.record?.teacherKey && has(content.record.teacherKey) ? t(content.record.teacherKey) : t(`lesson.${lesson.id}.synthetic.teacher`) }),
     ]),
     el('section', { class: 'lesson-part' }, [
       el('h3', { text: t('learn.source') }),

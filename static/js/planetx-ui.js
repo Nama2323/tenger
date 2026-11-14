@@ -4,7 +4,7 @@
 // after the reveal, never shown as a detection, never counted outside the game.
 import { $, chip, el, formatNumber, prefersReducedMotion } from './dom.js';
 import { has, t, tData } from './i18n.js';
-import { bandModels, DEPTH_PATH, gapRows, injectedPerPoint, HIDDEN_PATH, judgeTap, magExtent, NATIVE_PIXEL_ARCSEC, readDepth, readHiddenPlanet, tapReport } from './planetx.js';
+import { bandModels, DEPTH_PATH, gapRows, headline, injectedPerPoint, HIDDEN_PATH, judgeTap, magExtent, NATIVE_PIXEL_ARCSEC, readDepth, readHiddenPlanet, tapReport, TOO_FAINT_BELOW } from './planetx.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const svg = (name, attributes = {}, children = []) => {
@@ -49,8 +49,13 @@ export async function loadPlanetX(real, fixtures) {
 
 // ---------- The measured panel ----------
 
-/** The headline verdict with its numbers filled from the file (verdict_summary), else the plain verdict text. */
+/**
+ * The headline: built from the file's summary numbers and the measured curve (planetx.js headline), so it says how
+ * often one exposure would catch the closest published case; else the file's own summary sentence.
+ */
 function verdictLine(depth) {
+  const built = headline(depth);
+  if (built) return el('p', { class: 'planetx-verdict', text: t(built.key, { ...built.values, reach: t(built.reach.key, built.reach.values) }) });
   const summary = depth.verdictSummary;
   const words = summary && has(summary.key) ? t(summary.key, summary.values) : summary?.text ?? (depth.verdictKey ? text(depth.verdictKey) : '');
   return words ? el('p', { class: 'planetx-verdict', text: words }) : null;
@@ -60,33 +65,83 @@ const gapName = (row, depth) => (row.wise
   ? t('planetx.wiseRow', { reference: depth.wise?.reference ?? '—' })
   : row.model?.scenarioKey ? text(row.model.scenarioKey, {}, 'explain.unknown') : row.model?.reference ?? row.modelId ?? '—');
 
-/** Every published prediction against our depth: one sentence, each verdict's meaning once, then the table. */
+/** A fraction as a percentage: whole percent for "about N%", one decimal for a curve point. */
+const pct = (fraction, digits = 0) => {
+  if (!Number.isFinite(fraction)) return '—';
+  if (digits === 0 && fraction > 0 && fraction < 0.005) return t('planetx.found.underOne');
+  return `${formatNumber(fraction * 100, digits)}%`;
+};
+const pointText = (point) => t('planetx.found.point', {
+  mag: mag(point.mag), pct: pct(point.fraction, 1),
+  low: point.interval ? formatNumber(point.interval[0] * 100, 1) : '—', high: point.interval ? formatNumber(point.interval[1] * 100, 1) : '—',
+});
+
+/** The fraction found at a published value, with where it comes from: "28%" and "interpolated between …". */
+function foundText(found) {
+  if (!found) return { main: '—', source: '' };
+  if (found.beyond === 'faint') return { main: t('planetx.found.atMost', { pct: pct(found.upper, 1) }), source: t('planetx.found.fainter', { point: pointText(found.points[0]) }) };
+  if (found.beyond === 'bright') return { main: t('planetx.found.atLeast', { pct: pct(found.lower, 1) }), source: t('planetx.found.brighter', { point: pointText(found.points[0]) }) };
+  if (!found.interpolated) return { main: pct(found.fraction), source: t('planetx.found.tested', { point: pointText(found.points[0]) }) };
+  return { main: pct(found.fraction), source: t('planetx.found.interpolated', { a: pointText(found.points[0]), b: pointText(found.points[1]) }) };
+}
+
+/** What the published value means for one exposure, from the curve (planetx.js reachOf). */
+function reachText(row) {
+  if (row.reach === 'faint') return t('planetx.reach.faint');
+  if (row.reach === 'partial') return t('planetx.reach.partial', { pct: pct(row.found.fraction) });
+  if (row.reach === 'within') return t('planetx.reach.within', { pct: pct(row.found.fraction ?? row.found.lower) });
+  if (row.reach === 'unknown') return t('planetx.reach.unknown');
+  return row.verdictKey ? text(row.verdictKey) : '—';
+}
+
+const gapWithError = (row) => (row.sigma === null ? formatNumber(row.gap, 2) : `${formatNumber(row.gap, 2)} ± ${formatNumber(row.sigma, 2)}`);
+
+/**
+ * Every published prediction against our measured curve: how many are too faint for one exposure (under 5%
+ * found), each one that is not with how often one exposure would find it, what the ± means, then the table.
+ */
 function gapSection(depth) {
-  const { rows, tooFaint, closest } = gapRows(depth);
+  const summary = gapRows(depth);
+  const { rows } = summary;
   if (!rows.length) return null;
   const bandName = (id) => depth.bands.find((band) => band.id === id)?.publishedBand ?? id ?? '—';
-  const meanings = [...new Set(rows.map((row) => row.verdictKey))].filter((key) => key !== depth.verdictKey && key !== depth.verdictSummary?.key);
+  const limit = String(Math.round(TOO_FAINT_BELOW * 100));
+  const sentences = [
+    t('planetx.reachCount', { faint: String(summary.tooFaint), n: String(rows.length), limit }),
+    ...summary.partial.map((row) => t('planetx.reachPartialLine', {
+      name: gapName(row, depth), band: bandName(row.bandId), gap: gapWithError(row), factor: row.factor === null ? '—' : formatNumber(row.factor, 1),
+      pct: pct(row.found.fraction), source: foundText(row.found).source,
+    })),
+    ...summary.within.map((row) => t('planetx.reachWithinLine', { name: gapName(row, depth), band: bandName(row.bandId), pct: pct(row.found.fraction ?? row.found.lower) })),
+  ];
+  // Rows the curve cannot place keep the file's own verdict text, once each.
+  const fileMeanings = [...new Set(rows.filter((row) => row.reach === null).map((row) => row.verdictKey))]
+    .filter((key) => key && key !== depth.verdictKey && key !== depth.verdictSummary?.key);
+  const sigmas = [...new Set(rows.map((row) => row.sigma).filter((value) => value !== null))].sort((a, b) => a - b);
   return el('div', { class: 'planetx-gaps' }, [
-    el('p', { text: t('planetx.gapsSummary', {
-      n: String(rows.length), faint: String(tooFaint), name: gapName(closest, depth), band: bandName(closest.bandId),
-      gap: formatNumber(closest.gap, 2), sigma: closest.sigma === null ? '—' : formatNumber(closest.sigma, 2),
-      factor: closest.factor === null ? '—' : formatNumber(closest.factor, 1),
-    }) }),
-    ...meanings.map((key) => el('p', { class: 'note', text: text(key) })),
+    el('p', { text: sentences.join(' ') }),
+    sigmas.length ? el('p', { class: 'note planetx-sigma', text: t('planetx.sigmaNote', { sigma: sigmas.map((value) => `± ${formatNumber(value, 2)}`).join(t('planetx.or')) }) }) : null,
+    el('p', { class: 'note', text: t('planetx.reach.rule', { limit }) }),
+    ...fileMeanings.map((key) => el('p', { class: 'note', text: text(key) })),
     el('details', { class: 'data-table' }, [
       el('summary', { text: t('planetx.gapTableShow', { n: String(rows.length) }) }),
       el('div', { class: 'table-scroll' }, el('table', {}, [
-        el('caption', { text: t('planetx.gapTable') }),
-        el('thead', {}, el('tr', {}, ['planetx.col.prediction', 'planetx.col.band', 'planetx.col.predicted', 'planetx.col.depth', 'planetx.col.gap', 'planetx.col.factor']
+        el('caption', { text: t('planetx.gapTable', { limit }) }),
+        el('thead', {}, el('tr', {}, ['planetx.col.prediction', 'planetx.col.band', 'planetx.col.predicted', 'planetx.col.depth', 'planetx.col.gap', 'planetx.col.factor', 'planetx.col.found', 'planetx.col.reach']
           .map((key) => el('th', { scope: 'col', text: t(key) })))),
-        el('tbody', {}, rows.map((row) => el('tr', {}, [
-          el('th', { scope: 'row', text: gapName(row, depth) }),
-          el('td', { text: bandName(row.bandId) }),
-          el('td', { text: row.predicted === null ? '—' : mag(row.predicted) }),
-          el('td', { text: row.depth === null ? '—' : mag(row.depth) }),
-          el('td', { text: row.sigma === null ? formatNumber(row.gap, 2) : `${formatNumber(row.gap, 2)} ± ${formatNumber(row.sigma, 2)}` }),
-          el('td', { text: row.factor === null ? '—' : `×${formatNumber(row.factor, 1)}` }),
-        ]))),
+        el('tbody', {}, rows.map((row) => {
+          const found = foundText(row.found);
+          return el('tr', { class: row.reach ? `reach-${row.reach}` : null }, [
+            el('th', { scope: 'row', text: gapName(row, depth) }),
+            el('td', { text: bandName(row.bandId) }),
+            el('td', { text: row.predicted === null ? '—' : mag(row.predicted) }),
+            el('td', { text: row.depth === null ? '—' : mag(row.depth) }),
+            el('td', { text: gapWithError(row) }),
+            el('td', { text: row.factor === null ? '—' : `×${formatNumber(row.factor, 1)}` }),
+            el('td', { class: 'found' }, [el('strong', { text: found.main }), found.source ? el('small', { class: 'found-source', text: found.source }) : null]),
+            el('td', { class: 'reach', text: reachText(row) }),
+          ]);
+        })),
       ])),
     ]),
   ]);

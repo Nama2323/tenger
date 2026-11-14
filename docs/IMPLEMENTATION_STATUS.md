@@ -1198,3 +1198,50 @@ c Beat the physics ε Indi B with Hint 2 and the reveal (6.3 s), d Planet X Lab 
 **Checks**: `node --test tests/` 194 passed, 0 failed. Captures of the touched pages at 360/390/768/1280 (65,
 incl. new `about-refs`): no horizontal scroll, no control under 44 px, every page ready, **no console errors**;
 report 273 entries. Session A's validator: 79 contract files, 0 failures.
+
+### Planet X wording fix, 15 Nov 2026 morning (user's rule; plus a lesson regression found on the way)
+
+**Planet X Lab** (`js/planetx.js`, `js/planetx-ui.js`, `js/i18n.js`, `css/style.css`). "18 of 18 published values
+are fainter than one exposure reaches" overstated the closest case. Now every published value is read against the
+same band's pooled curve in `planetx/depth.json`:
+
+- `recoveredAt`: the fraction found at that magnitude. It is linear in magnitude between the two neighbouring
+  tested points and labelled "interpolated", with both points' Wilson 95% intervals. Beyond the faintest test there
+  is no value, only that point's upper bound.
+- `reachOf`: under 5% found = "Too faint for one exposure". At least 5% and fainter than our 50% depth =
+  "Below our 50% depth; found in about N% of single exposures". At or brighter than the 50% depth = within reach.
+- On Session A's file: Linder & Mordasini at 280 AU (AB 17.45, Johnson I) = 0.415 + 0.8 × (0.250 − 0.415) =
+  **28%**, between AB 17.25 (41.5%, 37.2–46.0%) and 17.50 (25.0%, 21.3–29.0%). The other 17 values are 0% or
+  beyond the curve (upper bound 0.8%).
+- The gap table gains "Found in one exposure" and "What it means" columns. The gap column reads "± our error",
+  with a note: the ± is our measurement error only, and the planet's predicted brightness is uncertain by far more
+  (mass, albedo, distance).
+- Headline (`planetx.headline`, using the file's `verdict_summary.values`): "Only the closest published case comes
+  within reach, and one exposure would catch it about 1 time in 4." It falls back to the file's own sentence if the
+  values are missing or the nominal planet is not under 5% in every band.
+- Session A told the rule, the suggested keys (`planetx.verdict.partial`, optional `recovered_fraction`) and the
+  sentence. A test checks the file's verdict keys against the curve once A10 lands. Until then, the only mismatch
+  allowed is "too faint" on a row between 5% and 50%.
+- Layout fix: opening the 18-row table stretched the page to 1632 px at 360. Fixed with `minmax(0, 1fr)` columns
+  on `.lesson`, `.lab-view` and the Planet X grids.
+
+**Lesson regression (live since `3c7e7c1`, 02:36).** Re-copying Session A's V12 strings dropped 11 keys that the web
+also defined: `lesson.distance.q1–q3`, `lesson.brightness.q1–q2`, and both lessons' `.title`, `.formula` and
+`.teacher`. Session A's real exercises were therefore filled into the web's example templates and printed blanks
+("With a baseline of , a star shifts by ."). Fixed:
+
+- The web's own keys are renamed (`lesson.*.math` for the MathML, `lesson.*.synthetic.q*` and
+  `lesson.*.synthetic.teacher`), and Session A's 11 keys are copied back (190 keys).
+- Record numbers go into Session A's sentences bare, to 4 significant figures. Before: "4.086182°° in 203.890759
+  unit.d days". Now: "4.086° in 203.9 days".
+- Answers use 4 significant figures and show the file's z ("0.064 mag (z = −1.142)").
+- Units without text never print their key. New: `d`, `h`, `min`, `deg/d`, `expected hits`; `fraction` and
+  `probability` print as plain numbers.
+- New tests: the web may not redefine a Session A key with different text (only `planetx.title` is allowed, a
+  heading without the full stop); every lesson record's prompt is filled from its own inputs, and every unit has
+  English text.
+
+**Demo clip (d)** re-recorded with the new headline (5.3 s, 1.03 MB).
+
+**Checks**: `node --test tests/` 201 passed, 0 failed. Captures of every Learn page and the new `learn-lab-reach`
+(the table open) at 360/390/768/1280: no horizontal scroll, no control under 44 px.

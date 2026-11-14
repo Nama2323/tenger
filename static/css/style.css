@@ -443,7 +443,7 @@ button.map-marker:hover span, button.map-marker:focus-visible span { color: var(
 
 .planetx-link { margin: 0; }
 .planetx-link a, .planetx-line a { display: inline-flex; align-items: center; min-height: var(--tap); font-weight: 600; color: var(--hypothetical); }
-.planetx-measured { display: grid; gap: 12px; }
+.planetx-measured { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .planetx-verdict { font-weight: 600; padding: 10px 12px; border-left: 3px solid var(--hypothetical); background: rgba(255, 169, 77, 0.06); }
 .planetx-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: var(--s2); align-items: start; }
 .planetx-bands { display: grid; gap: var(--s2); }
@@ -1151,7 +1151,7 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 
 .learn-index { display: grid; gap: var(--s2); }
 .lessons .page-card button { justify-self: start; margin-top: var(--s1); }
-.lesson, .lab-view { padding: var(--s4); display: grid; gap: var(--s3); max-width: 920px; }
+.lesson, .lab-view { padding: var(--s4); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); max-width: 920px; }
 .lesson-actions { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s1); }
 .lesson-head { display: grid; gap: var(--s1); }
 .lesson-head h2 { font-size: clamp(24px, 3vw, 32px); }
@@ -1737,8 +1737,12 @@ body.embed .panel-title { top: 0; }
 }
 .batch-chart .closer-model { fill: var(--star); }
 .batch-chart .closer-line { fill: var(--solar); stroke: var(--bg); stroke-width: 1; }
-.planetx-gaps { display: grid; gap: 8px; }
+.planetx-gaps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
 .planetx-gaps td { white-space: nowrap; }
+.planetx-gaps td.found, .planetx-gaps td.reach { white-space: normal; min-width: 14em; }
+.planetx-gaps tbody th { min-width: 12em; }
+.planetx-gaps .found-source { display: block; color: var(--muted); font-size: 12px; }
+.planetx-gaps tr.reach-partial > * { background: rgba(255, 169, 77, 0.08); }
 .planetx-chart .marker-number { font: 700 11px var(--font-mono); }
 .planetx-key { margin: 0; padding-left: 1.6em; display: grid; gap: 2px; font-size: 13px; color: var(--dim); }
 .planetx-key li::marker { color: var(--hypothetical); font-weight: 700; font-family: var(--font-mono); }

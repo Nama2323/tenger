@@ -197,7 +197,7 @@ export function readLessonRecord(doc) {
       id: item.id,
       promptKey: item.prompt_key ?? null,
       inputs: (item.inputs ?? []).map(readInput),
-      answer: { value: finiteOrNull(item.answer?.value), unit: item.answer?.unit ?? '' },
+      answer: { value: finiteOrNull(item.answer?.value), unit: item.answer?.unit ?? '', z: finiteOrNull(item.answer?.z) },
     })),
     derivedFrom: Array.isArray(doc.derived_from) ? doc.derived_from : [],
   };

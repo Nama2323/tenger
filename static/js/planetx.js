@@ -244,25 +244,117 @@ export function judgeTap(pair, tap) {
   return { distancePx: nearest.distance, distanceArcsec: finite(scale) ? nearest.distance * scale : null, hit: nearest.distance <= pair.tolerance, point: nearest.point };
 }
 
+/** Below this fraction found in one exposure we say "too faint for one exposure" (user's rule, 15 Nov 2026). */
+export const TOO_FAINT_BELOW = 0.05;
+
+/**
+ * The fraction of artificial sources found in one exposure at magnitude `mag`, read from a pooled curve:
+ * - on a tested magnitude, that point (interpolated: false);
+ * - between two tested magnitudes, linear in magnitude between them (interpolated: true), with both points so
+ *   the page can show their own intervals;
+ * - fainter than the faintest tested magnitude, no value: `upper` is that point's upper interval bound (fainter
+ *   sources are found no more often); brighter than the brightest, `lower` is that point's lower bound.
+ * Returns { fraction, interpolated, beyond: null|'faint'|'bright', points, upper?, lower? }, or null.
+ */
+export function recoveredAt(curve, mag) {
+  if (!finite(mag) || !Array.isArray(curve) || curve.length < 2) return null;
+  const [first, last] = [curve[0], curve.at(-1)];
+  if (mag > last.mag + 1e-9) return { fraction: null, interpolated: false, beyond: 'faint', points: [last], upper: last.interval?.[1] ?? last.fraction };
+  if (mag < first.mag - 1e-9) return { fraction: null, interpolated: false, beyond: 'bright', points: [first], lower: first.interval?.[0] ?? first.fraction };
+  const exact = curve.find((point) => Math.abs(point.mag - mag) < 1e-9);
+  if (exact) return { fraction: exact.fraction, interpolated: false, beyond: null, points: [exact] };
+  const index = curve.findIndex((point) => point.mag > mag);
+  const [a, b] = [curve[index - 1], curve[index]];
+  const weight = (mag - a.mag) / (b.mag - a.mag);
+  return { fraction: a.fraction + weight * (b.fraction - a.fraction), interpolated: true, beyond: null, points: [a, b] };
+}
+
+/**
+ * How a published value compares with one exposure, from the measured curve:
+ * 'faint' (fewer than 5% found: too faint for one exposure), 'partial' (fainter than our 50% depth but found at
+ * least 5% of the time), 'within' (at or brighter than our 50% depth), 'unknown' (fainter than we tested and the
+ * faintest point does not rule out 5%), or null without a curve value.
+ */
+export function reachOf(found, gap) {
+  if (!found) return null;
+  if (found.beyond === 'faint') return found.upper < TOO_FAINT_BELOW ? 'faint' : 'unknown';
+  if (found.beyond === 'bright') return 'within';
+  if (found.fraction < TOO_FAINT_BELOW) return 'faint';
+  return finite(gap) && gap > 0 ? 'partial' : 'within';
+}
+
 /**
  * Every published prediction against our depth, one row per verdict in the file: the gap (prediction minus our
- * pooled 50% single-exposure depth) and how many of them are too faint. Numbers only from the file.
+ * pooled 50% single-exposure depth), the fraction found at that magnitude on the same band's pooled curve, and
+ * what that means for one exposure. The wording follows the curve, not the file's older verdict key.
  */
 export function gapRows(depth) {
-  const rows = (depth?.verdicts ?? []).filter((verdict) => finite(verdict.gap_mag?.value)).map((verdict) => ({
-    bandId: verdict.band_id ?? null,
-    modelId: verdict.model_id ?? null,
-    model: depth.models.find((item) => item.id === verdict.model_id) ?? null,
-    wise: verdict.model_id === 'wise-limit' || (depth.wise && depth.wise.id === verdict.model_id),
-    predicted: finite(verdict.model_mag_ab) ? verdict.model_mag_ab : null,
-    depth: finite(verdict.depth_50_ab) ? verdict.depth_50_ab : null,
-    gap: verdict.gap_mag.value,
-    sigma: finite(verdict.gap_mag.sigma) ? verdict.gap_mag.sigma : null,
-    factor: finite(verdict.factor_in_flux) ? verdict.factor_in_flux : null,
-    verdictKey: verdict.verdict_key,
-  }));
+  const rows = (depth?.verdicts ?? []).filter((verdict) => finite(verdict.gap_mag?.value)).map((verdict) => {
+    const predicted = finite(verdict.model_mag_ab) ? verdict.model_mag_ab : null;
+    const band = depth.bands?.find((item) => item.id === verdict.band_id) ?? null;
+    const found = band && predicted !== null ? recoveredAt(band.curve, predicted) : null;
+    return {
+      bandId: verdict.band_id ?? null,
+      modelId: verdict.model_id ?? null,
+      model: depth.models.find((item) => item.id === verdict.model_id) ?? null,
+      wise: verdict.model_id === 'wise-limit' || (depth.wise && depth.wise.id === verdict.model_id),
+      predicted,
+      depth: finite(verdict.depth_50_ab) ? verdict.depth_50_ab : null,
+      gap: verdict.gap_mag.value,
+      sigma: finite(verdict.gap_mag.sigma) ? verdict.gap_mag.sigma : null,
+      factor: finite(verdict.factor_in_flux) ? verdict.factor_in_flux : null,
+      verdictKey: verdict.verdict_key,
+      found,
+      reach: reachOf(found, verdict.gap_mag.value),
+    };
+  });
   const closest = rows.reduce((best, row) => (best === null || row.gap < best.gap ? row : best), null);
-  return { rows, tooFaint: rows.filter((row) => row.gap > 0).length, closest };
+  const of = (reach) => rows.filter((row) => row.reach === reach);
+  return {
+    rows,
+    closest,
+    fainterThanDepth: rows.filter((row) => row.gap > 0).length,
+    tooFaint: of('faint').length,
+    partial: of('partial').sort((a, b) => a.gap - b.gap),
+    within: of('within').sort((a, b) => a.gap - b.gap),
+    unknown: of('unknown').length,
+    unread: rows.filter((row) => row.reach === null).length,
+  };
+}
+
+/** "about 1 time in N" for a fraction between 5% and 50% (N = 1 / fraction, rounded), else null. */
+export const oneIn = (fraction) => (finite(fraction) && fraction >= TOO_FAINT_BELOW && fraction < 0.5 ? Math.round(1 / fraction) : null);
+
+/**
+ * The headline sentence for the measured panel, built from the file's own summary numbers (verdict_summary.values)
+ * and the measured curve: { key, values, reach: { key, values } }, or null when the file does not give the numbers
+ * the sentence needs (then the page shows the file's own summary). The nominal Linder & Mordasini planet is
+ * called too faint only when the curve says so in every band.
+ */
+export function headline(depth) {
+  const values = depth?.verdictSummary?.values;
+  const needed = ['depth_i', 'depth_w1', 'depth_w2', 'model_i', 'model_w1', 'model_w2', 'gap_w1'];
+  if (depth?.example || !values || !needed.every((name) => values[name] !== undefined && values[name] !== null)) return null;
+  const summary = gapRows(depth);
+  const nominal = summary.rows.filter((row) => row.model?.scenarioKey === 'planetx.scenario.lm16-nominal');
+  if (!nominal.length || !nominal.every((row) => row.reach === 'faint')) return null;
+  const reachable = [...summary.within, ...summary.partial];
+  const n = String(summary.rows.length);
+  let reach;
+  if (!reachable.length) reach = { key: 'planetx.headline.none', values: { n } };
+  else if (reachable.length === 1) {
+    const [row] = reachable;
+    const fraction = row.found.fraction ?? row.found.lower;
+    const odds = oneIn(fraction);
+    const pct = String(Math.round(fraction * 100));
+    reach = row === summary.closest
+      ? { key: odds ? 'planetx.headline.closestOdds' : 'planetx.headline.closestPct', values: { odds: String(odds), pct } }
+      : { key: 'planetx.headline.onePct', values: { pct } };
+  } else {
+    const best = reachable.reduce((top, row) => ((row.found.fraction ?? 1) > (top.found.fraction ?? 1) ? row : top));
+    reach = { key: 'planetx.headline.some', values: { count: String(reachable.length), n, pct: String(Math.round((best.found.fraction ?? best.found.lower) * 100)) } };
+  }
+  return { key: 'planetx.headline', values: { ...values }, reach };
 }
 
 /** How many artificial planets each point of the pooled curves holds: the method's number, else [min, max] counted from the curves. */

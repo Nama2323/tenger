@@ -68,6 +68,7 @@ const PAGES = [
   { name: 'learn-lesson-sure', path: '/?page=learn&lesson=sure&fixtures=1', ready: '#lesson-view .answer-key', act: "document.querySelectorAll('.answer-toggle').forEach((d) => { d.open = true; })" },
   { name: 'learn-lab', path: '/?page=learn&lesson=lab', ready: '#lab-results dl' },
   { name: 'learn-lab-measured', path: '/?page=learn&lesson=lab#measured', ready: '#measured .planetx-chart', scrollTo: '#measured' },
+  { name: 'learn-lab-reach', path: '/?page=learn&lesson=lab#measured', ready: '#measured .planetx-chart', act: "document.querySelector('#measured .planetx-gaps details').open = true", scrollTo: '#measured .planetx-verdict' },
   { name: 'learn-lab-measured-w1', path: '/?page=learn&lesson=lab#measured', ready: '#measured .planetx-chart', scrollTo: '#measured .planetx-band:nth-child(2)' },
   { name: 'learn-lesson-brightness-planetx', path: '/?page=learn&lesson=brightness', ready: '.planetx-line', scrollTo: '.planetx-line' },
   { name: 'game-hidden', path: '/?page=game', ready: '#hidden-stage img', scrollTo: '#hidden-round' },

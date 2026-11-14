@@ -74,3 +74,33 @@ test('every data key Session A publishes has English text in the resource file (
 test('the map caption says it is not a sky map', () => {
   assert.equal(t('map.caption'), 'Schematic: not a sky map. Angles are arbitrary; distances come from the cited sources.');
 });
+
+test('the web never redefines a key Session A publishes with different text (a clash would hide Session A\'s wording)', () => {
+  const published = JSON.parse(readFileSync(`${STATIC}data/strings.en.json`, 'utf8')).strings;
+  const source = readFileSync(`${STATIC}js/i18n.js`, 'utf8');
+  const webPart = source.slice(0, source.indexOf('// ---------- Data keys copied from static/data/strings.en.json'));
+  // Only this heading keeps the web's own form on purpose (no full stop in a heading).
+  const allowed = new Set(['planetx.title']);
+  const clashes = Object.keys(published).filter((key) => webPart.includes(`'${key}':`) && !allowed.has(key) && t(key) !== published[key]);
+  assert.deepEqual(clashes, []);
+});
+
+test('lesson records: every prompt is filled from its own inputs and every unit has English text', async () => {
+  const { readLessonRecord } = await import('../static/js/lessons.js');
+  const { withUnit } = await import('../static/js/dom.js');
+  for (const name of readdirSync(`${STATIC}data/lessons`).filter((file) => file.endsWith('.json'))) {
+    const record = readLessonRecord(JSON.parse(readFileSync(`${STATIC}data/lessons/${name}`, 'utf8')));
+    assert.ok(record, name);
+    for (const exercise of record.exercises) {
+      assert.ok(has(exercise.promptKey), `${name} ${exercise.id}: ${exercise.promptKey}`);
+      const placeholders = [...t(exercise.promptKey).matchAll(/\{(\w+)\}/g)].map((match) => match[1]);
+      const inputs = new Set(exercise.inputs.map((input) => input.name));
+      assert.deepEqual(placeholders.filter((placeholder) => !inputs.has(placeholder)), [], `${name} ${exercise.id}: every placeholder has an input`);
+      for (const unit of [exercise.answer.unit, ...exercise.inputs.map((input) => input.unit)].filter(Boolean)) {
+        assert.ok(has(`unit.${unit}`), `${name} ${exercise.id}: unit "${unit}" has English text`);
+        assert.doesNotMatch(withUnit(1.5, unit, 1), /unit\./, `${name} ${exercise.id}: ${unit}`);
+      }
+    }
+  }
+  assert.equal(withUnit(2, 'no-such-unit', 0), '2 no-such-unit', 'an unknown unit is shown as written, never as its key');
+});

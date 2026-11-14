@@ -5,8 +5,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { has, t } from '../static/js/i18n.js';
 import {
-  bandModels, bandWavelengthCheck, depthAt, gapRows, injectedPerPoint, DEPTH_PATH, HIDDEN_PATH, judgeTap, magExtent, magRange, NATIVE_PIXEL_ARCSEC, PUBLISHED_BAND_UM, readDepth,
-  readHiddenPlanet, tapReport, wilson,
+  bandModels, bandWavelengthCheck, depthAt, gapRows, headline, injectedPerPoint, DEPTH_PATH, HIDDEN_PATH, judgeTap, magExtent, magRange, NATIVE_PIXEL_ARCSEC, oneIn, PUBLISHED_BAND_UM,
+  reachOf, readDepth, readHiddenPlanet, recoveredAt, tapReport, TOO_FAINT_BELOW, wilson,
 } from '../static/js/planetx.js';
 
 const FIXTURES = fileURLToPath(new URL('../static/dev-fixtures/', import.meta.url));
@@ -121,7 +121,10 @@ test('every visible label of the panel and the round exists in English', () => {
     'planetx.link', 'planetx.title', 'planetx.measuredChip', 'planetx.injectedChip', 'planetx.exampleNote', 'planetx.lead', 'planetx.axisMag',
     'planetx.assume.injected', 'planetx.assume.rule', 'planetx.assume.interval', 'planetx.assume.depth', 'planetx.assume.models', 'planetx.lessonLine',
     'hidden.title', 'hidden.chip', 'hidden.label', 'hidden.lead', 'hidden.leadExample', 'hidden.notCounted', 'hidden.youFound', 'hidden.youMissed',
-    'hidden.pipelineFound', 'hidden.pipelineMissed', 'hidden.check', 'hidden.scaleResampled', 'hidden.scaleNative', 'planetx.bandMismatch', 'planetx.gapsSummary', 'planetx.gapTable', 'planetx.wiseRow',
+    'hidden.pipelineFound', 'hidden.pipelineMissed', 'hidden.check', 'hidden.scaleResampled', 'hidden.scaleNative', 'planetx.bandMismatch', 'planetx.reachCount', 'planetx.reachPartialLine', 'planetx.reachWithinLine', 'planetx.sigmaNote', 'planetx.gapTable', 'planetx.wiseRow',
+    'planetx.reach.rule', 'planetx.reach.faint', 'planetx.reach.partial', 'planetx.reach.within', 'planetx.reach.unknown', 'planetx.col.found', 'planetx.col.reach',
+    'planetx.found.point', 'planetx.found.interpolated', 'planetx.found.tested', 'planetx.found.fainter', 'planetx.found.brighter', 'planetx.headline',
+    'planetx.headline.closestOdds', 'planetx.headline.closestPct', 'planetx.headline.onePct', 'planetx.headline.some', 'planetx.headline.none',
   ]) assert.ok(has(key), key);
 });
 
@@ -196,19 +199,110 @@ test('the headline verdict is filled with the file\'s numbers, and every publish
       }
       assert.ok(!/\{\w+\}/.test(words), `${name}: no placeholder left`);
     }
-    const { rows, tooFaint, closest } = gapRows(depth);
+    const { rows, fainterThanDepth, tooFaint, partial, within, unknown, unread, closest } = gapRows(depth);
     assert.equal(rows.length, doc.verdicts.filter((verdict) => Number.isFinite(verdict.gap_mag?.value)).length);
-    assert.equal(tooFaint, rows.filter((row) => row.gap > 0).length);
+    assert.equal(fainterThanDepth, rows.filter((row) => row.gap > 0).length);
+    assert.equal(tooFaint + partial.length + within.length + unknown + unread, rows.length, `${name}: every row is placed once`);
     assert.ok(rows.every((row) => row.gap >= closest.gap));
     for (const row of rows) if (row.predicted !== null && row.depth !== null) near(row.gap, row.predicted - row.depth, 0.02, `${name} ${row.modelId}: gap = prediction − depth`);
   }
   const published = real(DEPTH_PATH);
   if (published) {
-    const { rows, tooFaint, closest } = gapRows(readDepth(published));
-    assert.equal(tooFaint, rows.length, 'Session A: every gap is positive');
+    const { rows, fainterThanDepth, closest } = gapRows(readDepth(published));
+    assert.equal(fainterThanDepth, rows.length, 'Session A: every published value is fainter than our 50% depth');
     assert.equal(closest.modelId, 'lm16-280au-i');
     near(closest.gap, 0.36, 1e-9);
     assert.ok(rows.some((row) => row.wise), 'the WISE limit row is recognised');
+  }
+});
+
+test('the fraction found at a published value is read from the pooled curve: the point itself, interpolated, or bounded beyond it', () => {
+  const curve = [
+    { mag: 17, fraction: 0.6, interval: [0.55, 0.65] }, { mag: 17.25, fraction: 0.4153, interval: [0.3722, 0.4597] },
+    { mag: 17.5, fraction: 0.25, interval: [0.2135, 0.2904] }, { mag: 18, fraction: 0, interval: [0, 0.0079] },
+  ];
+  const between = recoveredAt(curve, 17.45);
+  assert.equal(between.interpolated, true);
+  near(between.fraction, 0.4153 + 0.8 * (0.25 - 0.4153), 1e-12);
+  assert.deepEqual(between.points.map((point) => point.mag), [17.25, 17.5], 'both neighbours, so their intervals can be shown');
+  const on = recoveredAt(curve, 17.5);
+  assert.equal(on.interpolated, false);
+  assert.equal(on.fraction, 0.25);
+  const fainter = recoveredAt(curve, 21);
+  assert.equal(fainter.beyond, 'faint');
+  assert.equal(fainter.fraction, null, 'no value is made up beyond the tested range');
+  assert.equal(fainter.upper, 0.0079);
+  const brighter = recoveredAt(curve, 15);
+  assert.equal(brighter.beyond, 'bright');
+  assert.equal(brighter.lower, 0.55);
+  assert.equal(recoveredAt(curve, Number.NaN), null);
+  assert.equal(recoveredAt([curve[0]], 17), null);
+});
+
+test('"too faint for one exposure" only below 5% found; between 5% and the 50% depth it says how often', () => {
+  assert.equal(TOO_FAINT_BELOW, 0.05);
+  assert.equal(reachOf({ fraction: 0.049, beyond: null }, 1), 'faint');
+  assert.equal(reachOf({ fraction: 0.05, beyond: null }, 1), 'partial');
+  assert.equal(reachOf({ fraction: 0.283, beyond: null }, 0.36), 'partial');
+  assert.equal(reachOf({ fraction: 0.6, beyond: null }, -0.2), 'within');
+  assert.equal(reachOf({ fraction: null, beyond: 'faint', upper: 0.0079 }, 4), 'faint');
+  assert.equal(reachOf({ fraction: null, beyond: 'faint', upper: 0.2 }, 4), 'unknown', 'a faint end that does not rule out 5% is not called too faint');
+  assert.equal(reachOf(null, 1), null);
+  assert.equal(oneIn(0.2831), 4);
+  assert.equal(oneIn(0.04), null);
+  assert.equal(oneIn(0.6), null);
+  for (const [name, doc] of both(DEPTH_PATH)) {
+    for (const row of gapRows(readDepth(doc)).rows) {
+      if (!row.found) continue;
+      const atMost = row.found.fraction ?? row.found.upper ?? 1;
+      if (row.reach === 'faint') assert.ok(atMost < 0.05, `${name} ${row.modelId}: called too faint at ${atMost}`);
+      if (row.found.fraction !== null && row.found.fraction >= 0.05) assert.notEqual(row.reach, 'faint', `${name} ${row.modelId}`);
+    }
+  }
+});
+
+test('Session A\'s curve: the 280 AU Linder & Mordasini case is found in about 28% of single exposures, every other value under 5%', { skip: real(DEPTH_PATH) ? false : 'real depth.json not published yet' }, () => {
+  const depth = readDepth(real(DEPTH_PATH));
+  const summary = gapRows(depth);
+  assert.deepEqual(summary.partial.map((row) => row.modelId), ['lm16-280au-i']);
+  const [row] = summary.partial;
+  assert.equal(row.found.interpolated, true);
+  assert.deepEqual(row.found.points.map((point) => point.mag), [17.25, 17.5]);
+  near(row.found.fraction, 0.283, 0.001, 'user\'s figure: about 28%');
+  assert.equal(summary.tooFaint, summary.rows.length - 1);
+  assert.equal(summary.within.length, 0);
+  const built = headline(depth);
+  const words = t(built.key, { ...built.values, reach: t(built.reach.key, built.reach.values) });
+  assert.match(words, /Only the closest published case comes within reach, and one exposure would catch it about 1 time in 4\./);
+  assert.ok(!/\{\w+\}/.test(words), 'no placeholder left');
+  assert.ok(!/brightest published scenarios/.test(words), 'the older wording is gone');
+});
+
+test('the ± next to each gap is said to be our measurement error only, not the planet\'s own uncertainty', () => {
+  const note = t('planetx.sigmaNote', { sigma: '± 0.04' });
+  assert.match(note, /± 0\.04/);
+  assert.match(note, /measurement error only/);
+  assert.match(note, /mass, albedo and distance/);
+  assert.match(t('planetx.col.gap'), /our error/);
+});
+
+test('the file\'s per-row verdict keys agree with the curve once Session A has updated them (A10)', () => {
+  for (const [name, doc] of both(DEPTH_PATH)) {
+    const rows = gapRows(readDepth(doc)).rows.filter((row) => row.reach);
+    const updated = doc.verdicts.some((verdict) => 'recovered_fraction' in verdict || verdict.verdict_key === 'planetx.verdict.partial');
+    const expectedKey = { faint: 'planetx.verdict.too-faint', partial: 'planetx.verdict.partial', within: 'planetx.verdict.within-depth' };
+    const disagree = rows.filter((row) => expectedKey[row.reach] && row.verdictKey !== expectedKey[row.reach] && !row.verdictKey.startsWith('planetx.example.'));
+    if (updated) {
+      assert.deepEqual(disagree.map((row) => row.modelId), [], `${name}: file verdict keys match the curve`);
+      for (const row of rows) {
+        const given = doc.verdicts.find((verdict) => verdict.model_id === row.modelId && verdict.band_id === row.bandId)?.recovered_fraction;
+        const value = typeof given === 'object' && given !== null ? given.value : given;
+        if (Number.isFinite(value) && row.found.fraction !== null) near(value, row.found.fraction, 0.005, `${name} ${row.modelId}: file fraction vs curve`);
+      }
+    } else {
+      // Before A10 the only disagreement allowed is the overstated "too faint" on rows the curve places between 5% and 50%.
+      assert.ok(disagree.every((row) => row.reach === 'partial' && row.verdictKey === 'planetx.verdict.too-faint'), `${name}: ${disagree.map((row) => row.modelId)}`);
+    }
   }
 });
 

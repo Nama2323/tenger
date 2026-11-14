@@ -1,5 +1,5 @@
 // Small DOM helpers shared by the TENGER pages.
-import { t } from './i18n.js';
+import { has, t } from './i18n.js';
 
 export const $ = (id) => document.getElementById(id);
 
@@ -30,14 +30,24 @@ export function formatUtc(date, { time = true } = {}) {
   return time ? `${iso.slice(0, 10)} ${iso.slice(11, 16)}` : iso.slice(0, 10);
 }
 
-const SYMBOL_UNITS = new Set(['arcsec', 'arcmin', 'deg', 'percent']);
+const SYMBOL_UNITS = new Set(['arcsec', 'arcmin', 'deg', 'deg/d', 'percent']);
 
 /** A number with its unit from the resource file: symbols stick to the number (1.2″), words get a space. */
 export function withUnit(value, unit, digits = 2) {
   const number = formatNumber(value, digits);
   if (!unit || number === '—') return number;
-  const label = t(`unit.${unit}`);
-  return SYMBOL_UNITS.has(unit) ? `${number}${label}` : `${number} ${label}`;
+  return `${number}${unitSuffix(unit)}`;
+}
+
+/**
+ * What follows a number for a unit: "″" for a symbol, " au" for a word, "" for a pure number. A unit without
+ * English text is shown as written in the data, never as its key.
+ */
+export function unitSuffix(unit) {
+  if (!unit) return '';
+  const label = has(`unit.${unit}`) ? t(`unit.${unit}`) : unit;
+  if (!label) return '';
+  return SYMBOL_UNITS.has(unit) ? label : ` ${label}`;
 }
 
 export function formatNumber(value, digits = 2) {
