@@ -68,6 +68,7 @@ test('the depth reader takes pooled curves, depth intervals, same-band models an
   assert.equal(JSON.stringify(depth).includes('"projection"'), false, 'a stacked projection is never read as a measurement');
   const [low, high] = magExtent(band, [[21.3, 21.3], [18.9]]);
   assert.ok(low < 17 && high > 21.3, 'the chart range holds every marker');
+  assert.deepEqual(readDepth({ ...doc, assumption_keys: ['a', 'b'], limitation_keys: ['b', 'c'] }).assumptionKeys, ['a', 'b', 'c'], 'limitation_keys are read too, each key once');
   assert.equal(readDepth({ ...doc, counts: true }), null);
   assert.equal(readDepth({ ...doc, schema_version: 'tenger.planetx-depth/1' }), null);
 });

@@ -1,0 +1,42 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "example": true,
+  "trial_id": "asteroid-05-example",
+  "trial_ref": {
+    "path": "trials/asteroid-05-example/trial.json",
+    "sha256": "37a6aadcc66c005da2a20d5f2bd20e6e636eeb780a749bc6ef97e16ccf78d526"
+  },
+  "category": "prospective_unexposed",
+  "prediction_status": "predicted",
+  "t_mjd": 61304,
+  "model": {
+    "ra_deg": 76,
+    "dec_deg": -1.5999999999999996,
+    "cov_arcsec2": [
+      [
+        1.663,
+        -0.5393
+      ],
+      [
+        -0.5393,
+        1.137
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "ra_deg": 75.99907275,
+    "dec_deg": -1.60033994,
+    "cov_arcsec2": [
+      [
+        0.3,
+        0
+      ],
+      [
+        0,
+        0.3
+      ]
+    ],
+    "content_type": "modeled"
+  }
+}

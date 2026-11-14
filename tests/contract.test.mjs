@@ -60,7 +60,7 @@ test('every development fixture is marked as an example and has a known schema',
     const doc = JSON.parse(readFileSync(file, 'utf8'));
     assert.equal(doc.example, true, `${file} must carry "example": true`);
     const name = file.split('/').at(-1);
-    const kind = kinds[name] ?? (file.includes('/game/') ? 'game_round' : file.includes('/lessons/') ? 'lesson' : null);
+    const kind = kinds[name] ?? (file.includes('/game/') ? 'game_round' : file.includes('/lessons/') ? 'lesson' : file.includes('/batches/') ? 'batch' : null);
     assert.ok(kind, `unexpected fixture ${file}`);
     assert.equal(checkSchema(doc, kind), 'ok', file);
   }

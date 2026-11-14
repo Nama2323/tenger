@@ -13,6 +13,7 @@ import { dateOfMjd, labelChips, receiptLine, residualTable, statusChip, utcText 
 import { closeReveal, initReveal, openReveal, revealTrialId } from './reveal.js';
 import { forecastRows, HINDCAST_PATH, POSTMORTEM_PATH, readHindcast, readPostmortem } from './postmortem.js';
 import { whyWeMissed } from './postmortem-ui.js';
+import { batchSection } from './batch-ui.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const CHART = 260;
@@ -62,11 +63,17 @@ async function load() {
   const indexDoc = index.state === 'ok' ? index.doc : null;
   const board = await source.scoreboard(indexDoc?.scoreboard_path);
   const boardDoc = board.state === 'ok' ? board.doc : null;
-  const bundles = await Promise.all(ledgerTrialIds(indexDoc, boardDoc).map((id) => source.trial(id)));
+  const [bundles, batch] = await Promise.all([
+    Promise.all(ledgerTrialIds(indexDoc, boardDoc).map((id) => source.trial(id))),
+    context.loadBatch ? context.loadBatch() : null,
+  ]);
+  // Trials of the asteroid batch are shown in its own section, not again as single cards.
+  const inBatch = new Set(batch?.batch?.trialIds ?? []);
   const rowOf = (id) => (Array.isArray(boardDoc?.rows) ? boardDoc.rows.find((row) => row?.trial_id === id) ?? null : null);
   const cards = [];
   const forecasts = [];
   for (const bundle of bundles) {
+    if (inBatch.has(bundle.id)) continue;
     const card = { bundle, row: rowOf(bundle.id), status: trialStatus(bundle, rowOf(bundle.id)) };
     if (isOpenForecast(bundle, boardDoc)) forecasts.push(card);
     else cards.push(card);
@@ -81,7 +88,7 @@ async function load() {
   const seeOnly = Array.isArray(boardDoc?.see_only)
     ? boardDoc.see_only
     : (indexDoc?.targets ?? []).filter((target) => target?.prediction?.status === 'see_only').map((target) => target.key);
-  return { index, board, boardDoc, cards: sortByStatus(cards), forecasts, seeOnly, bundles };
+  return { index, board, boardDoc, cards: sortByStatus(cards), forecasts, seeOnly, bundles, batch };
 }
 
 // ---------- Scoreboard summary ----------
@@ -373,6 +380,9 @@ function render(data) {
   banner.hidden = !(context.fallback || context.fixtures);
   banner.replaceChildren(el('p', { text: t(context.fallback ? 'ledger.fallback' : 'ledger.fixtures') }));
   boardSection(data);
+  const batch = batchSection(data.batch);
+  $('ledger-batch-host').replaceChildren(...(batch ? [batch] : []));
+  $('ledger-batch-host').hidden = !batch;
   const list = $('ledger-list');
   list.replaceChildren(...(data.cards.length
     ? data.cards.map(trialCard)

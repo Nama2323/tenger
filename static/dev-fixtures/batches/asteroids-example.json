@@ -1,0 +1,179 @@
+{
+  "schema_version": "tenger.batch/1",
+  "example": true,
+  "batch_id": "asteroids-example",
+  "name": "Example asteroid batch (invented)",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "team_statement_pending": true,
+  "frozen_utc": "2026-11-15T03:00:00Z",
+  "receipt": {
+    "commit_sha": "0000000000000000000000000000000000000000",
+    "frozen_utc": "2026-11-15T03:00:00Z"
+  },
+  "trial_ids": [
+    "asteroid-01-example",
+    "asteroid-02-example",
+    "asteroid-03-example",
+    "asteroid-04-example",
+    "asteroid-05-example",
+    "asteroid-06-example",
+    "asteroid-07-example",
+    "asteroid-08-example",
+    "asteroid-09-example",
+    "asteroid-10-example",
+    "asteroid-11-example",
+    "asteroid-12-example"
+  ],
+  "calibration": {
+    "n": 12,
+    "k_inside": 10,
+    "level": 0.95,
+    "interval": [
+      0.5158622513140325,
+      0.9791374745399075
+    ],
+    "interval_method": "clopper_pearson",
+    "expected_inside": 11.399999999999999,
+    "independence_note_key": "batch.example.independence"
+  },
+  "rows": [
+    {
+      "trial_id": "asteroid-01-example",
+      "name": "Example asteroid 01",
+      "d": 0.42,
+      "d2": 0.1764,
+      "inside": true,
+      "model_error_arcsec": 0.3386,
+      "baseline_error_arcsec": 6.1,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-02-example",
+      "name": "Example asteroid 02",
+      "d": 0.71,
+      "d2": 0.5041,
+      "inside": true,
+      "model_error_arcsec": 0.8775,
+      "baseline_error_arcsec": 9.8,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-03-example",
+      "name": "Example asteroid 03",
+      "d": 0.95,
+      "d2": 0.9025,
+      "inside": true,
+      "model_error_arcsec": 0.8826,
+      "baseline_error_arcsec": 0.6,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-04-example",
+      "name": "Example asteroid 04",
+      "d": 1.12,
+      "d2": 1.2544,
+      "inside": true,
+      "model_error_arcsec": 1.5342,
+      "baseline_error_arcsec": 15.5,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-05-example",
+      "name": "Example asteroid 05",
+      "d": 1.3,
+      "d2": 1.69,
+      "inside": true,
+      "model_error_arcsec": 1.2465,
+      "baseline_error_arcsec": 3.1,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-06-example",
+      "name": "Example asteroid 06",
+      "d": 1.48,
+      "d2": 2.1904,
+      "inside": true,
+      "model_error_arcsec": 2.007,
+      "baseline_error_arcsec": 11,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-07-example",
+      "name": "Example asteroid 07",
+      "d": 1.66,
+      "d2": 2.7556,
+      "inside": true,
+      "model_error_arcsec": 2.1823,
+      "baseline_error_arcsec": 7.7,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-08-example",
+      "name": "Example asteroid 08",
+      "d": 1.83,
+      "d2": 3.3489,
+      "inside": true,
+      "model_error_arcsec": 2.3644,
+      "baseline_error_arcsec": 1.9,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-09-example",
+      "name": "Example asteroid 09",
+      "d": 2.05,
+      "d2": 4.2025,
+      "inside": true,
+      "model_error_arcsec": 2.6003,
+      "baseline_error_arcsec": 19.4,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-10-example",
+      "name": "Example asteroid 10",
+      "d": 2.31,
+      "d2": 5.3361,
+      "inside": true,
+      "model_error_arcsec": 3.2328,
+      "baseline_error_arcsec": 8.3,
+      "status": "hit",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-11-example",
+      "name": "Example asteroid 11",
+      "d": 2.92,
+      "d2": 8.5264,
+      "inside": false,
+      "model_error_arcsec": 4.7057,
+      "baseline_error_arcsec": 12.6,
+      "status": "miss",
+      "excluded_reason_key": null
+    },
+    {
+      "trial_id": "asteroid-12-example",
+      "name": "Example asteroid 12",
+      "d": 3.64,
+      "d2": 13.2496,
+      "inside": false,
+      "model_error_arcsec": 4.095,
+      "baseline_error_arcsec": 3.1,
+      "status": "miss",
+      "excluded_reason_key": null
+    }
+  ],
+  "note_keys": [
+    "batch.example.note"
+  ]
+}

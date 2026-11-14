@@ -1,0 +1,28 @@
+{
+  "schema_version": "tenger.trial/1",
+  "example": true,
+  "trial_id": "asteroid-11-example",
+  "target_key": null,
+  "target_name": "Example asteroid 11",
+  "batch_id": "asteroids-example",
+  "quantity": "position",
+  "category": "prospective_unexposed",
+  "labels": [
+    "prospective_unexposed"
+  ],
+  "open_forecast": false,
+  "confirmation_pending": true,
+  "frozen_utc": "2026-11-15T03:00:00Z",
+  "holdout": {
+    "obs_ids": [
+      "EXAMPLE_A11"
+    ],
+    "t_mjd": 61310,
+    "selection_rule_key": "holdout.next-visit",
+    "data_state": "released"
+  },
+  "scoring": {
+    "kind": "position_2d",
+    "threshold_d2": 5.991
+  }
+}

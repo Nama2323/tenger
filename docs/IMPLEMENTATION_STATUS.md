@@ -1006,3 +1006,42 @@ the page has to change when they land; I will check the real files in the browse
 
 **Limits**: the gap line in the panel does not say which depth the gap is measured from (the file's verdict text
 should); per-field curves are shown as tables, not charts; not checked on a real phone.
+
+### Task B6, 15 Nov 2026 (asteroid batch: calibration on Predictions and in Lesson 3)
+
+**State of A9**: Session A has no A9 task, so there is no real asteroid batch, no agreed schema and no decision on
+whether a batch counts on the scoreboard. Session A said those are the user's decisions. B6 is built against an
+**invented, labelled example** and the shape Session B proposed (below); it switches to a real batch on its own once
+`index.json` lists one in `batch_paths[]`.
+
+**Proposed shape (not in DATA-CONTRACT yet)**: each asteroid is a normal trial (`trials/<id>/{trial,prediction,
+receipt,verification}.json`, trial with `target_name` and `batch_id`); one summary per batch,
+`batches/<id>.json`, schema `tenger.batch/1`, with `team_statement_pending`, `trial_ids[]`, `calibration {n, k_inside,
+level, interval, interval_method, expected_inside, independence_note_key}`, `rows[] {trial_id, name, d, d2, inside,
+model_error_arcsec, baseline_error_arcsec, status, excluded_reason_key}` and `note_keys[]`.
+
+**Never a test scoreboard on the public page**: the invented example is read only in `?fixtures=1` mode. Without a
+real batch the Predictions page and Lesson 3 show nothing about it and request no fixture file (checked in the
+browser). A batch file under `static/data/` that says `"example": true` is refused.
+
+| Part | Files | Result |
+|---|---|---|
+| Batch reader and maths | `js/batch.js` (pure) | `readBatch` (counts and interval from the file when it has them; otherwise counted from the rows with excluded rows left out, exact interval computed and flagged), exact Clopper–Pearson interval, `coverageVerdict` (95% inside / above / below the interval), `chartRows`, `baselineWins` (ties count for neither), `whatIfRows` (same share, 4× and 16× the tries). |
+| Predictions: "Asteroid batch" | `js/batch-ui.js`, `js/ledger-ui.js`, `index.html` (`#ledger-batch-host` after the scoreboard), `css/style.css` | Chips (category, example, **Team statement pending** while the file says so) and a note. Summary at the top: "k of N landed inside our 95% regions", the interval with its method, whether 95% lies inside it, the expected count, why a small N is wide, the independence assumption. A dot chart of each asteroid's D against the dashed 2.45 line (inside/outside colours, data table). A scatter of model error against straight-line error with the diagonal and the count each way. One card per asteroid: small sky plot (forecast, 95% test region from forecast plus measurement covariance, observed cross; north up, east left), forecast RA/Dec and date, region half-axes, observed offset and D, straight-line error, verdict chip, and the freeze commit link (none for an example or zero receipt). Batch trials are not shown again as single cards. |
+| Lesson 3 worked example | `js/batch-ui.js` (`lessonBatchSection`), `js/learn-ui.js` (`setBatch`), `js/main.js` (`ensureBatch`, loaded when Predictions or Learn opens) | "Did our 95% regions hold 95% of the time?": k of N and the share, what k of N means (expected count, chance), why a small N is not proof (the exact interval and its width), a what-if table with the same share at 4× and 16× the tries (labelled computed, not measured), the independence caveat and the source file. Every number from the batch file except the labelled what-if rows. |
+| Example fixture | `dev-fixtures/tools/make-batch.mjs` → `dev-fixtures/batches/asteroids-example.json`, `dev-fixtures/trials/asteroid-NN-example/` | 12 invented asteroids, all `"example": true`, zero commit SHA, hash chain trial → prediction → receipt/verification, residuals built so each D² = rᵀS⁻¹r exactly (10 of 12 inside; the straight line wins 3). |
+| B5 follow-up (Session A's answer) | `js/planetx.js`, `js/i18n.js` | The gap line now says it is the prediction minus our pooled 50% single-exposure depth (positive = fainter than one exposure reaches); `limitation_keys` are read alongside `assumption_keys`. |
+
+**Checks**
+
+| Check | Result |
+|---|---|
+| `node --test tests/` | **180 passed, 0 failed**. New `tests/batch.test.mjs`: the 2.4477 limit; Clopper–Pearson against known values; intervals narrowing with N; coverage verdicts; the reader from file vs counted (excluded rows, D-only rows, ties, refusals); the example consistent with its own trial files (D² from residual and region, verdicts, batch ids); the loader never returns the example on the public page, switches to a listed real batch and refuses a real-path batch marked as an example; every label in English. Contract fixture test knows `batches/` (kind `batch`); `planetx.test.mjs` checks `limitation_keys`. |
+| `node docs/screens/capture.mjs http://localhost:8766 docs/screens` (B6 pages, merged into the full report) | `predictions-batch`, `predictions-batch-charts`, `predictions-batch-cards`, `learn-lesson-sure-batch` at 360/390/768/1280, plus `predictions` and `learn-lesson-sure` again: measured viewport = requested, no horizontal scroll, no control under 44 px; report now 245 entries, none wide. Console errors only 404s for fixture trials without verification files and the unpublished Planet X files. |
+| In-app browser | `?page=predictions&fixtures=1`: section, summary, both charts, 12 cards; `?page=learn&lesson=sure&fixtures=1`: worked example and what-if table. Public `?page=predictions` and `?page=learn&lesson=sure`: no batch section and no batch or fixture requests. |
+
+**Needs the user**: give Session A the A9 task (or drop it). Decide whether a batch counts on the main scoreboard and
+whether one freeze commit covers all its trials; the page does not depend on either answer.
+
+**Limits**: the shape is Session B's proposal until it is in DATA-CONTRACT; with only the example, nothing about the
+batch is visible on the public site; not checked on a real phone.

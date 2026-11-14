@@ -1,0 +1,80 @@
+{
+  "schema_version": "tenger.verification/1",
+  "example": true,
+  "trial_id": "asteroid-03-example",
+  "prediction_sha256": "108e33edd1213d065888c002f20bd0ceb5bee00900f35c6a7ce845dc71ae188b",
+  "revealed_utc": "2026-11-15T04:00:00Z",
+  "status": "hit",
+  "t_mjd": 61302,
+  "observed": {
+    "ra_deg": 53.00024048,
+    "dec_deg": -5.79994644,
+    "cov_arcsec2": [
+      [
+        0.05,
+        0
+      ],
+      [
+        0,
+        0.05
+      ]
+    ],
+    "content_type": "measured"
+  },
+  "residuals": {
+    "model": {
+      "c_pred_arcsec2": [
+        [
+          0.776,
+          0.265
+        ],
+        [
+          0.265,
+          1.624
+        ]
+      ],
+      "c_obs_arcsec2": [
+        [
+          0.05,
+          0
+        ],
+        [
+          0,
+          0.05
+        ]
+      ],
+      "east_arcsec": 0.8613,
+      "north_arcsec": 0.1928,
+      "d2": 0.9025,
+      "error_arcsec": 0.8826,
+      "status": "hit"
+    },
+    "baseline": {
+      "c_pred_arcsec2": [
+        [
+          0.3,
+          0
+        ],
+        [
+          0,
+          0.3
+        ]
+      ],
+      "c_obs_arcsec2": [
+        [
+          0.05,
+          0
+        ],
+        [
+          0,
+          0.05
+        ]
+      ],
+      "east_arcsec": 0.6,
+      "north_arcsec": 0,
+      "d2": 1.0286,
+      "error_arcsec": 0.6,
+      "status": "hit"
+    }
+  }
+}

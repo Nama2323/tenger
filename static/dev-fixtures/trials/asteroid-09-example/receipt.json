@@ -1,0 +1,9 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "example": true,
+  "trial_id": "asteroid-09-example",
+  "prediction_path": "trials/asteroid-09-example/prediction.json",
+  "prediction_sha256": "8419e4b88fa0d96748c5540ef923e251ea41b413b88c1401eaf496d27ab80b1c",
+  "commit": "0000000000000000000000000000000000000000",
+  "committed_utc": "2026-11-15T03:00:00Z"
+}

@@ -15,7 +15,7 @@ import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
 import { findByName, searchMatches } from './names.js';
 import { renderChanged, renderEvidence, renderPrediction, renderSpectrumNote } from './panels.js';
 import { currentRoundId, renderGamePage, selectRound } from './game-ui.js';
-import { currentLearnView, initLearn, setPlanetX, showLearn } from './learn-ui.js';
+import { currentLearnView, initLearn, setBatch, setPlanetX, showLearn } from './learn-ui.js';
 import { initHelp } from './help.js';
 import { hasPublishedTrials } from './ledger.js';
 import { currentReveal, initLedger, showLedger, syncRevealFromUrl } from './ledger-ui.js';
@@ -31,6 +31,7 @@ import { createSky } from './sky.js';
 import { flyThen, homeShown, initSpace } from './space-ui.js';
 import { showLoopPage } from './loop-ui.js';
 import { loadPlanetX, renderHiddenRound } from './planetx-ui.js';
+import { loadBatch } from './batch-ui.js';
 import { isTourRunning, nextTourStep, runTour, shouldAutoStart, stopTour } from './tour.js';
 import {
   channelWavelength, CHANNELS, colourGroupsPresent, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
@@ -1538,6 +1539,7 @@ function showPage(page, { push = true, focus = true } = {}) {
   }
   if (page === 'predictions') showLedger();
   if (page === 'game' || page === 'learn') ensurePlanetX();
+  if (page === 'learn') ensureBatch()?.then(setBatch);
   if (page === 'loop' && app.source) {
     const pluto = app.indexState?.state === 'ok' ? app.indexState.doc.targets?.find((target) => target.key === 'pluto') : null;
     showLoopPage({ source: app.source.fixtures ? createSource({ fixtures: false }) : app.source, openForecastIds: pluto?.prediction?.open_forecast_ids ?? [], embed: app.embed });
@@ -2250,6 +2252,7 @@ async function loadData() {
       if (app.page === 'predictions') writeUrl({ push });
     },
     onMissingTrial: (id) => addNotice('note.trialMissing', { id }),
+    loadBatch: ensureBatch,
   });
 }
 
@@ -2283,6 +2286,20 @@ function ensurePlanetX() {
     });
   }
   return planetxLoad;
+}
+
+/**
+ * The asteroid batch (task B6): the real batch when the real index lists one (batch_paths); the invented example
+ * only in ?fixtures=1 mode, so a test scoreboard never shows on the public page. Loaded when Predictions or Learn opens.
+ */
+let batchLoad = null;
+function ensureBatch() {
+  if (!app.realSource) return null;
+  if (!batchLoad) {
+    const fixtures = Boolean(parseRoute(location.search).fixtures);
+    batchLoad = loadBatch({ real: app.realSource, fixtures: createSource({ fixtures: true }), allowExample: fixtures }).catch(() => null);
+  }
+  return batchLoad;
 }
 
 /** From Home: in the 3D view the camera flies to the target first, then its investigation opens. */

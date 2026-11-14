@@ -7,6 +7,7 @@ import { categoryLabel } from './labels.js';
 import { LESSONS, planetModel, readLessonRecord, scoreboardSummary, syntheticLesson } from './lessons.js';
 import { correlatedInflation } from './postmortem.js';
 import { measuredPanel } from './planetx-ui.js';
+import { lessonBatchSection } from './batch-ui.js';
 
 const LAB = 'lab';
 const LAB_DEFAULTS = { distanceAu: 500, diameterKm: 20000, albedo: 0.4 };
@@ -185,6 +186,7 @@ function renderLesson(lesson) {
       fillsAll(stepsKey, workedParams) && content.source === 'synthetic' ? el('p', { class: 'worked-steps', text: t(stepsKey, workedParams) }) : null,
       el('p', { class: 'worked-answer', text: t('learn.answerIs', { value: workedParams.answer }) }),
     ]) : el('section', { class: 'lesson-part' }, [el('h3', { text: t('learn.worked') }), el('p', { class: 'panel-note', text: t('learn.workedMissing') })]),
+    lesson.id === 'sure' ? batchPart() : null,
     lesson.id === 'sure' ? plutoSection() : null,
     lesson.id === 'brightness' ? el('p', { class: 'planetx-line' }, [
       el('span', { text: `${t('planetx.lessonLine')} ` }),
@@ -331,7 +333,16 @@ export function showLearn(id, { notify = true, focus = true } = {}) {
 
 export const currentLearnView = () => view;
 
-/** records: contract load results of lessons/*.json; scoreboard: the scoreboard doc or null. */
+/** Lesson 3's batch example, or an empty placeholder until (or unless) a batch is available. */
+const batchPart = () => lessonBatchSection(context.batch) ?? el('div', { id: 'lesson-batch', hidden: true });
+
+/** The asteroid batch arrived (main.js loads it when Learn opens): fill Lesson 3's worked example. */
+export function setBatch(data) {
+  if (!context) return;
+  context.batch = data ?? null;
+  $('lesson-batch')?.replaceWith(batchPart());
+}
+
 /** The Planet X files arrived (main.js loads them when Learn or Beat the physics opens): fill the Lab's panel. */
 export function setPlanetX(data) {
   if (!context) return;
@@ -349,7 +360,7 @@ export function initLearn({ records, scoreboard, postmortem = null, nameOf, onNa
     const read = result.state === 'ok' ? readLessonRecord(result.doc) : null;
     if (read && !usable.has(read.id)) usable.set(read.id, read);
   }
-  context = { records: usable, scoreboard, postmortem, planetx: undefined, nameOf, onNavigate };
+  context = { records: usable, scoreboard, postmortem, planetx: undefined, batch: null, nameOf, onNavigate };
   renderIndex();
   $('lab-open').onclick = () => showLearn(LAB);
 }

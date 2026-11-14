@@ -78,6 +78,11 @@ const PAGES = [
   { name: 'learn-lesson-sure-pluto', path: '/?page=learn&lesson=sure', ready: '.pluto-example', scrollTo: '.pluto-example' },
   { name: 'learn-lesson-distance-loop', path: '/?page=learn&lesson=distance', ready: '.loop-part', scrollTo: '.loop-part' },
   { name: 'loop', path: '/?page=loop', ready: '#loop-chart svg' },
+  // B6: the asteroid batch (only the invented example exists yet, so only in ?fixtures=1 mode).
+  { name: 'predictions-batch', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch' },
+  { name: 'predictions-batch-charts', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch .batch-charts' },
+  { name: 'predictions-batch-cards', path: '/?page=predictions&fixtures=1', ready: '#ledger-batch .batch-card', scrollTo: '#ledger-batch .batch-cards' },
+  { name: 'learn-lesson-sure-batch', path: '/?page=learn&lesson=sure&fixtures=1', ready: '#lesson-batch h3', scrollTo: '#lesson-batch' },
   { name: 'loop-chart', path: '/?page=loop', ready: '#loop-chart svg', scrollTo: '#loop-chart-title' },
   { name: 'about-see', path: '/?page=about', ready: '#about-data li', scrollTo: '#about-limits-title' },
   { name: 'about-credits', path: '/?page=about', ready: '#about-data li', scrollTo: '#about-data-title' },

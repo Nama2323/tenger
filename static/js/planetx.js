@@ -134,7 +134,8 @@ export function readDepth(doc) {
     verdicts: (doc.verdicts ?? []).filter((item) => item && typeof item.verdict_key === 'string'),
     verdictKey: doc.verdict_key ?? null,
     missionKey: doc.mission_sensitivity?.statement_key ?? null,
-    assumptionKeys: Array.isArray(doc.assumption_keys) ? doc.assumption_keys.filter((key) => typeof key === 'string') : [],
+    // Session A names them limitation_keys; assumption_keys is the earlier name. Both are shown, once each.
+    assumptionKeys: [...new Set([doc.assumption_keys, doc.limitation_keys].flatMap((list) => (Array.isArray(list) ? list : [])).filter((key) => typeof key === 'string'))],
   };
 }
 
