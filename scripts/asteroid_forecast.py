@@ -196,7 +196,7 @@ def forecast(points: list[dict], eval_times: list[float], mode: str) -> dict:
         cross = np.array([-along[1], along[0]])
         rotation = np.column_stack([along, cross])
         c_model = rotation @ error["c_along_cross_arcsec2"] @ rotation.T
-        # Excess scatter (amendment 03:40 UB): the formal parameter covariance, already scaled by
+        # Excess scatter (amendment 05:53 UB): the formal parameter covariance, already scaled by
         # max(1, chi2/dof) in postmortem.fit, is a third estimate; the envelope takes the largest along and across.
         c_formal = postmortem.predict(method.model, result["best"], t, observer)[2]
         c_params = entry["c_parameters"]

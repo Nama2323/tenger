@@ -400,7 +400,7 @@ def measure_training(number: str) -> dict:
 BATCH_ID = "asteroids-2026a"
 TRIALS = ROOT / "static" / "data" / "trials"
 CONTRACT = 13
-PRIMARY, SECONDARY = "heliocentric_two_body", "barycentric_two_body"  # user decision, 03:25 UB (docs/asteroid-batch.md)
+PRIMARY, SECONDARY = "heliocentric_two_body", "barycentric_two_body"  # user decision, 05:52 UB (docs/asteroid-batch.md)
 
 
 def trial_id(number: str) -> str:

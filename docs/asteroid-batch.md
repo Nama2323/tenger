@@ -165,7 +165,7 @@ Category: `prospective_unexposed` (pending), plus `catalogue_assisted` for the t
 3. **Batch trials are not mixed into the scoreboard's per-category counts.** They form a separate
    `asteroid_batch` block (contract V13).
 
-## Amendment, 15 Nov 2026 03:25 UB: the heliocentric frame is the primary (user's decision)
+## Amendment, 15 Nov 2026 05:52 UB: the heliocentric frame is the primary (user's decision)
 
 Made before any forecast was frozen and before any evaluation pixel was opened; no outcome is known.
 
@@ -181,7 +181,7 @@ Made before any forecast was frozen and before any evaluation pixel was opened; 
   the barycentre is not a small correction inside Jupiter's orbit. Its 15′ region would make the
   identification radius larger than the 0.5° cutout cap, so recovery would almost certainly be
   ambiguous.
-- **Decision.** The user chose the heliocentric two-body as the primary model, at 03:25 UB in chat.
+- **Decision.** The user chose the heliocentric two-body as the primary model in chat, just before 05:52 UB.
 - **What changes:**
   - **Primary** (identification region, scoring, calibration): heliocentric two-body, with everything
     else in section 4 unchanged (v2 resampling envelope, synthetic model error, spacecraft term).
@@ -189,7 +189,7 @@ Made before any forecast was frozen and before any evaluation pixel was opened; 
     primary): barycentric two-body, method v2 as originally instructed.
   - The straight-line baseline is unchanged.
 
-## Amendment, 15 Nov 2026 03:40 UB: one frame rule for the whole batch; excess scatter covered (user's instruction)
+## Amendment, 15 Nov 2026 05:53 UB: one frame rule for the whole batch; excess scatter covered (user's instruction)
 
 Made before any forecast was frozen and before any evaluation pixel was opened; no outcome is known.
 
@@ -209,3 +209,8 @@ Made before any forecast was frozen and before any evaluation pixel was opened; 
    spacecraft term + C_model.
 4. **Further choices** in A9 are made by Session A as the recommended option and written here (the user
    is asleep).
+
+**Timestamp correction (05:55 UB).** The two amendment headings above first said 03:25 and 03:40 UB.
+Those were Session A's mistaken estimates of the clock. The git commit times are authoritative:
+`3dfd962` at 05:52:43 and `4d7a076` at 05:53:38 UB. Both amendments were still made before any
+forecast was frozen and before any evaluation pixel was opened.
