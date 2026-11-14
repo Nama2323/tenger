@@ -3,7 +3,7 @@
   "example": true,
   "trial_id": "barnard-position-example",
   "prediction_path": "trials/barnard-position-example/prediction.json",
-  "prediction_sha256": "bee488c7b143edd6f300744bcce972aa3a4716fdfc3feb9f79df840c7b122cca",
+  "prediction_sha256": "0e010bdba91bd86b9845c0f7037e3c32bb65f98bcb5341552ba93187c6cea163",
   "commit": "0000000",
   "committed_utc": "2026-11-14T12:06:00Z",
   "pushed": {

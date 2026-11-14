@@ -1,0 +1,45 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "example": true,
+  "trial_id": "makemake-position-example",
+  "trial_ref": {
+    "path": "trials/makemake-position-example/trial.json",
+    "sha256": "d6ddd4edd852aa420968a0f05a1a064404f94ee7f03ec5e86ce873c184acccba"
+  },
+  "category": "catalogue_assisted",
+  "created_utc": "2026-11-14T12:10:00Z",
+  "t_mjd": 60900.0,
+  "model": {
+    "ra_deg": 200.0,
+    "dec_deg": 21.0,
+    "cov_arcsec2": [
+      [
+        400.0,
+        0.0
+      ],
+      [
+        0.0,
+        400.0
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "ra_deg": 199.92,
+    "dec_deg": 21.0135,
+    "cov_arcsec2": [
+      [
+        900.0,
+        0.0
+      ],
+      [
+        0.0,
+        900.0
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "limitation_keys": [
+    "limit.example"
+  ]
+}

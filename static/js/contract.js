@@ -76,6 +76,8 @@ export function createSource({ fixtures = false, fetchImpl = (...args) => fetch(
       return { id: trialId, trial, prediction, receipt, verification };
     },
     gameRound: (path) => (path ? load(path, 'game_round') : missing()),
+    scoreboard: (path) => (path ? load(path, 'scoreboard') : missing()),
+    strings: (path = 'strings.en.json') => load(path, 'strings'),
     lesson: (path) => (path ? load(path, 'lesson') : missing()),
     url: (path) => (isSafePath(path) ? base + path : null),
   };

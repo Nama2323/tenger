@@ -107,6 +107,8 @@ function fromIndex(target, preset) {
     thumbnails: Array.isArray(target.thumbnails) ? target.thumbnails : [],
     legacy: preset ?? null,
     fromIndex: true,
+    measurementStatus: target.measurement_status ?? null,
+    statusReasonKey: target.status_reason_key ?? null,
   };
 }
 

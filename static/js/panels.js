@@ -2,8 +2,10 @@
 // Evidence and the Spectrum note. Missing files give honest "not published" states, example files are
 // stamped, and nothing here computes a success number of its own.
 import { addCovariance, covarianceEllipse, tangentOffsetArcsec } from './coords.js';
-import { chip, dataTable, el, factList, formatNumber, formatUtc } from './dom.js';
+import { chip, dataTable, el, factList, formatNumber, formatUtc, withUnit } from './dom.js';
 import { has, t, tData } from './i18n.js';
+import { comparisonReasons } from './epochs.js';
+import { categoryChip, categoryNote, exampleChip, trialStatusChip } from './labels.js';
 import { mjdToDate } from './stack.js';
 
 const UNIT_SUFFIXES = ['arcsec_yr', 'mas_yr', 'mjy_sr', 'arcsec', 'deg', 'um', 'ujy', 'mag', 'days', 'mjd', 'au', 'pc'];
@@ -11,7 +13,7 @@ const HASH_SHOWN = 12;
 const PLOT_SIZE = 240;
 const PLOT_MARGIN = 0.18;
 
-const exampleStamp = (doc) => (doc?.example ? chip(t('example.tag'), 'chip-example') : null);
+const exampleStamp = exampleChip;
 const stateText = (result) => t(`state.${result?.state ?? 'missing'}`);
 const note = (text, kind = '') => el('p', { class: `panel-note ${kind}`.trim(), text });
 
@@ -181,13 +183,19 @@ function verificationBlock(verification, trial) {
   const doc = verification.doc;
   const model = doc.residuals?.model;
   const baseline = doc.residuals?.baseline;
+  const position = Number.isFinite(model?.error_arcsec);
+  const unit = position ? 'arcsec' : doc.observed?.unit;
+  const error = (residual) => withUnit(residual?.error_arcsec ?? residual?.error, unit);
   return el('div', { class: 'verification' }, [
     exampleStamp(doc),
     factList([
-      [t('pred.result'), chip(t(`trial.${doc.status}`), `chip-trial-${doc.status}`)],
-      [t('pred.errors'), t('pred.errorsValue', { model: formatNumber(model?.error_arcsec), baseline: formatNumber(baseline?.error_arcsec) })],
+      [t('pred.result'), trialStatusChip(doc.status)],
+      [t('pred.errors'), t('pred.errorsValue', { model: error(model), baseline: error(baseline) })],
       model && Number.isFinite(model.d2) ? [t('pred.testLabel'), t('pred.d2', {
         d2: formatNumber(model.d2), threshold: formatNumber(trial?.scoring?.threshold_d2, 3), baseline: formatNumber(baseline?.d2),
+      })] : null,
+      model && Number.isFinite(model.z) ? [t('pred.testLabel'), t('pred.z', {
+        z: formatNumber(Math.abs(model.z)), threshold: formatNumber(trial?.scoring?.z_max, 3), baseline: formatNumber(Math.abs(baseline?.z)),
       })] : null,
       doc.identification ? [t('pred.identLabel'), t('pred.identification', {
         method: tData(doc.identification.method_key, 'explain.unknown'),
@@ -206,7 +214,7 @@ function trialCard(bundle) {
   const category = doc.category;
   const holdoutDate = Number.isFinite(doc.holdout?.t_mjd) ? formatUtc(mjdToDate(doc.holdout.t_mjd), { time: false }) : '—';
   const facts = factList([
-    [t('pred.category'), chip(t(`category.${category}`), `chip-category-${category}`)],
+    [t('pred.category'), categoryChip(category)],
     [t('pred.quantity'), quantityLabel(doc.quantity)],
     [t('pred.frozen'), doc.frozen_utc ?? '—'],
     [t('pred.training'), t('pred.trainingValue', { count: String(doc.training?.obs_keys?.length ?? 0) })],
@@ -228,7 +236,7 @@ function trialCard(bundle) {
   return el('article', { class: 'trial' }, [
     header,
     el('p', { class: 'stamps' }, [exampleStamp(doc), doc.exploratory ? chip(t('pred.exploratory', { id: doc.revises ?? '—' })) : null]),
-    el('p', { class: 'panel-note', text: t(`category.${category}.note`) }),
+    el('p', { class: 'panel-note', text: categoryNote(category) }),
     facts,
     predicted,
     plot,
@@ -288,11 +296,12 @@ function investigationEvidence(doc) {
   const comparisons = dataTable({
     caption: t('evidence.comparisons'),
     summary: t('evidence.comparisons'),
-    columns: [t('col.pair'), t('col.grade'), t('col.checks'), t('col.views')],
+    columns: [t('col.pair'), t('col.grade'), t('col.checks'), t('col.reasons'), t('col.views')],
     rows: (doc.comparisons ?? []).map((comparison) => [
       `${comparison.a} → ${comparison.b}`,
       t(`grade.${comparison.grade}`),
       checksText(comparison.checks),
+      comparisonReasons(comparison).map((key) => tData(key, 'explain.unknown')).join(' '),
       (comparison.modes ?? []).map((mode) => t(`mode.${mode === 'side_by_side' ? 'side' : mode === 'difference' ? 'diff' : mode}`)).join(', '),
     ]),
   });
@@ -348,10 +357,15 @@ function legacyEvidence(legacy) {
   ];
 }
 
-/** investigation: contract load result (or null); legacy: { frames, meta, custom } from the viewer. */
-export function renderEvidence(host, { investigation, legacy }) {
+/** investigation: contract load result (or null); legacy: { frames, meta, custom }; epochs: { matched, total }. */
+export function renderEvidence(host, { investigation, legacy, epochs }) {
   const parts = [];
-  if (investigation?.state === 'ok') parts.push(...investigationEvidence(investigation.doc));
+  if (investigation?.state === 'ok') {
+    parts.push(...investigationEvidence(investigation.doc));
+    if (epochs?.total) {
+      parts.push(note(t('evidence.epochsMatched', { matched: String(epochs.matched), total: String(epochs.total) })));
+    }
+  }
   else if (!legacy?.custom) parts.push(note(investigation && investigation.state !== 'missing' ? stateText(investigation) : t('evidence.waiting')));
   parts.push(...legacyEvidence(legacy ?? {}));
   host.replaceChildren(...parts.filter(Boolean));

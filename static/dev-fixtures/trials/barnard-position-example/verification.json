@@ -2,11 +2,11 @@
   "schema_version": "tenger.verification/1",
   "example": true,
   "trial_id": "barnard-position-example",
-  "prediction_sha256": "bee488c7b143edd6f300744bcce972aa3a4716fdfc3feb9f79df840c7b122cca",
+  "prediction_sha256": "0e010bdba91bd86b9845c0f7037e3c32bb65f98bcb5341552ba93187c6cea163",
   "revealed_utc": "2026-11-14T13:00:00Z",
   "observed": {
-    "ra_deg": 269.44675087,
-    "dec_deg": 4.76886667,
+    "ra_deg": 269.44616551,
+    "dec_deg": 4.77300556,
     "cov_arcsec2": [
       [
         0.81,
@@ -18,7 +18,7 @@
       ]
     ],
     "obs_keys": [
-      "spherex_qr3:EXAMPLE_0004_1:D3"
+      "spherex_qr3:EXAMPLE_HOLDOUT_1:D3"
     ],
     "content_type": "measured"
   },
@@ -29,16 +29,16 @@
   },
   "residuals": {
     "model": {
-      "east_arcsec": 0.9,
-      "north_arcsec": 0.6,
-      "d2": 0.56,
-      "error_arcsec": 1.08
+      "east_arcsec": -0.05,
+      "north_arcsec": 0.4,
+      "d2": 0.07,
+      "error_arcsec": 0.4
     },
     "baseline": {
-      "east_arcsec": -0.6,
-      "north_arcsec": 1.4,
-      "d2": 0.758,
-      "error_arcsec": 1.52
+      "east_arcsec": 0.0,
+      "north_arcsec": -0.1,
+      "d2": 0.003,
+      "error_arcsec": 0.1
     }
   },
   "status": "hit",

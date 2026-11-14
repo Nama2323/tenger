@@ -4,14 +4,14 @@
   "trial_id": "barnard-position-example",
   "trial_ref": {
     "path": "trials/barnard-position-example/trial.json",
-    "sha256": "ed88fe40d5bee3bd31ba970957ac6a525888c3f02d6eb39737b8770f7d6375ea"
+    "sha256": "4c8214771179b7e87aa88ec6dc2c4b29614697988b55d40fe07ad5868d2f130b"
   },
   "category": "retrospective_holdout",
   "created_utc": "2026-11-14T12:05:00Z",
-  "t_mjd": 61200.0,
+  "t_mjd": 61450.0,
   "model": {
-    "ra_deg": 269.4465,
-    "dec_deg": 4.7687,
+    "ra_deg": 269.44617945,
+    "dec_deg": 4.77289444,
     "cov_arcsec2": [
       [
         1.0,
@@ -25,8 +25,8 @@
     "content_type": "modeled"
   },
   "baseline": {
-    "ra_deg": 269.44691811,
-    "dec_deg": 4.76847778,
+    "ra_deg": 269.44616551,
+    "dec_deg": 4.77303333,
     "cov_arcsec2": [
       [
         2.25,

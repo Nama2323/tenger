@@ -256,11 +256,57 @@ science. Fixture screenshots (`home-fixtures-map`, `prediction-fixtures`) show t
   needs investigation files and is not done yet. The new V2.1 frame fields (`responseStatus`, `obsKey`, …) are
   not read by the viewer yet.
 - The reserved regions are a copy of `docs/EXPOSURE.md` in `js/reserved.js`; 3I/ATLAS has no region (no path
-  data here). Update the list when predictions are frozen or regions change.
+  data here). Update the list when predictions are frozen or regions change. *(B2: now read from `data/reserved.json`, A3.)*
 - The guided demo (`js/tour.js`) is no longer reachable from the UI: its captions relied on the old landing
-  and on the unvalidated motion number. Kept in the repository.
+  and on the unvalidated motion number. Kept in the repository. *(Fixed in B2: rewritten and reachable again.)*
 - No real-phone check yet; only emulated widths in headless Chrome and the desktop pane.
 - `backend/api.py` CORS and `js/api.js` `LIVE_SERVER` are unchanged (team decision 6).
 
 **Next action (proposed)**: phase F/G web work once Session A publishes the index and the first trial:
 scoreboard page from `scoreboard.json`, the Beat the physics round player, and printable lessons.
+
+### Task B2, 14 Nov 2026 (phase G: Beat the physics; rebased on A3 `49aa871`)
+
+**What changed**
+
+| Area | Files | Result |
+|---|---|---|
+| Scoring and checks | `js/game.js` (pure) | `exp_decay_v1` exactly as DATA-CONTRACT §11: `round(100·e^(−error/scale))`, bounded 0–100, a perfect guess scores 100, never divides by the baseline error. Non-finite or negative error, scale ≤ 0, non-finite scale or an unknown formula → score `null` and raw errors only. Raw errors in the round's `units` (position fields are arcsec; `arcmin`/`deg` rounds are converted). Ties are reported; "physics lost" only when the straight line is strictly closer. Rounds with a bad quantity, training points, reveal time or baseline/model/actual are refused with the reason shown. |
+| Round player | `js/game-ui.js`, `index.html`, `css/style.css` | One round at a time with a round picker (`?page=game&round=<id>`). Training points (dates, table as well), the player taps a guess, moves it with arrow keys (Shift = 5×) or the four nudge buttons, or types offsets/values; Enter or "Lock in my guess". Reveal in order: straight-line baseline → frozen model and its 95% region (prediction covariance with `region_d2`, or ±z·σ for brightness) → real observation with its image (or "no image"). Results table: raw error with units and score for you, straight line and model, the closest highlighted, the official trial result from `verification.json`, and the score rule with the round's scale. Axes before the reveal come from the training points only, so they do not hint at the answer. Best score per round in `localStorage`, read and written inside try/catch. No backend, no leaderboard. |
+| Shared labels | `js/labels.js`, `js/panels.js` | Category, status, example and "counts as prospective" chips come from one module used by the Prediction panel and the game; "counts as prospective" is shown only from a `scoreboard.json` row, never computed by the page. |
+| Example rounds | `static/dev-fixtures/` | Three rounds behind `?fixtures=1`: Barnard position (retrospective; the straight line beats the model, the model region still holds), Makemake position (catalogue-assisted, arcmin), R Dra brightness (retrospective, mag). Their trials, receipts, verifications and an example scoreboard; an artificial image; a waiting RW Aur trial for the Prediction panel. All `"example": true`. Without `?fixtures=1` the game says no rounds are published and offers a link to the example rounds. |
+| Demo tour | `js/tour.js`, `js/main.js` | Rewritten and reachable again ("Play the guided demo" on Home, stop button in a caption bar): Home → Barnard blink (AllWISE context vs SPHEREx, catalogue ring) → follow camera → Swipe → Side by side → R Dra through the six arrays → hand-over to Beat the physics. It shows no measured motion or brightness numbers; reduced motion skips the swipe animation and autoplay. |
+| A3: reserved sky | `js/reserved.js` | Reads `data/reserved.json` (V3.3: `tenger.reserved/1`, distance to every `path` point, margin plus half the field diagonal) from real data even in fixture mode. Valid file → it is authoritative (Makemake and Pluto holdout paths, the 3I/ATLAS path; the five challenge targets are open since A3). Missing, unreadable, example or partly malformed file → the built-in list stays in force. |
+| A3: strings | `js/i18n.js`, `js/main.js` | The 67 keys of `data/strings.en.json` are copied into the English resource (Session A's wording wins for its keys; my About acknowledgements moved to `ack.*`). At run time the file only fills keys that are still missing, so the site never shows a raw key. A test fails if a published key is missing from `i18n.js`. |
+| A3: epochs and comparisons | `js/epochs.js`, `js/main.js`, `js/panels.js` | Epochs are one array in one visit (`v<visit>-d<array>`, `viewer.visit` = the viewer's visit). For the viewer's A/B dates and the chosen array (detector or channel), the page finds the same-array comparison: the caption shows "A and B in array D6: Quantitative" with the reason texts, the all-band view says grades are per array, and Difference is enabled only when that comparison lists `difference`. Evidence shows how many epochs belong to dates in the viewer and the reasons per comparison. |
+| A3: index fields | `js/targets.js`, `js/home.js` | `status_reason_key` explains "Not available yet" on cards, the list and the investigation page; index `thumbnails` (with paths under `data/`) replace the legacy blink pair when present. |
+
+**Commands and results**
+
+| Command | Result |
+|---|---|
+| `node --test tests/*.mjs` | **104 passed, 0 failed** (adds `tests/game.test.mjs`: score bounds, zero/negative/non-finite inputs, perfect baseline, units, ties, invalid rounds, answer-free axes, storage failures; `tests/epochs.test.mjs`: per-array comparisons, the real `reserved.json`, malformed reserved files; strings coverage in `tests/i18n.test.mjs`) |
+| `node docs/screens/capture.mjs http://localhost:8766 docs/screens` | 13 page states incl. `game`, `game-example`, `game-example-revealed`, `game-rdra-revealed` at 360/390/768/1280: measured viewport = requested, no horizontal scroll, no control under 44 px, no script errors (see `viewport-report.json`) |
+| In-app browser | Played all three example rounds (tap, Enter, arrow keys, typed values); reveal order and results as above; the Barnard example reports "physics lost"; the tour ran Home → Barnard → follow → swipe and stopped on request; fixture Barnard with D6 enables Difference, D1 and all-band do not |
+
+**Waiting on Session A**
+
+- `static/data/index.json`, real `game/<round>.json`, trials, verifications and `scoreboard.json` (expected
+  Sunday morning). The game, Prediction panel and target statuses read them as soon as they exist; nothing
+  else needs to change. Real investigation files will switch each target from "not published" to real
+  evidence one by one; the viewer keeps the bundled frames, which A3 rebuilds per V3.5.
+- The contract has no scalar shape for game rounds yet. The page reads brightness rounds as
+  `training_points[{t_mjd, value}]`, `baseline/model/actual {value}` (model may carry `sigma`), `units`
+  `"mag"` (brighter up) or a flux unit, and `actual.image` as a path under `data/` or
+  `{path, content_type}`. Please confirm or append the shape in the contract.
+- The epoch preview images (`epochs[].assets.preview`) are not shown yet; the viewer uses the bundle frames.
+
+**Limits**
+
+- The game is an educational demonstration, not a blind study of players: the round data are in the page.
+- Region drawing needs the prediction covariance (position) or `sigma` and `z_max` (brightness); without them
+  the page says the region is unavailable.
+- Not checked on a real phone; emulated widths and the desktop pane only.
+
+**Next action (proposed)**: when Session A publishes the real rounds, play each one at 360 and 1280 px and
+re-capture `docs/screens/`; then the scoreboard page and printable lessons (phase G/H).

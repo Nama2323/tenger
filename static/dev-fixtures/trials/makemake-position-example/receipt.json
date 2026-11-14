@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "example": true,
+  "trial_id": "makemake-position-example",
+  "prediction_path": "trials/makemake-position-example/prediction.json",
+  "prediction_sha256": "928218beb69d800612e95c7981ae4190ab51d6ac23ce36a81e1a9b93856eb36c",
+  "commit": "0000000",
+  "committed_utc": "2026-11-14T12:06:00Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": null
+  }
+}

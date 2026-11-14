@@ -1,0 +1,90 @@
+{
+  "schema_version": "tenger.scoreboard/1",
+  "example": true,
+  "generated_utc": "2026-11-14T13:05:00Z",
+  "derived_from": [
+    {
+      "path": "trials/barnard-position-example/verification.json",
+      "sha256": "21f492f018bf63c66e8ae0db9cc56a6880e2a6ffc50d46060b107511377a5793"
+    },
+    {
+      "path": "trials/makemake-position-example/verification.json",
+      "sha256": "186573cf6e0ab0e7f2ba2bac62d5713dc086386aaa3fbf8a20c3e4aeb55672f5"
+    },
+    {
+      "path": "trials/rdra-brightness-example/verification.json",
+      "sha256": "1b846d331a46438a55179f6b7e93a56ca5b56579df3dd8196cdc866dd4e8062f"
+    }
+  ],
+  "counts": {
+    "retrospective_holdout": {
+      "waiting": 0,
+      "hit": 2,
+      "miss": 0,
+      "insufficient_data": 0,
+      "ambiguous": 0,
+      "invalid_comparison": 0
+    },
+    "catalogue_assisted": {
+      "waiting": 0,
+      "hit": 1,
+      "miss": 0,
+      "insufficient_data": 0,
+      "ambiguous": 0,
+      "invalid_comparison": 0
+    },
+    "illustrative": {
+      "waiting": 1,
+      "hit": 0,
+      "miss": 0,
+      "insufficient_data": 0,
+      "ambiguous": 0,
+      "invalid_comparison": 0
+    }
+  },
+  "see_only": [
+    "3i-atlas"
+  ],
+  "rows": [
+    {
+      "trial_id": "barnard-position-example",
+      "target_key": "barnard",
+      "quantity": "position",
+      "category": "retrospective_holdout",
+      "status": "hit",
+      "exploratory": false,
+      "counts_as_prospective": false,
+      "model_error_arcsec": 0.4,
+      "baseline_error_arcsec": 0.1
+    },
+    {
+      "trial_id": "makemake-position-example",
+      "target_key": "makemake",
+      "quantity": "position",
+      "category": "catalogue_assisted",
+      "status": "hit",
+      "exploratory": false,
+      "counts_as_prospective": false,
+      "model_error_arcsec": 20.6,
+      "baseline_error_arcsec": 297.9
+    },
+    {
+      "trial_id": "rdra-brightness-example",
+      "target_key": "rdra",
+      "quantity": "brightness",
+      "category": "retrospective_holdout",
+      "status": "hit",
+      "exploratory": false,
+      "counts_as_prospective": false
+    },
+    {
+      "trial_id": "rwaur-brightness-example",
+      "target_key": "rwaur",
+      "quantity": "brightness",
+      "category": "illustrative",
+      "status": "waiting",
+      "exploratory": false,
+      "counts_as_prospective": false
+    }
+  ]
+}

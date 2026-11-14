@@ -48,7 +48,7 @@ test('paths from data files cannot leave the data folder', () => {
 test('every development fixture is marked as an example and has a known schema', () => {
   const kinds = {
     'index.json': 'site_index', 'investigation.json': 'investigation', 'trial.json': 'trial', 'prediction.json': 'prediction',
-    'receipt.json': 'receipt', 'verification.json': 'verification',
+    'receipt.json': 'receipt', 'verification.json': 'verification', 'scoreboard.json': 'scoreboard',
   };
   const files = jsonFiles(FIXTURES);
   assert.ok(files.length >= 8);
@@ -81,7 +81,7 @@ test('the loader reports missing files honestly and reads fixtures only when ask
   const bundle = await fixtures.trial('barnard-position-example');
   assert.equal(bundle.trial.state, 'ok');
   assert.equal(bundle.verification.state, 'ok');
-  const waiting = await fixtures.trial('rdra-brightness-example');
+  const waiting = await fixtures.trial('rwaur-brightness-example');
   assert.equal(waiting.receipt.state, 'missing');
   assert.equal(waiting.verification.state, 'missing');
   assert.equal((await fixtures.trial('../x')).trial.state, 'invalid');

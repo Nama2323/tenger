@@ -1,0 +1,33 @@
+{
+  "schema_version": "tenger.verification/1",
+  "example": true,
+  "trial_id": "rdra-brightness-example",
+  "prediction_sha256": "45410c87f82a1c1887ecc386222dd01b6980d84d224122c5eb0ca7521151b34c",
+  "revealed_utc": "2026-11-14T13:00:00Z",
+  "observed": {
+    "value": 5.4,
+    "sigma": 0.2,
+    "unit": "mag",
+    "obs_keys": [
+      "spherex_qr3:EXAMPLE_HOLDOUT_1:D4"
+    ],
+    "content_type": "measured"
+  },
+  "identification": {
+    "method_key": "ident.preregistered-aperture",
+    "alternatives": 0,
+    "ambiguous": false
+  },
+  "residuals": {
+    "model": {
+      "error": 0.5,
+      "z": 1.12
+    },
+    "baseline": {
+      "error": 2.2,
+      "z": -2.67
+    }
+  },
+  "status": "hit",
+  "status_reason_key": null
+}

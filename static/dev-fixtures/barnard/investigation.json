@@ -15,93 +15,668 @@
   },
   "coverage": {
     "available_fov_deg": 0.1,
-    "observations_listed": 2,
-    "observations_used": 2
+    "observations_listed": 101,
+    "observations_used": 101
   },
   "observations": [
     {
-      "obs_key": "spherex_dr1:EXAMPLE_0001_1:D3",
-      "obs_id": "EXAMPLE_0001_1",
-      "detector": 3,
-      "collection": "spherex_dr1",
-      "t_start_mjd": 61000.0,
-      "t_end_mjd": 61000.001,
+      "obs_key": "spherex_qr2:2025W33_2C_0321_1:D6",
+      "obs_id": "2025W33_2C_0321_1",
+      "detector": 6,
+      "collection": "spherex_qr2",
+      "t_start_mjd": 60902.864715,
+      "t_end_mjd": null,
       "time_scale": "UTC",
-      "t_start_utc": "2026-02-25T00:00:00Z",
-      "response": {
-        "centre_um": 2.0,
-        "width_um": 0.02,
-        "source": "CWAVE/CBAND"
-      },
-      "file": "level2_EXAMPLE_0001_1D3_spx_example.fits",
+      "t_start_utc": null,
+      "response": null,
+      "file": null,
       "url": null,
       "source_sha256": null,
-      "flag_schema": "MSKN/MSKM",
-      "flagged_fraction": 0.01
+      "flag_schema": null,
+      "flagged_fraction": null
     },
     {
-      "obs_key": "spherex_qr3:EXAMPLE_0002_1:D3",
-      "obs_id": "EXAMPLE_0002_1",
+      "obs_key": "spherex_qr2:2025W33_2C_0321_1:D3",
+      "obs_id": "2025W33_2C_0321_1",
       "detector": 3,
-      "collection": "spherex_qr3",
-      "t_start_mjd": 61200.0,
-      "t_end_mjd": 61200.001,
+      "collection": "spherex_qr2",
+      "t_start_mjd": 60902.864715,
+      "t_end_mjd": null,
       "time_scale": "UTC",
-      "t_start_utc": "2026-09-13T00:00:00Z",
-      "response": {
-        "centre_um": 2.0,
-        "width_um": 0.02,
-        "source": "CWAVE/CBAND"
-      },
-      "file": "level2_EXAMPLE_0002_1D3_spx_example.fits",
+      "t_start_utc": null,
+      "response": null,
+      "file": null,
       "url": null,
       "source_sha256": null,
-      "flag_schema": "MSKN/MSKM",
-      "flagged_fraction": 0.02
+      "flag_schema": null,
+      "flagged_fraction": null
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0007_1:D3",
+      "obs_id": "2026W34_1A_0007_1",
+      "detector": 3,
+      "collection": "spherex_qr3",
+      "t_start_mjd": 61269.033418,
+      "t_end_mjd": null,
+      "time_scale": "UTC",
+      "t_start_utc": null,
+      "response": null,
+      "file": null,
+      "url": null,
+      "source_sha256": null,
+      "flag_schema": null,
+      "flagged_fraction": null
+    },
+    {
+      "obs_key": "spherex_qr3:2026W34_1A_0007_1:D6",
+      "obs_id": "2026W34_1A_0007_1",
+      "detector": 6,
+      "collection": "spherex_qr3",
+      "t_start_mjd": 61269.033418,
+      "t_end_mjd": null,
+      "time_scale": "UTC",
+      "t_start_utc": null,
+      "response": null,
+      "file": null,
+      "url": null,
+      "source_sha256": null,
+      "flag_schema": null,
+      "flagged_fraction": null
     }
   ],
   "epochs": [
     {
-      "id": "e1",
+      "id": "v0-d1",
+      "visit": 0,
+      "detector": 1,
       "obs_keys": [
-        "spherex_dr1:EXAMPLE_0001_1:D3"
+        "spherex_qr2:2025W35_1A_0432_4:D1",
+        "spherex_qr2:2025W35_1A_0658_2:D1",
+        "spherex_qr2:2025W35_1A_0658_4:D1",
+        "spherex_qr2:2025W35_2A_0233_3:D1",
+        "spherex_qr2:2025W35_2A_0474_1:D1",
+        "spherex_qr2:2025W35_2A_0474_4:D1",
+        "spherex_qr2:2025W35_2A_0611_2:D1",
+        "spherex_qr2:2025W36_1A_0024_1:D1",
+        "spherex_qr2:2025W40_1A_0353_1:D1",
+        "spherex_qr2:2025W40_1A_0471_1:D1"
       ],
-      "t_start_mjd": 61000.0,
-      "t_end_mjd": 61000.001,
-      "combine": "single",
+      "t_start_mjd": 60914.21253,
+      "t_end_mjd": 60949.130279,
+      "combine": "median_stack",
       "assets": {
         "preview": null
+      },
+      "viewer": {
+        "visit": 0,
+        "frame_indices": [
+          22,
+          30,
+          33,
+          37,
+          40,
+          42,
+          44,
+          46,
+          48,
+          50
+        ]
       }
     },
     {
-      "id": "e2",
+      "id": "v0-d2",
+      "visit": 0,
+      "detector": 2,
       "obs_keys": [
-        "spherex_qr3:EXAMPLE_0002_1:D3"
+        "spherex_qr2:2025W34_2B_0090_4:D2",
+        "spherex_qr2:2025W34_2B_0557_2:D2",
+        "spherex_qr2:2025W35_1A_0146_1:D2",
+        "spherex_qr2:2025W35_1A_0146_3:D2",
+        "spherex_qr2:2025W35_1A_0444_2:D2",
+        "spherex_qr2:2025W35_1A_0444_4:D2",
+        "spherex_qr2:2025W35_2A_0221_3:D2",
+        "spherex_qr2:2025W35_2A_0418_1:D2"
       ],
-      "t_start_mjd": 61200.0,
-      "t_end_mjd": 61200.001,
-      "combine": "single",
+      "t_start_mjd": 60908.981929,
+      "t_end_mjd": 60917.67394,
+      "combine": "median_stack",
       "assets": {
         "preview": null
+      },
+      "viewer": {
+        "visit": 0,
+        "frame_indices": [
+          10,
+          13,
+          19,
+          20,
+          25,
+          26,
+          35,
+          38
+        ]
+      }
+    },
+    {
+      "id": "v0-d3",
+      "visit": 0,
+      "detector": 3,
+      "obs_keys": [
+        "spherex_qr2:2025W33_2C_0321_1:D3",
+        "spherex_qr2:2025W33_2C_0321_3:D3",
+        "spherex_qr2:2025W33_2C_0386_4:D3",
+        "spherex_qr2:2025W34_1B_0164_3:D3",
+        "spherex_qr2:2025W34_2B_0030_2:D3",
+        "spherex_qr2:2025W35_1A_0008_1:D3",
+        "spherex_qr2:2025W35_1A_0008_3:D3",
+        "spherex_qr2:2025W35_1A_0484_1:D3"
+      ],
+      "t_start_mjd": 60902.864715,
+      "t_end_mjd": 60914.482593,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 0,
+        "frame_indices": [
+          1,
+          2,
+          4,
+          6,
+          8,
+          14,
+          16,
+          28
+        ]
+      }
+    },
+    {
+      "id": "v0-d4",
+      "visit": 0,
+      "detector": 4,
+      "obs_keys": [
+        "spherex_qr2:2025W35_1A_0432_4:D4",
+        "spherex_qr2:2025W35_1A_0658_2:D4",
+        "spherex_qr2:2025W35_1A_0658_4:D4",
+        "spherex_qr2:2025W35_2A_0233_3:D4",
+        "spherex_qr2:2025W35_2A_0474_1:D4",
+        "spherex_qr2:2025W35_2A_0611_1:D4",
+        "spherex_qr2:2025W35_2A_0611_3:D4",
+        "spherex_qr2:2025W36_1A_0024_1:D4",
+        "spherex_qr2:2025W40_1A_0367_1:D4",
+        "spherex_qr2:2025W40_1A_0471_1:D4"
+      ],
+      "t_start_mjd": 60914.21253,
+      "t_end_mjd": 60949.130279,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 0,
+        "frame_indices": [
+          23,
+          31,
+          32,
+          36,
+          41,
+          43,
+          45,
+          47,
+          49,
+          51
+        ]
+      }
+    },
+    {
+      "id": "v0-d5",
+      "visit": 0,
+      "detector": 5,
+      "obs_keys": [
+        "spherex_qr2:2025W34_2B_0090_4:D5",
+        "spherex_qr2:2025W34_2B_0557_2:D5",
+        "spherex_qr2:2025W35_1A_0146_1:D5",
+        "spherex_qr2:2025W35_1A_0146_3:D5",
+        "spherex_qr2:2025W35_1A_0444_2:D5",
+        "spherex_qr2:2025W35_1A_0444_4:D5",
+        "spherex_qr2:2025W35_2A_0221_3:D5",
+        "spherex_qr2:2025W35_2A_0418_1:D5"
+      ],
+      "t_start_mjd": 60908.981929,
+      "t_end_mjd": 60917.67394,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 0,
+        "frame_indices": [
+          11,
+          12,
+          18,
+          21,
+          24,
+          27,
+          34,
+          39
+        ]
+      }
+    },
+    {
+      "id": "v0-d6",
+      "visit": 0,
+      "detector": 6,
+      "obs_keys": [
+        "spherex_qr2:2025W33_2C_0321_1:D6",
+        "spherex_qr2:2025W33_2C_0321_3:D6",
+        "spherex_qr2:2025W33_2C_0386_4:D6",
+        "spherex_qr2:2025W34_1B_0164_3:D6",
+        "spherex_qr2:2025W34_2B_0030_2:D6",
+        "spherex_qr2:2025W35_1A_0008_1:D6",
+        "spherex_qr2:2025W35_1A_0008_3:D6",
+        "spherex_qr2:2025W35_1A_0484_1:D6"
+      ],
+      "t_start_mjd": 60902.864715,
+      "t_end_mjd": 60914.482593,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 0,
+        "frame_indices": [
+          0,
+          3,
+          5,
+          7,
+          9,
+          15,
+          17,
+          29
+        ]
+      }
+    },
+    {
+      "id": "v3-d1",
+      "visit": 3,
+      "detector": 1,
+      "obs_keys": [
+        "spherex_qr3:2026W34_2A_0757_3:D1",
+        "spherex_qr3:2026W35_1A_0079_1:D1",
+        "spherex_qr3:2026W35_1A_0079_4:D1",
+        "spherex_qr3:2026W35_1A_0375_1:D1",
+        "spherex_qr3:2026W35_1A_0375_4:D1",
+        "spherex_qr3:2026W35_2A_0412_2:D1",
+        "spherex_qr3:2026W36_1A_0510_1:D1"
+      ],
+      "t_start_mjd": 61275.962171,
+      "t_end_mjd": 61285.257036,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 3,
+        "frame_indices": [
+          133,
+          137,
+          138,
+          141,
+          142,
+          145,
+          146
+        ]
+      }
+    },
+    {
+      "id": "v3-d2",
+      "visit": 3,
+      "detector": 2,
+      "obs_keys": [
+        "spherex_qr3:2026W34_1A_0363_2:D2",
+        "spherex_qr3:2026W34_1A_0456_2:D2",
+        "spherex_qr3:2026W34_2A_0178_3:D2",
+        "spherex_qr3:2026W34_2A_0206_2:D2",
+        "spherex_qr3:2026W34_2A_0206_4:D2",
+        "spherex_qr3:2026W34_2A_0233_3:D2",
+        "spherex_qr3:2026W34_2A_0249_1:D2",
+        "spherex_qr3:2026W34_2A_0264_1:D2",
+        "spherex_qr3:2026W35_1A_0038_1:D2",
+        "spherex_qr3:2026W39_1A_0371_1:D2"
+      ],
+      "t_start_mjd": 61270.868608,
+      "t_end_mjd": 61305.628021,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 3,
+        "frame_indices": [
+          112,
+          116,
+          120,
+          121,
+          124,
+          126,
+          127,
+          129,
+          135,
+          148
+        ]
+      }
+    },
+    {
+      "id": "v3-d3",
+      "visit": 3,
+      "detector": 3,
+      "obs_keys": [
+        "spherex_qr3:2026W34_1A_0007_1:D3",
+        "spherex_qr3:2026W34_1A_0007_3:D3",
+        "spherex_qr3:2026W34_1A_0176_2:D3",
+        "spherex_qr3:2026W34_1A_0308_1:D3",
+        "spherex_qr3:2026W34_1A_0308_4:D3",
+        "spherex_qr3:2026W34_1A_0431_2:D3",
+        "spherex_qr3:2026W34_2A_0081_1:D3"
+      ],
+      "t_start_mjd": 61269.033418,
+      "t_end_mjd": 61272.906175,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 3,
+        "frame_indices": [
+          101,
+          104,
+          105,
+          108,
+          110,
+          114,
+          118
+        ]
+      }
+    },
+    {
+      "id": "v3-d4",
+      "visit": 3,
+      "detector": 4,
+      "obs_keys": [
+        "spherex_qr3:2026W34_2A_0757_1:D4",
+        "spherex_qr3:2026W34_2A_0757_3:D4",
+        "spherex_qr3:2026W35_1A_0079_1:D4",
+        "spherex_qr3:2026W35_1A_0079_4:D4",
+        "spherex_qr3:2026W35_1A_0375_1:D4",
+        "spherex_qr3:2026W35_1A_0375_4:D4",
+        "spherex_qr3:2026W35_2A_0412_2:D4",
+        "spherex_qr3:2026W36_1A_0510_1:D4"
+      ],
+      "t_start_mjd": 61275.959186,
+      "t_end_mjd": 61285.257036,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 3,
+        "frame_indices": [
+          131,
+          132,
+          136,
+          139,
+          140,
+          143,
+          144,
+          147
+        ]
+      }
+    },
+    {
+      "id": "v3-d5",
+      "visit": 3,
+      "detector": 5,
+      "obs_keys": [
+        "spherex_qr3:2026W34_1A_0363_1:D5",
+        "spherex_qr3:2026W34_1A_0456_1:D5",
+        "spherex_qr3:2026W34_2A_0178_3:D5",
+        "spherex_qr3:2026W34_2A_0206_2:D5",
+        "spherex_qr3:2026W34_2A_0206_4:D5",
+        "spherex_qr3:2026W34_2A_0233_3:D5",
+        "spherex_qr3:2026W34_2A_0249_1:D5",
+        "spherex_qr3:2026W34_2A_0264_1:D5",
+        "spherex_qr3:2026W35_1A_0038_1:D5",
+        "spherex_qr3:2026W39_1A_0371_1:D5"
+      ],
+      "t_start_mjd": 61270.867116,
+      "t_end_mjd": 61305.628021,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 3,
+        "frame_indices": [
+          111,
+          115,
+          119,
+          122,
+          123,
+          125,
+          128,
+          130,
+          134,
+          149
+        ]
+      }
+    },
+    {
+      "id": "v3-d6",
+      "visit": 3,
+      "detector": 6,
+      "obs_keys": [
+        "spherex_qr3:2026W34_1A_0007_1:D6",
+        "spherex_qr3:2026W34_1A_0007_3:D6",
+        "spherex_qr3:2026W34_1A_0176_2:D6",
+        "spherex_qr3:2026W34_1A_0308_1:D6",
+        "spherex_qr3:2026W34_1A_0308_4:D6",
+        "spherex_qr3:2026W34_1A_0431_2:D6",
+        "spherex_qr3:2026W34_2A_0081_1:D6"
+      ],
+      "t_start_mjd": 61269.033418,
+      "t_end_mjd": 61272.906175,
+      "combine": "median_stack",
+      "assets": {
+        "preview": null
+      },
+      "viewer": {
+        "visit": 3,
+        "frame_indices": [
+          102,
+          103,
+          106,
+          107,
+          109,
+          113,
+          117
+        ]
       }
     }
   ],
   "comparisons": [
     {
-      "id": "c1",
-      "a": "e1",
-      "b": "e2",
+      "id": "c-d1",
+      "a": "v0-d1",
+      "b": "v3-d1",
       "grade": "qualitative",
       "modes": [
         "blink",
         "side_by_side",
         "swipe"
       ],
+      "brightness": {
+        "grade": "qualitative",
+        "reason_key": "compare.response-shifted",
+        "pairs": []
+      },
+      "position": {
+        "grade": "quantitative",
+        "reason_key": "compare.response-matched"
+      },
+      "field": "qualitative",
+      "checks": {
+        "response": "fail",
+        "field_response": "fail",
+        "registration": "not_checked",
+        "psf": "not_checked",
+        "background": "not_checked"
+      },
+      "reason_keys": []
+    },
+    {
+      "id": "c-d2",
+      "a": "v0-d2",
+      "b": "v3-d2",
+      "grade": "qualitative",
+      "modes": [
+        "blink",
+        "side_by_side",
+        "swipe"
+      ],
+      "brightness": {
+        "grade": "qualitative",
+        "reason_key": "compare.response-shifted",
+        "pairs": []
+      },
+      "position": {
+        "grade": "quantitative",
+        "reason_key": "compare.response-matched"
+      },
+      "field": "qualitative",
+      "checks": {
+        "response": "fail",
+        "field_response": "fail",
+        "registration": "not_checked",
+        "psf": "not_checked",
+        "background": "not_checked"
+      },
+      "reason_keys": []
+    },
+    {
+      "id": "c-d3",
+      "a": "v0-d3",
+      "b": "v3-d3",
+      "grade": "qualitative",
+      "modes": [
+        "blink",
+        "side_by_side",
+        "swipe"
+      ],
+      "brightness": {
+        "grade": "qualitative",
+        "reason_key": "compare.response-shifted",
+        "pairs": []
+      },
+      "position": {
+        "grade": "quantitative",
+        "reason_key": "compare.response-matched"
+      },
+      "field": "qualitative",
+      "checks": {
+        "response": "fail",
+        "field_response": "fail",
+        "registration": "not_checked",
+        "psf": "not_checked",
+        "background": "not_checked"
+      },
+      "reason_keys": []
+    },
+    {
+      "id": "c-d4",
+      "a": "v0-d4",
+      "b": "v3-d4",
+      "grade": "qualitative",
+      "modes": [
+        "blink",
+        "side_by_side",
+        "swipe"
+      ],
+      "brightness": {
+        "grade": "qualitative",
+        "reason_key": "compare.response-shifted",
+        "pairs": []
+      },
+      "position": {
+        "grade": "quantitative",
+        "reason_key": "compare.response-matched"
+      },
+      "field": "qualitative",
+      "checks": {
+        "response": "fail",
+        "field_response": "fail",
+        "registration": "not_checked",
+        "psf": "not_checked",
+        "background": "not_checked"
+      },
+      "reason_keys": []
+    },
+    {
+      "id": "c-d5",
+      "a": "v0-d5",
+      "b": "v3-d5",
+      "grade": "qualitative",
+      "modes": [
+        "blink",
+        "side_by_side",
+        "swipe"
+      ],
+      "brightness": {
+        "grade": "qualitative",
+        "reason_key": "compare.response-shifted",
+        "pairs": []
+      },
+      "position": {
+        "grade": "quantitative",
+        "reason_key": "compare.response-matched"
+      },
+      "field": "qualitative",
+      "checks": {
+        "response": "fail",
+        "field_response": "fail",
+        "registration": "not_checked",
+        "psf": "not_checked",
+        "background": "not_checked"
+      },
+      "reason_keys": []
+    },
+    {
+      "id": "c-d6",
+      "a": "v0-d6",
+      "b": "v3-d6",
+      "grade": "quantitative",
+      "modes": [
+        "blink",
+        "side_by_side",
+        "swipe",
+        "difference"
+      ],
+      "brightness": {
+        "grade": "quantitative",
+        "reason_key": "compare.matched-pairs",
+        "pairs": []
+      },
+      "position": {
+        "grade": "quantitative",
+        "reason_key": "compare.response-matched"
+      },
+      "field": "quantitative",
       "checks": {
         "response": "pass",
-        "registration": "pass",
+        "field_response": "pass",
+        "registration": "not_checked",
         "psf": "not_checked",
-        "background": "pass"
+        "background": "not_checked"
       },
       "reason_keys": []
     }
@@ -136,9 +711,10 @@
     "modes": [
       "blink",
       "side_by_side",
-      "swipe"
+      "swipe",
+      "difference"
     ],
-    "difference": false,
+    "difference": true,
     "spectrum": false,
     "light_curve": false
   },
@@ -152,5 +728,128 @@
   "credits_keys": [
     "credit.irsa",
     "credit.spherex"
-  ]
+  ],
+  "notes": "Example fixture (contract V3 shape): real observation IDs of already-exposed bundled frames; grades, checks and reasons are invented. Not a validation.",
+  "contract_version": 3,
+  "viewer": {
+    "meta": "barnard/meta.json",
+    "frames": "barnard/frames.bin.gz",
+    "visits": [
+      {
+        "visit": 0,
+        "frame_indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51
+        ],
+        "mean_mjd": 60915.547501192304,
+        "date_utc": "2025-08-28"
+      },
+      {
+        "visit": 3,
+        "frame_indices": [
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          110,
+          111,
+          112,
+          113,
+          114,
+          115,
+          116,
+          117,
+          118,
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125,
+          126,
+          127,
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149
+        ],
+        "mean_mjd": 61275.42799159181,
+        "date_utc": "2026-08-23"
+      }
+    ]
+  }
 }

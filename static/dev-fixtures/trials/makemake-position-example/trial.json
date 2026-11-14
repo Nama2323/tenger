@@ -1,0 +1,55 @@
+{
+  "schema_version": "tenger.trial/1",
+  "example": true,
+  "trial_id": "makemake-position-example",
+  "target_key": "makemake",
+  "quantity": "position",
+  "category": "catalogue_assisted",
+  "frozen_utc": "2026-11-14T12:00:00Z",
+  "exposure": {
+    "status": "unexposed",
+    "inventory_ref": null,
+    "team_statement": null,
+    "notes": "example fixture"
+  },
+  "training": {
+    "obs_keys": [
+      "spherex_dr1:EXAMPLE_M1_1:D2",
+      "spherex_dr1:EXAMPLE_M2_1:D2",
+      "spherex_dr1:EXAMPLE_M3_1:D2"
+    ],
+    "measurements_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "holdout": {
+    "obs_ids": [
+      "EXAMPLE_HOLDOUT_1"
+    ],
+    "t_mjd": 60900.0,
+    "selection_rule_key": "holdout.next-visit"
+  },
+  "permitted_inputs": [
+    {
+      "name": "JPL Horizons orbit (example)",
+      "content_type": "catalogue",
+      "used_for": "prior"
+    }
+  ],
+  "model": {
+    "id": "example-model",
+    "version": "0.0.0-example",
+    "code_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "baseline": {
+    "id": "linear"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "frame": "tangent plane at predicted position, east/north arcsec",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "covariance": "S = C_pred + C_obs"
+  },
+  "exclusion_rules_keys": [],
+  "exploratory": false,
+  "revises": null
+}

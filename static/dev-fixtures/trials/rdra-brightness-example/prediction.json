@@ -4,19 +4,19 @@
   "trial_id": "rdra-brightness-example",
   "trial_ref": {
     "path": "trials/rdra-brightness-example/trial.json",
-    "sha256": "c990c3a250b199f5e0423d0a0a6c9582d829ad07503e9428473bee68867833b1"
+    "sha256": "1873d6231a577fa0a3de730b35005fa015323c73280b78a9ac2b80f53246f1cb"
   },
-  "category": "illustrative",
-  "created_utc": "2026-11-14T12:35:00Z",
-  "t_mjd": 61250.0,
+  "category": "retrospective_holdout",
+  "created_utc": "2026-11-14T12:20:00Z",
+  "t_mjd": 61290.0,
   "model": {
-    "value": 5.0,
-    "sigma": 0.5,
+    "value": 4.9,
+    "sigma": 0.4,
     "unit": "mag",
     "content_type": "modeled"
   },
   "baseline": {
-    "value": 5.5,
+    "value": 7.6,
     "sigma": 0.8,
     "unit": "mag",
     "content_type": "modeled"

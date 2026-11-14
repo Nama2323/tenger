@@ -4,36 +4,37 @@
   "trial_id": "rdra-brightness-example",
   "target_key": "rdra",
   "quantity": "brightness",
-  "category": "illustrative",
-  "frozen_utc": "2026-11-14T12:30:00Z",
+  "category": "retrospective_holdout",
+  "frozen_utc": "2026-11-14T12:00:00Z",
   "exposure": {
-    "status": "unknown",
+    "status": "exposed",
     "inventory_ref": null,
     "team_statement": null,
     "notes": "example fixture"
   },
   "training": {
     "obs_keys": [
-      "spherex_qr3:EXAMPLE_0101_1:D4",
-      "spherex_qr3:EXAMPLE_0102_1:D4"
+      "spherex_qr2:EXAMPLE_R1_1:D4",
+      "spherex_qr2:EXAMPLE_R2_1:D4",
+      "spherex_qr3:EXAMPLE_R3_1:D4"
     ],
     "measurements_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   "holdout": {
     "obs_ids": [
-      "EXAMPLE_0103_1"
+      "EXAMPLE_HOLDOUT_1"
     ],
-    "t_mjd": 61250.0,
+    "t_mjd": 61290.0,
     "selection_rule_key": "holdout.next-visit"
   },
   "permitted_inputs": [],
   "model": {
-    "id": "sinusoid-example",
+    "id": "example-model",
     "version": "0.0.0-example",
     "code_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
   },
   "baseline": {
-    "id": "constant"
+    "id": "linear"
   },
   "scoring": {
     "kind": "scalar_1d_gaussian",

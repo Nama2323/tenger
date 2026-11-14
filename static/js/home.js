@@ -2,7 +2,7 @@
 // accessible target list. All three views are built from one target list (targets.js).
 import { parseDec, parseRa } from './coords.js';
 import { $, el, prefersReducedMotion } from './dom.js';
-import { has, t } from './i18n.js';
+import { has, t, tData } from './i18n.js';
 import { AU_PER_UNIT, RINGS, mapRadius, placeOnMap } from './map.js';
 import { isViewable } from './targets.js';
 
@@ -40,13 +40,14 @@ export const kindLabel = (kind) => t(has(`kind${kind}`) ? `kind${kind}` : 'kindo
 
 /** A looping pair of prepared thumbnails; which one shows is driven by one attribute on the body. */
 function blinkTile(key, thumbs) {
-  const tile = el('div', { class: thumbs.kind === 'colour' ? 'blink place' : 'blink', 'aria-hidden': 'true' });
+  const ringless = thumbs.kind === 'colour' || thumbs.kind === 'index';
+  const tile = el('div', { class: ringless ? 'blink place' : 'blink', 'aria-hidden': 'true' });
   thumbs.frames.forEach((frame, index) => {
     const side = index ? 'b' : 'a';
-    tile.style.setProperty(`--${side}x`, `${frame.x * 100}%`);
-    tile.style.setProperty(`--${side}y`, `${frame.y * 100}%`);
+    if (Number.isFinite(frame.x)) tile.style.setProperty(`--${side}x`, `${frame.x * 100}%`);
+    if (Number.isFinite(frame.y)) tile.style.setProperty(`--${side}y`, `${frame.y * 100}%`);
     tile.append(
-      el('img', { src: `data/${key}/${frame.file}`, alt: '', class: `plate-${side}`, loading: 'lazy' }),
+      el('img', { src: frame.src ?? `data/${key}/${frame.file}`, alt: '', class: `plate-${side}`, loading: 'lazy' }),
       el('b', { class: `label-${side}`, text: frame.label }),
     );
   });
@@ -88,6 +89,7 @@ function plannedCard(entry) {
       el('strong', { text: entryName(entry) }),
       el('small', { text: hookOf(entry) }),
       el('small', { class: 'card-status', text: entry.seeOnly ? `${statusLabel(entry)} · ${t('trial.see_only')}` : statusLabel(entry) }),
+      entry.statusReasonKey ? el('small', { class: 'card-status', text: tData(entry.statusReasonKey, 'explain.unknown') }) : null,
     ]),
   ]);
 }
@@ -229,7 +231,9 @@ function feedItem(entry, onOpen) {
   ];
   const action = isViewable(entry)
     ? el('button', { type: 'button', class: 'glow', onclick: () => onOpen(entry), text: t('feed.open'), 'aria-label': `${t('feed.open')}: ${entryName(entry)}` })
-    : el('p', { class: 'feed-off', text: t('data.unavailable') });
+    : el('p', { class: 'feed-off', text: entry.statusReasonKey
+      ? t('data.unavailableBecause', { reason: tData(entry.statusReasonKey, 'explain.unknown') })
+      : t('data.unavailable') });
   return el('li', { class: `feed-item colour-${entry.colour}` }, [
     el('h3', {}, [el('i', { class: 'dot', 'aria-hidden': 'true' }), entryName(entry)]),
     ...lines,

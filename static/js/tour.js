@@ -1,116 +1,121 @@
-// The guided demo: a scripted walk through the five moments of the pitch.
+// The guided demo: a scripted walk through TENGER. It shows real images, catalogue motions and the
+// labelled viewer modes, then hands over to Beat the physics. It never shows a measured motion or
+// brightness number: those wait for validated files (the old demo relied on the unvalidated motion box).
 import { t } from './i18n.js';
 
-const FRAME_WAIT_MS = 45000;
+const FRAME_WAIT_MS = 30000;
 const POLL_MS = 400;
-const BAND_STEP_MS = 60;
-const SWEEP_MS = 9000;
-const CHANNELS = 102;
-const WHOLE_SKY_FOV = 200;
-const SKY_MS = 4000;
-const CLOSE_UP_FOV = 1;
-const MIN_FRAMES = 6;
-const BARNARD = { ra: 269.4465, dec: 4.7687 };
+const SWIPE_MS = 4000;
+const SWIPE_TICK_MS = 50;
+const ARRAY_MS = 1600;
+const ARRAYS = [1, 2, 3, 4, 5, 6];
 
 let activeRun = null;
 
 class Stopped extends Error {}
 
 function sleeper(run) {
-  return (milliseconds) =>
-    new Promise((resolve, reject) => {
-      setTimeout(() => (run.stopped ? reject(new Stopped()) : resolve()), milliseconds);
-    });
+  return (milliseconds) => new Promise((resolve, reject) => {
+    setTimeout(() => (run.stopped ? reject(new Stopped()) : resolve()), milliseconds);
+  });
 }
 
 async function waitForFrames(actions, sleep) {
   const started = Date.now();
   while (Date.now() - started < FRAME_WAIT_MS) {
-    if (actions.visitCount() >= 2 && actions.frameCount() >= MIN_FRAMES) return;
+    if (actions.ready()) return;
     await sleep(POLL_MS);
   }
 }
 
-async function showSky(actions, sleep) {
-  actions.showSky();
-  actions.caption(t('captionSky'));
-  await actions.skyGoTo(BARNARD.ra, BARNARD.dec, WHOLE_SKY_FOV);
-  await sleep(SKY_MS);
-  await actions.skyGoTo(BARNARD.ra, BARNARD.dec, CLOSE_UP_FOV);
-}
-
-async function showBarnard(actions, sleep) {
-  actions.caption(t('captionBarnard'));
-  actions.open('barnard');
-  await sleep(500);
-  await waitForFrames(actions, sleep);
-  actions.setPlaying(true);
-  await sleep(6000);
-  actions.caption(t('captionFollow'));
-  actions.setFollow(true);
-  await sleep(7000);
-  actions.setFollow(false);
-}
-
-async function sweepBands(actions, sleep) {
-  actions.caption(t('captionBands'));
-  actions.setMode('sum');
-  const started = performance.now();
-  for (let elapsed = 0; elapsed < SWEEP_MS; elapsed = performance.now() - started) {
-    actions.setBand({ kind: 'channel', channel: Math.floor((elapsed / SWEEP_MS) * CHANNELS) });
-    await sleep(BAND_STEP_MS);
+/** Sweeps the swipe divider across and back; with reduced motion it simply sets the midpoint. */
+async function sweepSwipe(actions, sleep) {
+  if (actions.reducedMotion()) {
+    actions.setSwipe(50);
+    await sleep(SWIPE_MS);
+    return;
   }
-  actions.setBand({ kind: 'composite' });
-  actions.setMode('video');
+  const steps = SWIPE_MS / SWIPE_TICK_MS;
+  for (let step = 0; step <= steps; step += 1) {
+    const phase = step / steps;
+    actions.setSwipe(100 * (phase < 0.5 ? 1 - 2 * phase : 2 * phase - 1));
+    await sleep(SWIPE_TICK_MS);
+  }
+  actions.setSwipe(50);
 }
 
-async function showSpectrum(actions, sleep) {
-  actions.caption(t('captionSpectrum'));
-  await actions.spectrumOfTarget();
-  await sleep(6000);
-}
+const SCRIPT = [
+  async (actions, sleep) => {
+    actions.showPage('home');
+    actions.caption(t('tour.home'));
+    await sleep(6000);
+  },
+  async (actions, sleep) => {
+    actions.caption(t('tour.barnard'));
+    actions.open('barnard');
+    await sleep(500);
+    await waitForFrames(actions, sleep);
+    actions.setMode('blink');
+    actions.setPlaying(!actions.reducedMotion());
+    await sleep(8000);
+  },
+  async (actions, sleep) => {
+    actions.caption(t('tour.follow'));
+    await actions.setFollow(true);
+    await sleep(6000);
+    await actions.setFollow(false);
+  },
+  async (actions, sleep) => {
+    actions.caption(t('tour.swipe'));
+    actions.setMode('swipe');
+    await sweepSwipe(actions, sleep);
+    actions.caption(t('tour.side'));
+    actions.setMode('side');
+    await sleep(6000);
+  },
+  async (actions, sleep) => {
+    actions.caption(t('tour.arrays'));
+    actions.open('rdra');
+    await sleep(500);
+    await waitForFrames(actions, sleep);
+    actions.setMode('blink');
+    for (const detector of ARRAYS) {
+      actions.setBand({ kind: 'detector', detector });
+      await sleep(ARRAY_MS);
+    }
+    actions.setBand({ kind: 'composite' });
+    actions.caption(t('tour.caption'));
+    await sleep(7000);
+  },
+  async (actions, sleep) => {
+    actions.caption(t('tour.game'));
+    actions.showPage('game');
+    await sleep(7000);
+  },
+];
 
-async function showWise(actions, sleep) {
-  actions.caption(t('captionWise'));
-  actions.open('wise0855');
-  await sleep(500);
-  await waitForFrames(actions, sleep);
-  actions.setBand({ kind: 'detector', detector: 6 });
-  actions.setPlaying(true);
-  await sleep(7000);
-  actions.caption(t('captionWiseMotion'));
-  actions.setBand({ kind: 'composite' });
-  await actions.measureMotion();
-  await sleep(7000);
-  actions.caption(t('captionWise2010'));
-  await actions.showWise();
-  await sleep(9000);
-  actions.caption(t('captionEnd'));
-  await sleep(6000);
-  actions.finish();
-}
+export const isTourRunning = () => Boolean(activeRun);
 
 /** Starts the demo, or stops it if it is already running. */
-export async function runTour(actions, button) {
+export async function runTour(actions) {
   if (activeRun) {
     activeRun.stopped = true;
     return;
   }
   const run = { stopped: false };
   activeRun = run;
-  button.textContent = t('stopTour');
+  actions.started();
   const sleep = sleeper(run);
   try {
-    await showSky(actions, sleep);
-    await showBarnard(actions, sleep);
-    await sweepBands(actions, sleep);
-    await showSpectrum(actions, sleep);
-    await showWise(actions, sleep);
+    for (const step of SCRIPT) await step(actions, sleep);
   } catch (error) {
     if (!(error instanceof Stopped)) actions.caption(error.message);
   } finally {
     activeRun = null;
-    button.textContent = t('tour');
-    if (run.stopped) actions.caption(null);
+    actions.finished();
   }
+}
+
+export function stopTour() {
+  if (activeRun) activeRun.stopped = true;
 }

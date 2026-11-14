@@ -1,0 +1,58 @@
+{
+  "schema_version": "tenger.game_round/1",
+  "example": true,
+  "round_id": "barnard-position-example",
+  "trial_id": "barnard-position-example",
+  "category": "retrospective_holdout",
+  "quantity": "position",
+  "units": "arcsec",
+  "derived_from": [
+    {
+      "path": "trials/barnard-position-example/prediction.json",
+      "sha256": "0e010bdba91bd86b9845c0f7037e3c32bb65f98bcb5341552ba93187c6cea163"
+    }
+  ],
+  "training_points": [
+    {
+      "t_mjd": 60902.0,
+      "east_arcsec": 0.0,
+      "north_arcsec": 0.0,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61085.0,
+      "east_arcsec": -0.4,
+      "north_arcsec": 5.2,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61270.0,
+      "east_arcsec": -0.8,
+      "north_arcsec": 10.4,
+      "content_type": "measured"
+    }
+  ],
+  "reveal_t_mjd": 61450.0,
+  "baseline": {
+    "east_arcsec": -1.2,
+    "north_arcsec": 15.6
+  },
+  "model": {
+    "east_arcsec": -1.15,
+    "north_arcsec": 15.1,
+    "region_d2": 5.991464547107979
+  },
+  "actual": {
+    "east_arcsec": -1.2,
+    "north_arcsec": 15.5,
+    "image": {
+      "path": "game/example-actual.svg",
+      "content_type": "artificial",
+      "time_utc": null
+    }
+  },
+  "scoring": {
+    "formula": "exp_decay_v1",
+    "scale": 2.0
+  }
+}

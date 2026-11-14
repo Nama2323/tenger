@@ -1,0 +1,27 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "example": true,
+  "trial_id": "rwaur-brightness-example",
+  "trial_ref": {
+    "path": "trials/rwaur-brightness-example/trial.json",
+    "sha256": "b6eff99743741cb67780ad00704a68422caf66c02d475c2da80bc36641dfbde7"
+  },
+  "category": "illustrative",
+  "created_utc": "2026-11-14T12:35:00Z",
+  "t_mjd": 61400.0,
+  "model": {
+    "value": 9.0,
+    "sigma": 0.6,
+    "unit": "mag",
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "value": 9.4,
+    "sigma": 0.9,
+    "unit": "mag",
+    "content_type": "modeled"
+  },
+  "limitation_keys": [
+    "limit.example"
+  ]
+}

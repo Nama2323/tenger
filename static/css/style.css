@@ -194,6 +194,8 @@ button.ghost { background: transparent; }
 }
 .example-banner a { color: var(--warn); font-weight: 600; display: inline-flex; align-items: center; min-height: var(--tap); }
 
+.tour-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.tour-bar p { flex: 1 1 260px; font-size: 16px; }
 .caption {
   position: fixed;
   left: 16px;
@@ -800,6 +802,71 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 .page-card.lab { border-color: var(--hypothetical); border-left-width: 4px; }
 #about-credits li, #about-methods li, #about-data li { color: var(--ink); }
 
+/* ---------- Beat the physics ---------- */
+
+.page-game { max-width: 1180px; }
+.round-picker { display: flex; flex-wrap: wrap; gap: 8px; }
+.round-picker button { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; border-radius: 14px; text-align: left; }
+.round { display: grid; gap: 16px; padding: 18px; background: var(--panel); border: 1px solid var(--edge); border-radius: 18px; }
+.round-head { display: grid; gap: 8px; }
+.round-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.round-figure { margin: 0; display: grid; gap: 10px; }
+.round-plot { width: 100%; max-width: 580px; }
+.game-plot { display: block; width: 100%; height: auto; border-radius: 14px; background: var(--card); touch-action: manipulation; cursor: crosshair; }
+.game-plot .plot-area { fill: rgba(5, 7, 13, 0.55); stroke: var(--edge-strong); }
+.game-plot .grid { stroke: rgba(230, 237, 247, 0.1); }
+.game-plot .tick { fill: var(--dim); font-size: 11px; }
+.game-plot .axis { fill: var(--ink); font-size: 12px; }
+.game-plot .point-label { fill: var(--dim); font-size: 11px; }
+.game-plot .track { fill: none; stroke: rgba(230, 237, 247, 0.45); stroke-width: 1.5; }
+.game-plot .reveal-line { stroke: var(--warn); stroke-dasharray: 5 5; stroke-width: 1.5; }
+.game-plot .baseline-line { stroke: var(--solar); stroke-dasharray: 6 5; stroke-width: 1.5; }
+.game-plot .error-line { stroke-dasharray: 2 4; stroke-width: 1.2; }
+.game-plot .error-player { stroke: var(--ink); }
+.game-plot .error-baseline { stroke: var(--solar); }
+.game-plot .error-model { stroke: var(--star); }
+.region { fill: rgba(var(--band), 0.14); stroke: var(--star); stroke-width: 1.5; }
+.game-plot .mark { transform-box: fill-box; transform-origin: center; animation: mark-in 0.35s ease-out; }
+@keyframes mark-in { from { transform: scale(0.4); } }
+.mark-training circle { fill: var(--dim); }
+.mark-player circle:first-child { fill: none; stroke: var(--ink); stroke-width: 2.5; }
+.mark-player circle:last-child { fill: var(--ink); }
+.mark-baseline rect { fill: var(--solar); }
+.mark-model path { fill: var(--star); }
+.mark-actual path { stroke: var(--ok); stroke-width: 3.5; stroke-linecap: round; fill: none; }
+.legend-icon { flex: none; overflow: visible; }
+.game-legend { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 14px; }
+.game-legend li { display: flex; align-items: center; gap: 6px; margin: 0; }
+.round-side { display: grid; gap: 12px; align-content: start; }
+.guess-inputs { margin: 0; padding: 12px; border: 1px solid var(--edge-strong); border-radius: 12px; display: grid; gap: 10px; min-width: 0; }
+.guess-inputs legend { padding: 0 6px; font-weight: 600; }
+.guess-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+.guess-fields input { width: 100%; min-height: var(--tap); font: inherit; font-size: 16px; color: var(--ink); background: var(--panel); border: 1px solid var(--edge-strong); border-radius: 10px; padding: 8px 12px; }
+.nudges { display: grid; gap: 6px; }
+.nudges-position { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.nudges-scalar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.nudges button { padding: 6px 10px; border-radius: 12px; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.reveal-steps { margin: 0; padding-left: 22px; display: grid; gap: 4px; color: var(--dim); }
+.reveal-steps li { margin: 0; }
+.reveal-steps li.done { color: var(--ink); font-weight: 600; }
+.reveal-steps li.done::marker { color: var(--ok); }
+.round-status:empty { display: none; }
+.round-status { color: var(--ink); }
+.round-results { display: grid; gap: 10px; }
+.round-results:empty { display: none; }
+.verdict { font: 600 19px/1.3 var(--display); color: var(--accent); }
+.results-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.results-table caption { text-align: left; color: var(--dim); padding: 4px 0; font-size: 14px; }
+.results-table th, .results-table td { text-align: left; padding: 6px 10px 6px 0; border-bottom: 1px solid var(--edge); }
+.results-table thead th { color: var(--dim); font-weight: 500; }
+.results-table tbody th { display: flex; align-items: center; gap: 6px; font-weight: 500; }
+.results-table .is-best th, .results-table .is-best td { color: var(--ok); font-weight: 600; }
+.actual-image { margin: 0; display: grid; gap: 6px; justify-items: start; }
+.actual-image img { width: min(100%, 260px); aspect-ratio: 1; object-fit: cover; border-radius: 12px; background: #000; }
+.actual-image figcaption { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; color: var(--dim); font-size: 14px; }
+.example-link { display: inline-flex; align-items: center; min-height: var(--tap); padding: 0 16px; border: 1px dashed var(--warn); border-radius: 999px; color: var(--warn); font-weight: 600; text-decoration: none; }
+
 /* ---------- Embedded viewer ---------- */
 
 body.embed .top, body.embed .site-footer, body.embed .panel-nav, body.embed .inv-head .share,
@@ -850,6 +917,8 @@ body.embed main { padding: 0 12px 12px; }
   .panel-see { padding: 10px; }
   .panel-nav button { padding: 6px 12px; font-size: 14px; }
   .pred-figure { grid-template-columns: 1fr; }
+  .round { padding: 12px; }
+  .round-grid { grid-template-columns: minmax(0, 1fr); }
   .ring-label.minor { display: none; }
   .map-marker { font-size: 12px; }
   .cards { grid-template-columns: 1fr; }

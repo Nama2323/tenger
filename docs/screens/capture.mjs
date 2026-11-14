@@ -27,7 +27,10 @@ const PAGES = [
   { name: 'investigate-rdra-side', path: '/?target=rdra&mode=side', ready: '#caption-body .caption-col' },
   { name: 'prediction-fixtures', path: '/?fixtures=1&target=barnard&panel=prediction', ready: '.trial', scrollTo: '#panel-prediction' },
   { name: 'makemake-unavailable', path: '/?target=makemake', ready: '#see-empty:not([hidden])' },
-  { name: 'game', path: '/?page=game', ready: '#game-rounds p, #game-rounds li' },
+  { name: 'game', path: '/?page=game', ready: '#game-rounds p' },
+  { name: 'game-example', path: '/?page=game&fixtures=1', ready: '.game-plot', scrollTo: '#round-picker' },
+  { name: 'game-example-revealed', path: '/?page=game&fixtures=1&round=barnard-position-example', ready: '.game-plot', act: "(() => { const v = document.getElementById('guess-value'); if (v) { v.value = '5.8'; v.dispatchEvent(new Event('change')); } const e = document.getElementById('guess-east'); if (e) { e.value = '-2'; e.dispatchEvent(new Event('change')); const n = document.getElementById('guess-north'); n.value = '14.6'; n.dispatchEvent(new Event('change')); } document.getElementById('lock-guess').click(); for (let i = 0; i < 3; i += 1) document.getElementById('reveal-next').click(); })()", scrollTo: '.round-grid' },
+  { name: 'game-rdra-revealed', path: '/?page=game&fixtures=1&round=rdra-brightness-example', ready: '.game-plot', act: "(() => { const v = document.getElementById('guess-value'); if (v) { v.value = '5.8'; v.dispatchEvent(new Event('change')); } const e = document.getElementById('guess-east'); if (e) { e.value = '-2'; e.dispatchEvent(new Event('change')); const n = document.getElementById('guess-north'); n.value = '14.6'; n.dispatchEvent(new Event('change')); } document.getElementById('lock-guess').click(); for (let i = 0; i < 3; i += 1) document.getElementById('reveal-next').click(); })()", scrollTo: '.round-grid' },
   { name: 'learn', path: '/?page=learn', ready: '#lesson-list li' },
   { name: 'about', path: '/?page=about', ready: '#about-credits li' },
 ];
@@ -113,6 +116,10 @@ async function main() {
         ready = result.result?.result?.value === true;
       }
       await sleep(900);
+      if (page.act) {
+        await send('Runtime.evaluate', { expression: page.act });
+        await sleep(500);
+      }
       if (page.scrollTo) {
         await send('Runtime.evaluate', { expression: `document.querySelector(${JSON.stringify(page.scrollTo)}).scrollIntoView({block:'start'})` });
         await sleep(400);

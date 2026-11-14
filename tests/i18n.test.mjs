@@ -63,6 +63,12 @@ test('placeholders are filled, and unknown data keys get a visible generic text'
   assert.match(tData('limit.never-written', 'limit.unknown'), /limit\.never-written/);
 });
 
+test('every data key Session A publishes has English text in the resource file (copied, not only fetched)', () => {
+  const published = JSON.parse(readFileSync(`${STATIC}data/strings.en.json`, 'utf8'));
+  assert.equal(published.schema_version, 'tenger.strings/1');
+  for (const key of Object.keys(published.strings)) assert.ok(keys.has(key), `strings.en.json key ${key} is missing from i18n.js`);
+});
+
 test('the map caption says it is not a sky map', () => {
   assert.equal(t('map.caption'), 'Schematic: not a sky map. Angles are arbitrary; distances come from the cited sources.');
 });

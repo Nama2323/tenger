@@ -1,0 +1,59 @@
+{
+  "schema_version": "tenger.game_round/1",
+  "example": true,
+  "round_id": "rdra-brightness-example",
+  "trial_id": "rdra-brightness-example",
+  "category": "retrospective_holdout",
+  "quantity": "brightness",
+  "units": "mag",
+  "derived_from": [
+    {
+      "path": "trials/rdra-brightness-example/prediction.json",
+      "sha256": "45410c87f82a1c1887ecc386222dd01b6980d84d224122c5eb0ca7521151b34c"
+    }
+  ],
+  "training_points": [
+    {
+      "t_mjd": 60800.0,
+      "value": 6.2,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60890.0,
+      "value": 5.1,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61000.0,
+      "value": 4.6,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61090.0,
+      "value": 5.8,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61180.0,
+      "value": 6.6,
+      "content_type": "measured"
+    }
+  ],
+  "reveal_t_mjd": 61290.0,
+  "baseline": {
+    "value": 7.6
+  },
+  "model": {
+    "value": 4.9,
+    "sigma": 0.4,
+    "region_z": 1.959963984540054
+  },
+  "actual": {
+    "value": 5.4,
+    "image": null
+  },
+  "scoring": {
+    "formula": "exp_decay_v1",
+    "scale": 0.5
+  }
+}

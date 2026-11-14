@@ -29,6 +29,10 @@
     <a id="example-exit" href="./" data-t="example.exit"></a>
   </div>
   <p id="caption" class="caption" hidden aria-live="polite"></p>
+  <div id="tour-bar" class="caption tour-bar" role="region" data-t-label="tour.label" hidden>
+    <p id="tour-text" aria-live="polite"></p>
+    <button id="tour-stop" type="button" data-t="tour.stop"></button>
+  </div>
 
   <main id="main" tabindex="-1">
     <div id="notices" class="notices" aria-live="polite"></div>
@@ -38,6 +42,7 @@
         <h1 id="home-title" tabindex="-1" data-t="home.title"></h1>
         <p class="lead" data-t="site.tagline"></p>
         <p data-t="home.lead"></p>
+        <p><button id="tour-start" type="button" class="ghost" data-t="tour.start"></button></p>
       </div>
 
       <div class="search-panel">
@@ -112,7 +117,7 @@
         <p class="note" data-t="sky.lead"></p>
         <div id="sky" class="sky"></div>
         <p id="sky-message" class="form-message" aria-live="polite"></p>
-        <p class="note" data-t="credit.aladin"></p>
+        <p class="note" data-t="ack.aladin"></p>
       </details>
     </section>
 
@@ -288,7 +293,7 @@
     </section>
 
     <!-- ======================= Beat the physics ======================= -->
-    <section id="page-game" class="page page-text" hidden aria-labelledby="game-title">
+    <section id="page-game" class="page page-text page-game" hidden aria-labelledby="game-title">
       <h1 id="game-title" tabindex="-1" data-t="game.title"></h1>
       <p class="lead" data-t="game.lead"></p>
       <p data-t="game.scoring"></p>

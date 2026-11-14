@@ -117,8 +117,10 @@
       },
       "data_status": "available",
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "waiting",
+        "trial_ids": [
+          "rwaur-brightness-example"
+        ]
       },
       "investigation_path": null,
       "thumbnails": [],
@@ -147,7 +149,7 @@
       },
       "data_status": "available",
       "prediction": {
-        "status": "waiting",
+        "status": "hit",
         "trial_ids": [
           "rdra-brightness-example"
         ]
@@ -170,8 +172,10 @@
       "footprint": null,
       "data_status": "unavailable",
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "hit",
+        "trial_ids": [
+          "makemake-position-example"
+        ]
       },
       "investigation_path": null,
       "thumbnails": [],
@@ -267,11 +271,15 @@
   ],
   "trials": [
     "trials/barnard-position-example/trial.json",
-    "trials/rdra-brightness-example/trial.json"
+    "trials/makemake-position-example/trial.json",
+    "trials/rdra-brightness-example/trial.json",
+    "trials/rwaur-brightness-example/trial.json"
   ],
   "scoreboard_path": "scoreboard.json",
   "game_rounds": [
-    "game/example-round.json"
+    "game/barnard-position-example.json",
+    "game/makemake-position-example.json",
+    "game/rdra-brightness-example.json"
   ],
   "lessons": [
     "lessons/distance.json"

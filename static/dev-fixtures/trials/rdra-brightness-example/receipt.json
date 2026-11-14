@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "example": true,
+  "trial_id": "rdra-brightness-example",
+  "prediction_path": "trials/rdra-brightness-example/prediction.json",
+  "prediction_sha256": "45410c87f82a1c1887ecc386222dd01b6980d84d224122c5eb0ca7521151b34c",
+  "commit": "0000000",
+  "committed_utc": "2026-11-14T12:06:00Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": null
+  }
+}

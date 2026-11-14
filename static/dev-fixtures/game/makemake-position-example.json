@@ -1,0 +1,54 @@
+{
+  "schema_version": "tenger.game_round/1",
+  "example": true,
+  "round_id": "makemake-position-example",
+  "trial_id": "makemake-position-example",
+  "category": "catalogue_assisted",
+  "quantity": "position",
+  "units": "arcmin",
+  "derived_from": [
+    {
+      "path": "trials/makemake-position-example/prediction.json",
+      "sha256": "928218beb69d800612e95c7981ae4190ab51d6ac23ce36a81e1a9b93856eb36c"
+    }
+  ],
+  "training_points": [
+    {
+      "t_mjd": 60830.0,
+      "east_arcsec": 0.0,
+      "north_arcsec": 0.0,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60845.0,
+      "east_arcsec": -610.0,
+      "north_arcsec": 95.0,
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60858.0,
+      "east_arcsec": -1150.0,
+      "north_arcsec": 170.0,
+      "content_type": "measured"
+    }
+  ],
+  "reveal_t_mjd": 60900.0,
+  "baseline": {
+    "east_arcsec": -2893.0,
+    "north_arcsec": 414.0
+  },
+  "model": {
+    "east_arcsec": -2620.0,
+    "north_arcsec": 365.0,
+    "region_d2": 5.991464547107979
+  },
+  "actual": {
+    "east_arcsec": -2600.0,
+    "north_arcsec": 360.0,
+    "image": null
+  },
+  "scoring": {
+    "formula": "exp_decay_v1",
+    "scale": 2.0
+  }
+}

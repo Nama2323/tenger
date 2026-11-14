@@ -4,27 +4,30 @@ import * as api from './api.js';
 import { comparisonWarning, CONTEXT_STEP, describePicture } from './caption.js';
 import { drawLightCurve, drawSpectrum, drawWingCurve } from './chart.js';
 import { createSource } from './contract.js';
+import { allowsDifference, comparisonReasons, epochCoverage, pairComparison } from './epochs.js';
 import { parseCoordinates, separationDeg } from './coords.js';
 import { $, chip, dataTable, el, formatNumber, formatUtc, prefersReducedMotion } from './dom.js';
 import {
   bindCoordinateSearch, buildFovOptions, entryName, fillCoordinates, kindLabel, placeMapLabels, predictionLabel, renderHome, startBlinking,
 } from './home.js';
-import { applyTranslations, has, t } from './i18n.js';
+import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
 import { findByName, searchMatches } from './names.js';
 import { renderChanged, renderEvidence, renderPrediction, renderSpectrumNote } from './panels.js';
-import { renderAbout, renderGame, renderLearn } from './pages.js';
+import { currentRoundId, renderGamePage, selectRound } from './game-ui.js';
+import { renderAbout, renderLearn } from './pages.js';
 import {
   drawPlate, limitsFor, paintComposite, paintDifference, paintMono, stacksFor, StackCache, tintFor,
 } from './plate.js';
-import { reservedRegionNear } from './reserved.js';
+import { loadReserved, reservedRegionNear } from './reserved.js';
 import { bandToParam, buildRoute, PAGES, parseRoute, resolveRoute } from './route.js';
 import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometry } from './science.js';
 import { createSky } from './sky.js';
+import { runTour, stopTour } from './tour.js';
 import {
   channelWavelength, CHANNELS, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
   selectBand, skyToPixel, visitsOf, wellCovered,
 } from './stack.js';
-import { buildTargets, findCoveringTarget, isViewable, legacyPlaces } from './targets.js';
+import { buildTargets, canonicalKey, findCoveringTarget, isViewable, legacyPlaces } from './targets.js';
 import { canvasToPlate, fullView, panBy, zoomAt } from './viewport.js';
 
 const POLL_MS = 1500;
@@ -84,6 +87,7 @@ const app = {
   entry: null,
   requested: null,
   investigation: null,
+  scoreboard: null,
   pending: null,
   notices: [],
   keepNotices: false,
@@ -132,7 +136,10 @@ let captionKey = '';
 
 // ---------- Sequence of dates and A/B ----------
 
-/** Dated steps with stable IDs (UTC date of the visit, the AllWISE frame is "allwise"). */
+/**
+ * Dated steps with stable IDs: one per prepared visit, named by the UTC date of its mean frame time (the
+ * name the evidence file's viewer.visits[].date_utc uses); the AllWISE frame is "allwise".
+ */
 function sequence() {
   const used = new Map();
   const dated = state.visits.map((visit) => {
@@ -482,10 +489,11 @@ function renderCaption(left, aStep, bStep) {
     if (shownSide === 'other') columns.push(captionColumn('·', describe(left), 'other'));
     columns.push(captionColumn(t('ab.a'), a, 'a'), captionColumn(t('ab.b'), b, 'b'));
     const warning = comparisonWarning(a, b);
-    $('caption-body').replaceChildren(
+    $('caption-body').replaceChildren(...[
       el('div', { class: 'caption-cols' }, columns),
-      ...(warning ? [el('p', { class: 'note warn', text: t(warning) })] : []),
-    );
+      gradeNote(),
+      warning ? el('p', { class: 'note warn', text: t(warning) }) : null,
+    ].filter(Boolean));
   }
   for (const column of $('caption-body').querySelectorAll('.caption-col')) {
     const on = blink && column.dataset.side === shownSide;
@@ -687,14 +695,35 @@ function chooseAt(plate) {
   });
 }
 
-/** Difference needs a validated comparison of exactly this A/B pair in the investigation file. */
-function differenceAllowed() {
+/** The evidence file's comparison for the A and B visits in the current band (same array only). */
+function currentComparison() {
   const doc = app.investigation?.state === 'ok' ? app.investigation.doc : null;
-  if (!doc?.capabilities?.difference) return false;
-  const { from, to } = state.range;
-  return (doc.comparisons ?? []).some((comparison) => comparison.grade === 'quantitative'
-    && (comparison.modes ?? []).includes('difference')
-    && ((comparison.a === from && comparison.b === to) || (comparison.a === to && comparison.b === from)));
+  if (!doc) return null;
+  const [aStep, bStep] = abSteps();
+  const visitOf = (step) => (!step || step.key === WISE_STEP ? null : step.key);
+  return pairComparison(doc, visitOf(aStep), visitOf(bStep), state.band);
+}
+
+/** Difference needs a comparison of exactly this A/B pair, in one array, that allows it. */
+function differenceAllowed() {
+  return allowsDifference(currentComparison()?.comparison);
+}
+
+/** Contract V2.4: a pair covered by the evidence file is labelled with its comparison grade. */
+function gradeNote() {
+  const found = currentComparison();
+  if (!found) return null;
+  if (found.reason === 'composite') return el('p', { class: 'note', text: t('caption.gradePerArray') });
+  if (!found.comparison) return found.reason === 'context' ? null : el('p', { class: 'note', text: t('caption.gradeNone') });
+  const { comparison } = found;
+  const reasons = comparisonReasons(comparison).map((key) => tData(key, 'explain.unknown')).join(' ');
+  return el('p', { class: 'note' }, [
+    chip(t('caption.grade', {
+      grade: has(`grade.${comparison.grade}`) ? t(`grade.${comparison.grade}`) : comparison.grade,
+      detector: String(found.detector),
+    })),
+    reasons ? ` ${reasons}` : '',
+  ]);
 }
 
 function refreshModeButtons() {
@@ -796,6 +825,8 @@ function rangeNote() {
 
 function setBand(band, { write = true } = {}) {
   state.band = band;
+  if (state.mode === 'diff' && !differenceAllowed()) state.mode = 'blink';
+  refreshModeButtons();
   $('composite').setAttribute('aria-pressed', String(band.kind === 'composite'));
   $('band-label').textContent = band.kind === 'channel'
     ? `≈${channelWavelength(band.channel).toFixed(2)} μm`
@@ -916,6 +947,8 @@ async function openStatic(target, session) {
   state.plateView = fullView(meta.grid.n);
   state.frames = frames;
   state.visits = visitsOf(frames);
+  await ensureInvestigation();
+  if (session !== state.session) return;
   if (isFastMover(target) && meta.wise) {
     state.wiseFrame = await api.getStaticWise(target.key, meta);
     if (session !== state.session) return;
@@ -1286,17 +1319,27 @@ async function toggleWise() {
 
 // ---------- Investigation panels ----------
 
+/** Loads the target's evidence file once (null for a custom position). */
+async function ensureInvestigation() {
+  const entry = app.entry;
+  if (!entry) {
+    app.investigation = null;
+    return;
+  }
+  if (app.investigation?.path === entry.investigationPath && app.investigation?.key === entry.key) return;
+  const loaded = entry.investigationPath ? await app.source.investigation(entry.investigationPath) : { state: 'missing' };
+  app.investigation = { ...loaded, path: entry.investigationPath, key: entry.key };
+}
+
 async function refreshPanels() {
   const entry = app.entry;
   const custom = !entry;
-  if (entry && app.investigation?.path !== entry.investigationPath) {
-    app.investigation = entry.investigationPath ? await app.source.investigation(entry.investigationPath) : { state: 'missing' };
-  }
-  if (custom) app.investigation = null;
+  await ensureInvestigation();
   renderChanged($('changed-validated'), { investigation: app.investigation, custom });
   renderEvidence($('evidence-body'), {
     investigation: app.investigation,
     legacy: { frames: state.frames, meta: state.staticMeta, custom },
+    epochs: app.investigation?.state === 'ok' ? epochCoverage(app.investigation.doc, state.visits.map((visit) => visit.visit)) : null,
   });
   renderSpectrumNote($('spectrum-note'), { investigation: app.investigation });
   $('explore-box').hidden = !state.frames.length;
@@ -1333,7 +1376,7 @@ function renderNotices() {
 const dataVersion = () => (app.indexState?.state === 'ok' ? app.indexState.doc.dataset_version : 'legacy');
 
 function routeState() {
-  const base = { page: app.page, embed: app.embed, fixtures: app.source?.fixtures };
+  const base = { page: app.page, embed: app.embed, fixtures: app.source?.fixtures, round: app.page === 'game' ? currentRoundId() : null };
   if (app.page !== 'investigate' || !state.target) return base;
   const centre = app.requested ?? centreOf(state.target);
   return {
@@ -1393,6 +1436,7 @@ function openEntry(entry, { fov = null, requested = null, push = true } = {}) {
     resetViewerState(null);
     describeEntryOnly(entry);
     addNotice('note.unavailable', { name: entryName(entry) });
+    if (entry.statusReasonKey) addNotice('data.unavailableBecause', { reason: tData(entry.statusReasonKey, 'explain.unknown') });
     showViewerEmpty(t('data.unavailableLong'));
     writeUrl();
     scrollToLinkedPanel();
@@ -1479,6 +1523,7 @@ function applyLocation({ push = false } = {}) {
   app.keepNotices = true;
   renderNotices();
   if (resolved.page !== 'investigate') {
+    if (resolved.page === 'game' && route.round && route.round !== currentRoundId()) selectRound(route.round);
     showPage(resolved.page, { push, focus: false });
     return;
   }
@@ -1641,8 +1686,40 @@ function savePlate() {
   el('a', { download: `tenger-${state.target?.key ?? 'sky'}-${label}.png`, href: $('plate').toDataURL('image/png') }).click();
 }
 
+/** What the guided demo may do: open targets, switch modes and pages. No measurements. */
+const demoActions = {
+  caption: (text) => {
+    $('tour-text').textContent = text ?? '';
+  },
+  showPage: (page) => showPage(page, { focus: false }),
+  open(key) {
+    const entry = app.allTargets.find((item) => item.key === key);
+    if (!entry) return;
+    app.panel = 'see';
+    app.scrollToPanel = false;
+    openEntry(entry);
+  },
+  ready: () => state.visits.length >= 2 && state.frames.length >= AUTO_SPECTRUM_FRAMES,
+  setMode: (mode) => setMode(mode),
+  setPlaying,
+  setFollow: (follow) => (follow ? lockCamera(targetAsObject()) : unlockCamera()),
+  setSwipe,
+  setBand,
+  reducedMotion: prefersReducedMotion,
+  started() {
+    $('tour-bar').hidden = false;
+    $('tour-start').textContent = t('tour.stop');
+  },
+  finished() {
+    $('tour-bar').hidden = true;
+    $('tour-start').textContent = t('tour.start');
+  },
+};
+
 function bindControls() {
   bindSearchList();
+  $('tour-start').addEventListener('click', () => runTour(demoActions));
+  $('tour-stop').addEventListener('click', stopTour);
   bindViewingTools();
   bindCoordinateSearch((request) => openPosition(request));
   $('search').addEventListener('submit', (event) => {
@@ -1719,7 +1796,12 @@ async function loadThumbs() {
 async function loadData() {
   const fixtures = parseRoute(location.search).fixtures;
   app.source = createSource({ fixtures });
-  const [presets, indexState] = await Promise.all([api.getTargets(), app.source.index(), loadThumbs()]);
+  // Data-key text and reserved regions always come from real data, also in fixture mode.
+  const real = fixtures ? createSource({ fixtures: false }) : app.source;
+  const [presets, indexState, strings] = await Promise.all([
+    api.getTargets(), app.source.index(), real.strings(), loadThumbs(), loadReserved(),
+  ]);
+  if (strings.state === 'ok') addMissingStrings(strings.doc.strings);
   app.legacyPresets = presets;
   app.indexState = indexState;
   const index = indexState.state === 'ok' ? indexState.doc : null;
@@ -1728,12 +1810,45 @@ async function loadData() {
   const example = fixtures || Boolean(index?.example);
   $('example-banner').hidden = !example;
   document.body.classList.toggle('example-data', example);
-  const [rounds, lessons] = await Promise.all([
+  const [rounds, lessons, scoreboard] = await Promise.all([
     Promise.all((index?.game_rounds ?? []).map((path) => app.source.gameRound(path))),
     Promise.all((index?.lessons ?? []).map((path) => app.source.lesson(path))),
+    app.source.scoreboard(index?.scoreboard_path),
   ]);
-  renderGame(rounds);
+  app.scoreboard = scoreboard.state === 'ok' ? scoreboard.doc : null;
+  const playable = rounds.filter((round) => round.state === 'ok');
+  const bundles = await Promise.all(playable.map((round) => app.source.trial(round.doc.trial_id)));
+  renderGamePage({
+    rounds: playable.map((round, index) => ({ doc: round.doc, bundle: bundles[index] })),
+    skipped: rounds.filter((round) => round.state !== 'ok').map((round) => ({ path: round.path, reason: round.state })),
+    fixtures,
+    selected: parseRoute(location.search).round,
+    nameOf: (key) => {
+      const entry = key ? app.allTargets.find((item) => item.key === canonicalKey(key)) : null;
+      return entry ? entryName(entry) : null;
+    },
+    imageUrl: (path) => app.source.url(path),
+    scoreboardRow: (trialId) => app.scoreboard?.rows?.find((row) => row.trial_id === trialId) ?? null,
+    onSelect: () => {
+      if (app.page === 'game') writeUrl();
+    },
+  });
   renderLearn(lessons);
+}
+
+/** Index thumbnails (V3.2) when the index lists them; otherwise the prepared legacy pair. */
+function thumbsOf(entry) {
+  const listed = (entry.thumbnails ?? []).map((thumb) => ({ ...thumb, src: app.source.url(thumb.path) })).filter((thumb) => thumb.src);
+  if (listed.length) {
+    return {
+      kind: 'index',
+      frames: listed.slice(0, 2).map((thumb) => ({
+        src: thumb.src,
+        label: thumb.time_utc ? String(thumb.time_utc).slice(0, 10) : tData(thumb.label_key, 'explain.unknown'),
+      })),
+    };
+  }
+  return app.thumbs.get(entry.key) ?? null;
 }
 
 function openFromHome(entry) {
@@ -1758,7 +1873,7 @@ async function start() {
   renderHome({
     entries: app.entries,
     indexLoaded: app.indexState?.state === 'ok',
-    thumbsOf: (entry) => app.thumbs.get(entry.key) ?? null,
+    thumbsOf,
     onOpen: openFromHome,
   });
   startBlinking();

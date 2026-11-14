@@ -9,25 +9,7 @@ const ABOUT_METHODS = [
   'about.methods.grid', 'about.methods.legacy', 'about.methods.difference',
   'about.methods.trials', 'about.methods.map', 'about.methods.reserved',
 ];
-const CREDITS = ['credit.base-project', 'credit.irsa', 'credit.spherex', 'credit.wise', 'credit.gaia', 'credit.aladin', 'credit.fonts', 'credit.ai'];
-
-/** rounds: contract load results of game/<round_id>.json. */
-export function renderGame(rounds) {
-  const usable = rounds.filter((round) => round.state === 'ok');
-  if (!usable.length) {
-    $('game-rounds').replaceChildren(el('p', { class: 'panel-note', text: t('game.waiting') }));
-    return;
-  }
-  $('game-rounds').replaceChildren(el('ul', { class: 'cards-list' }, usable.map(({ doc }) => el('li', { class: 'page-card' }, [
-    el('h3', { text: t('game.round', { id: doc.round_id }) }),
-    el('p', { class: 'stamps' }, [
-      doc.example ? chip(t('example.tag'), 'chip-example') : null,
-      chip(t(`category.${doc.category}`), `chip-category-${doc.category}`),
-    ]),
-    el('p', { text: t(`quantity.${doc.quantity}`) }),
-    el('p', { class: 'panel-note', text: t('game.soon') }),
-  ]))));
-}
+const CREDITS = ['ack.base-project', 'ack.irsa', 'ack.spherex', 'ack.wise', 'ack.gaia', 'credit.horizons', 'ack.aladin', 'ack.fonts', 'ack.ai'];
 
 /** lessons: contract load results of lessons/<lesson_id>.json, matched to the three planned lessons. */
 export function renderLearn(lessons) {
