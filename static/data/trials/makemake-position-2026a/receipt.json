@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "contract_version": 5,
+  "trial_id": "makemake-position-2026a",
+  "prediction_path": "trials/makemake-position-2026a/prediction.json",
+  "prediction_sha256": "88a33bfa96b628286f543302f3a00de08151bbf2d76e797bb869ecfe0f9827b8",
+  "commit": "24e215aed374a1fedf9110bcdb46b5a3473e7a3e",
+  "committed_utc": "2026-11-14T14:49:57Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": "2026-11-14T14:50:38Z"
+  }
+}

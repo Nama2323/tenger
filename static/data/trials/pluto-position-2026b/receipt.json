@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "contract_version": 5,
+  "trial_id": "pluto-position-2026b",
+  "prediction_path": "trials/pluto-position-2026b/prediction.json",
+  "prediction_sha256": "809e7af155b70b6f736e9157122ad1e12030d191bd1a516d472eb37ed6f5cc3c",
+  "commit": "b2df072ea6ee40c34e4ec33e022504f56f656803",
+  "committed_utc": "2026-11-14T14:49:57Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": "2026-11-14T14:50:38Z"
+  }
+}

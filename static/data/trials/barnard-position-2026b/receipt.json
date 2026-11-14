@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "contract_version": 5,
+  "trial_id": "barnard-position-2026b",
+  "prediction_path": "trials/barnard-position-2026b/prediction.json",
+  "prediction_sha256": "27ba83c378a541dde37aaff1dfbbade8784beed07a5eb9de4f715426910a979b",
+  "commit": "6c13e88a9e1c25976d96e3f1e8aeeea060418b14",
+  "committed_utc": "2026-11-14T14:49:29Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": "2026-11-14T14:50:38Z"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "contract_version": 5,
+  "trial_id": "rwaur-brightness-2026a",
+  "prediction_path": "trials/rwaur-brightness-2026a/prediction.json",
+  "prediction_sha256": "ffdf2ac253f196e8dcae90b5176e171738b868e1e89510f241e2d7b2c41a920d",
+  "commit": "70d15a9d0b18da3c1ff0a82664b43d3b89395c4c",
+  "committed_utc": "2026-11-14T14:49:58Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": "2026-11-14T14:50:38Z"
+  }
+}

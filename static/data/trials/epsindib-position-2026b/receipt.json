@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "contract_version": 5,
+  "trial_id": "epsindib-position-2026b",
+  "prediction_path": "trials/epsindib-position-2026b/prediction.json",
+  "prediction_sha256": "4d3d7add45f007a524ac6b5fbd055e0940101c5dd398cc553537a62c455dffc2",
+  "commit": "84e4fee06eb28a651d273562a72c938738ceb76e",
+  "committed_utc": "2026-11-14T14:49:30Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": "2026-11-14T14:50:38Z"
+  }
+}

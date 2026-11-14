@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "contract_version": 5,
+  "trial_id": "wise0855-position-2026a",
+  "prediction_path": "trials/wise0855-position-2026a/prediction.json",
+  "prediction_sha256": "44d2fd6fb99ef412e5cd16995e202559d327e41ece86dc08f7ed2d1e65d05805",
+  "commit": "d6999efafb6ae990dc75c71b1535e4ae656a714b",
+  "committed_utc": "2026-11-14T14:49:57Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": "2026-11-14T14:50:38Z"
+  }
+}

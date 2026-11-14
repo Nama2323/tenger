@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "contract_version": 5,
+  "trial_id": "rdra-brightness-2026a",
+  "prediction_path": "trials/rdra-brightness-2026a/prediction.json",
+  "prediction_sha256": "c1c6b58d8280557ebdc5d2d7950d21fd384946f7dbd9633ecc18e63057b0200b",
+  "commit": "df778bb40e798f21ec395e0abeedc872c80e5dc3",
+  "committed_utc": "2026-11-14T14:49:58Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": "2026-11-14T14:50:38Z"
+  }
+}
