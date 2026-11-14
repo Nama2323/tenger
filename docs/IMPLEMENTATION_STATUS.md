@@ -10,8 +10,8 @@ still open. Session A edits only "Science/data". Session B edits only "Web".
 ### Current phase
 
 **Phase H data checks done (Task H2): release candidate on `tenger-dev`, not on `main`, not deployed.**
-Open: three teammates' confirmation for Pluto; updating `main` (it still has the weekly bake schedule);
-making the repository public and enabling Pages (`docs/RELEASE.md`).
+`bake.yml` disabled on GitHub. Open: three teammates' confirmation for Pluto; updating `main`; making
+the repository public and enabling Pages (`docs/RELEASE.md`).
 
 ### Task H2, 15 Nov 2026 (release checks for data and science; fix, don't add)
 
@@ -21,7 +21,7 @@ making the repository public and enabling Pages (`docs/RELEASE.md`).
 | What it found | `static/data/lessons/how-sure.json` | `derived_from` still held the scoreboard hash from before A7's rebuild. Regenerated with `python -m scripts.build_records`; only the hash changed |
 | Numbers on the site against their sources | validator `check_numbers` | The scoreboard equals a fresh `build_scoreboard.build` run. Game rounds and lessons equal a fresh `build_records` run. Index statuses follow the verifications, and index distances equal 1000/parallax. Post-mortem and hindcast numbers match the frozen verification. In `scene3d.json`, the frozen forecast, observed position, training count, star distances and our-orbit labels match their files. Session B's hard-coded figures in `js/i18n.js` (Gaia 10.4″, pixel 6.2″) agree with the data. **No mismatches** |
 | README | `README.md` | Rewritten for TENGER: See/Predict/Learn; results (2 retrospective catalogue-assisted hits, the prospective Pluto miss and its post-mortem cause, 4 insufficient-data trials, open forecasts never counted); how to run and check; limitations; data credits and DOIs (matching the About page); team; SPHEREx Blink base (MIT); AI disclosure |
-| No automatic rebake | `.github/workflows/bake.yml` | `schedule` removed, `workflow_dispatch` kept. Scheduled workflows run from the default branch, so **`main` keeps the weekly schedule until it is updated**. Next run: Mon 16 Nov 04:17 UTC (12:17 UB). `docs/RELEASE.md` step 0 gives the commands |
+| No automatic rebake | `.github/workflows/bake.yml` | `schedule` removed, `workflow_dispatch` kept. Scheduled workflows run from the default branch, so `main` keeps the weekly schedule until it is updated (next run would have been Mon 16 Nov 04:17 UTC, 12:17 UB). On the user's go-ahead the workflow was then **disabled on GitHub** (`gh workflow disable bake.yml -R Nama2323/tenger`; state `disabled_manually`; `pages.yml` still active) |
 | Pages check | `.github/workflows/pages.yml` (unchanged) | Uploads `static/` on a push to `main` that touches `static/**`, or on manual dispatch. `static/` is 139 MB, 1,461 files, none over 50 MB, no symlinks, only relative paths. Simulated by serving a copy of `static/` alone from `/tenger/` with no backend: Home (3D), Barnard's Star in See, Predictions and the scoreboard load. The only 404s are the expected `verification.json` files of unverified trials. On `*.github.io`, live search calls the Render service, whose CORS allows only `pythonhack000.github.io` (not changed: team decision 6). Repository private, Pages not enabled (API 404) |
 | Release notes | `docs/RELEASE.md` (new) | Acceptance matrix, known limits, local run command, and the exact steps for the team to make the repository public and deploy Pages (not done here) |
 
@@ -30,7 +30,7 @@ making the repository public and enabling Pages (`docs/RELEASE.md`).
 `python -m scripts.predict check` 13 of 13 intact.
 
 **Not done (by instruction or outside this task):** nothing pushed to `main`, no tag, no deploy, no
-repository setting changed. Session B's request to add `n_exposures`/`n_visits` to `postmortem.json`
+repository setting changed except disabling `bake.yml` (approved by the user after H2). Session B's request to add `n_exposures`/`n_visits` to `postmortem.json`
 was declined in H2. `scripts/postmortem.py` is part of the code hash of the frozen v2 open forecasts,
 so changing it would break their hash chain, and H2 is fix-only.
 
@@ -545,7 +545,7 @@ neutral position (0, 0). Bake and live jobs were not run.
 - Collect the three remaining teammates' statements on Pluto's evaluation visit. When all four
   confirm, regenerate `scoreboard.json` so the Pluto row counts as prospective. Never edit the trial
   files.
-- Before Mon 16 Nov 04:17 UTC: update `main` or disable `bake.yml` there (`docs/RELEASE.md`, step 0).
+- Keep `bake.yml` disabled during judging (done 15 Nov; `docs/RELEASE.md`, step 0).
 - After Sunday 14:00: the team makes the repository public, enables Pages and fast-forwards `main`
   (`docs/RELEASE.md`). Run `python -m scripts.validate_release` before every data commit.
 - When IRSA releases Pluto's spring-2027 visit, check `pluto-position-open-2027a` with the same

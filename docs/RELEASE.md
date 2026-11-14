@@ -29,7 +29,7 @@ Checks were run on 15 Nov 2026, Ulaanbaatar time, on `tenger-dev` after rebasing
 | No example or fixture data published as real | Validator: no `"example": true` under `static/data`, and every JSON under `static/dev-fixtures` carries `"example": true`. Fixtures load only with `?fixtures=1`, under a banner | **Pass** |
 | Responsive and accessible | Session B: 175 captures, no horizontal scroll, no control under 44 px, Lighthouse accessibility 100 on all four pages | **Pass at emulated widths**; not checked on a real phone |
 | Credits, DOIs, team, base project, AI disclosure | `README.md`, the About page, `tests/release.test.mjs` (acknowledgement text and keys) | **Pass** |
-| No automatic rebake during judging | `bake.yml` schedule removed on `tenger-dev` (`workflow_dispatch` kept). **`main` still has the weekly schedule** until it is updated (see step 0 below) | **Pass on `tenger-dev`; open on `main`** |
+| No automatic rebake during judging | `bake.yml` schedule removed on `tenger-dev` (`workflow_dispatch` kept). `main` still has the weekly schedule until it is updated, so the workflow was also **disabled on GitHub** (15 Nov, on the user's go-ahead; `gh api …/actions/workflows` reports `disabled_manually`) | **Pass** |
 | GitHub Pages deploy | `pages.yml` uploads `static/` (139 MB, 1,461 files, none over 50 MB, no symlinks, relative paths only). The same tree served from `/tenger/` loads Home (3D), See, Predictions and the scoreboard. The only 404s are the expected `verification.json` files of unverified trials | **Ready, not deployed** |
 
 ## Known limits
@@ -49,8 +49,10 @@ Checks were run on 15 Nov 2026, Ulaanbaatar time, on `tenger-dev` after rebasing
   free fits are inconsistent (visit systematics). This is why those trials are catalogue-assisted.
 - **Pluto forecasts.** Few visits; the post-mortem shows the frozen uncertainty was too small. The
   v1 April 2027 open forecast keeps that method unchanged on purpose.
-- **Manual bake.** A manual run of `bake.yml` would rebuild `static/data` with the older SPHEREx Blink
-  pipeline, push to `main` and redeploy. Do not run it during judging.
+- **Bake workflow.** `bake.yml` is disabled on GitHub, so neither its schedule nor a manual run can
+  start. If it is re-enabled (`gh workflow enable bake.yml -R Nama2323/tenger`), a run would rebuild
+  `static/data` with the older SPHEREx Blink pipeline, push to `main` and redeploy. Leave it disabled
+  during judging.
 - **Web.** The 3D scene is a log-scale picture, not an ephemeris. `og:image` is relative until the
   public address is set. Receipt links to commits work only once the repository is public.
 - **Bundled data are exposed.** Teammates have seen every bundled frame (CLAUDE.md, decision 8).
@@ -73,14 +75,11 @@ node --test tests/*.mjs
 
 ## Making the repository public and deploying Pages (for the team to run; not done here)
 
-**Step 0, as soon as possible.** `main` still has the weekly bake schedule (`17 4 * * 1`). Its next
-run is **Monday 16 Nov 2026, 04:17 UTC (12:17 Ulaanbaatar)**, during judging. That run would rebake
-with the old pipeline, commit to `main` and trigger Pages. Either update `main` (step 3) before then,
-or disable the workflow now:
-
-```
-gh workflow disable bake.yml -R Nama2323/tenger
-```
+**Step 0: done (15 Nov 2026).** `main` still has the weekly bake schedule (`17 4 * * 1`), whose next
+run would have been Monday 16 Nov 2026, 04:17 UTC (12:17 Ulaanbaatar), during judging. The workflow
+was disabled on GitHub with `gh workflow disable bake.yml -R Nama2323/tenger`. Its state is now
+`disabled_manually`, and it stays disabled after `main` is updated. `Publish site` (`pages.yml`) is
+still active.
 
 1. **Final check** on an up-to-date `tenger-dev` (all four commands above pass). If possible, record
    the three remaining teammates' confirmations first (`docs/EXPOSURE.md`).
