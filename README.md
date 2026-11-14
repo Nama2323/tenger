@@ -100,7 +100,8 @@ How the data were made: `docs/IMPLEMENTATION_STATUS.md` (every step, command and
   pending until all four teammates confirm they never viewed its evaluation visit. One teammate saw
   that visit's archive listing (which may include JPL-predicted positions), never its pixels. The
   forecast did not use it (`docs/EXPOSURE.md`).
-- On a GitHub Pages copy, the prepared targets work, but live search depends on a separate server
+- On the public GitHub Pages site the prepared targets work offline. Live search for other
+  coordinates needs the TENGER server (run it locally), so it is switched off there with a note
   (see `docs/RELEASE.md`).
 
 ## Data credits and DOIs

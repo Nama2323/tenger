@@ -15,7 +15,7 @@ R3 (`46b4dbb`): validator 0 failures, `node --test` 165/165.
 | **See:** the five challenge targets (Barnard's Star, WISE 0855, Epsilon Indi B, RW Aur, R Dra) | `static/data/<key>/investigation.json` ×5 pass `scripts.validate_release`. Session B captured every page state at 360/390/768/1280 px (`docs/screens`). In a Pages simulation (`static/` served alone from `/tenger/`, no backend), Barnard's Star opened with no console errors | **Pass** |
 | **See:** Pluto, Makemake and 3I/ATLAS previews | Investigations and per-visit composites (contract V10) pass the validator. 3I/ATLAS is See-only | **Pass** |
 | Science inputs (DR1/QR3, flag schemas, native IMAGE/VARIANCE/FLAGS/ZODI/WCS-WAVE, spectral grading, gated difference images) | `pytest`: 179 passed, 2 skipped (network tests, which run with `--network`) | **Pass** |
-| Live search for any coordinates | Works with the local FastAPI server. On `*.github.io` the app calls `spherex-blink.onrender.com`, whose CORS allows only `pythonhack000.github.io` (team decision 6: not changed) | **Pass locally; does not work on a Pages copy** |
+| Live search for any coordinates | Works with the local FastAPI server (`backend/api.py`, unchanged). On `*.github.io` the client makes no live request since Session B's `097e2fb`. Coordinate search, names outside the prepared list and a Gaia overlay without a prepared list show "Live search needs the TENGER server, which is not running on this public site; the prepared targets work." Session B served `static/` as the Pages address in headless Chrome: about 630 requests, all to that origin, none to an external server, no console error (`docs/screens/github-io-check.mjs`) | **Pass locally; on Pages switched off with a note, by design** |
 | Frozen trials and hash chains | `python -m scripts.predict check`: 13 of 13 trial folders intact. The validator also compares each `prediction.json` with the copy in its receipt commit and rechecks model code hashes and verification hashes | **Pass** |
 | One honest prospective trial | `pluto-position-2026b`: **miss**, 5.90″, D² 6.77 > 5.991, published. `confirmation_pending: true`: Narmandakh opened no evaluation pixels. He saw only the visit's archive listing, which may include JPL-predicted positions, and the forecast did not use it. The other three teammates have not answered yet (`docs/EXPOSURE.md`) | **Pass** (the miss is published; the prospective label waits for three confirmations) |
 | Retrospective trials | Barnard's Star hit (D² 2.62) and Epsilon Indi B hit (D² 0.21), both retrospective and catalogue-assisted. Four trials insufficient data. The baseline misses all three checked trials | **Pass** |
@@ -34,8 +34,9 @@ R3 (`46b4dbb`): validator 0 failures, `node --test` 165/165.
 
 ## Known limits
 
-- **Live search on Pages.** See the matrix. Fixing it needs either the Render service's CORS to allow
-  `https://nama2323.github.io` or a TENGER backend deployment. Both are outside this task.
+- **Live search on Pages.** The public site has no server, so live search is switched off there and the
+  page says so. The prepared targets, predictions, game, lessons and Planet X pages work offline.
+  Live search on the public site would need a TENGER backend deployment, which is outside this task.
 - **Prospective label.** Pluto is listed as prospective-unexposed but marked pending until the three
   remaining teammates confirm they did not view the evaluation visit. One teammate saw that visit's
   archive listing (metadata only, no pixels). Two hits that are retrospective and
@@ -51,7 +52,7 @@ R3 (`46b4dbb`): validator 0 failures, `node --test` 165/165.
   v1 April 2027 open forecast keeps that method unchanged on purpose.
 - **Bake workflow.** `bake.yml` is disabled on GitHub, so neither its schedule nor a manual run can
   start. If it is re-enabled (`gh workflow enable bake.yml -R Nama2323/tenger`), a run would rebuild
-  `static/data` with the older SPHEREx Blink pipeline, push to `main` and redeploy. Leave it disabled
+  `static/data` with the older bake pipeline inherited from the base code, push to `main` and redeploy. Leave it disabled
   during judging.
 - **Web.** The 3D scene is a log-scale picture, not an ephemeris. `og:image` is relative until the
   public address is set. Receipt links to commits work only once the repository is public.
@@ -117,8 +118,8 @@ still active.
 
 5. **Check** https://nama2323.github.io/tenger/: Home (3D or 2D map), each challenge target, Pluto's
    preview, Predictions (scoreboard and the reveal), Beat the physics, Learn (print a lesson), About,
-   and a receipt link (works only once the repository is public). Live search will not work there
-   (see Known limits).
+   and a receipt link (works only once the repository is public). Coordinate search there shows the
+   "needs the TENGER server" note instead of searching (see Known limits).
 6. **Afterwards (Session B):** set absolute `og:url` and `og:image` for the public address.
 
 Do not run `bake.yml` or push other branches to `main` while the entry is being judged.
