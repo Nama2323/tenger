@@ -101,7 +101,7 @@
   "derived_from": [
     {
       "path": "scoreboard.json",
-      "sha256": "103fd99fba9070a034209269bd3b715c5719d80e8d078037d324c78e925cce7c"
+      "sha256": "0afbda8b727b1b12fb219a3eb9882b8642e73739f74499f51a3a5f2991452c26"
     },
     {
       "path": "trials/pluto-position-2026b/verification.json",

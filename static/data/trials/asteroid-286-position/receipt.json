@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "contract_version": 5,
+  "trial_id": "asteroid-286-position",
+  "prediction_path": "trials/asteroid-286-position/prediction.json",
+  "prediction_sha256": "7459694a0aa2672370554e9d70fb6992240f2d2531011392cb458c4e1da35689",
+  "commit": "61b3cb7c5cbee7ad7c8ad6a5c1ed8245ec1e7209",
+  "committed_utc": "2026-11-14T22:03:38Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": "2026-11-14T22:03:49Z"
+  }
+}

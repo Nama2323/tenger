@@ -9,7 +9,10 @@
   ],
   "team_statement_pending": true,
   "frozen_utc": "2026-11-14T21:54:11Z",
-  "receipt": null,
+  "receipt": {
+    "commit_sha": "61b3cb7c5cbee7ad7c8ad6a5c1ed8245ec1e7209",
+    "frozen_utc": "2026-11-14T22:03:38Z"
+  },
   "rules": "docs/asteroid-batch.md",
   "selection": "docs/exposure/asteroids/selection.json",
   "trial_ids": [
@@ -299,5 +302,5 @@
     "batch.ephemeris-guided-training",
     "batch.team-statement-pending"
   ],
-  "generated_utc": "2026-11-14T22:03:23Z"
+  "generated_utc": "2026-11-14T22:03:50Z"
 }
