@@ -51,6 +51,8 @@ test('every development fixture is marked as an example and has a known schema',
   const kinds = {
     'index.json': 'site_index', 'investigation.json': 'investigation', 'trial.json': 'trial', 'prediction.json': 'prediction',
     'receipt.json': 'receipt', 'verification.json': 'verification', 'scoreboard.json': 'scoreboard', 'training.json': 'training',
+    // V12 (Planet X): artificial content, only under planetx/.
+    'depth.json': 'planetx_depth', 'hidden-planet.json': 'hidden_planet',
   };
   const files = jsonFiles(FIXTURES);
   assert.ok(files.length >= 8);

@@ -1,0 +1,908 @@
+{
+  "schema_version": "tenger.planetx_depth/1",
+  "example": true,
+  "artificial": true,
+  "counts": false,
+  "note": "EXAMPLE ONLY: invented numbers for building the page. Not a measurement.",
+  "method": {
+    "single_exposure": true,
+    "injections_per_point": 100,
+    "mag_step": 0.5,
+    "interval_method": "wilson",
+    "confidence": 0.95,
+    "detection_rule": {
+      "snr_min": 5,
+      "max_offset_px": 1
+    }
+  },
+  "bands": [
+    {
+      "id": "i",
+      "detector": 1,
+      "wavelength_um": [
+        0.75,
+        1.09
+      ],
+      "published_band": "Johnson I (example)",
+      "pooled": {
+        "curve": [
+          {
+            "mag_ab": 16,
+            "injected": 100,
+            "recovered": 97,
+            "fraction": 0.97
+          },
+          {
+            "mag_ab": 16.5,
+            "injected": 100,
+            "recovered": 97,
+            "fraction": 0.97
+          },
+          {
+            "mag_ab": 17,
+            "injected": 100,
+            "recovered": 97,
+            "fraction": 0.97
+          },
+          {
+            "mag_ab": 17.5,
+            "injected": 100,
+            "recovered": 100,
+            "fraction": 1
+          },
+          {
+            "mag_ab": 18,
+            "injected": 100,
+            "recovered": 100,
+            "fraction": 1
+          },
+          {
+            "mag_ab": 18.5,
+            "injected": 100,
+            "recovered": 97,
+            "fraction": 0.97
+          },
+          {
+            "mag_ab": 19,
+            "injected": 100,
+            "recovered": 87,
+            "fraction": 0.87
+          },
+          {
+            "mag_ab": 19.5,
+            "injected": 100,
+            "recovered": 59,
+            "fraction": 0.59
+          },
+          {
+            "mag_ab": 20,
+            "injected": 100,
+            "recovered": 20,
+            "fraction": 0.2
+          },
+          {
+            "mag_ab": 20.5,
+            "injected": 100,
+            "recovered": 8,
+            "fraction": 0.08
+          },
+          {
+            "mag_ab": 21,
+            "injected": 100,
+            "recovered": 0,
+            "fraction": 0
+          },
+          {
+            "mag_ab": 21.5,
+            "injected": 100,
+            "recovered": 0,
+            "fraction": 0
+          },
+          {
+            "mag_ab": 22,
+            "injected": 100,
+            "recovered": 1,
+            "fraction": 0.01
+          }
+        ],
+        "depth_50_ab": null,
+        "depth_90_ab": null
+      },
+      "fields": [
+        {
+          "field_key": "example-field-a",
+          "n_exposures": 40,
+          "zodi_mjy_sr": 0.3,
+          "curve": [
+            {
+              "mag_ab": 16,
+              "injected": 100,
+              "recovered": 99,
+              "fraction": 0.99
+            },
+            {
+              "mag_ab": 16.5,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 17,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 17.5,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 18,
+              "injected": 100,
+              "recovered": 97,
+              "fraction": 0.97
+            },
+            {
+              "mag_ab": 18.5,
+              "injected": 100,
+              "recovered": 97,
+              "fraction": 0.97
+            },
+            {
+              "mag_ab": 19,
+              "injected": 100,
+              "recovered": 91,
+              "fraction": 0.91
+            },
+            {
+              "mag_ab": 19.5,
+              "injected": 100,
+              "recovered": 73,
+              "fraction": 0.73
+            },
+            {
+              "mag_ab": 20,
+              "injected": 100,
+              "recovered": 37,
+              "fraction": 0.37
+            },
+            {
+              "mag_ab": 20.5,
+              "injected": 100,
+              "recovered": 9,
+              "fraction": 0.09
+            },
+            {
+              "mag_ab": 21,
+              "injected": 100,
+              "recovered": 2,
+              "fraction": 0.02
+            },
+            {
+              "mag_ab": 21.5,
+              "injected": 100,
+              "recovered": 3,
+              "fraction": 0.03
+            },
+            {
+              "mag_ab": 22,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            }
+          ],
+          "false_detection": {
+            "blanks": 200,
+            "false": 1,
+            "rate": 0.005
+          }
+        },
+        {
+          "field_key": "example-field-b",
+          "n_exposures": 40,
+          "zodi_mjy_sr": 0.6,
+          "curve": [
+            {
+              "mag_ab": 16,
+              "injected": 100,
+              "recovered": 98,
+              "fraction": 0.98
+            },
+            {
+              "mag_ab": 16.5,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 17,
+              "injected": 100,
+              "recovered": 98,
+              "fraction": 0.98
+            },
+            {
+              "mag_ab": 17.5,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 18,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 18.5,
+              "injected": 100,
+              "recovered": 93,
+              "fraction": 0.93
+            },
+            {
+              "mag_ab": 19,
+              "injected": 100,
+              "recovered": 75,
+              "fraction": 0.75
+            },
+            {
+              "mag_ab": 19.5,
+              "injected": 100,
+              "recovered": 45,
+              "fraction": 0.45
+            },
+            {
+              "mag_ab": 20,
+              "injected": 100,
+              "recovered": 11,
+              "fraction": 0.11
+            },
+            {
+              "mag_ab": 20.5,
+              "injected": 100,
+              "recovered": 1,
+              "fraction": 0.01
+            },
+            {
+              "mag_ab": 21,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            },
+            {
+              "mag_ab": 21.5,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            },
+            {
+              "mag_ab": 22,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            }
+          ],
+          "false_detection": {
+            "blanks": 200,
+            "false": 2,
+            "rate": 0.01
+          }
+        }
+      ]
+    },
+    {
+      "id": "w1",
+      "detector": 3,
+      "wavelength_um": [
+        1.63,
+        2.41
+      ],
+      "published_band": "WISE W1 (example)",
+      "pooled": {
+        "curve": [
+          {
+            "mag_ab": 16,
+            "injected": 100,
+            "recovered": 99,
+            "fraction": 0.99
+          },
+          {
+            "mag_ab": 16.5,
+            "injected": 100,
+            "recovered": 99,
+            "fraction": 0.99
+          },
+          {
+            "mag_ab": 17,
+            "injected": 100,
+            "recovered": 100,
+            "fraction": 1
+          },
+          {
+            "mag_ab": 17.5,
+            "injected": 100,
+            "recovered": 99,
+            "fraction": 0.99
+          },
+          {
+            "mag_ab": 18,
+            "injected": 100,
+            "recovered": 98,
+            "fraction": 0.98
+          },
+          {
+            "mag_ab": 18.5,
+            "injected": 100,
+            "recovered": 92,
+            "fraction": 0.92
+          },
+          {
+            "mag_ab": 19,
+            "injected": 100,
+            "recovered": 65,
+            "fraction": 0.65
+          },
+          {
+            "mag_ab": 19.5,
+            "injected": 100,
+            "recovered": 26,
+            "fraction": 0.26
+          },
+          {
+            "mag_ab": 20,
+            "injected": 100,
+            "recovered": 7,
+            "fraction": 0.07
+          },
+          {
+            "mag_ab": 20.5,
+            "injected": 100,
+            "recovered": 3,
+            "fraction": 0.03
+          },
+          {
+            "mag_ab": 21,
+            "injected": 100,
+            "recovered": 3,
+            "fraction": 0.03
+          },
+          {
+            "mag_ab": 21.5,
+            "injected": 100,
+            "recovered": 2,
+            "fraction": 0.02
+          },
+          {
+            "mag_ab": 22,
+            "injected": 100,
+            "recovered": 0,
+            "fraction": 0
+          }
+        ],
+        "depth_50_ab": null,
+        "depth_90_ab": null
+      },
+      "fields": [
+        {
+          "field_key": "example-field-a",
+          "n_exposures": 40,
+          "zodi_mjy_sr": 0.3,
+          "curve": [
+            {
+              "mag_ab": 16,
+              "injected": 100,
+              "recovered": 98,
+              "fraction": 0.98
+            },
+            {
+              "mag_ab": 16.5,
+              "injected": 100,
+              "recovered": 97,
+              "fraction": 0.97
+            },
+            {
+              "mag_ab": 17,
+              "injected": 100,
+              "recovered": 98,
+              "fraction": 0.98
+            },
+            {
+              "mag_ab": 17.5,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 18,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 18.5,
+              "injected": 100,
+              "recovered": 94,
+              "fraction": 0.94
+            },
+            {
+              "mag_ab": 19,
+              "injected": 100,
+              "recovered": 82,
+              "fraction": 0.82
+            },
+            {
+              "mag_ab": 19.5,
+              "injected": 100,
+              "recovered": 42,
+              "fraction": 0.42
+            },
+            {
+              "mag_ab": 20,
+              "injected": 100,
+              "recovered": 15,
+              "fraction": 0.15
+            },
+            {
+              "mag_ab": 20.5,
+              "injected": 100,
+              "recovered": 4,
+              "fraction": 0.04
+            },
+            {
+              "mag_ab": 21,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            },
+            {
+              "mag_ab": 21.5,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            },
+            {
+              "mag_ab": 22,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            }
+          ],
+          "false_detection": {
+            "blanks": 200,
+            "false": 1,
+            "rate": 0.005
+          }
+        },
+        {
+          "field_key": "example-field-b",
+          "n_exposures": 40,
+          "zodi_mjy_sr": 0.6,
+          "curve": [
+            {
+              "mag_ab": 16,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 16.5,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 17,
+              "injected": 100,
+              "recovered": 99,
+              "fraction": 0.99
+            },
+            {
+              "mag_ab": 17.5,
+              "injected": 100,
+              "recovered": 98,
+              "fraction": 0.98
+            },
+            {
+              "mag_ab": 18,
+              "injected": 100,
+              "recovered": 95,
+              "fraction": 0.95
+            },
+            {
+              "mag_ab": 18.5,
+              "injected": 100,
+              "recovered": 86,
+              "fraction": 0.86
+            },
+            {
+              "mag_ab": 19,
+              "injected": 100,
+              "recovered": 49,
+              "fraction": 0.49
+            },
+            {
+              "mag_ab": 19.5,
+              "injected": 100,
+              "recovered": 14,
+              "fraction": 0.14
+            },
+            {
+              "mag_ab": 20,
+              "injected": 100,
+              "recovered": 2,
+              "fraction": 0.02
+            },
+            {
+              "mag_ab": 20.5,
+              "injected": 100,
+              "recovered": 1,
+              "fraction": 0.01
+            },
+            {
+              "mag_ab": 21,
+              "injected": 100,
+              "recovered": 2,
+              "fraction": 0.02
+            },
+            {
+              "mag_ab": 21.5,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            },
+            {
+              "mag_ab": 22,
+              "injected": 100,
+              "recovered": 3,
+              "fraction": 0.03
+            }
+          ],
+          "false_detection": {
+            "blanks": 200,
+            "false": 2,
+            "rate": 0.01
+          }
+        }
+      ]
+    },
+    {
+      "id": "w2",
+      "detector": 6,
+      "wavelength_um": [
+        4.42,
+        5
+      ],
+      "published_band": "WISE W2 (example)",
+      "pooled": {
+        "curve": [
+          {
+            "mag_ab": 16,
+            "injected": 100,
+            "recovered": 100,
+            "fraction": 1
+          },
+          {
+            "mag_ab": 16.5,
+            "injected": 100,
+            "recovered": 99,
+            "fraction": 0.99
+          },
+          {
+            "mag_ab": 17,
+            "injected": 100,
+            "recovered": 100,
+            "fraction": 1
+          },
+          {
+            "mag_ab": 17.5,
+            "injected": 100,
+            "recovered": 91,
+            "fraction": 0.91
+          },
+          {
+            "mag_ab": 18,
+            "injected": 100,
+            "recovered": 69,
+            "fraction": 0.69
+          },
+          {
+            "mag_ab": 18.5,
+            "injected": 100,
+            "recovered": 37,
+            "fraction": 0.37
+          },
+          {
+            "mag_ab": 19,
+            "injected": 100,
+            "recovered": 13,
+            "fraction": 0.13
+          },
+          {
+            "mag_ab": 19.5,
+            "injected": 100,
+            "recovered": 3,
+            "fraction": 0.03
+          },
+          {
+            "mag_ab": 20,
+            "injected": 100,
+            "recovered": 3,
+            "fraction": 0.03
+          },
+          {
+            "mag_ab": 20.5,
+            "injected": 100,
+            "recovered": 0,
+            "fraction": 0
+          },
+          {
+            "mag_ab": 21,
+            "injected": 100,
+            "recovered": 0,
+            "fraction": 0
+          },
+          {
+            "mag_ab": 21.5,
+            "injected": 100,
+            "recovered": 0,
+            "fraction": 0
+          },
+          {
+            "mag_ab": 22,
+            "injected": 100,
+            "recovered": 0,
+            "fraction": 0
+          }
+        ],
+        "depth_50_ab": null,
+        "depth_90_ab": null
+      },
+      "fields": [
+        {
+          "field_key": "example-field-a",
+          "n_exposures": 40,
+          "zodi_mjy_sr": 0.3,
+          "curve": [
+            {
+              "mag_ab": 16,
+              "injected": 100,
+              "recovered": 98,
+              "fraction": 0.98
+            },
+            {
+              "mag_ab": 16.5,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 17,
+              "injected": 100,
+              "recovered": 97,
+              "fraction": 0.97
+            },
+            {
+              "mag_ab": 17.5,
+              "injected": 100,
+              "recovered": 96,
+              "fraction": 0.96
+            },
+            {
+              "mag_ab": 18,
+              "injected": 100,
+              "recovered": 81,
+              "fraction": 0.81
+            },
+            {
+              "mag_ab": 18.5,
+              "injected": 100,
+              "recovered": 48,
+              "fraction": 0.48
+            },
+            {
+              "mag_ab": 19,
+              "injected": 100,
+              "recovered": 20,
+              "fraction": 0.2
+            },
+            {
+              "mag_ab": 19.5,
+              "injected": 100,
+              "recovered": 6,
+              "fraction": 0.06
+            },
+            {
+              "mag_ab": 20,
+              "injected": 100,
+              "recovered": 1,
+              "fraction": 0.01
+            },
+            {
+              "mag_ab": 20.5,
+              "injected": 100,
+              "recovered": 1,
+              "fraction": 0.01
+            },
+            {
+              "mag_ab": 21,
+              "injected": 100,
+              "recovered": 1,
+              "fraction": 0.01
+            },
+            {
+              "mag_ab": 21.5,
+              "injected": 100,
+              "recovered": 1,
+              "fraction": 0.01
+            },
+            {
+              "mag_ab": 22,
+              "injected": 100,
+              "recovered": 1,
+              "fraction": 0.01
+            }
+          ],
+          "false_detection": {
+            "blanks": 200,
+            "false": 1,
+            "rate": 0.005
+          }
+        },
+        {
+          "field_key": "example-field-b",
+          "n_exposures": 40,
+          "zodi_mjy_sr": 0.6,
+          "curve": [
+            {
+              "mag_ab": 16,
+              "injected": 100,
+              "recovered": 100,
+              "fraction": 1
+            },
+            {
+              "mag_ab": 16.5,
+              "injected": 100,
+              "recovered": 99,
+              "fraction": 0.99
+            },
+            {
+              "mag_ab": 17,
+              "injected": 100,
+              "recovered": 99,
+              "fraction": 0.99
+            },
+            {
+              "mag_ab": 17.5,
+              "injected": 100,
+              "recovered": 85,
+              "fraction": 0.85
+            },
+            {
+              "mag_ab": 18,
+              "injected": 100,
+              "recovered": 58,
+              "fraction": 0.58
+            },
+            {
+              "mag_ab": 18.5,
+              "injected": 100,
+              "recovered": 25,
+              "fraction": 0.25
+            },
+            {
+              "mag_ab": 19,
+              "injected": 100,
+              "recovered": 6,
+              "fraction": 0.06
+            },
+            {
+              "mag_ab": 19.5,
+              "injected": 100,
+              "recovered": 3,
+              "fraction": 0.03
+            },
+            {
+              "mag_ab": 20,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            },
+            {
+              "mag_ab": 20.5,
+              "injected": 100,
+              "recovered": 0,
+              "fraction": 0
+            },
+            {
+              "mag_ab": 21,
+              "injected": 100,
+              "recovered": 3,
+              "fraction": 0.03
+            },
+            {
+              "mag_ab": 21.5,
+              "injected": 100,
+              "recovered": 2,
+              "fraction": 0.02
+            },
+            {
+              "mag_ab": 22,
+              "injected": 100,
+              "recovered": 2,
+              "fraction": 0.02
+            }
+          ],
+          "false_detection": {
+            "blanks": 200,
+            "false": 2,
+            "rate": 0.01
+          }
+        }
+      ]
+    }
+  ],
+  "models": [
+    {
+      "id": "example-a",
+      "reference": "Example model A (invented)",
+      "band_id": "w2",
+      "mag_published": {
+        "value": 20.9,
+        "system": "AB"
+      },
+      "vega_to_ab": null,
+      "mag_ab": 20.9,
+      "note_key": "planetx.example.model"
+    },
+    {
+      "id": "example-b",
+      "reference": "Example model B (invented)",
+      "band_id": "i",
+      "mag_published": {
+        "value": 21.6,
+        "system": "Vega"
+      },
+      "vega_to_ab": {
+        "offset": 0.45,
+        "reference": "example"
+      },
+      "mag_ab": 22.05,
+      "note_key": "planetx.example.model"
+    },
+    {
+      "id": "example-c",
+      "reference": "Example model C (invented, qualitative)",
+      "band_id": "w1",
+      "mag_ab": null,
+      "note_key": "planetx.example.qualitative"
+    }
+  ],
+  "wise_limit": {
+    "band_id": "w1",
+    "mag_vega": 16,
+    "mag_ab": 18.7,
+    "completeness": 0.9,
+    "reference": "Example survey limit (invented)",
+    "note_key": "planetx.example.wise"
+  },
+  "verdicts": [
+    {
+      "band_id": "w2",
+      "model_id": "example-a",
+      "gap_mag": {
+        "value": 2.6,
+        "sigma": 0.2
+      },
+      "verdict_key": "planetx.example.verdict"
+    }
+  ],
+  "verdict_key": "planetx.example.verdict",
+  "mission_sensitivity": {
+    "statement_key": "planetx.example.mission"
+  },
+  "assumption_keys": [
+    "planetx.example.assume1",
+    "planetx.example.assume2"
+  ]
+}

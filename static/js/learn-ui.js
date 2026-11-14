@@ -6,6 +6,7 @@ import { has, t, tData } from './i18n.js';
 import { categoryLabel } from './labels.js';
 import { LESSONS, planetModel, readLessonRecord, scoreboardSummary, syntheticLesson } from './lessons.js';
 import { correlatedInflation } from './postmortem.js';
+import { measuredPanel } from './planetx-ui.js';
 
 const LAB = 'lab';
 const LAB_DEFAULTS = { distanceAu: 500, diameterKm: 20000, albedo: 0.4 };
@@ -185,6 +186,10 @@ function renderLesson(lesson) {
       el('p', { class: 'worked-answer', text: t('learn.answerIs', { value: workedParams.answer }) }),
     ]) : el('section', { class: 'lesson-part' }, [el('h3', { text: t('learn.worked') }), el('p', { class: 'panel-note', text: t('learn.workedMissing') })]),
     lesson.id === 'sure' ? plutoSection() : null,
+    lesson.id === 'brightness' ? el('p', { class: 'planetx-line' }, [
+      el('span', { text: `${t('planetx.lessonLine')} ` }),
+      el('a', { href: '?page=learn&lesson=lab#measured', text: t('planetx.link') }),
+    ]) : null,
     lesson.id === 'distance' ? el('section', { class: 'lesson-part loop-part' }, [
       el('h3', { text: t('lesson.distance.loopTitle') }),
       el('p', { text: t('lesson.distance.loopText') }),
@@ -284,8 +289,11 @@ function renderLab() {
       ]),
     ]),
     el('section', { class: 'lesson-part' }, [el('h3', { text: t('lab.detectTitle') }), el('p', { text: t('lab.detectText') })]),
+    measuredPanel(context.planetx),
   );
   renderLabResults();
+  // Links from Home, Predictions and Lesson 2 land on the measured panel.
+  if (location.hash === '#measured') requestAnimationFrame(() => $('measured')?.scrollIntoView({ block: 'start' }));
 }
 
 // ---------- Learn index and navigation ----------
@@ -324,13 +332,24 @@ export function showLearn(id, { notify = true, focus = true } = {}) {
 export const currentLearnView = () => view;
 
 /** records: contract load results of lessons/*.json; scoreboard: the scoreboard doc or null. */
+/** The Planet X files arrived (main.js loads them when Learn or Beat the physics opens): fill the Lab's panel. */
+export function setPlanetX(data) {
+  if (!context) return;
+  context.planetx = data;
+  const panel = $('measured');
+  if (panel) {
+    panel.replaceWith(measuredPanel(data));
+    if (location.hash === '#measured') $('measured')?.scrollIntoView({ block: 'start' });
+  }
+}
+
 export function initLearn({ records, scoreboard, postmortem = null, nameOf, onNavigate }) {
   const usable = new Map();
   for (const result of records) {
     const read = result.state === 'ok' ? readLessonRecord(result.doc) : null;
     if (read && !usable.has(read.id)) usable.set(read.id, read);
   }
-  context = { records: usable, scoreboard, postmortem, nameOf, onNavigate };
+  context = { records: usable, scoreboard, postmortem, planetx: undefined, nameOf, onNavigate };
   renderIndex();
   $('lab-open').onclick = () => showLearn(LAB);
 }

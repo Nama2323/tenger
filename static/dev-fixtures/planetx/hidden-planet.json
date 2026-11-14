@@ -1,0 +1,65 @@
+{
+  "schema_version": "tenger.hidden_planet/1",
+  "example": true,
+  "artificial": true,
+  "counts": false,
+  "note": "EXAMPLE ONLY: synthetic frames and an invented artificial source for building the page.",
+  "pairs": [
+    {
+      "id": "example-pair",
+      "field_key": "example-field-a",
+      "band_id": "w2",
+      "frames": [
+        {
+          "path": "planetx/hidden/example-pair-0.png",
+          "t_mjd": 61000,
+          "pixel_arcsec": 3,
+          "width": 96,
+          "height": 96,
+          "north_up": true
+        },
+        {
+          "path": "planetx/hidden/example-pair-1.png",
+          "t_mjd": 61001,
+          "pixel_arcsec": 3,
+          "width": 96,
+          "height": 96,
+          "north_up": true
+        }
+      ],
+      "injected": [
+        {
+          "frame": 0,
+          "x": 38.4,
+          "y": 55.2
+        },
+        {
+          "frame": 1,
+          "x": 44.1,
+          "y": 52.6
+        }
+      ],
+      "injected_mag_ab": 18,
+      "motion_arcsec": 18.8,
+      "pipeline": {
+        "found": true,
+        "positions": [
+          {
+            "frame": 0,
+            "x": 38.6,
+            "y": 55,
+            "snr": 9.1
+          },
+          {
+            "frame": 1,
+            "x": 44,
+            "y": 52.9,
+            "snr": 8.4
+          }
+        ],
+        "rule_key": "planetx.example.rule"
+      },
+      "tolerance_px": 3
+    }
+  ]
+}

@@ -15,7 +15,7 @@ import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
 import { findByName, searchMatches } from './names.js';
 import { renderChanged, renderEvidence, renderPrediction, renderSpectrumNote } from './panels.js';
 import { currentRoundId, renderGamePage, selectRound } from './game-ui.js';
-import { currentLearnView, initLearn, showLearn } from './learn-ui.js';
+import { currentLearnView, initLearn, setPlanetX, showLearn } from './learn-ui.js';
 import { initHelp } from './help.js';
 import { hasPublishedTrials } from './ledger.js';
 import { currentReveal, initLedger, showLedger, syncRevealFromUrl } from './ledger-ui.js';
@@ -30,6 +30,7 @@ import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometr
 import { createSky } from './sky.js';
 import { flyThen, homeShown, initSpace } from './space-ui.js';
 import { showLoopPage } from './loop-ui.js';
+import { loadPlanetX, renderHiddenRound } from './planetx-ui.js';
 import { isTourRunning, nextTourStep, runTour, shouldAutoStart, stopTour } from './tour.js';
 import {
   channelWavelength, CHANNELS, colourGroupsPresent, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
@@ -1536,6 +1537,7 @@ function showPage(page, { push = true, focus = true } = {}) {
     homeShown();
   }
   if (page === 'predictions') showLedger();
+  if (page === 'game' || page === 'learn') ensurePlanetX();
   if (page === 'loop' && app.source) {
     const pluto = app.indexState?.state === 'ok' ? app.indexState.doc.targets?.find((target) => target.key === 'pluto') : null;
     showLoopPage({ source: app.source.fixtures ? createSource({ fixtures: false }) : app.source, openForecastIds: pluto?.prediction?.open_forecast_ids ?? [], embed: app.embed });
@@ -2217,6 +2219,7 @@ async function loadData() {
   });
   // The exploratory Pluto post-mortem (V8) for Lesson 3; always the real file, never a fixture.
   const postmortem = fixtures ? null : await fetch(real.url(POSTMORTEM_PATH) ?? '').then((response) => (response.ok ? response.json() : null)).catch(() => null);
+  app.realSource = real;
   initLearn({
     records: lessons,
     scoreboard: app.scoreboard,
@@ -2263,6 +2266,23 @@ function thumbsOf(entry) {
     };
   }
   return app.thumbs.get(entry.key) ?? null;
+}
+
+/**
+ * Planet X files (V12): the measured depth file and the hidden-planet pairs, real ones else the labelled
+ * examples. Loaded only when Beat the physics or Learn opens, so other pages never fetch them.
+ */
+let planetxLoad = null;
+function ensurePlanetX() {
+  if (!app.realSource) return null;
+  if (!planetxLoad) {
+    planetxLoad = loadPlanetX(app.realSource, createSource({ fixtures: true })).then((data) => {
+      renderHiddenRound($('hidden-round'), data);
+      setPlanetX(data);
+      return data;
+    });
+  }
+  return planetxLoad;
 }
 
 /** From Home: in the 3D view the camera flies to the target first, then its investigation opens. */

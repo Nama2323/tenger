@@ -974,3 +974,35 @@ Screenshots: `docs/screens/loop*.png` (2D at four widths; 3D default, from SPHER
 - Receipt links checked on the public repository: all 11 receipts open `github.com/Nama2323/tenger/commit/<full sha>` with
   HTTP 200, and each SHA is the matching "predict: freeze …" commit (the two v2 Pluto open forecasts share `fd758e5`).
 - `node --test tests/`: 165 passed.
+
+### Task B5, 15 Nov 2026 ("Could SPHEREx see Planet X? We measured it" and "Find the hidden planet")
+
+Shapes agreed with Session A before either file existed (to become DATA-CONTRACT V12): artificial content lives
+only under `static/data/planetx/`; kinds `tenger.planetx_depth/1` and `tenger.hidden_planet/1`, both with top-level
+`artificial: true` and `counts: false`. Until Session A publishes them, the page reads labelled examples from
+`static/dev-fixtures/planetx/` (made by `dev-fixtures/tools/make-planetx.mjs`: invented curves, synthetic frames,
+every file `"example": true`) and switches to the real files automatically, file by file.
+
+| Part | Files | Result |
+|---|---|---|
+| Measured panel (Planet X Lab) | `js/planetx.js` (pure), `js/planetx-ui.js`, `js/learn-ui.js` | Under "Could SPHEREx see it?": per band (published band, SPHEREx array, μm range) the pooled recovery-fraction curve with its 95% interval band (from the file, else Wilson from the counts), dashed 50% and 90% levels and the depth lines with values (the file's depths and intervals; missing ones interpolated from the curve), published Planet Nine predictions drawn only where the file gives a same-band AB value (others listed, not drawn), the WISE limit, the overall verdict text (`verdict_key`) and per-band gaps, the mission-sensitivity statement. Beside it, the assumptions in plain words (injections per point, single exposures, the detection rule from `method`, the interval, what depth means, the same-band rule, plus the file's `assumption_keys`); under it a data table per band (magnitude, added, found, fraction, interval) and per field (exposures, depths, false detections in blanks). `stacked_projection` is never read. Chip "Measured by TENGER" for the real file, "Example data, not an observation" plus a note for the example. |
+| Find the hidden planet | `js/planetx-ui.js`, `index.html` (`#hidden-round` on Beat the physics) | Optional round under the regular ones: the two frames of a pair blink (or Frame A / Frame B; no autoplay under reduced motion), the label "Artificial planet added for this game" on the picture and in the chips before and after the reveal. Tap (or arrow keys, Shift ×5, Enter) to guess; "Check my guess" reveals where the planet was put in both frames, the pipeline's positions, the distance in pixels and arcseconds, inside or outside the tolerance circle, whether the pipeline found it (with its lowest S/N) and "not a detection, never counted outside this game". The reader refuses a file without `artificial: true` and `counts: false`, frames outside `planetx/`, frames marked anything but artificial, or a pair without injected positions in both frames. The example round's text says its frames are synthetic (not "real SPHEREx pictures"). |
+| Links | `index.html`, `js/learn-ui.js` | "Could SPHEREx see Planet X? We measured it" on Home (search card) and Predictions (page head), and one line in Lesson 2, all to `?page=learn&lesson=lab#measured` (scrolls to the panel). |
+| Public address (part 0, `023d604`) | `index.html` | Absolute `og:url`/`og:image`; receipt links checked (see the B5 part 0 note above). |
+
+**Checks**
+
+| Check | Result |
+|---|---|
+| `node --test tests/` | **172 passed, 0 failed**. New `tests/planetx.test.mjs`: Wilson intervals against known values; 50%/90% depth interpolation; magnitude ranges; the V12 depth reader (pooled curves, depth intervals, interpolated missing depths, same-band models only, WISE limit, projections never read, refusals); the example files labelled; hidden-planet refusals (no `artificial`, `counts` not false, frames outside `planetx/`, a frame marked otherwise, one frame, one injected position); tap distances in pixels and arcseconds; every label in English. The fixture test knows the two new kinds |
+| `node docs/screens/capture.mjs http://localhost:8766 docs/screens` | **229 captures** incl. `learn-lab-measured`, `learn-lesson-brightness-planetx`, `game-hidden`, `game-hidden-revealed` at 360/390/768/1280: measured viewport = requested, no horizontal scroll, no control under 44 px, every page ready, no console errors other than 404s for files not published yet |
+| In-app browser | Lab panel with the example data (chart, interval band, depth lines, markers, assumptions, table); hidden-planet round: blink, tap, reveal with both injected positions, the pipeline's positions, distance and verdict; labels before and after; no console errors besides the expected 404s for the unpublished real files. |
+
+**Waiting on Session A**: `static/data/planetx/depth.json`, `hidden-planet.json` and frames (target before 10:00 UB),
+plus the strings for their `verdict_key`, `note_key`, `assumption_keys`, `statement_key` and `rule_key`. Nothing in
+the page has to change when they land; I will check the real files in the browser then.
+
+**Loading**: the Planet X files are fetched only when Learn or Beat the physics opens (Home and Predictions load just the two small modules), so the 404s for the unpublished real files never appear on other pages. Lighthouse mobile after B5: Home 85, Predictions 90 (best practices 100 on Home).
+
+**Limits**: the gap line in the panel does not say which depth the gap is measured from (the file's verdict text
+should); per-field curves are shown as tables, not charts; not checked on a real phone.
