@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   asinhScale, binSpectrum, channelWavelength, decodeFrames, detectorOfChannel, pixelToSky,
-  positionAt, resolveBand, selectBand, sharpenForDisplay, wellCovered, skyToPixel, stackFrames, stretchLimits, subtract, visitsOf,
+  positionAt, selectBand, sharpenForDisplay, wellCovered, skyToPixel, stackFrames, stretchLimits, subtract, visitsOf,
 } from '../static/js/stack.js';
 
 const near = (actual, expected, tolerance = 1e-6) =>
@@ -104,12 +104,13 @@ test('frame payload decodes meta, pixels and masks', () => {
   assert.deepEqual([...decoded.mask], [0, 1, 0, 1]);
 });
 
-test('a band with no exposure falls back to the closest band that has one', () => {
-  const frames = [{ channel: 10 }, { channel: 40 }];
-  assert.equal(resolveBand(frames, { kind: 'channel', channel: 13 }).channel, 10);
-  assert.equal(resolveBand(frames, { kind: 'channel', channel: 40 }).channel, 40);
-  assert.deepEqual(resolveBand(frames, { kind: 'composite' }), { kind: 'composite' });
-  assert.deepEqual(resolveBand([], { kind: 'channel', channel: 13 }), { kind: 'channel', channel: 13 });
+// Contract v2.4: a band with no exposure on a date shows that, never the nearest channel that has data.
+test('a channel with no exposure selects nothing instead of a neighbouring channel', () => {
+  const frames = [{ channel: 10, detector: 1 }, { channel: 40, detector: 3 }];
+  assert.deepEqual(selectBand(frames, { kind: 'channel', channel: 13 }), []);
+  assert.deepEqual(selectBand(frames, { kind: 'channel', channel: 40 }), [frames[1]]);
+  assert.deepEqual(selectBand(frames, { kind: 'detector', detector: 1 }), [frames[0]]);
+  assert.equal(selectBand(frames, { kind: 'composite' }).length, 2);
 });
 
 test('display sharpening steepens a peak without touching the input or inventing NaN', () => {

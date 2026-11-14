@@ -24,22 +24,26 @@ test('a dated visit is processed; the AllWISE frame is context; B − A is a dif
   assert.equal(describePicture({ step: visitB, difference: true }).status, 'difference');
 });
 
-test('a single channel reports the channel actually shown, including a substitution', () => {
+// Contract v2.4: never substitute the nearest channel; a date without the channel says so.
+test('a single channel is never replaced by a neighbouring one', () => {
   const exact = describePicture({ step: visitA, band: { kind: 'channel', channel: 40 } });
-  assert.deepEqual(exact.wavelength.channels, [40]);
-  assert.equal(exact.wavelength.substituted, false);
-  const nearest = describePicture({ step: visitA, band: { kind: 'channel', channel: 4 } });
-  assert.equal(nearest.wavelength.substituted, true);
+  assert.equal(exact.wavelength.channel, 40);
+  assert.equal(exact.wavelength.present, true);
+  assert.equal(exact.frameCount, 1);
+  const missing = describePicture({ step: visitA, band: { kind: 'channel', channel: 4 } });
+  assert.equal(missing.wavelength.channel, 4);
+  assert.equal(missing.wavelength.present, false);
+  assert.equal(missing.frameCount, 0);
 });
 
-test('A/B warnings: cross-mission, different channels, broad bands', () => {
+test('A/B warnings: cross-mission, missing exposure, approximate channels, broad bands', () => {
   const context = describePicture({ step: { key: CONTEXT_STEP, year: 2010.5, frames: [{}] } });
   assert.equal(comparisonWarning(context, describePicture({ step: visitB })), 'caption.warnCrossMission');
-  const a = describePicture({ step: visitA, band: { kind: 'channel', channel: 4 } });
-  const b = describePicture({ step: visitB, band: { kind: 'channel', channel: 4 } });
-  assert.equal(comparisonWarning(a, b), 'caption.warnChannels');
+  const a = describePicture({ step: visitA, band: { kind: 'channel', channel: 5 } });
+  const b = describePicture({ step: visitB, band: { kind: 'channel', channel: 5 } });
+  assert.equal(comparisonWarning(a, b), 'caption.warnNoExposure');
   const same = describePicture({ step: visitA, band: { kind: 'channel', channel: 40 } });
   const sameB = describePicture({ step: visitB, band: { kind: 'channel', channel: 40 } });
-  assert.equal(comparisonWarning(same, sameB), null);
+  assert.equal(comparisonWarning(same, sameB), 'caption.warnChannelLabel');
   assert.equal(comparisonWarning(describePicture({ step: visitA }), describePicture({ step: visitB })), 'caption.warnBroadBand');
 });

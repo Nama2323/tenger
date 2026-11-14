@@ -21,7 +21,7 @@ import { bandToParam, buildRoute, PAGES, parseRoute, resolveRoute } from './rout
 import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometry } from './science.js';
 import { createSky } from './sky.js';
 import {
-  channelWavelength, CHANNELS, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt, resolveBand,
+  channelWavelength, CHANNELS, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
   selectBand, skyToPixel, visitsOf, wellCovered,
 } from './stack.js';
 import { buildTargets, findCoveringTarget, isViewable, legacyPlaces } from './targets.js';
@@ -325,7 +325,8 @@ function copyCanvas(from, to) {
 function paintFresh(step, size, wanted) {
   if (step?.key === WISE_STEP) return paintWise(step, size);
   const frames = step ? step.frames : state.frames;
-  const band = resolveBand(frames, wanted);
+  // A date without an exposure in this band shows "no frames", never a neighbouring channel (contract v2.4).
+  const band = wanted;
   if (!selectBand(frames, band).length) return false;
   const key = step ? `v${step.key}` : ALL_DATES;
   const stacks = stacksFor(frames, band, size, state.excludeFlags, cache, key);
@@ -373,7 +374,7 @@ function describeStep(step) {
     return;
   }
   const pool = step ? step.frames : state.frames;
-  const frames = selectBand(pool, resolveBand(pool, state.band));
+  const frames = selectBand(pool, state.band);
   const flagged = frames.length ? frames.reduce((sum, item) => sum + item.flaggedPct, 0) / frames.length : 0;
   const parts = [
     finishedMessage(state.job), t('frames', { count: frames.length }), t('flagged', { pct: flagged.toFixed(1) }),
@@ -411,10 +412,8 @@ function wavelengthText(picture) {
   if (w.kind === 'allwise') return t('caption.allwise', { um: String(w.centre) });
   if (w.kind === 'composite') return t('caption.composite', { low: String(w.low), high: String(w.high) });
   if (w.kind === 'detector') return t('caption.detector', { detector: String(w.detector), low: String(w.low), high: String(w.high) });
-  if (!w.channels.length) return '—';
-  return w.channels.map((channel, index) => t('caption.channel', {
-    um: w.wavelengths[index].toFixed(2), channel: String(channel),
-  })).join('; ');
+  const values = { um: w.wavelength.toFixed(2), channel: String(w.channel) };
+  return t(w.present ? 'caption.channel' : 'caption.channelNone', values);
 }
 
 function timeText(picture) {

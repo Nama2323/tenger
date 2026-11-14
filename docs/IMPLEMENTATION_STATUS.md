@@ -221,7 +221,8 @@ are under 44 px; there is no page/panel/A/B/band state in the URL.
 
 | Command | Result |
 |---|---|
-| `node --test tests/*.mjs` | **84 passed, 0 failed** (39 inherited + 45 new in `route`, `coords`, `contract`, `i18n`, `targets`, `caption`, `contrast`) |
+| `node --test tests/*.mjs` | **84 passed, 0 failed** (39 inherited, one of them rewritten because it endorsed nearest-channel substitution, + 45 new in `route`, `coords`, `contract`, `i18n`, `targets`, `caption`, `contrast`) |
+| `.venv/bin/python -m pytest` (after rebase on `origin/tenger-dev` with A2) | 101 passed, 2 skipped (no Python file changed by B1) |
 | `.venv/bin/uvicorn backend.api:app --port 8766` from this worktree | Serves the site; `data/index.json` 404 (not published yet, handled) |
 | `node docs/screens/capture.mjs http://localhost:8766 docs/screens` | 10 page states × 360/390/768/1280. Measured `innerWidth` = requested width every time; `scrollWidth` = `clientWidth` (no horizontal scroll) everywhere; no control under 44 px; no script errors. Report: `docs/screens/viewport-report.json` |
 | In-app browser (Claude desktop, 1024 px pane) | Keyboard (Space, ←/→), Blink/Side/Swipe, Difference refused with reason, band change, share link round trip (mode, band, A/B, panel restored), conflicting link, unknown target, version mismatch, embed mode: all as described above |
@@ -249,8 +250,11 @@ science. Fixture screenshots (`home-fixtures-map`, `prediction-fixtures`) show t
 **Limits and open points**
 
 - Viewer frames are still the legacy prepared frames (QR2/QR3, approximate channel wavelengths, flags not
-  re-validated). Single-channel views still use the nearest channel per date for display; the caption names
-  the channel shown and warns when it differs between A and B.
+  re-validated). After rebasing on Session A's contract version 2, the nearest-channel substitution
+  (`resolveBand`) was removed (V2.4): a date with no exposure in the chosen channel shows "No frames in this
+  band for this date" and the caption says so. Labelling Blink/Side by side with the comparison grade (V2.4)
+  needs investigation files and is not done yet. The new V2.1 frame fields (`responseStatus`, `obsKey`, …) are
+  not read by the viewer yet.
 - The reserved regions are a copy of `docs/EXPOSURE.md` in `js/reserved.js`; 3I/ATLAS has no region (no path
   data here). Update the list when predictions are frozen or regions change.
 - The guided demo (`js/tour.js`) is no longer reachable from the UI: its captions relied on the old landing

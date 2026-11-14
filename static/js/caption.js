@@ -1,6 +1,6 @@
 // What the caption strip says about the picture on a plate: time, wavelength, release, IDs and status.
 // Pure: no DOM. Text comes from i18n keys in the page code.
-import { DETECTOR_RANGES, WAVE_MAX, WAVE_MIN, channelWavelength, mjdToDate, resolveBand, selectBand } from './stack.js';
+import { DETECTOR_RANGES, WAVE_MAX, WAVE_MIN, channelWavelength, mjdToDate, selectBand } from './stack.js';
 
 export const CONTEXT_STEP = 'wise';
 /** The AllWISE context frame is a W2 coadd (backend/wise.py). */
@@ -27,14 +27,8 @@ function wavelengthOf(band, used) {
     const [low, high] = DETECTOR_RANGES[band.detector];
     return { kind: 'detector', detector: band.detector, low, high };
   }
-  const channels = [...new Set(used.map((frame) => frame.channel))].sort((first, second) => first - second);
-  return {
-    kind: 'channel',
-    requested: band.channel,
-    channels,
-    wavelengths: channels.map(channelWavelength),
-    substituted: channels.some((channel) => channel !== band.channel),
-  };
+  // The legacy channel is an approximate display bin (contract v2.1), so the wavelength is labelled "≈".
+  return { kind: 'channel', channel: band.channel, wavelength: channelWavelength(band.channel), present: used.length > 0 };
 }
 
 /**
@@ -56,7 +50,7 @@ export function describePicture({ step, allFrames = [], band = { kind: 'composit
     };
   }
   const pool = step ? step.frames : allFrames;
-  const used = selectBand(pool, resolveBand(pool, band));
+  const used = selectBand(pool, band);
   const described = describeFrames(used.length ? used : pool);
   let combine = 'median_all';
   if (step) combine = used.length > 1 ? 'median' : 'single';
@@ -73,12 +67,9 @@ export function describePicture({ step, allFrames = [], band = { kind: 'composit
 export function comparisonWarning(first, second) {
   if (!first || !second) return null;
   if ((first.status === 'context') !== (second.status === 'context')) return 'caption.warnCrossMission';
+  if (!first.frameCount || !second.frameCount) return 'caption.warnNoExposure';
   const a = first.wavelength;
-  const b = second.wavelength;
-  if (a.kind === 'channel' && b.kind === 'channel' && a.channels.join() !== b.channels.join()) {
-    return 'caption.warnChannels';
-  }
-  if (a.kind === 'channel' && (a.substituted || b.substituted)) return 'caption.warnSubstituted';
+  if (a.kind === 'channel') return 'caption.warnChannelLabel';
   if (a.kind === 'composite' || a.kind === 'detector') return 'caption.warnBroadBand';
   return null;
 }
