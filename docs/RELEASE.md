@@ -7,8 +7,8 @@ of `tenger-dev`, so `main` can be fast-forwarded.
 
 ## Acceptance matrix
 
-Checks were run on 15 Nov 2026, Ulaanbaatar time, on `tenger-dev` after rebasing on Session B's
-`16da115`.
+Checks were run on 15 Nov 2026, Ulaanbaatar time, on `tenger-dev`. They were last re-run after Session B's
+R3 (`46b4dbb`): validator 0 failures, `node --test` 165/165.
 
 | Feature | Evidence | Result |
 |---|---|---|
@@ -21,11 +21,11 @@ Checks were run on 15 Nov 2026, Ulaanbaatar time, on `tenger-dev` after rebasing
 | Retrospective trials | Barnard's Star hit (D² 2.62) and Epsilon Indi B hit (D² 0.21), both retrospective and catalogue-assisted. Four trials insufficient data. The baseline misses all three checked trials | **Pass** |
 | Scoreboard | `scoreboard.json` equals a fresh `build_scoreboard` run (validator). The Predictions page shows the file's counts: prospective 1 miss, retrospective 2 hit and 4 insufficient, open forecasts never counted | **Pass** |
 | Open forecasts | Pluto April 2027 v1 and v2b, Pluto Sept/Oct 2027 v2b, Makemake (insufficient). All are listed, none counted, and the two abandoned v2 folders stay out of the index | **Pass** |
-| Post-mortem and v2 hindcast (exploratory) | `trials/pluto/postmortem.json` and `hindcast-v2.json` have `exploratory: true` and `counts: false`, and their numbers match the frozen verification (validator) | **Data pass**. Web: "Why we missed" is in progress (Session B, R3); the hindcast is not shown |
+| Post-mortem and v2 hindcast (exploratory) | `trials/pluto/postmortem.json` and `hindcast-v2.json` have `exploratory: true` and `counts: false`, and their numbers match the frozen verification (validator) | **Pass**. Web (Session B, R3, `46b4dbb`): "Why we missed" sits on the Pluto trial card (folded) and at the end of its reveal. It reads only `postmortem.json`, with the hindcast table and the v1/v2 open forecasts side by side; `tests/postmortem.test.mjs` covers it. Lesson 3 adds a worked example from the post-mortem, labelled exploratory |
 | Beat the physics | 3 rounds from real trials (Barnard's Star, Epsilon Indi B, Pluto) equal a fresh `build_records` run. Node game tests pass | **Pass** |
 | Three printable lessons | `lessons/{distance,brightness,how-sure}.json` equal a fresh `build_records` run. A stale scoreboard hash in `how-sure.json` was found by the validator and regenerated in H2. Print check in the Web status (B3) | **Pass** |
-| Planet X Lab and 3D scene | `scene3d.json`: every body and star has its source. Planet Nine is `hypothetical`, with no position or orbit: five cited estimates, each with a DOI or arXiv reference. Our Pluto orbit is labelled modeled (validator). The 3D Home draws Planet Nine only as faint rings for the three published semi-major-axis ranges | **Pass** |
-| English only, one resource file | `strings.en.json` (148 keys) and `js/i18n.js`. `node --test tests/*.mjs`: 152 passed, 0 failed | **Pass** |
+| Planet X Lab and 3D scene | `scene3d.json`: every body and star has its source. Planet Nine is `hypothetical`, with no position or orbit: five cited estimates, each with a DOI or arXiv reference. Our Pluto orbit is labelled modeled (validator). The 3D Home draws Planet Nine only as faint rings for the three published semi-major-axis ranges. "Why Pluto loops" (`?page=loop`, Session B R3) reads `pluto_loop`, `our_orbit` and the v2 prediction tracks | **Pass** |
+| English only, one resource file | `strings.en.json` (148 keys) and `js/i18n.js`. `node --test tests/*.mjs`: 165 passed, 0 failed | **Pass** |
 | No example or fixture data published as real | Validator: no `"example": true` under `static/data`, and every JSON under `static/dev-fixtures` carries `"example": true`. Fixtures load only with `?fixtures=1`, under a banner | **Pass** |
 | Responsive and accessible | Session B: 175 captures, no horizontal scroll, no control under 44 px, Lighthouse accessibility 100 on all four pages | **Pass at emulated widths**; not checked on a real phone |
 | Credits, DOIs, team, base project, AI disclosure | `README.md`, the About page, `tests/release.test.mjs` (acknowledgement text and keys) | **Pass** |
