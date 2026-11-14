@@ -83,6 +83,17 @@
           <button id="space-top" type="button" class="quiet space-3d-only" data-t="space.top"></button>
           <button id="space-toggle" type="button" class="quiet"></button>
         </div>
+        <!-- Time control for the 3D view (task B10); shown once the 3D scene runs. -->
+        <div id="space-time" class="space-time glass space-3d-only" role="group" data-t-label="time.label" hidden>
+          <button id="time-live" type="button" class="time-live" aria-pressed="false" data-t-label="time.liveLabel"><i aria-hidden="true"></i><span data-t="time.live"></span></button>
+          <button id="time-play" type="button" class="time-play quiet" data-state="playing"><span aria-hidden="true"></span></button>
+          <p class="time-now" data-t-label="time.dateLabel"><span id="time-date" class="time-date"></span> <span class="time-utc" data-t="time.utc"></span></p>
+          <div class="time-speed">
+            <input id="time-rate" type="range" min="-7" max="7" step="1" value="1" data-t-label="time.rateLabel">
+            <p id="time-rate-text" class="time-rate-text" aria-hidden="true"></p>
+          </div>
+          <p id="time-note" class="time-note" role="status" hidden></p>
+        </div>
         <div id="space-hud" class="space-hud space-3d-only">
           <p id="space-date"></p>
           <p id="space-target" aria-live="polite"></p>

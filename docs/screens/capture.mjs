@@ -107,6 +107,8 @@ const PAGES = [
   { name: 'og-barnard', path: '/?target=barnard&mode=side', ready: '#caption-body .caption-col', sizes: ['og'] },
   // 3D Home (last: switching it on is remembered for the rest of this run). Reduced motion stays forced, so the
   // view is switched on with its button and camera moves are instant.
+  // B10: the time control under the 3D scene, running at 1 month/s.
+  { name: 'home-time', path: '/', ready: '.map-marker', act: "(() => { if (!document.body.classList.contains('space-3d')) document.getElementById('space-toggle').click(); const go = () => { const s = document.getElementById('time-rate'); if (document.getElementById('space-time').hidden) return setTimeout(go, 200); s.value = '6'; s.dispatchEvent(new Event('input', { bubbles: true })); }; go(); })()", wait: 6000, scrollTo: '#space-time' },
   { name: 'home-3d', path: '/', ready: '.map-marker', act: "(() => { if (!document.body.classList.contains('space-3d')) document.getElementById('space-toggle').click(); })()", wait: 2500 },
   { name: 'home-3d-top', path: '/', ready: '.space-canvas', act: "document.getElementById('space-top').click()", wait: 800 },
   { name: 'home-3d-pluto', path: '/', ready: '.space-canvas', act: "document.querySelector('.space-label[data-key=pluto]').click()", wait: 2500 },

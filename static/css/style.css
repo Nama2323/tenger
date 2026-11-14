@@ -615,6 +615,51 @@ body.space-3d .map-stage, body.space-3d #starfield { display: none; }
   pointer-events: none;
 }
 .space-hud #space-target { color: var(--accent); }
+/* Time control (B10): under the scene, centred in the area beside the console, above the caption. */
+.space-time {
+  position: absolute;
+  bottom: calc(var(--s2) + 58px);
+  left: calc(var(--rail-w) + var(--s4));
+  right: var(--s2);
+  z-index: 3;
+  width: fit-content;
+  max-width: calc(100% - var(--rail-w) - 48px);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+  padding: 8px 14px;
+}
+.space-time[hidden] { display: none !important; }
+.time-live {
+  min-height: var(--tap);
+  min-width: 76px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 14px/1 var(--font-head);
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border-strong);
+}
+.time-live i { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); }
+.time-live.is-live { color: var(--hit); border-color: var(--hit); }
+.time-live.is-live i { background: var(--hit); box-shadow: 0 0 0 3px rgba(95, 211, 141, 0.2); }
+.time-play { width: var(--tap); min-width: var(--tap); min-height: var(--tap); padding: 0; display: inline-grid; place-items: center; }
+.time-play span { width: 14px; height: 16px; }
+.time-play[data-state="playing"] span { border-left: 5px solid currentColor; border-right: 5px solid currentColor; box-sizing: border-box; }
+.time-play[data-state="paused"] span { width: 0; height: 0; border-style: solid; border-width: 8px 0 8px 14px; border-color: transparent transparent transparent currentColor; }
+.time-now { display: flex; align-items: baseline; gap: 6px; margin: 0; }
+.time-date { font: 600 22px/1.1 var(--font-mono); color: var(--text); letter-spacing: 0.01em; }
+.time-utc { font: 600 12px var(--font-text); color: var(--muted); }
+.time-speed { display: grid; justify-items: center; gap: 0; min-width: 220px; }
+.time-speed input[type="range"] { width: 220px; height: var(--tap); margin: 0; accent-color: var(--accent); cursor: pointer;
+  background: linear-gradient(var(--border-strong), var(--border-strong)) center / 2px 14px no-repeat; }
+.time-rate-text { font: 500 12.5px/1.2 var(--font-mono); color: var(--accent); margin: 0; }
+.time-note { flex-basis: 100%; margin: 0; text-align: center; font-size: 12.5px; color: var(--hypothetical); }
 .legend { list-style: none; padding: 0; display: grid; gap: 6px; font-size: 13.5px; }
 .legend li { display: flex; align-items: center; gap: var(--s1); margin: 0; }
 
@@ -1636,6 +1681,9 @@ body.embed .panel-title { top: 0; }
   .space3d { position: relative; inset: auto; order: 1; height: clamp(340px, 112vw, 560px); border-radius: var(--radius); }
   .map-stage { order: 1; }
   .space-tools, .space-hud { position: static; order: 2; }
+  .space-time { position: static; order: 1; width: auto; max-width: none; margin: 0; justify-content: space-between; }
+  .time-speed, .time-speed input[type="range"] { width: 100%; min-width: 0; }
+  .time-speed { flex: 1 1 100%; }
   .space-hud { width: fit-content; }
   .map-caption { order: 3; }
   .map-key { order: 4; }
@@ -1784,3 +1832,8 @@ body.embed .panel-title { top: 0; }
 .explain-line { border-left: 3px solid var(--star); padding-left: 10px; }
 .tl-date-end { transform: translateX(calc(-100% + 3px)); }
 .tl-date-low { top: 47px; }
+
+@media (max-width: 420px) {
+  /* The time control's date and its UTC label stay on one line on the narrowest phones. */
+  .time-date { font-size: 18px; }
+}

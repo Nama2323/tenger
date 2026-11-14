@@ -1463,3 +1463,48 @@ Session A's verification: 345 Tercidina inside (D² 0.12); 4 ambiguous; 3 insuff
 - **Recording fix.** A headless Chrome left by a failed first run kept its port with a busy software GPU process.
   Later runs connected to it, and the viewer drew about 2 frames a second. The script now uses a fresh port, Chrome
   on the Mac's GPU (Metal), and always closes its Chrome.
+
+### Task B10, 15 Nov 2026: a time control for the 3D Solar System on Home
+
+- **Control bar** (`index.html` `#space-time`, `js/time-ui.js`, `css/style.css`). It sits under the scene, centred
+  beside the console on wide screens and below the scene on phones, and contains:
+  - LIVE, active while live (`aria-pressed`);
+  - play/pause;
+  - the date and time, large, in UTC;
+  - a stepped speed slider: centre paused; right forward and left backward, in steps of real time, 5 min/s, 1 h/s,
+    1 day/s, 1 week/s, 1 month/s and 1 year/s; the rate is shown under it ("1 month/s", "-1 day/s") and spoken
+    through `aria-valuetext`;
+  - keyboard (Home only, not while typing): Space plays or pauses, ←/→ step the rate, L returns to live. Listed in
+    the shortcuts dialog.
+- **Clock** (`js/time.js`, pure). Range 1900-01-01 to 2050-01-01 UTC, inside the 1800–2050 validity of JPL's
+  approximate elements; at an end it stops with a short note and can move back. A month is a twelfth of a Julian
+  year. On load it is live at real speed; with prefers-reduced-motion it starts paused and moves only when asked.
+  The "Planets on …" line follows the shown date.
+- **Scene** (`js/space3d.js` `setTime`, `js/orbits.js`).
+  - Planets move with the existing JPL approximate-elements code, and their orbits are redrawn after a decade of
+    change. Earth's "SPHEREx orbits it" label moves with Earth.
+  - Pluto and Makemake move by Kepler's equation from the JPL Small-Body Database elements already in
+    `scene3d.json` (solution 1, epoch JD 2457588.5; solution 130, epoch JD 2461200.5), so no new contract version
+    was needed. At the file's date they land 0.037 au and 0.0001 au from JPL Horizons.
+  - Without elements a body would stay at its Horizons date with "shown for …" (code path kept; not used).
+  - Stars, the Kuiper Belt illustration and the Planet Nine rings stay fixed.
+- **Animation loop.**
+  - At fast speeds: one update per display frame. At real speed: one per second (it looks still). While paused,
+    at a stop, with the tab hidden or with the scene off screen: none.
+  - Away from live, the time waits while hidden, so it does not jump.
+  - The control loads with the 3D view, not with the page.
+- **Size.** Home's first load +1.4 KB gzip (markup, styles, strings); the lazy 3D bundle +5.4 KB gzip.
+- **Checks.**
+  - `tests/time.test.mjs` (8): rate steps and labels; live on load; reduced motion paused with no auto-advance;
+    forward, backward, pause and play, live; the 1900/2050 stops and moving back; UTC formatting; positions at the
+    scene epoch match the check values (Earth vs DE441, Pluto and Makemake Kepler vs Horizons); elements used only
+    when complete. 221 tests pass.
+  - Headless Chrome on the GPU (`localhost`):
+    - On load, live at real time, matching the UTC clock.
+    - Animation frames: 3 in 3 s live; 0 paused; about 120 per second at 1 week/s; 0 with the tab hidden (time
+      waits); 0 after stopping at 2050.
+    - Real key presses: Space, → ×5 (1 week/s), ← ×8 (-1 h/s), L (live).
+    - 1 year/s stops at 2050-01-01 00:00:00 with the note.
+    - Reduced motion: paused, 0 frames, the date unchanged.
+  - Captures `home-time` at 360/390/768/1280: no horizontal scroll, every control at least 44 px, no console error.
+  - Lighthouse mobile Home: 83 and 83 (accessibility, best practices, SEO 100; CLS 0; TBT 0 ms).

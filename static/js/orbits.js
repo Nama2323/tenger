@@ -75,6 +75,27 @@ export function planetPosition(planet, jd) {
   return toEcliptic(x, y, elements);
 }
 
+/**
+ * A small body's osculating elements from scene3d.json (`catalogue_orbit`: JPL Small-Body Database, heliocentric
+ * ecliptic J2000, with its epoch), or null when any needed element is missing. Nothing is filled in or assumed.
+ */
+export function smallBodyElements(orbit) {
+  const value = (name) => orbit?.elements?.[name]?.value;
+  const elements = { a: value('a'), e: value('e'), i: value('i'), node: value('om'), omega: value('w'), M0: value('ma'), n: value('n') };
+  const epoch = orbit?.epoch_jd_tdb;
+  if (!Number.isFinite(epoch) || !Object.values(elements).every(Number.isFinite) || elements.e >= 1) return null;
+  return { ...elements, epoch };
+}
+
+/** Heliocentric ecliptic J2000 position (au) of a small body at a Julian date: two-body, Kepler's equation. */
+export function smallBodyPosition(elements, jd) {
+  const M = ((((elements.M0 + elements.n * (jd - elements.epoch)) % 360) + 360) % 360) * DEG;
+  const anomaly = solveKepler(M, elements.e);
+  const x = elements.a * (Math.cos(anomaly) - elements.e);
+  const y = elements.a * Math.sqrt(1 - elements.e ** 2) * Math.sin(anomaly);
+  return toEcliptic(x, y, { omega: elements.omega, node: elements.node, I: elements.i });
+}
+
 /** The whole orbit at the elements of that date, as `count` points evenly spaced in eccentric anomaly. */
 export function orbitPoints(planet, jd, count = 256) {
   const elements = elementsAt(planet, jd);

@@ -9,6 +9,7 @@ export const SHORTCUTS = [
   ['keys.group.viewer', [['keys.k.space', 'keys.a.viewerSpace'], ['keys.k.leftRight', 'keys.a.viewerArrows'], ['keys.k.escape', 'keys.a.viewerEscape']]],
   ['keys.group.game', [['keys.k.arrows', 'keys.a.gameArrows'], ['keys.k.shiftArrows', 'keys.a.gameFast'], ['keys.k.enter', 'keys.a.gameEnter']]],
   ['keys.group.reveal', [['keys.k.nextStep', 'keys.a.revealNext'], ['keys.k.prevStep', 'keys.a.revealBack'], ['keys.k.homeEnd', 'keys.a.revealEnds'], ['keys.k.escape', 'keys.a.revealClose']]],
+  ['keys.group.time', [['keys.k.space', 'keys.a.timeSpace'], ['keys.k.leftRight', 'keys.a.timeArrows'], ['keys.k.live', 'keys.a.timeLive']]],
 ];
 
 export const CAN_SEE = ['limits.can.images', 'limits.can.changes', 'limits.can.positions', 'limits.can.anywhere'];

@@ -11,7 +11,7 @@ import {
 } from '../vendor/three/three-tenger.min.js';
 import {
   equatorialToEcliptic, julianDate, kuiperBelt, orbitPoints, planetNineRanges, planetPosition, PLANETS,
-  scalePosition, scaledRadius,
+  scalePosition, scaledRadius, smallBodyElements, smallBodyPosition,
 } from './orbits.js';
 
 const FLIGHT_MS = 1400;
@@ -27,6 +27,8 @@ const END_ON_COSINE = Math.cos((20 * Math.PI) / 180);
 const SIGHTLINE_START = scaledRadius(1000) + 2;
 const SIGHTLINE_LABEL = scaledRadius(1000) + 4;
 const MAX_CAMERA_DISTANCE = 115;
+/** Planet orbit lines are redrawn from the elements of the shown date when it moves this far (days). */
+const ORBIT_REDRAW_DAYS = 3652.5;
 /**
  * The opening viewpoint, in ecliptic longitude/latitude (degrees) and scene units. Chosen (for the 14 Nov 2026
  * scene file) so that no target star's direction points at or away from the camera (all at least 57° off the line
@@ -173,14 +175,20 @@ export function createSpace(host, options) {
 
   function place(key, position, { reach, name, pick = true, star = false }) {
     places.set(key, { position, reach, name, star });
-    if (!pick) return;
+    if (!pick) return null;
     const hit = new Mesh(new SphereGeometry(1, 8, 6), new MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }));
     hit.position.copy(position);
     hit.scale.setScalar(Math.max(reach * 0.5, 0.9));
     hit.userData.key = key;
     world.add(hit);
     pickable.push(hit);
+    return hit;
   }
+
+  // Bodies that move with the time control (setTime): everything drawn at the body's place, and its place.
+  const movers = [];
+  const planetOrbits = [];
+  let orbitJd = null;
 
   // ---------- Background stars (decoration) ----------
   const random = (() => {
@@ -211,29 +219,37 @@ export function createSpace(host, options) {
     label(labelOf('ring', { value: new Intl.NumberFormat('en').format(au) }), 'is-ring', new Vector3(radius * Math.cos(5.2), 0, -radius * Math.sin(5.2)));
   }
 
-  // ---------- Planets today ----------
+  // ---------- Planets (JPL approximate elements), at the shown date ----------
   const jd = julianDate(date);
+  orbitJd = jd;
   const orbitMaterial = new LineBasicMaterial({ color: accent, transparent: true, opacity: 0.32 });
   for (const planet of PLANETS) {
-    world.add(loop(orbitPoints(planet, jd, 256).map(sceneAt), orbitMaterial));
+    const orbitLine = loop(orbitPoints(planet, jd, 256).map(sceneAt), orbitMaterial);
+    planetOrbits.push({ planet, line: orbitLine });
+    world.add(orbitLine);
     const position = sceneAt(planetPosition(planet, jd));
     const body = ball(SIZE[planet], PLANET_TINT[planet]);
     body.position.copy(position);
     world.add(body);
+    const drawn = [body];
     if (planet === 'saturn') {
       const rings = new Mesh(new RingGeometry(SIZE.saturn * 1.35, SIZE.saturn * 2.1, 48), new MeshBasicMaterial({ color: PLANET_TINT.saturn, side: DoubleSide, transparent: true, opacity: 0.55 }));
       rings.position.copy(position);
       rings.rotation.x = -Math.PI / 2 + 0.47;
       world.add(rings);
+      drawn.push(rings);
     }
     if (planet === 'earth') {
       const halo = glow(accent, 1.4, 0.8);
       halo.position.copy(position);
       world.add(halo);
+      drawn.push(halo);
     }
     const name = labelOf(`planet.${planet}`);
-    label(name, planet === 'earth' ? 'is-earth' : 'is-planet', position);
+    // The label (Earth's says that SPHEREx orbits it) moves with its planet.
+    drawn.push(label(name, planet === 'earth' ? 'is-earth' : 'is-planet', position));
     place(planet, position, { reach: 2.5, name, pick: false });
+    movers.push({ key: planet, at: (when) => planetPosition(planet, when), drawn });
   }
 
   // ---------- Kuiper Belt (illustration) ----------
@@ -242,23 +258,29 @@ export function createSpace(host, options) {
   label(labelOf('kuiper'), 'is-note', new Vector3(beltLabelRadius * Math.cos(2.4), 0.8, -beltLabelRadius * Math.sin(2.4)));
 
   // ---------- Pluto and Makemake (scene3d.json) ----------
+  // With JPL Small-Body Database elements they move by Kepler's equation; without, they stay at the JPL Horizons
+  // position of the file's date and are listed in fixedBodies (the time control says so).
+  const fixedBodies = [];
   for (const key of ['pluto', 'makemake']) {
     const body = data?.bodies?.[key];
     const now = body?.position_now?.position_au;
-    if (!Array.isArray(now)) continue;
+    const elements = smallBodyElements(body?.catalogue_orbit);
+    if (!Array.isArray(now) && !elements) continue;
     const orbit = body.catalogue_orbit?.orbit_points_au;
     if (Array.isArray(orbit) && orbit.length > 8) {
       world.add(loop(orbit.map(sceneAt), new LineBasicMaterial({ color: colours.solar, transparent: true, opacity: 0.55 })));
     }
-    const position = sceneAt(now);
+    const position = sceneAt(elements ? smallBodyPosition(elements, jd) : now);
     const dot = ball(SIZE.dwarf, colours.solar);
     dot.position.copy(position);
     const halo = glow(colours.solar, 1.5, 0.9);
     halo.position.copy(position);
     world.add(dot, halo);
     const name = nameOf(key) ?? key;
-    label(name, 'is-target colour-solar', position, { key });
-    place(key, position, { reach: 3.2, name });
+    const tag = label(name, 'is-target colour-solar', position, { key });
+    const hit = place(key, position, { reach: 3.2, name });
+    if (elements) movers.push({ key, at: (when) => smallBodyPosition(elements, when), drawn: [dot, halo, tag, hit] });
+    else fixedBodies.push({ key, name, jd: body.position_now.epoch_jd_tdb });
   }
 
   // ---------- Planet Nine: faint shaded rings for the published ranges; no point, no orbit line ----------
@@ -458,7 +480,26 @@ export function createSpace(host, options) {
   go(views.home, { duration: reducedMotion ? 0 : INTRO_MS });
   options.onHud?.({ target: currentName });
 
+  /** Moves the planets, Pluto and Makemake to `when` (a Date) and draws one frame. Stars, belt and rings stay. */
+  function setTime(when) {
+    const at = julianDate(when);
+    if (!Number.isFinite(at)) return;
+    for (const mover of movers) {
+      const position = sceneAt(mover.at(at));
+      for (const object of mover.drawn) object?.position.copy(position);
+      places.get(mover.key)?.position.copy(position);
+    }
+    // The orbits themselves change slowly (perihelion and node drift): redraw them after a decade of change.
+    if (Math.abs(at - orbitJd) > ORBIT_REDRAW_DAYS) {
+      orbitJd = at;
+      for (const { planet, line } of planetOrbits) line.geometry.setFromPoints(orbitPoints(planet, at, 256).map(sceneAt));
+    }
+    requestRender();
+  }
+
   return {
+    setTime,
+    fixedBodies,
     has: (key) => places.has(key),
     flyTo: (key, { then = null } = {}) => go(viewFor(key), { then }),
     reset: () => go(views.home),
