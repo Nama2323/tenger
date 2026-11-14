@@ -191,6 +191,40 @@ evaluation visit, from Makemake's 2026 evaluation visit or from the reserved 3I/
 Artificial sources were added only in memory. The derived files under `static/data/planetx/` are
 labelled `"artificial": true` and never count as observations.
 
+## A9 rule for MOST (user's rule, 15 Nov 2026, about 02:40 UB, before any asteroid selection)
+
+IRSA's Moving Object Search Tool (MOST) returns JPL-predicted positions for every exposure, including
+an object's evaluation visit. For an asteroid forecast to count as `prospective_unexposed`, nobody,
+Session A included, may see the ephemeris position at the evaluation time before the batch is frozen
+and pushed.
+
+1. MOST positions are used only for training exposures. Each object's evaluation visit is picked from
+   exposure times alone (the newest visit cluster).
+   - Before anything is printed, logged or saved, every evaluation-visit row is reduced in memory to
+     `observationid`, `productid` (detector), `uri` (file path), `mjd_start`, `mjd_end` and `match`
+     (in footprint).
+   - RA/Dec, rates, magnitudes, distances, phase and the image's own corners and centre are dropped.
+   - Raw MOST tables are saved only after the freeze push.
+2. The 15″ star check at the evaluation time is blind: code computes it and keeps only pass/fail.
+3. An object whose evaluation-time predicted position has already appeared in Session A's output or
+   files is excluded from the batch, or included only as `catalogue_assisted`.
+4. `tests/test_asteroids_integrity.py` checks that nothing committed before the freeze contains
+   evaluation-time ephemeris values.
+
+**Already exposed before this rule (excluded):**
+- **1000 Piazzia.** During the A9 feasibility check (15 Nov 2026, 02:33–02:34 UB), its full-period MOST
+  table was fetched into scratch files (`a1000.html`, `a1000_full.tbl`, `a1000_results.tbl`). That table
+  holds JPL positions and V for both of its DR1/QR3 visits.
+  - Printed to the session: visit start times, spans, counts, releases and detector counts, and the V
+    range of its first visit only. No position was printed.
+  - The files were deleted at 02:38 UB.
+  - Piazzia has only two DR1/QR3 visits, so the selection rule (three visits) would reject it anyway.
+    It is excluded by name too.
+- **Makemake.** A one-month MOST query (2025-05-25 to 06-25, inside its exposed training period) tested
+  the service. Makemake is not an asteroid-batch candidate.
+- **Nothing else.** No other object's MOST or Horizons data had been requested. The JPL SBDB pool query
+  returns names, H and orbit class only.
+
 ## Who has seen what
 
 - **Teammates** have viewed the bundled frames, thumbnails and results of the five challenge targets
