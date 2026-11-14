@@ -206,7 +206,8 @@ export function readHiddenPlanet(doc) {
       frames: frames.map((frame) => ({ path: frame.path, tMjd: finite(frame.t_mjd) ? frame.t_mjd : null, width: frame.width, height: frame.height, pixelArcsec: finite(frame.pixel_arcsec) ? frame.pixel_arcsec : null })),
       injected,
       mag: finite(pair.injected_mag_ab) ? pair.injected_mag_ab : null,
-      motion: finite(pair.motion_arcsec) ? pair.motion_arcsec : null,
+      // V12: { east, north, total } in arcsec; an early example gave the total alone.
+      motion: finite(pair.motion_arcsec) ? pair.motion_arcsec : finite(pair.motion_arcsec?.total) ? pair.motion_arcsec.total : null,
       pipeline: { found, positions: found && Array.isArray(pair.pipeline.positions) ? pair.pipeline.positions.filter((point) => finite(point?.x) && finite(point?.y)) : [], ruleKey: pair.pipeline?.rule_key ?? null },
       tolerance: finite(pair.tolerance_px) ? pair.tolerance_px : 3,
     }];

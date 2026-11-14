@@ -318,10 +318,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-panel",
@@ -334,10 +331,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-panel",
@@ -350,10 +344,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-panel",
@@ -366,10 +357,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-swipe",
@@ -642,11 +630,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-wise0855",
@@ -659,11 +643,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-wise0855",
@@ -676,11 +656,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-wise0855",
@@ -693,11 +669,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-makemake-preview",
@@ -710,11 +682,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-makemake-preview",
@@ -727,11 +695,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-makemake-preview",
@@ -744,11 +708,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-makemake-preview",
@@ -761,11 +721,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-pluto-preview",
@@ -1114,16 +1070,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions",
@@ -1136,16 +1083,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions",
@@ -1158,16 +1096,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions",
@@ -1180,16 +1109,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-cards",
@@ -1202,18 +1122,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-cards",
@@ -1226,18 +1135,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-cards",
@@ -1250,18 +1148,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-cards",
@@ -1274,18 +1161,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-forecasts",
@@ -1298,18 +1174,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-forecasts",
@@ -1322,18 +1187,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-forecasts",
@@ -1346,18 +1200,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-forecasts",
@@ -1370,18 +1213,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-fixtures",
@@ -2568,10 +2400,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "about",
@@ -2584,10 +2413,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "about",
@@ -2600,10 +2426,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "about",
@@ -2616,10 +2439,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "about-reserved",
@@ -2632,10 +2452,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "about-reserved",
@@ -2648,10 +2465,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "about-reserved",
@@ -2664,10 +2478,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "about-reserved",
@@ -2680,10 +2491,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-why",
@@ -2696,18 +2504,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-why",
@@ -2720,18 +2517,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-why",
@@ -2744,18 +2530,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-why",
@@ -2768,18 +2543,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "predictions-why",
@@ -2792,18 +2556,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027b-v2b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "reveal-pluto-why",
@@ -2888,10 +2641,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "learn-lesson-sure-pluto",
@@ -2904,10 +2654,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "learn-lesson-sure-pluto",
@@ -2920,10 +2667,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "learn-lesson-sure-pluto",
@@ -2936,10 +2680,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "learn-lesson-distance-loop",
@@ -3016,10 +2757,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "loop",
@@ -3032,10 +2770,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "loop",
@@ -3048,10 +2783,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "loop",
@@ -3064,10 +2796,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/depth.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/planetx/hidden-planet.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "loop-chart",
@@ -4506,6 +4235,58 @@
   },
   {
     "page": "game-explained",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-refs",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-refs",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-refs",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-refs",
     "requested": 1280,
     "ready": true,
     "innerWidth": 1280,

@@ -1151,3 +1151,50 @@ is **not** added to the main hit/miss headline (B6 already shows it only as its 
 
 **Limits**: the yearly-loop sketch is a schematic, not the round's real loop; the hint direction uses all training
 dots, so for Pluto (two visits) it is the line between the visits; not checked on a real phone.
+
+### Task B8, 15 Nov 2026 night (release QA, credits, demo clips)
+
+**Release QA in public mode** (no `?fixtures`; headless Chrome crawl of 52 URLs: every page, lesson, the Lab, the
+loop, all 8 targets × 4 panels, viewer modes, a reveal, embed and a coordinate search; every visible button
+clicked once on 11 main pages):
+
+| Found | Fix | After |
+|---|---|---|
+| 8 failing requests (404, logged as console errors) for `verification.json` of trials that cannot have one yet | `js/contract.js` `verificationNotDue`: no request when `prediction_status` is `insufficient_data` or an open forecast is before its `check_after_utc` (contract V5); every other trial is read as before. Test with a request spy. | 0 failing requests, 0 console errors |
+| "Full screen" threw an uncaught "Permissions check failed" when the browser refused (also real users in an embed without `allowfullscreen`) | `js/main.js`: the refusal shows a note | 0 button errors |
+| Hidden-planet reveal said "moving —″" with Session A's real file (`motion_arcsec` is `{east, north, total}` in V12) | `js/planetx.js` reads the object or a number; test on the real file | "moving 46″" |
+| Session A's V13 strings (`batch.*`, `train.*`) made the copy test fail on `tenger-dev` after `e93e9a5` (I pushed before re-running; now every push is gated on 0 failures) | Re-copied (179 keys); our own sentence renamed `batch.assumeIndependent` so Session A's `batch.independence` keeps its wording, and a real batch's note replaces ours instead of repeating it (`b8b0e67`) | 194 tests pass |
+
+No request to `dev-fixtures` on any public page. Links: all 43 external links on the site resolve (200); all 11
+"frozen in git" receipts open their commit (200), and each commit contains that trial's `prediction.json`
+(GitHub API); every DOI redirects from doi.org to its record (A&A and IOP pages answer scripts with a bot check,
+not a broken link); the 3 font licence files are served.
+
+**Lighthouse mobile** (simulated throttling; `?page=learn&lesson=lab` for the Lab; two runs where they differed):
+
+| Page | Performance | Accessibility | Best practices | SEO | LCP |
+|---|---|---|---|---|---|
+| Home | 81, 82 | 100 | 100 | 100 | 4.6 s (the first-visit tour text) |
+| Predictions | 87 | 100 | 100 | 100 | 3.8 s |
+| Beat the physics | 88 | 100 | 100 | 100 | 3.9 s |
+| Learn | 87 | 100 | 100 | 100 | 3.9 s |
+| Planet X Lab | 80, 82 | 100 | 100 | 100 | 4.9 s |
+
+Home is above the ≥ 80 target from R3 but below B5's 85–86; not changed (fixes only).
+
+**Credits** (`js/pages.js`, `index.html`, `js/i18n.js`): About adds IRSA MOST (A9: training exposures only;
+evaluation rows cut to identifiers and times) and the A9 use of JPL Horizons (compared only after each verdict), and
+a new list "Published values we compare with": Linder & Mordasini 2016, Fortney et al. 2016, Meisner et al. 2018,
+Blanton & Roweis 2007, Cutri et al. 2012 (WISE Explanatory Supplement IV.4.h), SPHEREx Public-products, Crill et
+al. 2025, and the five Planet Nine orbit papers drawn on the 3D Home, each with DOI/arXiv/URL links (all checked).
+The IRSA SPHEREx acknowledgement is unchanged (test: word for word against the IRSA file). New test: every DOI in
+the published data is linked on About.
+
+**Demo clips** (`docs/screens/demo/`, recorder `record.mjs`, README): a Home 3D (5.7 s), b Predictions (6.1 s),
+c Beat the physics ε Indi B with Hint 2 and the reveal (6.3 s), d Planet X Lab W1 (5.0 s), e Find the hidden planet
+(6.0 s); all 1280×720 H.264 yuv420p 30 fps, 0.14–1.30 MB, public site, no fixture request, no page error.
+(f) asteroid batch **skipped**: not published by Session A yet.
+
+**Checks**: `node --test tests/` 194 passed, 0 failed. Captures of the touched pages at 360/390/768/1280 (65,
+incl. new `about-refs`): no horizontal scroll, no control under 44 px, every page ready, **no console errors**;
+report 273 entries. Session A's validator: 79 contract files, 0 failures.

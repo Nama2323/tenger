@@ -73,6 +73,7 @@ const PAGES = [
   { name: 'game-hidden', path: '/?page=game', ready: '#hidden-stage img', scrollTo: '#hidden-round' },
   { name: 'game-hidden-revealed', path: '/?page=game', ready: '#hidden-stage img', act: "(() => { const st = document.getElementById('hidden-stage'); const b = st.getBoundingClientRect(); st.dispatchEvent(new MouseEvent('click', { clientX: b.left + b.width * 0.42, clientY: b.top + b.height * 0.56, bubbles: true })); document.getElementById('hidden-check').click(); })()", scrollTo: '#hidden-round' },
   { name: 'about', path: '/?page=about', ready: '#about-data li' },
+  { name: 'about-refs', path: '/?page=about', ready: '#about-refs li', scrollTo: '#about-refs-title' },
   { name: 'about-reserved', path: '/?page=about', ready: '#about-reserved li', scrollTo: '#about-reserved-title' },
   { name: 'predictions-why', path: '/?page=predictions', ready: '.why-missed', act: "(() => { const d = document.querySelector('#trial-pluto-position-2026b .why-missed'); d.open = true; })()", scrollTo: '#trial-pluto-position-2026b .why-missed', sizes: ['360', '390', '768', '1280', '720p'] },
   { name: 'reveal-pluto-why', path: '/?page=predictions&trial=pluto-position-2026b', ready: '.reveal-svg', act: "document.querySelector('#reveal').dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))", sizes: ['390', '1280', '720p'] },

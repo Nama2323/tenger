@@ -226,3 +226,12 @@ test('the injection count comes from the method or the curves, and chart markers
     }
   }
 });
+
+test('the motion between the frames is read as the contract gives it (V12 object, or a plain number)', () => {
+  const published = real(HIDDEN_PATH);
+  if (published) {
+    const pairs = readHiddenPlanet(published).pairs;
+    pairs.forEach((pair, index) => assert.equal(pair.motion, published.pairs[index].motion_arcsec.total, published.pairs[index].id));
+  }
+  assert.equal(readHiddenPlanet(fixture(HIDDEN_PATH)).pairs[0].motion, fixture(HIDDEN_PATH).pairs[0].motion_arcsec);
+});
