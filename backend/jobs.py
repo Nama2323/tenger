@@ -3,7 +3,7 @@ import hashlib
 import logging
 import random
 import threading
-from collections import OrderedDict
+from collections import Counter, OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import httpx
@@ -12,14 +12,18 @@ import numpy as np
 from . import archive, config, framestore
 from .archive import Exposure
 from .coords import mjd_to_year
+from .flags import count_by_flag
 from .framestore import Frame
 from .processing import (
     Grid,
+    ProductError,
     channel_index,
+    display_native,
     group_visits,
-    load_native,
+    load_product,
     reproject,
-    wavelength_at,
+    response_at,
+    trim_product,
     wavelength_gradient,
 )
 
@@ -38,6 +42,8 @@ class Job:
         self.available = 0
         self.total = 0
         self.failed = 0
+        self.rejected: Counter[str] = Counter()  # exposures refused, by reason key
+        self.cache_tag = framestore.cache_tag(self.grid)
         self.frames: list[Frame] = []
         self._lock = threading.Lock()
 
@@ -52,6 +58,7 @@ class Job:
             "error": self.error,
             "done": len(self.frames),
             "failed": self.failed,
+            "rejected": dict(self.rejected),
             "total": self.total,
             "available": self.available,
             "ra": self.grid.ra,
@@ -87,6 +94,11 @@ class Job:
     def _store(self, future) -> None:
         try:
             frame = future.result()
+        except ProductError as error:
+            log.warning("Exposure refused in job %s: %s", self.id, error)
+            self.rejected["product.unusable-quality-metadata"] += 1
+            self.failed += 1
+            return
         except Exception as error:
             log.warning("Exposure skipped in job %s: %s", self.id, error)
             self.failed += 1
@@ -99,38 +111,64 @@ class Job:
 
     def _build(self, client: httpx.Client, exposure: Exposure, visit: int) -> Frame | None:
         key = archive.exposure_key(exposure)
-        stored = framestore.load(self.id, key, visit)
+        stored = framestore.load(self.id, key, self.cache_tag, visit)
         if stored is not None:
             return stored
         size = self.grid.fov * config.CUTOUT_MARGIN
+        url = archive.cutout_url(exposure, self.grid.ra, self.grid.dec, size)
         payload = archive.fetch_cutout(client, exposure, self.grid.ra, self.grid.dec, size)
-        frame = self._process(payload, exposure, visit)
+        frame = self._process(payload, exposure, visit, url)
         if frame is not None:
-            framestore.save(self.id, key, frame)
+            framestore.save(self.id, key, self.cache_tag, frame)
         return frame
 
-    def _process(self, payload: bytes, exposure: Exposure, visit: int) -> Frame | None:
-        native = load_native(payload)
+    def _process(self, payload: bytes, exposure: Exposure, visit: int, url: str = "") -> Frame | None:
+        product = load_product(payload)
+        native = display_native(product)
         pixels, mask = reproject(native, self.grid)
         covered = np.isfinite(pixels)
         if covered.mean() < MIN_COVERED_FRACTION:
             return None
-        wavelength = wavelength_at(native, self.grid.ra, self.grid.dec) or (
-            (exposure.wave_min_um + exposure.wave_max_um) / 2
-        )
-        wave_dx, wave_dy = wavelength_gradient(native, self.grid)
+        source_sha256 = hashlib.sha256(payload).hexdigest()
+        native_file = None
+        if config.KEEP_NATIVE_PRODUCTS:
+            key = archive.exposure_key(exposure)
+            saved = framestore.save_native(key, url, trim_product(payload, source_sha256))
+            native_file = str(saved.relative_to(config.CACHE_DIR))
+        response = response_at(product, self.grid.ra, self.grid.dec, exposure.detector)
+        if response is not None:
+            wavelength = response.centre_um
+            wave_dx, wave_dy = wavelength_gradient(native, self.grid)
+        else:
+            # Display placement only. With no WCS-WAVE value this frame has no known
+            # response, so it can never enter a quantitative comparison.
+            wavelength = (exposure.wave_min_um + exposure.wave_max_um) / 2
+            wave_dx, wave_dy = 0.0, 0.0
         meta = {
             "obsId": exposure.obs_id,
+            "obsKey": exposure.obs_key,
             "detector": exposure.detector,
             "mjd": exposure.mjd,
+            "mjdEnd": exposure.mjd_end,
+            "timeScale": "UTC",
             "year": mjd_to_year(exposure.mjd),
             "visit": visit,
             "wavelength": wavelength,
             "waveDx": wave_dx,
             "waveDy": wave_dy,
             "channel": channel_index(wavelength, exposure.detector),
+            "response": response.to_json() if response else None,
+            "responseStatus": "known" if response else "unknown",
             "release": exposure.collection,
+            "processing": exposure.processing,
+            "releaseDate": exposure.release_date,
             "flaggedPct": round(float(mask[covered].mean() * 100), 2),
+            "flagSchema": product.flag_schema.schema,
+            "maskPolicy": product.flag_schema.policy,
+            "flagCounts": count_by_flag(product.flags, product.flag_schema),
+            "source": {"url": url or None, "sha256": source_sha256, "bytes": len(payload),
+                       "software": product.software_version, "native": native_file},
+            "cache": {"tag": self.cache_tag, **framestore.cache_identity(self.grid)},
         }
         return Frame(meta, pixels, mask)
 

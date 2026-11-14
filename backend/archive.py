@@ -14,10 +14,34 @@ import httpx
 from . import config
 
 log = logging.getLogger("blink.archive")
-_COLLECTION = re.compile(r'value="(spherex_qr\d+(?:_deep)?)"')
-_RELEASE_NUMBER = re.compile(r"spherex_qr(\d+)")
+# Level 2 spectral-image collections: data releases (dr) and quick releases (qr),
+# wide survey or deep fields. Spectral cubes (spherex_dr1_cube) are another product.
+_COLLECTION = re.compile(r'value="(spherex_(?:dr|qr)\d+(?:_deep)?)"')
+_RELEASE = re.compile(r"^spherex_(dr|qr)(\d+)(_deep)?$")
+_PROCESSING = re.compile(r"_spx_(l2b-v(\d+)-(\d{4})-(\d{3}))\.fits")
 _DETECTOR = re.compile(r"^SPHEREx-D([1-6])$")
 METRES_TO_UM = 1e6
+SEARCH_SCHEMA = 2  # bump to stop reading search caches written by older code
+
+
+@dataclass(frozen=True)
+class Release:
+    kind: str  # "dr" (data release) or "qr" (quick release)
+    number: int
+    field: str  # "wide" or "deep"
+
+
+def parse_release(collection: str) -> Release | None:
+    match = _RELEASE.match(collection)
+    if not match:
+        return None
+    return Release(match[1], int(match[2]), "deep" if match[3] else "wide")
+
+
+def parse_processing(url: str) -> str | None:
+    """Pipeline product version from the file name, e.g. 'l2b-v27-2026-228'."""
+    match = _PROCESSING.search(url)
+    return match[1] if match else None
 
 
 @dataclass(frozen=True)
@@ -29,6 +53,19 @@ class Exposure:
     wave_max_um: float
     url: str
     collection: str
+    mjd_end: float | None = None
+    processing: str | None = None
+    release_date: str | None = None
+    publisher_did: str | None = None
+
+    @property
+    def obs_key(self) -> str:
+        """Release-aware identity: '<collection>:<obs_id>:D<detector>'."""
+        return f"{self.collection}:{self.obs_id}:D{self.detector}"
+
+    @property
+    def release(self) -> Release | None:
+        return parse_release(self.collection)
 
 
 def parse_collections(self_description: str) -> tuple[str, ...]:
@@ -43,11 +80,22 @@ def parse_sia_csv(text: str) -> list[Exposure]:
     ]
 
 
+def _optional_float(value) -> float | None:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
 def _row_to_exposure(row: dict) -> Exposure | None:
     match = _DETECTOR.match(row.get("energy_bandpassname") or "")
     if not match:
         return None
     try:
+        collection = row["obs_collection"]
+        if parse_release(collection) is None:
+            log.warning("Skipping row from unrecognised collection %r", collection)
+            return None
         return Exposure(
             obs_id=row["obs_id"],
             detector=int(match[1]),
@@ -55,29 +103,47 @@ def _row_to_exposure(row: dict) -> Exposure | None:
             wave_min_um=float(row["em_min"]) * METRES_TO_UM,
             wave_max_um=float(row["em_max"]) * METRES_TO_UM,
             url=row["access_url"],
-            collection=row["obs_collection"],
+            collection=collection,
+            mjd_end=_optional_float(row.get("t_max")),
+            processing=parse_processing(row["access_url"]),
+            release_date=row.get("obs_release_date") or None,
+            publisher_did=row.get("obs_publisher_did") or None,
         )
     except (KeyError, TypeError, ValueError) as error:
         log.warning("Skipping malformed archive row: %s", error)
         return None
 
 
-def _release_number(collection: str) -> int:
-    match = _RELEASE_NUMBER.match(collection)
-    return int(match[1]) if match else -1
+def _processing_rank(exposure: Exposure) -> tuple[int, str]:
+    match = re.match(r"l2b-v(\d+)-(\d{4}-\d{3})", exposure.processing or "")
+    return (int(match[1]), match[2]) if match else (-1, "")
 
 
-def dedupe_latest(exposures: list[Exposure]) -> list[Exposure]:
-    """Keep the newest quick release of every (exposure, detector) pair."""
+def release_rank(exposure: Exposure, priority: tuple[str, ...] = config.RELEASE_PRIORITY) -> tuple:
+    """Order products of one exposure: release kind by priority, then number, then pipeline version."""
+    release = exposure.release
+    if release is None:
+        return (-1, -1, (-1, ""))
+    kind = len(priority) - priority.index(release.kind) if release.kind in priority else 0
+    return (kind, release.number, _processing_rank(exposure))
+
+
+def select_products(exposures: list[Exposure], priority: tuple[str, ...] = config.RELEASE_PRIORITY) -> list[Exposure]:
+    """One product per (exposure, detector): a data release beats a quick release by default.
+
+    Products of the same exposure in different releases are the same photons, so
+    they are never counted twice (see docs/EXPOSURE.md, exposure is per obs_id).
+    """
     best: dict[tuple[str, int], Exposure] = {}
     for exposure in exposures:
         key = (exposure.obs_id, exposure.detector)
         held = best.get(key)
-        if held is None or _release_number(exposure.collection) > _release_number(
-            held.collection
-        ):
+        if held is None or release_rank(exposure, priority) > release_rank(held, priority):
             best[key] = exposure
     return list(best.values())
+
+
+dedupe_latest = select_products  # earlier name, kept for callers outside this package
 
 
 def cutout_url(exposure: Exposure, ra: float, dec: float, size_deg: float) -> str:
@@ -85,19 +151,17 @@ def cutout_url(exposure: Exposure, ra: float, dec: float, size_deg: float) -> st
 
 
 def exposure_key(exposure: Exposure) -> str:
-    return f"{exposure.obs_id}_D{exposure.detector}_{_release_number(exposure.collection)}"
+    """File-safe cache key that changes when the release or the product version changes."""
+    return f"{exposure.collection}__{exposure.obs_id}_D{exposure.detector}__{exposure.processing or 'unversioned'}"
 
 
 def discover_collections(client: httpx.Client) -> tuple[str, ...]:
-    """Ask the archive which SPHEREx releases exist, so new ones appear unaided."""
-    path = config.CACHE_DIR / "collections.json"
+    """Ask the archive which SPHEREx releases exist, so new ones (DR1, QR3, later) appear unaided."""
+    path = config.CACHE_DIR / f"collections-v{SEARCH_SCHEMA}.json"
     if _is_fresh(path):
-        return tuple(json.loads(path.read_text()))
+        return _allowed(tuple(json.loads(path.read_text())))
     try:
-        response = client.get(
-            config.IRSA_SIA_URL,
-            params={"COLLECTION": "spherex_qr2", "POS": "circle 0 0 0.0001", "MAXREC": 0},
-        )
+        response = client.get(config.IRSA_SIA_URL, params={"POS": "circle 0 0 0.0001", "MAXREC": 0})
         response.raise_for_status()
         found = parse_collections(response.text)
     except httpx.HTTPError as error:
@@ -105,13 +169,21 @@ def discover_collections(client: httpx.Client) -> tuple[str, ...]:
         found = ()
     if found:
         _write_atomic(path, json.dumps(found).encode())
-        return found
-    return tuple(json.loads(path.read_text())) if path.exists() else config.FALLBACK_COLLECTIONS
+        return _allowed(found)
+    cached = tuple(json.loads(path.read_text())) if path.exists() else config.FALLBACK_COLLECTIONS
+    return _allowed(cached)
+
+
+def _allowed(collections: tuple[str, ...]) -> tuple[str, ...]:
+    """Apply the optional BLINK_COLLECTIONS restriction."""
+    if not config.ONLY_COLLECTIONS:
+        return collections
+    return tuple(item for item in collections if item in config.ONLY_COLLECTIONS)
 
 
 def search(client: httpx.Client, ra: float, dec: float) -> list[Exposure]:
     """List every exposure covering a position, across all known releases."""
-    path = config.CACHE_DIR / "search" / f"{ra:.4f}_{dec:.4f}.json"
+    path = config.CACHE_DIR / "search" / f"v{SEARCH_SCHEMA}" / f"{ra:.4f}_{dec:.4f}.json"
     if _is_fresh(path):
         return _read_search(path)
     try:
@@ -138,7 +210,7 @@ def _query_all_releases(client: httpx.Client, ra: float, dec: float) -> list[Exp
         )
         response.raise_for_status()
         rows.extend(parse_sia_csv(response.text))
-    return sorted(dedupe_latest(rows), key=lambda item: item.mjd)
+    return sorted(select_products(rows), key=lambda item: (item.mjd, item.detector))
 
 
 def _read_search(path: Path) -> list[Exposure]:
