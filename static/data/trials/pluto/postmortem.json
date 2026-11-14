@@ -1,0 +1,249 @@
+{
+  "schema_version": "tenger.postmortem/1",
+  "contract_version": 8,
+  "trial_id": "pluto-position-2026b",
+  "label": "exploratory, after the reveal",
+  "exploratory": true,
+  "counts": false,
+  "generated_utc": "2026-11-14T15:34:10Z",
+  "frozen": {
+    "prediction_status": "predicted",
+    "status": "miss",
+    "d2": 6.7728,
+    "error_arcsec": 5.8991,
+    "reference": {
+      "ra_deg": 306.09653606,
+      "dec_deg": -23.71915129,
+      "t_mjd": 61314.164221
+    },
+    "c_pred_ellipse_95": {
+      "semi_major_95_arcsec": 6.038,
+      "semi_minor_95_arcsec": 2.493,
+      "position_angle_deg_east_of_north": 77.99
+    },
+    "c_obs_ellipse_95": {
+      "semi_major_95_arcsec": 0.897,
+      "semi_minor_95_arcsec": 0.333,
+      "position_angle_deg_east_of_north": 51.61
+    },
+    "combined_ellipse_95": {
+      "semi_major_95_arcsec": 6.093,
+      "semi_minor_95_arcsec": 2.542,
+      "position_angle_deg_east_of_north": 77.47
+    }
+  },
+  "identification": {
+    "observed_minus_horizons_arcsec": [
+      0.223,
+      0.27
+    ],
+    "frozen_model_minus_horizons_arcsec": [
+      5.589,
+      2.721
+    ],
+    "observed_minus_horizons_total_arcsec": 0.35,
+    "frozen_model_minus_horizons_total_arcsec": 6.216,
+    "c_obs_sigma_arcsec": [
+      0.299,
+      0.251
+    ],
+    "exposures_used": 4
+  },
+  "residual_split": {
+    "east_arcsec": -5.365,
+    "north_arcsec": -2.452,
+    "along_track_arcsec": 5.687,
+    "cross_track_arcsec": 1.568,
+    "apparent_motion_arcsec_per_day": 24.717,
+    "motion_position_angle_deg": 260.86,
+    "residual_position_angle_deg": 245.44,
+    "along_track_sigma_arcsec": 2.486,
+    "cross_track_sigma_arcsec": 1.047,
+    "along_track_z": 2.29,
+    "cross_track_z": 1.5
+  },
+  "alternative_models": {
+    "heliocentric_two_body": {
+      "chi2_red": 1.993,
+      "ra_deg": 306.09649617,
+      "dec_deg": -23.71916463,
+      "observed_minus_model_arcsec": [
+        -5.234,
+        -2.404
+      ],
+      "error_arcsec": 5.76,
+      "d2_exploratory": 6.48,
+      "ellipse_95": {
+        "semi_major_95_arcsec": 6.034,
+        "semi_minor_95_arcsec": 2.479,
+        "position_angle_deg_east_of_north": 77.98
+      }
+    },
+    "barycentric_two_body": {
+      "chi2_red": 1.995,
+      "ra_deg": 306.09630197,
+      "dec_deg": -23.71919639,
+      "observed_minus_model_arcsec": [
+        -4.594,
+        -2.289
+      ],
+      "error_arcsec": 5.133,
+      "d2_exploratory": 5.411,
+      "ellipse_95": {
+        "semi_major_95_arcsec": 6.037,
+        "semi_minor_95_arcsec": 2.491,
+        "position_angle_deg_east_of_north": 77.96
+      }
+    },
+    "barycentric_nbody": {
+      "chi2_red": 1.995,
+      "ra_deg": 306.09630117,
+      "dec_deg": -23.71919221,
+      "observed_minus_model_arcsec": [
+        -4.591,
+        -2.304
+      ],
+      "error_arcsec": 5.137,
+      "d2_exploratory": 5.457,
+      "ellipse_95": {
+        "semi_major_95_arcsec": 6.04,
+        "semi_minor_95_arcsec": 2.494,
+        "position_angle_deg_east_of_north": 78.06
+      }
+    }
+  },
+  "model_variants": {
+    "no_light_time": {
+      "prediction_shift_arcsec": [
+        -0.322,
+        -0.123
+      ],
+      "chi2_red": 1.994
+    },
+    "no_spacecraft_offset": {
+      "prediction_shift_arcsec": [
+        -0.862,
+        -0.322
+      ],
+      "chi2_red": 1.979
+    }
+  },
+  "uncertainty_test": {
+    "assumed_array_systematic_arcsec": 0.4,
+    "draws_per_level": 200,
+    "groups": 6,
+    "frozen_c_pred_ellipse_95": {
+      "semi_major_95_arcsec": 6.038,
+      "semi_minor_95_arcsec": 2.493,
+      "position_angle_deg_east_of_north": 77.99
+    },
+    "sensitivity": {
+      "0.1": {
+        "monte_carlo_ellipse_95_at_evaluation": {
+          "semi_major_95_arcsec": 5.801,
+          "semi_minor_95_arcsec": 0.766,
+          "position_angle_deg_east_of_north": 69.78
+        },
+        "d2_with_inflated_covariance": 3.456,
+        "would_have_been": "hit",
+        "monte_carlo_ellipse_95_at_2027_reference": {
+          "semi_major_95_arcsec": 14.706,
+          "semi_minor_95_arcsec": 1.018,
+          "position_angle_deg_east_of_north": 85.23
+        }
+      },
+      "0.2": {
+        "monte_carlo_ellipse_95_at_evaluation": {
+          "semi_major_95_arcsec": 10.571,
+          "semi_minor_95_arcsec": 1.442,
+          "position_angle_deg_east_of_north": 69.92
+        },
+        "d2_with_inflated_covariance": 1.653,
+        "would_have_been": "hit",
+        "monte_carlo_ellipse_95_at_2027_reference": {
+          "semi_major_95_arcsec": 29.311,
+          "semi_minor_95_arcsec": 1.976,
+          "position_angle_deg_east_of_north": 84.58
+        }
+      },
+      "0.4": {
+        "monte_carlo_ellipse_95_at_evaluation": {
+          "semi_major_95_arcsec": 22.138,
+          "semi_minor_95_arcsec": 3.08,
+          "position_angle_deg_east_of_north": 68.57
+        },
+        "d2_with_inflated_covariance": 0.445,
+        "would_have_been": "hit",
+        "monte_carlo_ellipse_95_at_2027_reference": {
+          "semi_major_95_arcsec": 63.971,
+          "semi_minor_95_arcsec": 3.929,
+          "position_angle_deg_east_of_north": 85.22
+        }
+      }
+    },
+    "jackknife_by_visit_and_array": {
+      "ellipse_95": {
+        "semi_major_95_arcsec": 22.623,
+        "semi_minor_95_arcsec": 13.008,
+        "position_angle_deg_east_of_north": 107.53
+      },
+      "shifts_arcsec": [
+        [
+          -2.905,
+          -1.563
+        ],
+        [
+          -0.444,
+          -0.309
+        ],
+        [
+          7.224,
+          1.659
+        ],
+        [
+          -0.02,
+          -0.008
+        ],
+        [
+          -6.011,
+          6.385
+        ],
+        [
+          0.127,
+          -0.178
+        ]
+      ],
+      "d2_with_jackknife_covariance": 0.696,
+      "note": "computable from training data alone, before the freeze"
+    }
+  },
+  "open_forecast_2027": {
+    "t_mjd": 61520.0,
+    "frozen_ellipse_95": {
+      "semi_major_95_arcsec": 54.125,
+      "semi_minor_95_arcsec": 1.064,
+      "position_angle_deg_east_of_north": 83.09
+    },
+    "exploratory_nbody_minus_frozen_arcsec": [
+      -0.111,
+      0.212
+    ],
+    "exploratory_nbody_minus_frozen_total_arcsec": 0.239,
+    "d2_of_shift_in_frozen_ellipse": 0.266,
+    "exploratory_nbody_ellipse_95": {
+      "semi_major_95_arcsec": 54.408,
+      "semi_minor_95_arcsec": 0.971,
+      "position_angle_deg_east_of_north": 83.09
+    },
+    "exploratory_nbody_position": {
+      "ra_deg": 310.36723681,
+      "dec_deg": -22.94731061
+    }
+  },
+  "sources": [
+    "trials/pluto-position-2026b/trial.json",
+    "trials/pluto-position-2026b/training.json",
+    "trials/pluto-position-2026b/prediction.json",
+    "trials/pluto-position-2026b/verification.json"
+  ]
+}

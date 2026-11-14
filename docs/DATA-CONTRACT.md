@@ -9,6 +9,7 @@ only typo fixes are allowed in place, and each one is noted in the changelog.
 | Version | Date | Change |
 |---|---|---|
 | 1 | 2026-11-14 | First version (Task A1). Defines nine file types, enums, paths and examples. |
+| 8 | 2026-11-14 | Additive (Task A5b). Exploratory post-mortem file `trials/pluto/postmortem.json`. |
 | 7 | 2026-11-14 | Additive (Task A5). Verification extras, reserved.json status, scoreboard and game additions. |
 | 6 | 2026-11-14 | Additive. Verification residual fields agreed with Session B before A5 (reference position, C_pred, C_obs). |
 | 5 | 2026-11-14 | Additive (Task A4). Trial labels and precedence, confirmation_pending, open forecasts, training.json, prediction_status, model_state, receipts with full SHA; names agreed with Session B. |
@@ -675,3 +676,23 @@ Agreed with Session B before any verification, so the page can redraw exactly wh
 | `scoreboard.json` | rows gain `counts_as_prospective_if_confirmed`, `model_d2`, `baseline_d2`, `baseline_status`. `counts_as_prospective` is `false` while `confirmation_pending` |
 | `game/<round>.json` | `contract_version`, `labels`, `confirmation_pending`, `frame` (centre = frozen model at the reveal time), `training_points[].n_exposures/visit/detector`, `model.cov_arcsec2` (C_pred), `baseline.cov_arcsec2`, `actual.cov_arcsec2` (C_obs), `outcome`, `scoring.scale_source` |
 | `lessons/<id>.json` | `worked_example.prompt_key`; answers may add `z` or `note` |
+
+---
+
+# Version 8 (additive, Task A5b, 14 Nov 2026): exploratory post-mortem
+
+`static/data/trials/pluto/postmortem.json`, kind `tenger.postmortem/1`. This folder has **no**
+`trial.json`, so it is never a trial and never on the scoreboard. Top level: `label` ("exploratory,
+after the reveal"), `exploratory: true`, `counts: false`, `trial_id` (the trial it explains).
+
+| Block | Content |
+|---|---|
+| `frozen` | Status, D², error, reference position and time, 95% ellipses of C_pred, C_obs and their sum (`semi_major_95_arcsec`, `semi_minor_95_arcsec`, `position_angle_deg_east_of_north`) |
+| `identification` | Observed − Horizons and frozen − Horizons (E, N and total arcsec), C_obs sigmas, exposures used |
+| `residual_split` | East/north, along/across the track, apparent motion (arcsec/day, PA), σ and z for each |
+| `alternative_models` | Per model (`heliocentric_two_body`, `barycentric_two_body`, `barycentric_nbody`), refitted to the same training data: χ²/dof, position, observed − model, error, exploratory D², 95% ellipse |
+| `model_variants` | Forecast shift when light time or the spacecraft offset is switched off |
+| `uncertainty_test` | `sensitivity` per group offset σ (0.1, 0.2, 0.4″): Monte Carlo ellipses at the evaluation time and at the 2027 reference, D² of the actual miss with that covariance added. `jackknife_by_visit_and_array` (training only) |
+| `open_forecast_2027` | Frozen ellipse vs the exploratory N-body shift |
+
+Pages must show it as "exploratory, after the reveal" and must not use it to change any count or status.

@@ -122,7 +122,7 @@ def test_frozen_trials_have_intact_hash_chains_and_open_forecasts_are_not_counte
     trials_dir = DATA / "trials"
     if not trials_dir.exists():
         pytest.skip("no trials published")
-    for folder in sorted(trials_dir.iterdir()):
+    for folder in sorted(path for path in trials_dir.iterdir() if (path / "trial.json").exists()):
         assert predict.check(folder.name) == [], folder.name
         receipt = json.loads((folder / "receipt.json").read_text())
         assert len(receipt["commit"]) == 40
@@ -133,3 +133,18 @@ def test_frozen_trials_have_intact_hash_chains_and_open_forecasts_are_not_counte
         prediction = json.loads((trials_dir / row["trial_id"] / "prediction.json").read_text())
         if prediction["prediction_status"] == "insufficient_data":
             assert row["status"] == "insufficient_data"
+
+
+def test_the_pluto_postmortem_is_exploratory_and_matches_the_frozen_verdict():
+    path = DATA / "trials" / "pluto" / "postmortem.json"
+    if not path.exists():
+        pytest.skip("no post-mortem")
+    postmortem = json.loads(path.read_text())
+    assert postmortem["exploratory"] is True and postmortem["counts"] is False
+    assert postmortem["label"] == "exploratory, after the reveal"
+    verification = json.loads((DATA / "trials" / "pluto-position-2026b" / "verification.json").read_text())
+    assert postmortem["frozen"]["status"] == verification["status"] == "miss"
+    assert postmortem["frozen"]["d2"] == verification["residuals"]["model"]["d2"]
+    assert not (DATA / "trials" / "pluto" / "trial.json").exists()  # never a scored trial
+    scoreboard = json.loads((DATA / "scoreboard.json").read_text())
+    assert "pluto" not in {row["trial_id"] for row in scoreboard["rows"]}
