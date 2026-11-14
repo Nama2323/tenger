@@ -1,0 +1,111 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "example": true,
+  "contract_version": 5,
+  "trial_id": "pluto-position-forecast-example",
+  "trial_ref": {
+    "path": "trials/pluto-position-forecast-example/trial.json",
+    "sha256": "1d856c7cf5157eb4bc5445b10dbb4ea1bec03a644c63736e7ca1f1cf4e8b9aae"
+  },
+  "category": "catalogue_assisted",
+  "created_utc": "2026-11-14T15:22:00Z",
+  "prediction_status": "predicted",
+  "status_reason_key": null,
+  "t_mjd": 61516.5,
+  "model": {
+    "ra_deg": 307.402,
+    "dec_deg": -23.41,
+    "cov_arcsec2": [
+      [
+        2.25,
+        0.3
+      ],
+      [
+        0.3,
+        1.69
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "ra_deg": 307.617418864,
+    "dec_deg": -23.352520657,
+    "cov_arcsec2": [
+      [
+        64,
+        0
+      ],
+      [
+        0,
+        64
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "track": [
+    {
+      "t_mjd": 61515,
+      "ra_deg": 307.411383425,
+      "dec_deg": -23.408777498,
+      "cov_arcsec2": [
+        [
+          2.25,
+          0.3
+        ],
+        [
+          0.3,
+          1.69
+        ]
+      ]
+    },
+    {
+      "t_mjd": 61516,
+      "ra_deg": 307.405117738,
+      "dec_deg": -23.409583302,
+      "cov_arcsec2": [
+        [
+          2.25,
+          0.3
+        ],
+        [
+          0.3,
+          1.69
+        ]
+      ]
+    },
+    {
+      "t_mjd": 61517,
+      "ra_deg": 307.398851974,
+      "dec_deg": -23.410388857,
+      "cov_arcsec2": [
+        [
+          2.3,
+          0.3
+        ],
+        [
+          0.3,
+          1.72
+        ]
+      ]
+    },
+    {
+      "t_mjd": 61518,
+      "ra_deg": 307.392586134,
+      "dec_deg": -23.411194162,
+      "cov_arcsec2": [
+        [
+          2.36,
+          0.31
+        ],
+        [
+          0.31,
+          1.76
+        ]
+      ]
+    }
+  ],
+  "limitation_keys": [
+    "limit.ephemeris-guided",
+    "limit.example"
+  ]
+}

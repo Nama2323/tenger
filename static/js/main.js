@@ -1,4 +1,4 @@
-// TENGER: the page shell (Home, Investigate, Beat the physics, Learn, About) and the image viewer
+// TENGER: the page shell (Home, Investigate, Predictions, Beat the physics, Learn, About) and the image viewer
 // inherited from SPHEREx Blink, extended with explicit A/B observations, Swipe, a caption strip and URL state.
 import * as api from './api.js';
 import { comparisonWarning, CONTEXT_STEP, describePicture, describePreviewEpoch } from './caption.js';
@@ -16,6 +16,9 @@ import { findByName, searchMatches } from './names.js';
 import { renderChanged, renderEvidence, renderPrediction, renderSpectrumNote } from './panels.js';
 import { currentRoundId, renderGamePage, selectRound } from './game-ui.js';
 import { currentLearnView, initLearn, showLearn } from './learn-ui.js';
+import { initHelp } from './help.js';
+import { hasPublishedTrials } from './ledger.js';
+import { currentReveal, initLedger, showLedger, syncRevealFromUrl } from './ledger-ui.js';
 import { renderAbout } from './pages.js';
 import {
   drawPlate, limitsFor, paintComposite, paintDifference, paintMono, stacksFor, StackCache, tintFor,
@@ -1461,6 +1464,7 @@ function routeState() {
     fixtures: app.source?.fixtures,
     round: app.page === 'game' ? currentRoundId() : null,
     lesson: app.page === 'learn' ? currentLearnView() : null,
+    trial: app.page === 'predictions' ? currentReveal() : null,
   };
   if (app.page !== 'investigate' || !state.target) return base;
   const centre = app.requested ?? centreOf(state.target);
@@ -1505,6 +1509,8 @@ function showPage(page, { push = true, focus = true } = {}) {
     link.setAttribute('aria-current', current ? 'page' : 'false');
   }
   if (page === 'home' || page === 'investigate') requestAnimationFrame(placeMapLabels);
+  if (page === 'predictions') showLedger();
+  else syncRevealFromUrl(null);
   if (page !== 'investigate') {
     setPlaying(false);
     document.title = page === 'home' ? `${t('site.title')} · ${t('home.title')}` : `${t(`nav.${page}`)} · ${t('site.title')}`;
@@ -1730,6 +1736,7 @@ function applyLocation({ push = false } = {}) {
     if (resolved.page === 'game' && route.round && route.round !== currentRoundId()) selectRound(route.round);
     if (resolved.page === 'learn' && (route.lesson ?? null) !== currentLearnView()) showLearn(route.lesson, { notify: false, focus: false });
     showPage(resolved.page, { push, focus: false });
+    if (resolved.page === 'predictions') syncRevealFromUrl(route.trial);
     return;
   }
   app.panel = route.panel ?? 'see';
@@ -1858,6 +1865,8 @@ function bindSearchList() {
   });
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
+    // An open dialog (shortcuts, limits, the reveal) takes Escape for itself.
+    if (document.querySelector('dialog[open]')) return;
     closeSearchList();
     setMenu(false);
     // Escape closes the investigation panel (not while a form field or the full-screen viewer has it).
@@ -1941,6 +1950,7 @@ const demoActions = {
 
 function bindControls() {
   bindSearchList();
+  initHelp({ onOpen: () => setMenu(false) });
   $('tour-start').addEventListener('click', () => runTour(demoActions));
   $('tour-stop').addEventListener('click', stopTour);
   bindViewingTools();
@@ -2082,6 +2092,23 @@ async function loadData() {
     },
   });
   showLearn(parseRoute(location.search).lesson, { notify: false, focus: false });
+  // Predictions: real trial files as soon as the real index lists any; until then the labelled fixtures.
+  const realIndex = fixtures ? await real.index() : indexState;
+  const fallback = !fixtures && !hasPublishedTrials(realIndex);
+  initLedger({
+    source: fallback ? createSource({ fixtures: true }) : app.source,
+    fallback,
+    fixtures,
+    nameOf: (key) => {
+      const entry = key ? app.allTargets.find((item) => item.key === canonicalKey(key)) : null;
+      return entry ? entryName(entry) : key;
+    },
+    investigateHref: (key) => buildRoute({ page: 'investigate', target: key, fixtures }),
+    onChange: ({ push = false } = {}) => {
+      if (app.page === 'predictions') writeUrl({ push });
+    },
+    onMissingTrial: (id) => addNotice('note.trialMissing', { id }),
+  });
 }
 
 /** Index thumbnails (V3.2) when the index lists them; otherwise the prepared legacy pair. */

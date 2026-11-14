@@ -1,4 +1,4 @@
-// Reads TENGER contract files (docs/DATA-CONTRACT.md, version 1). Real files live under data/;
+// Reads TENGER contract files (docs/DATA-CONTRACT.md, version 1, additions up to V5). Real files live under data/;
 // development fixtures under dev-fixtures/ (opened only with ?fixtures=1) and always carry "example": true.
 export const KNOWN_MAJOR = 1;
 export const REAL_BASE = 'data/';
@@ -75,6 +75,8 @@ export function createSource({ fixtures = false, fetchImpl = (...args) => fetch(
       ]);
       return { id: trialId, trial, prediction, receipt, verification };
     },
+    /** V5: the measured positions a position trial was fitted to (trials/<id>/training.json). */
+    training: (trialId) => (isKey(trialId) ? load(`trials/${trialId}/training.json`, 'training') : missing()),
     gameRound: (path) => (path ? load(path, 'game_round') : missing()),
     scoreboard: (path) => (path ? load(path, 'scoreboard') : missing()),
     strings: (path = 'strings.en.json') => load(path, 'strings'),

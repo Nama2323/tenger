@@ -1,0 +1,14 @@
+{
+  "schema_version": "tenger.receipt/1",
+  "example": true,
+  "trial_id": "epsindib-position-example",
+  "prediction_path": "trials/epsindib-position-example/prediction.json",
+  "prediction_sha256": "17765abe62517e5931c55e074bd3021ead7711a9f5302bf5533bc6d42b0999fe",
+  "commit": "0000000000000000000000000000000000000000",
+  "committed_utc": "2026-11-14T15:06:00Z",
+  "pushed": {
+    "remote": "origin",
+    "branch": "tenger-dev",
+    "utc": null
+  }
+}

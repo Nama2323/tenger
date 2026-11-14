@@ -1,0 +1,64 @@
+{
+  "schema_version": "tenger.training/1",
+  "example": true,
+  "trial_id": "barnard-position-example",
+  "points": [
+    {
+      "t_mjd": 60916,
+      "ra_deg": 269.446520435,
+      "dec_deg": 4.768782776,
+      "cov_arcsec2": [
+        [
+          0.09,
+          0
+        ],
+        [
+          0,
+          0.09
+        ]
+      ],
+      "obs_keys": [
+        "spherex_qr3:EXAMPLE_B1_1:D3"
+      ],
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61119,
+      "ra_deg": 269.446301076,
+      "dec_deg": 4.770524837,
+      "cov_arcsec2": [
+        [
+          0.09,
+          0
+        ],
+        [
+          0,
+          0.09
+        ]
+      ],
+      "obs_keys": [
+        "spherex_qr3:EXAMPLE_B2_1:D3"
+      ],
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61275,
+      "ra_deg": 269.446309966,
+      "dec_deg": 4.771598293,
+      "cov_arcsec2": [
+        [
+          0.09,
+          0
+        ],
+        [
+          0,
+          0.09
+        ]
+      ],
+      "obs_keys": [
+        "spherex_qr3:EXAMPLE_B3_1:D3"
+      ],
+      "content_type": "measured"
+    }
+  ]
+}

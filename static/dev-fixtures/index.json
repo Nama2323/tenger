@@ -13,7 +13,7 @@
       "reference": {
         "ra_deg": 269.44875,
         "dec_deg": 4.73942,
-        "epoch_jyear": 2016.0,
+        "epoch_jyear": 2016,
         "pmra_mas_yr": -801.55,
         "pmdec_mas_yr": 10362.39,
         "source": "Gaia DR3 (example copy)"
@@ -58,7 +58,9 @@
       "data_status": "available",
       "prediction": {
         "status": "insufficient_data",
-        "trial_ids": []
+        "trial_ids": [
+          "wise0855-position-example"
+        ]
       },
       "investigation_path": null,
       "thumbnails": [],
@@ -87,8 +89,10 @@
       },
       "data_status": "available",
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "miss",
+        "trial_ids": [
+          "epsindib-position-example"
+        ]
       },
       "investigation_path": null,
       "thumbnails": [],
@@ -174,7 +178,8 @@
       "prediction": {
         "status": "hit",
         "trial_ids": [
-          "makemake-position-example"
+          "makemake-position-example",
+          "makemake-position-forecast-example"
         ]
       },
       "investigation_path": null,
@@ -200,8 +205,11 @@
       "footprint": null,
       "data_status": "unavailable",
       "prediction": {
-        "status": null,
-        "trial_ids": []
+        "status": "waiting",
+        "trial_ids": [
+          "pluto-position-example",
+          "pluto-position-forecast-example"
+        ]
       },
       "investigation_path": null,
       "thumbnails": [],
@@ -271,9 +279,14 @@
   ],
   "trials": [
     "trials/barnard-position-example/trial.json",
-    "trials/makemake-position-example/trial.json",
+    "trials/wise0855-position-example/trial.json",
+    "trials/epsindib-position-example/trial.json",
+    "trials/rwaur-brightness-example/trial.json",
     "trials/rdra-brightness-example/trial.json",
-    "trials/rwaur-brightness-example/trial.json"
+    "trials/makemake-position-example/trial.json",
+    "trials/makemake-position-forecast-example/trial.json",
+    "trials/pluto-position-example/trial.json",
+    "trials/pluto-position-forecast-example/trial.json"
   ],
   "scoreboard_path": "scoreboard.json",
   "game_rounds": [

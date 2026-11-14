@@ -19,9 +19,13 @@ const SIZES = {
   768: { width: 768, height: 1024, mobile: true },
   1280: { width: 1280, height: 800, mobile: false },
   1440: { width: 1440, height: 900, mobile: false },
+  // The reveal is screen-recorded at 1280×720 for the video.
+  '720p': { width: 1280, height: 720, mobile: false, label: '1280x720' },
 };
 // WIDTHS=390,1440 picks sizes; PAGES=home,about picks pages by exact name; PREFIX=before- names the files.
 const WIDTHS = (process.env.WIDTHS ?? '360,390,768,1280').split(',').map((width) => SIZES[width.trim()]).filter(Boolean);
+/** Pages with their own sizes (e.g. the reveal at 1280×720) list them in `sizes`; WIDTHS still filters. */
+const sizesFor = (page) => (page.sizes ? page.sizes.map((key) => SIZES[key]) : WIDTHS).filter((size) => !process.env.WIDTHS || WIDTHS.includes(size));
 const ONLY = process.env.PAGES ? new Set(process.env.PAGES.split(',').map((name) => name.trim())) : null;
 const PREFIX = process.env.PREFIX ?? '';
 const PAGES = [
@@ -43,6 +47,20 @@ const PAGES = [
   { name: 'game-example', path: '/?page=game&fixtures=1', ready: '.game-plot', scrollTo: '#round-picker' },
   { name: 'game-example-revealed', path: '/?page=game&fixtures=1&round=barnard-position-example', ready: '.game-plot', act: "(() => { const v = document.getElementById('guess-value'); if (v) { v.value = '5.8'; v.dispatchEvent(new Event('change')); } const e = document.getElementById('guess-east'); if (e) { e.value = '-2'; e.dispatchEvent(new Event('change')); const n = document.getElementById('guess-north'); n.value = '14.6'; n.dispatchEvent(new Event('change')); } document.getElementById('lock-guess').click(); for (let i = 0; i < 3; i += 1) document.getElementById('reveal-next').click(); })()", scrollTo: '.round-grid' },
   { name: 'game-rdra-revealed', path: '/?page=game&fixtures=1&round=rdra-brightness-example', ready: '.game-plot', act: "(() => { const v = document.getElementById('guess-value'); if (v) { v.value = '5.8'; v.dispatchEvent(new Event('change')); } const e = document.getElementById('guess-east'); if (e) { e.value = '-2'; e.dispatchEvent(new Event('change')); const n = document.getElementById('guess-north'); n.value = '14.6'; n.dispatchEvent(new Event('change')); } document.getElementById('lock-guess').click(); for (let i = 0; i < 3; i += 1) document.getElementById('reveal-next').click(); })()", scrollTo: '.round-grid' },
+  { name: 'predictions', path: '/?page=predictions', ready: '.ledger-card' },
+  { name: 'predictions-cards', path: '/?page=predictions', ready: '.ledger-card', scrollTo: '#ledger-trials-title' },
+  { name: 'predictions-forecasts', path: '/?page=predictions', ready: '.forecast-card', scrollTo: '#ledger-forecasts-title' },
+  { name: 'predictions-fixtures', path: '/?page=predictions&fixtures=1', ready: '.ledger-card', scrollTo: '#ledger-trials-title' },
+  { name: 'predictions-fixtures-forecasts', path: '/?page=predictions&fixtures=1', ready: '.forecast-card', scrollTo: '#ledger-forecasts-title' },
+  { name: 'predictions-reveal-1-image', path: '/?page=predictions&fixtures=1&trial=barnard-position-example', ready: '.reveal-svg', sizes: ['360', '390', '768', '1280', '720p'] },
+  { name: 'predictions-reveal-2-track', path: '/?page=predictions&fixtures=1&trial=barnard-position-example', ready: '.reveal-svg', act: "document.querySelector('#reveal').dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))", sizes: ['720p'] },
+  { name: 'predictions-reveal-3-region', path: '/?page=predictions&fixtures=1&trial=barnard-position-example', ready: '.reveal-svg', act: "(() => { for (let i = 0; i < 2; i += 1) document.querySelector('#reveal').dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); })()", sizes: ['720p'] },
+  { name: 'predictions-reveal-4-baseline', path: '/?page=predictions&fixtures=1&trial=barnard-position-example', ready: '.reveal-svg', act: "(() => { for (let i = 0; i < 3; i += 1) document.querySelector('#reveal').dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); })()", sizes: ['720p'] },
+  { name: 'predictions-reveal-5-observed', path: '/?page=predictions&fixtures=1&trial=barnard-position-example', ready: '.reveal-svg', act: "(() => { for (let i = 0; i < 4; i += 1) document.querySelector('#reveal').dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true })); })()", sizes: ['720p'] },
+  { name: 'predictions-reveal-6-verdict', path: '/?page=predictions&fixtures=1&trial=barnard-position-example', ready: '.reveal-svg', act: "document.querySelector('#reveal').dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))", sizes: ['360', '390', '768', '1280', '720p'] },
+  { name: 'predictions-reveal-miss', path: '/?page=predictions&fixtures=1&trial=epsindib-position-example', ready: '.reveal-svg', act: "document.querySelector('#reveal').dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }))", sizes: ['390', '1280', '720p'] },
+  { name: 'shortcuts', path: '/?page=predictions', ready: '.ledger-card', act: "document.dispatchEvent(new KeyboardEvent('keydown', { key: '?', bubbles: true }))" },
+  { name: 'limits', path: '/', ready: '.map-marker', act: "document.querySelector('.nav .nav-extra').click()" },
   { name: 'learn', path: '/?page=learn', ready: '#lesson-list li' },
   { name: 'learn-lesson-distance', path: '/?page=learn&lesson=distance', ready: '#lesson-view .answer-key' },
   { name: 'learn-lesson-sure', path: '/?page=learn&lesson=sure&fixtures=1', ready: '#lesson-view .answer-key', act: "document.querySelectorAll('.answer-toggle').forEach((d) => { d.open = true; })" },
@@ -120,7 +138,7 @@ async function main() {
   for (const page of PAGES) {
     if (only && !page.name.startsWith(only)) continue;
     if (ONLY && !ONLY.has(page.name)) continue;
-    for (const size of WIDTHS) {
+    for (const size of sizesFor(page)) {
       consoleErrors.length = 0;
       await send('Emulation.setDeviceMetricsOverride', { width: size.width, height: size.height, deviceScaleFactor: 1, mobile: size.mobile });
       await send('Emulation.setTouchEmulationEnabled', { enabled: size.mobile });
@@ -142,7 +160,7 @@ async function main() {
       }
       const audit = (await send('Runtime.evaluate', { expression: AUDIT, returnByValue: true })).result.result.value;
       const shot = await send('Page.captureScreenshot', { format: 'png' });
-      const file = `${PREFIX}${page.name}-${size.width}.png`;
+      const file = `${PREFIX}${page.name}-${size.label ?? size.width}.png`;
       writeFileSync(join(outDir, file), Buffer.from(shot.result.data, 'base64'));
       if (process.env.FULL && size.width === Number(process.env.FULL)) {
         await send('Runtime.evaluate', { expression: 'scrollTo(0,0)' });
@@ -151,7 +169,7 @@ async function main() {
         const full = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip: { x: 0, y: 0, width: size.width, height, scale: 1 } });
         writeFileSync(join(outDir, `${PREFIX}${page.name}-${size.width}-full.png`), Buffer.from(full.result.data, 'base64'));
       }
-      report.push({ page: page.name, requested: size.width, ready, ...audit, consoleErrors: [...consoleErrors] });
+      report.push({ page: page.name, requested: size.label ?? size.width, ready, ...audit, consoleErrors: [...consoleErrors] });
     }
   }
   writeFileSync(join(outDir, `${PREFIX}viewport-report.json`), JSON.stringify(report, null, 2));

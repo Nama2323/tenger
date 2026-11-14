@@ -1,0 +1,65 @@
+{
+  "schema_version": "tenger.trial/1",
+  "example": true,
+  "contract_version": 5,
+  "trial_id": "epsindib-position-example",
+  "target_key": "epsindib",
+  "quantity": "position",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout",
+    "catalogue_assisted"
+  ],
+  "open_forecast": false,
+  "confirmation_pending": false,
+  "frozen_utc": "2026-11-14T15:00:00Z",
+  "exposure": {
+    "status": "exposed",
+    "inventory_ref": null,
+    "team_statement": null,
+    "notes": "example fixture"
+  },
+  "training": {
+    "obs_keys": [
+      "spherex_dr1:EXAMPLE_E1_1:D3",
+      "spherex_dr1:EXAMPLE_E2_1:D3",
+      "spherex_qr3:EXAMPLE_E3_1:D3",
+      "spherex_qr3:EXAMPLE_E4_1:D3"
+    ],
+    "measurements_sha256": "1a48fe7eefb38a3eddb02af1284682a69aae227f815832857944b6cdeed043e0"
+  },
+  "holdout": {
+    "obs_ids": [
+      "EXAMPLE_E5_1"
+    ],
+    "t_mjd": 61292,
+    "selection_rule_key": "holdout.next-visit",
+    "data_state": "released",
+    "check_after_utc": null
+  },
+  "permitted_inputs": [
+    {
+      "name": "Gaia DR3 parallax (example)",
+      "content_type": "catalogue",
+      "used_for": "prior"
+    }
+  ],
+  "model": {
+    "id": "example-model",
+    "version": "0.0.0-example",
+    "code_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "baseline": {
+    "id": "linear-no-parallax"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "frame": "tangent plane at predicted position, east/north arcsec",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "covariance": "S = C_pred + C_obs"
+  },
+  "exclusion_rules_keys": [],
+  "exploratory": false,
+  "revises": null
+}

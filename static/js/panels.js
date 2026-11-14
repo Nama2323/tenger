@@ -6,6 +6,7 @@ import { chip, dataTable, el, factList, formatNumber, formatUtc, withUnit } from
 import { has, t, tData } from './i18n.js';
 import { comparisonReasons } from './epochs.js';
 import { categoryChip, categoryNote, exampleChip, trialStatusChip } from './labels.js';
+import { trialLabels } from './ledger.js';
 import { mjdToDate } from './stack.js';
 
 const UNIT_SUFFIXES = ['arcsec_yr', 'mas_yr', 'mjy_sr', 'arcsec', 'deg', 'um', 'ujy', 'mag', 'days', 'mjd', 'au', 'pc'];
@@ -240,12 +241,15 @@ function trialCard(bundle) {
   const doc = trial.doc;
   const category = doc.category;
   const holdoutDate = Number.isFinite(doc.holdout?.t_mjd) ? formatUtc(mjdToDate(doc.holdout.t_mjd), { time: false }) : '—';
+  // V5: training and holdout list observations as obs[] (V1: obs_keys / obs_ids); every label is shown.
+  const trainingCount = doc.training?.obs_keys?.length ?? doc.training?.obs?.length ?? doc.training?.n_points ?? 0;
+  const holdoutCount = doc.holdout?.obs_ids?.length ?? doc.holdout?.obs?.length ?? 0;
   const facts = factList([
-    [t('pred.category'), categoryChip(category)],
+    [t('pred.category'), el('span', { class: 'stamps' }, trialLabels(doc).map(categoryChip))],
     [t('pred.quantity'), quantityLabel(doc.quantity)],
     [t('pred.frozen'), doc.frozen_utc ?? '—'],
-    [t('pred.training'), t('pred.trainingValue', { count: String(doc.training?.obs_keys?.length ?? 0) })],
-    [t('pred.holdout'), t('pred.holdoutValue', { date: holdoutDate, count: String(doc.holdout?.obs_ids?.length ?? 0) })],
+    [t('pred.training'), t('pred.trainingValue', { count: String(trainingCount) })],
+    [t('pred.holdout'), t('pred.holdoutValue', { date: holdoutDate, count: String(holdoutCount) })],
     [t('pred.exposure'), t(`exposure.${doc.exposure?.status ?? 'unknown'}`)],
     [t('pred.scoring'), scoringText(doc.scoring)],
     [t('pred.receipt'), receiptFacts(receipt)],
@@ -264,10 +268,12 @@ function trialCard(bundle) {
     header,
     el('p', { class: 'stamps' }, [exampleStamp(doc), doc.exploratory ? chip(t('pred.exploratory', { id: doc.revises ?? '—' })) : null]),
     el('p', { class: 'panel-note', text: categoryNote(category) }),
+    doc.confirmation_pending === true ? el('p', { class: 'panel-note warn', text: t('ledger.confirmationPendingNote') }) : null,
     facts,
     predicted,
     plot,
     verificationBlock(verification, doc),
+    el('p', {}, el('a', { class: 'button-link', href: `?page=predictions${doc.example ? '&fixtures=1' : ''}${verification?.state === 'ok' && doc.quantity === 'position' ? `&trial=${bundle.id}` : ''}`, text: t('pred.toLedger') })),
     limitations.length ? el('div', {}, [
       el('h4', { text: t('pred.limitations') }),
       el('ul', {}, limitations.map((key) => el('li', { text: tData(key, 'limit.unknown') }))),

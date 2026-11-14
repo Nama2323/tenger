@@ -1,11 +1,12 @@
 // Page state in the URL: parsing, conflict rules and share links. Pure: no DOM.
 //
-// Parameters (old links keep working): ra, dec, fov, target, embed; added: page, panel, band, a, b, mode, v.
+// Parameters (old links keep working): ra, dec, fov, target, embed; added: page, panel, band, a, b, mode, v,
+// round (game), lesson (learn) and trial (the reveal on the Predictions page).
 // id is an alias of target. Coordinates are authoritative: a target named next to coordinates that point
 // somewhere else is ignored, and the page says so.
 import { separationDeg } from './coords.js';
 
-export const PAGES = ['home', 'investigate', 'game', 'learn', 'about'];
+export const PAGES = ['home', 'investigate', 'predictions', 'game', 'learn', 'about'];
 export const PANELS = ['see', 'changed', 'prediction', 'evidence', 'spectrum'];
 export const MODES = ['blink', 'side', 'swipe', 'diff'];
 export const MAX_FOV_DEG = 2;
@@ -79,6 +80,7 @@ export function parseRoute(search) {
     band,
     round: cleanId(params.get('round')),
     lesson: cleanId(params.get('lesson')),
+    trial: cleanId(params.get('trial')),
     a: cleanId(params.get('a')),
     b: cleanId(params.get('b')),
     v: cleanId(params.get('v')),
@@ -127,6 +129,7 @@ export function buildRoute(state) {
   if (page !== 'home') params.set('page', page);
   if (page === 'game' && state.round) params.set('round', state.round);
   if (page === 'learn' && state.lesson) params.set('lesson', state.lesson);
+  if (page === 'predictions' && state.trial) params.set('trial', state.trial);
   if (page === 'investigate') {
     if (state.target) params.set('target', state.target);
     if (Number.isFinite(state.ra) && Number.isFinite(state.dec)) {

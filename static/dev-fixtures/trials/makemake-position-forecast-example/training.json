@@ -1,0 +1,64 @@
+{
+  "schema_version": "tenger.training/1",
+  "example": true,
+  "trial_id": "makemake-position-forecast-example",
+  "points": [
+    {
+      "t_mjd": 60860,
+      "ra_deg": 202.652069058,
+      "dec_deg": 21.034859414,
+      "cov_arcsec2": [
+        [
+          2.5,
+          0
+        ],
+        [
+          0,
+          2.5
+        ]
+      ],
+      "obs_keys": [
+        "spherex_dr1:EXAMPLE_M1_1:D4"
+      ],
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61040,
+      "ra_deg": 202.464690843,
+      "dec_deg": 21.08806853,
+      "cov_arcsec2": [
+        [
+          2.5,
+          0
+        ],
+        [
+          0,
+          2.5
+        ]
+      ],
+      "obs_keys": [
+        "spherex_qr3:EXAMPLE_M2_1:D4"
+      ],
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61230,
+      "ra_deg": 202.318864504,
+      "dec_deg": 21.138262944,
+      "cov_arcsec2": [
+        [
+          2.5,
+          0
+        ],
+        [
+          0,
+          2.5
+        ]
+      ],
+      "obs_keys": [
+        "spherex_qr3:EXAMPLE_M3_1:D4"
+      ],
+      "content_type": "measured"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "example": true,
+  "contract_version": 5,
+  "trial_id": "epsindib-position-example",
+  "trial_ref": {
+    "path": "trials/epsindib-position-example/trial.json",
+    "sha256": "a561ca3f44c4e3735a16512b55096d18808c55321dc212da5f863736c7a8c604"
+  },
+  "category": "retrospective_holdout",
+  "created_utc": "2026-11-14T15:05:00Z",
+  "prediction_status": "predicted",
+  "status_reason_key": null,
+  "t_mjd": 61292,
+  "model": {
+    "ra_deg": 330.871,
+    "dec_deg": -56.798,
+    "cov_arcsec2": [
+      [
+        0.36,
+        0.05
+      ],
+      [
+        0.05,
+        0.49
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "ra_deg": 330.871042517,
+    "dec_deg": -56.79798119,
+    "cov_arcsec2": [
+      [
+        0.81,
+        0
+      ],
+      [
+        0,
+        0.81
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "track": null,
+  "limitation_keys": [
+    "limit.blended-binary",
+    "limit.parallax-from-catalogue",
+    "limit.example"
+  ]
+}

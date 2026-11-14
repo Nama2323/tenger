@@ -8,7 +8,7 @@
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=tenger-r1">
+  <link rel="stylesheet" href="css/style.css?v=tenger-b4">
 </head>
 <body data-page="home">
   <a class="skip" href="#main" data-t="site.skip"></a>
@@ -26,10 +26,13 @@
     <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-t="nav.menu"></button>
     <nav id="site-nav" class="nav" data-t-label="nav.label">
       <button type="button" data-page-link="home" data-t="nav.home"></button>
+      <button type="button" data-page-link="predictions" data-t="nav.predictions"></button>
       <button type="button" data-page-link="game" data-t="nav.game"></button>
       <button type="button" data-page-link="learn" data-t="nav.learn"></button>
       <button type="button" data-page-link="about" data-t="nav.about"></button>
+      <button type="button" class="nav-extra" data-dialog="limits" aria-haspopup="dialog" data-t="limits.button"></button>
     </nav>
+    <button id="shortcuts-open" type="button" class="icon-button" data-dialog="shortcuts" aria-haspopup="dialog" data-t="keys.symbol" data-t-label="keys.button"></button>
   </header>
 
   <div id="example-banner" class="example-banner" role="note" hidden>
@@ -292,6 +295,31 @@
       </div>
     </section>
 
+    <!-- ======================= Predictions ======================= -->
+    <section id="page-predictions" class="page page-predictions" hidden aria-labelledby="predictions-title">
+      <header class="page-head">
+        <p class="eyebrow" data-t="ledger.eyebrow"></p>
+        <h1 id="predictions-title" tabindex="-1" data-t="ledger.title"></h1>
+        <p class="lead" data-t="ledger.lead"></p>
+      </header>
+      <div id="ledger-source" class="ledger-source" role="note" hidden></div>
+      <section id="ledger-board" class="ledger-board glass" aria-labelledby="ledger-board-title"></section>
+      <section class="ledger-section" aria-labelledby="ledger-trials-title">
+        <h2 id="ledger-trials-title" data-t="ledger.trialsTitle"></h2>
+        <p class="note" data-t="ledger.trialsLead"></p>
+        <div id="ledger-list" class="ledger-list"></div>
+      </section>
+      <section class="ledger-section" aria-labelledby="ledger-forecasts-title">
+        <h2 id="ledger-forecasts-title" data-t="ledger.forecastsTitle"></h2>
+        <p class="note" data-t="ledger.forecastsLead"></p>
+        <div id="ledger-forecast-list" class="ledger-list"></div>
+      </section>
+      <section id="ledger-seeonly-wrap" class="ledger-section" aria-labelledby="ledger-seeonly-title" hidden>
+        <h2 id="ledger-seeonly-title" data-t="ledger.seeOnlyTitle"></h2>
+        <div id="ledger-seeonly" class="ledger-list"></div>
+      </section>
+    </section>
+
     <!-- ======================= Beat the physics ======================= -->
     <section id="page-game" class="page page-game" hidden aria-labelledby="game-title">
       <header class="page-head">
@@ -364,6 +392,57 @@
     <p data-t="footer.base"></p>
   </footer>
 
-  <script type="module" src="js/main.js?v=tenger-r1"></script>
+  <dialog id="reveal" class="reveal" aria-labelledby="reveal-title">
+    <div class="reveal-shell">
+      <header class="reveal-head">
+        <div class="reveal-heading">
+          <p id="reveal-eyebrow" class="eyebrow"></p>
+          <h2 id="reveal-title"></h2>
+          <p id="reveal-stamps" class="stamps"></p>
+        </div>
+        <button id="reveal-close" type="button" class="quiet" data-t="reveal.close"></button>
+      </header>
+      <div class="reveal-body">
+        <figure class="reveal-figure">
+          <div id="reveal-stage" class="reveal-stage" role="img"></div>
+          <figcaption id="reveal-caption" class="note"></figcaption>
+        </figure>
+        <div class="reveal-side">
+          <ol id="reveal-steps" class="reveal-progress"></ol>
+          <div class="reveal-controls">
+            <button id="reveal-back" type="button" data-t="reveal.back"></button>
+            <button id="reveal-forward" type="button" class="primary"></button>
+            <p class="hint" data-t="reveal.keys"></p>
+          </div>
+          <div id="reveal-text" class="reveal-text" aria-live="polite"></div>
+          <div id="reveal-numbers" class="reveal-numbers"></div>
+          <div id="reveal-legend"></div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="shortcuts" class="sheet" aria-labelledby="shortcuts-title">
+    <div class="sheet-box">
+      <header class="sheet-head">
+        <h2 id="shortcuts-title" data-t="keys.title"></h2>
+        <button type="button" class="quiet" data-close data-t="dialog.close"></button>
+      </header>
+      <div id="shortcuts-body" class="keys-body"></div>
+    </div>
+  </dialog>
+
+  <dialog id="limits" class="sheet" aria-labelledby="limits-title">
+    <div class="sheet-box">
+      <header class="sheet-head">
+        <h2 id="limits-title" data-t="limits.title"></h2>
+        <button type="button" class="quiet" data-close data-t="dialog.close"></button>
+      </header>
+      <p class="note" data-t="limits.lead"></p>
+      <div id="limits-body" class="limits-body"></div>
+    </div>
+  </dialog>
+
+  <script type="module" src="js/main.js?v=tenger-b4"></script>
 </body>
 </html>

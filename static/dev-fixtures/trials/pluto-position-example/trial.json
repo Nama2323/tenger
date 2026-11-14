@@ -1,0 +1,64 @@
+{
+  "schema_version": "tenger.trial/1",
+  "example": true,
+  "contract_version": 5,
+  "trial_id": "pluto-position-example",
+  "target_key": "pluto",
+  "quantity": "position",
+  "category": "catalogue_assisted",
+  "labels": [
+    "catalogue_assisted"
+  ],
+  "open_forecast": false,
+  "confirmation_pending": true,
+  "frozen_utc": "2026-11-14T15:10:00Z",
+  "exposure": {
+    "status": "unexposed",
+    "inventory_ref": null,
+    "team_statement": null,
+    "notes": "example fixture"
+  },
+  "training": {
+    "obs_keys": [
+      "spherex_dr1:EXAMPLE_P1_1:D2",
+      "spherex_dr1:EXAMPLE_P2_1:D2",
+      "spherex_qr3:EXAMPLE_P3_1:D2"
+    ],
+    "measurements_sha256": "d04b8eb8d480f151f7bacde7cfc396e39c505ad2f2dac73bbe3f65e072da9def"
+  },
+  "holdout": {
+    "obs_ids": [
+      "EXAMPLE_P9_1",
+      "EXAMPLE_P9_2"
+    ],
+    "t_mjd": 61314.1,
+    "selection_rule_key": "holdout.next-visit",
+    "data_state": "released",
+    "check_after_utc": null
+  },
+  "permitted_inputs": [
+    {
+      "name": "JPL Horizons ephemeris (example)",
+      "content_type": "catalogue",
+      "used_for": "prior"
+    }
+  ],
+  "model": {
+    "id": "example-model",
+    "version": "0.0.0-example",
+    "code_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "baseline": {
+    "id": "linear-no-parallax"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "frame": "tangent plane at predicted position, east/north arcsec",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "covariance": "S = C_pred + C_obs"
+  },
+  "exclusion_rules_keys": [],
+  "exploratory": false,
+  "revises": null
+}

@@ -1,32 +1,141 @@
 {
   "schema_version": "tenger.scoreboard/1",
   "example": true,
-  "generated_utc": "2026-11-14T13:05:00Z",
+  "contract_version": 5,
+  "generated_utc": "2026-11-14T15:45:00Z",
   "derived_from": [
     {
+      "path": "trials/barnard-position-example/trial.json",
+      "sha256": "4c8214771179b7e87aa88ec6dc2c4b29614697988b55d40fe07ad5868d2f130b"
+    },
+    {
+      "path": "trials/barnard-position-example/prediction.json",
+      "sha256": "0e010bdba91bd86b9845c0f7037e3c32bb65f98bcb5341552ba93187c6cea163"
+    },
+    {
+      "path": "trials/barnard-position-example/receipt.json",
+      "sha256": "3bb6b07226b113f78c52f36378b1c06577da7623d98d950aa9497c55be0581f4"
+    },
+    {
       "path": "trials/barnard-position-example/verification.json",
-      "sha256": "21f492f018bf63c66e8ae0db9cc56a6880e2a6ffc50d46060b107511377a5793"
+      "sha256": "b18a55136c75efb1c8f4e121683c5ae1abe77bcbd71932e833d11a190ce4d1c2"
+    },
+    {
+      "path": "trials/epsindib-position-example/trial.json",
+      "sha256": "a561ca3f44c4e3735a16512b55096d18808c55321dc212da5f863736c7a8c604"
+    },
+    {
+      "path": "trials/epsindib-position-example/prediction.json",
+      "sha256": "17765abe62517e5931c55e074bd3021ead7711a9f5302bf5533bc6d42b0999fe"
+    },
+    {
+      "path": "trials/epsindib-position-example/receipt.json",
+      "sha256": "cc13cec2e8081efa529a41ad78a43a45b3d8e626941b9d1cb1ecf6a7dc908fb4"
+    },
+    {
+      "path": "trials/epsindib-position-example/verification.json",
+      "sha256": "46c19c8dbc8650c204821977520674e43fa4b999cbba71d6bda94dc8005f2845"
+    },
+    {
+      "path": "trials/wise0855-position-example/trial.json",
+      "sha256": "a78bbb063d5014738607f76f9446515a800cd68726890770bf73675702dd056d"
+    },
+    {
+      "path": "trials/wise0855-position-example/prediction.json",
+      "sha256": "64e0f7053cba679a0f3a5ce88ac2d54dbe38c90afac3e3822cb5c96e59aec57d"
+    },
+    {
+      "path": "trials/wise0855-position-example/receipt.json",
+      "sha256": "fc1ca3499b8b904174f55e3dfe2cafdefed5d507cd7eee6b7af934036f40f211"
+    },
+    {
+      "path": "trials/rdra-brightness-example/trial.json",
+      "sha256": "1873d6231a577fa0a3de730b35005fa015323c73280b78a9ac2b80f53246f1cb"
+    },
+    {
+      "path": "trials/rdra-brightness-example/prediction.json",
+      "sha256": "45410c87f82a1c1887ecc386222dd01b6980d84d224122c5eb0ca7521151b34c"
+    },
+    {
+      "path": "trials/rdra-brightness-example/receipt.json",
+      "sha256": "a40dd10de84c00140f9ca1500255d9e16084abbd8c35a71f5538cf34cc64d354"
+    },
+    {
+      "path": "trials/rdra-brightness-example/verification.json",
+      "sha256": "1b846d331a46438a55179f6b7e93a56ca5b56579df3dd8196cdc866dd4e8062f"
+    },
+    {
+      "path": "trials/makemake-position-example/trial.json",
+      "sha256": "d6ddd4edd852aa420968a0f05a1a064404f94ee7f03ec5e86ce873c184acccba"
+    },
+    {
+      "path": "trials/makemake-position-example/prediction.json",
+      "sha256": "928218beb69d800612e95c7981ae4190ab51d6ac23ce36a81e1a9b93856eb36c"
+    },
+    {
+      "path": "trials/makemake-position-example/receipt.json",
+      "sha256": "c94b57f532ba690fb9b87750fc6ba2ff862fd7ec48beaeb62bc73fcb86eb4c2c"
     },
     {
       "path": "trials/makemake-position-example/verification.json",
       "sha256": "186573cf6e0ab0e7f2ba2bac62d5713dc086386aaa3fbf8a20c3e4aeb55672f5"
     },
     {
-      "path": "trials/rdra-brightness-example/verification.json",
-      "sha256": "1b846d331a46438a55179f6b7e93a56ca5b56579df3dd8196cdc866dd4e8062f"
+      "path": "trials/pluto-position-example/trial.json",
+      "sha256": "72ae059bb2de3846f116a252eab4f40d8d78107b25dd56768ffc4fcf7d79fe5c"
+    },
+    {
+      "path": "trials/pluto-position-example/prediction.json",
+      "sha256": "baede4b3cdd35800d663c9e4e43a274678ae281cf89303c922cfac68d764a0fb"
+    },
+    {
+      "path": "trials/pluto-position-example/receipt.json",
+      "sha256": "8db956b70f1dfae640a0849294364fe6d252b514b637fbed25bc388083e1ce2a"
+    },
+    {
+      "path": "trials/rwaur-brightness-example/trial.json",
+      "sha256": "b6eff99743741cb67780ad00704a68422caf66c02d475c2da80bc36641dfbde7"
+    },
+    {
+      "path": "trials/rwaur-brightness-example/prediction.json",
+      "sha256": "a4741206b8390442d6d38b2c792bf7cadcf35e4b19863e213815f52e4b2b2386"
+    },
+    {
+      "path": "trials/pluto-position-forecast-example/trial.json",
+      "sha256": "1d856c7cf5157eb4bc5445b10dbb4ea1bec03a644c63736e7ca1f1cf4e8b9aae"
+    },
+    {
+      "path": "trials/pluto-position-forecast-example/prediction.json",
+      "sha256": "110faff2929c47778f755e73af2e081d7190aa14e47f7effadeccf5b999aa7a6"
+    },
+    {
+      "path": "trials/pluto-position-forecast-example/receipt.json",
+      "sha256": "c53d8c516cbc878adae794dae5b93078ab2466acd9f749ba5c664c8deea1f99e"
+    },
+    {
+      "path": "trials/makemake-position-forecast-example/trial.json",
+      "sha256": "7c64e179673d50cd9bd0a973ccb5c62464bf435e0c15617782d50ee37feb4e06"
+    },
+    {
+      "path": "trials/makemake-position-forecast-example/prediction.json",
+      "sha256": "2755caa854589863791a36efd6ab5e431322d6af87df0f4c6596417e5887430b"
+    },
+    {
+      "path": "trials/makemake-position-forecast-example/receipt.json",
+      "sha256": "be25fb141278003f3e82b8749474949db63d092337bbf57cfc5def03e97d7363"
     }
   ],
   "counts": {
     "retrospective_holdout": {
       "waiting": 0,
       "hit": 2,
-      "miss": 0,
-      "insufficient_data": 0,
+      "miss": 1,
+      "insufficient_data": 1,
       "ambiguous": 0,
       "invalid_comparison": 0
     },
     "catalogue_assisted": {
-      "waiting": 0,
+      "waiting": 1,
       "hit": 1,
       "miss": 0,
       "insufficient_data": 0,
@@ -45,12 +154,19 @@
   "see_only": [
     "3i-atlas"
   ],
+  "open_forecasts": [
+    "pluto-position-forecast-example",
+    "makemake-position-forecast-example"
+  ],
   "rows": [
     {
       "trial_id": "barnard-position-example",
       "target_key": "barnard",
       "quantity": "position",
       "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout"
+      ],
       "status": "hit",
       "exploratory": false,
       "counts_as_prospective": false,
@@ -58,10 +174,52 @@
       "baseline_error_arcsec": 0.1
     },
     {
+      "trial_id": "epsindib-position-example",
+      "target_key": "epsindib",
+      "quantity": "position",
+      "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout",
+        "catalogue_assisted"
+      ],
+      "status": "miss",
+      "exploratory": false,
+      "counts_as_prospective": false,
+      "model_error_arcsec": 3.2719,
+      "baseline_error_arcsec": 3.2507
+    },
+    {
+      "trial_id": "wise0855-position-example",
+      "target_key": "wise0855",
+      "quantity": "position",
+      "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout"
+      ],
+      "status": "insufficient_data",
+      "exploratory": false,
+      "counts_as_prospective": false
+    },
+    {
+      "trial_id": "rdra-brightness-example",
+      "target_key": "rdra",
+      "quantity": "brightness",
+      "category": "retrospective_holdout",
+      "labels": [
+        "retrospective_holdout"
+      ],
+      "status": "hit",
+      "exploratory": false,
+      "counts_as_prospective": false
+    },
+    {
       "trial_id": "makemake-position-example",
       "target_key": "makemake",
       "quantity": "position",
       "category": "catalogue_assisted",
+      "labels": [
+        "catalogue_assisted"
+      ],
       "status": "hit",
       "exploratory": false,
       "counts_as_prospective": false,
@@ -69,11 +227,14 @@
       "baseline_error_arcsec": 297.9
     },
     {
-      "trial_id": "rdra-brightness-example",
-      "target_key": "rdra",
-      "quantity": "brightness",
-      "category": "retrospective_holdout",
-      "status": "hit",
+      "trial_id": "pluto-position-example",
+      "target_key": "pluto",
+      "quantity": "position",
+      "category": "catalogue_assisted",
+      "labels": [
+        "catalogue_assisted"
+      ],
+      "status": "waiting",
       "exploratory": false,
       "counts_as_prospective": false
     },
@@ -82,6 +243,9 @@
       "target_key": "rwaur",
       "quantity": "brightness",
       "category": "illustrative",
+      "labels": [
+        "illustrative"
+      ],
       "status": "waiting",
       "exploratory": false,
       "counts_as_prospective": false

@@ -1,0 +1,50 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "example": true,
+  "contract_version": 5,
+  "trial_id": "pluto-position-example",
+  "trial_ref": {
+    "path": "trials/pluto-position-example/trial.json",
+    "sha256": "72ae059bb2de3846f116a252eab4f40d8d78107b25dd56768ffc4fcf7d79fe5c"
+  },
+  "category": "catalogue_assisted",
+  "created_utc": "2026-11-14T15:12:00Z",
+  "prediction_status": "predicted",
+  "status_reason_key": null,
+  "t_mjd": 61314.1,
+  "model": {
+    "ra_deg": 306.0952,
+    "dec_deg": -23.7196,
+    "cov_arcsec2": [
+      [
+        1.44,
+        0.2
+      ],
+      [
+        0.2,
+        1
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "ra_deg": 306.089094191,
+    "dec_deg": -23.721450527,
+    "cov_arcsec2": [
+      [
+        16,
+        0
+      ],
+      [
+        0,
+        16
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "track": null,
+  "limitation_keys": [
+    "limit.ephemeris-guided",
+    "limit.example"
+  ]
+}

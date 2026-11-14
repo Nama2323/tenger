@@ -1,0 +1,83 @@
+{
+  "schema_version": "tenger.training/1",
+  "example": true,
+  "trial_id": "epsindib-position-example",
+  "points": [
+    {
+      "t_mjd": 60805,
+      "ra_deg": 330.868235437,
+      "dec_deg": -56.797124969,
+      "cov_arcsec2": [
+        [
+          0.3,
+          0
+        ],
+        [
+          0,
+          0.3
+        ]
+      ],
+      "obs_keys": [
+        "spherex_dr1:EXAMPLE_E1_1:D3"
+      ],
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 60985,
+      "ra_deg": 330.869351397,
+      "dec_deg": -56.797374989,
+      "cov_arcsec2": [
+        [
+          0.3,
+          0
+        ],
+        [
+          0,
+          0.3
+        ]
+      ],
+      "obs_keys": [
+        "spherex_dr1:EXAMPLE_E2_1:D3"
+      ],
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61170,
+      "ra_deg": 330.870213733,
+      "dec_deg": -56.79784722,
+      "cov_arcsec2": [
+        [
+          0.3,
+          0
+        ],
+        [
+          0,
+          0.3
+        ]
+      ],
+      "obs_keys": [
+        "spherex_qr3:EXAMPLE_E3_1:D3"
+      ],
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61230,
+      "ra_deg": 330.870771729,
+      "dec_deg": -56.797819444,
+      "cov_arcsec2": [
+        [
+          0.3,
+          0
+        ],
+        [
+          0,
+          0.3
+        ]
+      ],
+      "obs_keys": [
+        "spherex_qr3:EXAMPLE_E4_1:D3"
+      ],
+      "content_type": "measured"
+    }
+  ]
+}

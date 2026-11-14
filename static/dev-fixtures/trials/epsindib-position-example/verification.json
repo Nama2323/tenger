@@ -1,0 +1,59 @@
+{
+  "schema_version": "tenger.verification/1",
+  "example": true,
+  "contract_version": 5,
+  "trial_id": "epsindib-position-example",
+  "prediction_sha256": "17765abe62517e5931c55e074bd3021ead7711a9f5302bf5533bc6d42b0999fe",
+  "revealed_utc": "2026-11-14T15:30:00Z",
+  "observed": {
+    "ra_deg": 330.872293561,
+    "dec_deg": -56.798569438,
+    "cov_arcsec2": [
+      [
+        0.64,
+        0
+      ],
+      [
+        0,
+        0.64
+      ]
+    ],
+    "obs_keys": [
+      "spherex_qr3:EXAMPLE_E5_1:D3"
+    ],
+    "content_type": "measured",
+    "image": {
+      "path": "trials/epsindib-position-example/evaluation-artificial.png",
+      "content_type": "artificial",
+      "epoch_id": null,
+      "centre_ra_deg": 330.875718054,
+      "centre_dec_deg": -56.801444355,
+      "scale_arcsec_px": 6.2,
+      "width_px": 48,
+      "height_px": 48,
+      "north_up": true,
+      "east_left": true
+    }
+  },
+  "identification": {
+    "method_key": "ident.preregistered-aperture",
+    "alternatives": 0,
+    "ambiguous": false
+  },
+  "residuals": {
+    "model": {
+      "east_arcsec": 2.55,
+      "north_arcsec": -2.05,
+      "d2": 10.7078,
+      "error_arcsec": 3.2719
+    },
+    "baseline": {
+      "east_arcsec": 2.4662,
+      "north_arcsec": -2.1177,
+      "d2": 7.2874,
+      "error_arcsec": 3.2507
+    }
+  },
+  "status": "miss",
+  "status_reason_key": null
+}

@@ -90,8 +90,9 @@ test('lesson 3 reads the scoreboard counts and computes no success rate', () => 
   const board = JSON.parse(readFileSync(new URL('../static/dev-fixtures/scoreboard.json', import.meta.url), 'utf8'));
   const summary = scoreboardSummary(board);
   const retro = summary.find((row) => row.category === 'retrospective_holdout');
-  assert.deepEqual(retro, { category: 'retrospective_holdout', checked: 2, hit: 2, miss: 0, open: 0, other: 0 });
-  assert.equal(summary.find((row) => row.category === 'illustrative').open, 1);
+  assert.deepEqual(retro, { category: 'retrospective_holdout', checked: 4, hit: 2, miss: 1, waiting: 0, other: 1 });
+  assert.equal(summary.find((row) => row.category === 'illustrative').waiting, 1);
+  assert.equal(summary.find((row) => row.category === 'catalogue_assisted').waiting, 1);
   assert.equal(scoreboardSummary(null), null);
   for (const row of summary) assert.equal(Object.keys(row).some((key) => /rate|percent/.test(key)), false);
 });

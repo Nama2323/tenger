@@ -1,0 +1,64 @@
+{
+  "schema_version": "tenger.training/1",
+  "example": true,
+  "trial_id": "pluto-position-example",
+  "points": [
+    {
+      "t_mjd": 60950,
+      "ra_deg": 306.280240895,
+      "dec_deg": -23.693101163,
+      "cov_arcsec2": [
+        [
+          1.2,
+          0
+        ],
+        [
+          0,
+          1.2
+        ]
+      ],
+      "obs_keys": [
+        "spherex_dr1:EXAMPLE_P1_1:D2"
+      ],
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61130,
+      "ra_deg": 306.183182678,
+      "dec_deg": -23.711241795,
+      "cov_arcsec2": [
+        [
+          1.2,
+          0
+        ],
+        [
+          0,
+          1.2
+        ]
+      ],
+      "obs_keys": [
+        "spherex_dr1:EXAMPLE_P2_1:D2"
+      ],
+      "content_type": "measured"
+    },
+    {
+      "t_mjd": 61290,
+      "ra_deg": 306.102785107,
+      "dec_deg": -23.717933148,
+      "cov_arcsec2": [
+        [
+          1.2,
+          0
+        ],
+        [
+          0,
+          1.2
+        ]
+      ],
+      "obs_keys": [
+        "spherex_qr3:EXAMPLE_P3_1:D2"
+      ],
+      "content_type": "measured"
+    }
+  ]
+}

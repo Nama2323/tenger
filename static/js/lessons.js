@@ -204,14 +204,15 @@ export function readLessonRecord(doc) {
 }
 
 /**
- * Scoreboard counts for lesson 3: checked trials per category (hit, miss and the other outcomes) and open
- * forecasts (waiting). Only categories present in the file appear. Never computes a success rate.
+ * Scoreboard counts for lesson 3: checked trials per category (hit, miss and the other outcomes) and frozen
+ * trials still waiting for their check. Open forecasts are not in `counts` (DATA-CONTRACT V5). Only categories
+ * present in the file appear. Never computes a success rate.
  */
 export function scoreboardSummary(doc) {
   if (!doc?.counts || typeof doc.counts !== 'object') return null;
   return Object.entries(doc.counts).map(([category, counts]) => {
     const values = Object.fromEntries(Object.entries(counts ?? {}).map(([status, count]) => [status, Number.isFinite(count) ? count : 0]));
     const checked = Object.entries(values).filter(([status]) => status !== 'waiting').reduce((sum, [, count]) => sum + count, 0);
-    return { category, checked, hit: values.hit ?? 0, miss: values.miss ?? 0, open: values.waiting ?? 0, other: checked - (values.hit ?? 0) - (values.miss ?? 0) };
+    return { category, checked, hit: values.hit ?? 0, miss: values.miss ?? 0, waiting: values.waiting ?? 0, other: checked - (values.hit ?? 0) - (values.miss ?? 0) };
   });
 }

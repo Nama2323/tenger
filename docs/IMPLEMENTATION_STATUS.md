@@ -568,3 +568,51 @@ only (no zoom, spectrum or motion quick look), as the evidence file provides no 
 **Checks**: `node --test tests/*.mjs` **115 passed** (adds `tests/lessons.test.mjs`: every formula against known values, the synthetic answers, record reading and the unsourced-input flag, scoreboard counts without rates, Lab monotonicity checks such as double albedo = 0.75 mag brighter). The i18n tests confirm every key used by `learn-ui.js` exists in the English resource (prompts, answers, MathML and assumptions all live there). Learn, a lesson, lesson 3 with the example scoreboard and the Lab: no horizontal scroll and no control under 44 px at 360/390/768/1280.
 
 **Waiting on Session A**: lesson records (A5). Lesson ids expected: `distance`, `brightness`, `how-sure`; prompt and teacher texts in `strings.en.json`; numbers with `synthetic` and `source_ref` as in contract §12.
+
+### Task B4, 14 Nov 2026 (phase F/G: the prediction ledger and the reveal; rebased on Session A's A4 `9003251`)
+
+Field names agreed with Session A before A4 froze anything (now DATA-CONTRACT V5): `open_forecast`, `labels`,
+`confirmation_pending`, `holdout.data_state` / `check_after_utc`, `prediction_status`, `track`, `training.json`,
+`scoreboard.open_forecasts`, `observed.image` geometry, full 40-character receipt SHAs. For A5, the reveal also reads
+`residuals.<model|baseline>.reference`, `c_pred_arcsec2` and `observed.cov_arcsec2` = C_obs as scored (Session A's
+scoring frame, DATA-CONTRACT V6), so the reveal draws and re-checks exactly what was scored.
+
+| Part | Files | Result |
+|---|---|---|
+| Predictions page | `index.html`, `js/ledger-ui.js`, `js/ledger-parts.js`, `js/ledger.js` (pure), `js/route.js`, `js/main.js` | Nav item between Investigate and Beat the physics, `?page=predictions`. Built only from `index.json` `trials`, `scoreboard.json` and each trial's `trial`/`prediction`/`receipt`/`verification` files. One card per trial: target, quantity, short status chip (waiting, hit, miss, ambiguous, insufficient data, invalid comparison, see only), every category label (category first), what was predicted for which UTC date (position with 95% semi-axes, or value ± σ, or "no defensible prediction" with Session A's reason key), "Frozen in git `<7-char sha>` on `<UTC>`" linking to `github.com/Nama2323/tenger/commit/<full sha>` (no link for example receipts or an all-zero SHA), the team-confirmation-pending note, raw residuals of model and straight line once verified (east, north, error, D = √d²), and a "Watch the reveal" button for verified position trials. Status comes from `verification.json`, then V5 `prediction_status` (insufficient data at freeze is never "waiting"), then a frozen prediction (waiting); a scoreboard row that disagrees is shown as a warning. Cards: checked, then waiting, then insufficient data. |
+| Scoreboard summary | `js/ledger.js` `scoreboardTable` | Category × status table with exactly the categories and statuses present in `counts`; no totals, no percentage, no expected-hit number. Open forecasts and See-only targets are listed by name as "never counted". A disclosure explains the four trial types. |
+| Open forecasts | `js/ledger-ui.js` | Separate section "Open forecasts: check back when IRSA releases the data", only for trials the files label (`open_forecast`, `holdout.data_state: not_released` or `scoreboard.open_forecasts`; never inferred from dates). Chart (north up, east left, scale bar): the predicted position and its 95% region to scale, the `track` with each point's own 95% ellipse and first/last dates, a zoom on the reference-time region when it is too small to see, the straight line drawn only if it is on the chart (otherwise its distance is given), and a data table. "Can be checked after `<check_after_utc>`" or "no date announced". Real Pluto forecast: 13-point track with its retrograde loop; Makemake: insufficient data. |
+| The reveal | `js/reveal.js`, `css/style.css` | Full-screen `<dialog>`, `?page=predictions&trial=<id>` opens it directly (for recording). Steps on click (picture or button), Space or →; ← back, Home/End: (1) evaluation image, whole, with the prediction area marked; (2) a 1.1 s zoom to that area, training track drawn in with its dates; (3) frozen 95% region (C_pred) growing in, with the receipt line and the category note ("not a blind test" for retrospective); (4) straight-line baseline continuing the track; (5) observed position with its offset; (6) verdict banner (Hit/Miss, D vs 2.45) with the dashed test region (C_pred + C_obs), raw residual table and which of model and straight line was closer. One callout label per step, placed in the free direction (never over markers, the track or the banner). The page recomputes d² from the drawn positions and shows a warning if it disagrees with `verification.json` by more than 2% (the recorded result is never changed). Images are drawn only with centre, pixel scale and north-up/east-left orientation, pixelated so SPHEREx pixels stay visible. Under `prefers-reduced-motion` there is no zoom or entry animation. At 1280×720 the stage is 570 px and every step fits without scrolling. |
+| Shortcuts and limits | `js/help.js`, `index.html` | "?" key (and Shift+/) or the "?" button in the top bar opens a keyboard-shortcut sheet (every page, viewer, game, reveal; each row matches a real handler). "Can and can't see" in the top bar (in the Menu on phones) opens "What TENGER can and can't see" on every page. Both are native modal dialogs (Escape, focus kept inside); Escape no longer also closes the investigation panel while a dialog is open. The nav becomes the Menu below 980 px (it has six items now). |
+| Investigate panel | `js/panels.js` | Reads V5 `training.obs[]` / `holdout.obs[]` (it said "0 earlier observations" for the A4 trials), shows every label and the confirmation-pending warning, and links to the ledger (to the reveal when verified). |
+| Fixtures | `static/dev-fixtures/tools/make-trials.mjs` | Writes labelled example trials with real hash chains: Barnard hit (straight line closer) and Epsilon Indi B miss, both with `training.json` and an **artificial** 48×48 px evaluation image (6.2″ pixels, labelled "Artificial", "Example data, not an observation"); Pluto waiting (confirmation pending); WISE 0855 insufficient at freeze; Pluto open forecast with a 4-point track and Makemake open forecast; the example scoreboard regenerated from them. Positions, covariances, dates and images are invented. |
+| Switch to real files | `js/main.js` | The page shows the fixtures (with its own banner) until the real `index.json` lists trials or a scoreboard, then the real files, with no code change. This happened when Session A pushed A4 during this task. `?fixtures=1` still forces the examples, which is the only way to see a reveal until A5 publishes a verification. |
+| Lesson 3 | `js/lessons.js`, `js/learn-ui.js` | Its "Open forecasts" column counted `waiting`; under V5 open forecasts are not in `counts`, so the column is now "Waiting for the check" and the text says open forecasts are listed on the Predictions page. |
+| Strings | `js/i18n.js` | ~220 new English keys; `strings.en.json` re-copied (112 keys after A4). |
+
+**Checks**
+
+| Check | Result |
+|---|---|
+| `node --test tests/*.mjs` | **133 passed, 0 failed** (adds `tests/ledger.test.mjs`, 18 tests: trial ids, real-vs-fixture switch, open forecasts only from labels (a far-future date alone is not one), status order and the scoreboard-conflict warning, all labels, receipt links only for real commits, scoreboard counts copied unchanged with no rate field, open forecasts and See-only never counted, fixture hash chains training → trial → prediction → receipt/verification, reveal geometry = recorded residual and D = √d², a tampered residual is flagged, A5 reference frame with C_pred from verification, image placement refusals, forecast tracks and zoom, card order, scale bars, the `trial` route parameter, English text for every step/status/shortcut/limit) |
+| `node docs/screens/capture.mjs http://localhost:8766 docs/screens` | 137 captures, all pages at 360/390/768/1280 plus the reveal at 1280×720 (every step for Barnard, the verdict for the Epsilon Indi B miss): measured viewport = requested, no horizontal scroll, no control under 44 px, no script errors (only the expected 404s for verification/receipt files that do not exist yet) |
+| In-app browser | Real ledger after A4 (7 trial cards, 2 open forecasts, scoreboard from the file); fixture reveal stepped with Space, →, ←, End, clicks on the picture; Escape closes it and the URL drops `trial`; the "?" key and both top-bar dialogs; the nav fits at 990 px and becomes the Menu at 768 px |
+
+Screenshots: `docs/screens/predictions*.png`, `predictions-reveal-<step>-<size>.png` (for the video: 1280x720),
+`shortcuts-*.png`, `limits-*.png`. Every reveal screenshot shows example data (artificial image, invented numbers);
+no trial has been verified yet.
+
+**Limits**
+
+- No real reveal exists until Session A publishes verifications (A5). Until then the reveal can only be shown with
+  `?page=predictions&fixtures=1&trial=barnard-position-example` (hit) or `…epsindib-position-example` (miss), which
+  are labelled example data throughout. Do not record those frames as results.
+- `baseline_track` (V5, open forecasts) is not drawn; the forecast chart shows the straight line only when it falls
+  on the chart. The forecast chart does not draw the training track (it is far from the forecast window).
+- Labels in the reveal avoid markers, the training track and the banner, but a training date can still touch an ellipse
+  when points are crowded (seen on the Epsilon Indi B example at 390 px).
+- Commit links point to the private repository until it is made public (Sunday 14:00).
+- Not checked on a real phone; emulated widths and the desktop pane only.
+
+**Next action (proposed)**: when A5 lands, open each verified trial's reveal at 1280×720, record the video take, and
+re-capture `docs/screens/`; read A5's lesson records in Learn.

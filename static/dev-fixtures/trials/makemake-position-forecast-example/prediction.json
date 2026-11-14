@@ -1,0 +1,50 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "example": true,
+  "contract_version": 5,
+  "trial_id": "makemake-position-forecast-example",
+  "trial_ref": {
+    "path": "trials/makemake-position-forecast-example/trial.json",
+    "sha256": "7c64e179673d50cd9bd0a973ccb5c62464bf435e0c15617782d50ee37feb4e06"
+  },
+  "category": "catalogue_assisted",
+  "created_utc": "2026-11-14T15:26:00Z",
+  "prediction_status": "predicted",
+  "status_reason_key": null,
+  "t_mjd": 61530,
+  "model": {
+    "ra_deg": 202.164,
+    "dec_deg": 21.18,
+    "cov_arcsec2": [
+      [
+        4,
+        0.5
+      ],
+      [
+        0.5,
+        2.25
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "baseline": {
+    "ra_deg": 202.040493845,
+    "dec_deg": 21.222481851,
+    "cov_arcsec2": [
+      [
+        100,
+        0
+      ],
+      [
+        0,
+        100
+      ]
+    ],
+    "content_type": "modeled"
+  },
+  "track": null,
+  "limitation_keys": [
+    "limit.ephemeris-guided",
+    "limit.example"
+  ]
+}

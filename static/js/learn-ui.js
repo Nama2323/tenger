@@ -108,11 +108,11 @@ function scoreboardSection() {
   const body = rows?.length
     ? el('div', { class: 'table-scroll' }, el('table', { class: 'results-table' }, [
       el('caption', { text: t('lesson.sure.boardCaption') }),
-      el('thead', {}, el('tr', {}, ['col.category', 'col.checked', 'col.hit', 'col.miss', 'col.otherOutcome', 'col.open']
+      el('thead', {}, el('tr', {}, ['col.category', 'col.checked', 'col.hit', 'col.miss', 'col.otherOutcome', 'col.waiting']
         .map((key) => el('th', { scope: 'col', text: t(key) })))),
       el('tbody', {}, rows.map((row) => el('tr', {}, [
         el('th', { scope: 'row', text: categoryLabel(row.category) }),
-        ...[row.checked, row.hit, row.miss, row.other, row.open].map((count) => el('td', { text: String(count) })),
+        ...[row.checked, row.hit, row.miss, row.other, row.waiting].map((count) => el('td', { text: String(count) })),
       ]))),
     ]))
     : el('p', { class: 'panel-note', text: t('lesson.sure.boardNone') });

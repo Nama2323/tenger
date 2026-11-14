@@ -1,0 +1,21 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "example": true,
+  "contract_version": 5,
+  "trial_id": "wise0855-position-example",
+  "trial_ref": {
+    "path": "trials/wise0855-position-example/trial.json",
+    "sha256": "a78bbb063d5014738607f76f9446515a800cd68726890770bf73675702dd056d"
+  },
+  "category": "retrospective_holdout",
+  "created_utc": "2026-11-14T15:41:00Z",
+  "prediction_status": "insufficient_data",
+  "status_reason_key": "measure.contaminated",
+  "t_mjd": 61290,
+  "model": null,
+  "baseline": null,
+  "track": null,
+  "limitation_keys": [
+    "limit.example"
+  ]
+}

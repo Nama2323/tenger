@@ -10,17 +10,29 @@
     "cov_arcsec2": [
       [
         0.81,
-        0.0
+        0
       ],
       [
-        0.0,
+        0,
         0.81
       ]
     ],
     "obs_keys": [
       "spherex_qr3:EXAMPLE_HOLDOUT_1:D3"
     ],
-    "content_type": "measured"
+    "content_type": "measured",
+    "image": {
+      "path": "trials/barnard-position-example/evaluation-artificial.png",
+      "content_type": "artificial",
+      "epoch_id": null,
+      "centre_ra_deg": 269.44422823,
+      "centre_dec_deg": 4.776088882,
+      "scale_arcsec_px": 6.2,
+      "width_px": 48,
+      "height_px": 48,
+      "north_up": true,
+      "east_left": true
+    }
   },
   "identification": {
     "method_key": "ident.preregistered-aperture",
@@ -35,7 +47,7 @@
       "error_arcsec": 0.4
     },
     "baseline": {
-      "east_arcsec": 0.0,
+      "east_arcsec": 0,
       "north_arcsec": -0.1,
       "d2": 0.003,
       "error_arcsec": 0.1

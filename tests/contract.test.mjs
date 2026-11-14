@@ -50,7 +50,7 @@ test('paths from data files cannot leave the data folder', () => {
 test('every development fixture is marked as an example and has a known schema', () => {
   const kinds = {
     'index.json': 'site_index', 'investigation.json': 'investigation', 'trial.json': 'trial', 'prediction.json': 'prediction',
-    'receipt.json': 'receipt', 'verification.json': 'verification', 'scoreboard.json': 'scoreboard',
+    'receipt.json': 'receipt', 'verification.json': 'verification', 'scoreboard.json': 'scoreboard', 'training.json': 'training',
   };
   const files = jsonFiles(FIXTURES);
   assert.ok(files.length >= 8);

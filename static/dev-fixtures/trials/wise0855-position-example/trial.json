@@ -1,0 +1,56 @@
+{
+  "schema_version": "tenger.trial/1",
+  "example": true,
+  "contract_version": 5,
+  "trial_id": "wise0855-position-example",
+  "target_key": "wise0855",
+  "quantity": "position",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout"
+  ],
+  "open_forecast": false,
+  "confirmation_pending": false,
+  "frozen_utc": "2026-11-14T15:40:00Z",
+  "exposure": {
+    "status": "exposed",
+    "inventory_ref": null,
+    "team_statement": null,
+    "notes": "example fixture"
+  },
+  "training": {
+    "obs_keys": [
+      "spherex_dr1:EXAMPLE_W1_1:D6",
+      "spherex_qr3:EXAMPLE_W2_1:D6"
+    ],
+    "measurements_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "holdout": {
+    "obs_ids": [
+      "EXAMPLE_W5_1"
+    ],
+    "t_mjd": 61290,
+    "selection_rule_key": "holdout.next-visit",
+    "data_state": "released",
+    "check_after_utc": null
+  },
+  "permitted_inputs": [],
+  "model": {
+    "id": "example-model",
+    "version": "0.0.0-example",
+    "code_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "baseline": {
+    "id": "linear-no-parallax"
+  },
+  "scoring": {
+    "kind": "position_2d_chi2",
+    "frame": "tangent plane at predicted position, east/north arcsec",
+    "coverage": 0.95,
+    "threshold_d2": 5.991464547107979,
+    "covariance": "S = C_pred + C_obs"
+  },
+  "exclusion_rules_keys": [],
+  "exploratory": false,
+  "revises": null
+}
