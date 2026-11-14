@@ -25,6 +25,10 @@ ROOT = Path(__file__).resolve().parent.parent
 FIXED_PAIR_MIN_ARCSEC, FIXED_PAIR_MAX_ARCSEC = 45.0, 150.0
 
 
+SEE_ONLY = {"3i-atlas"}  # never a trial: no holdout window applies
+COMET_TABLE = "https://irsa.ipac.caltech.edu/data/SPHEREx/docs/comet3iatlas/obscore_3I_Atlas.vot"
+
+
 class HoldoutViolation(RuntimeError):
     pass
 
@@ -39,6 +43,8 @@ def training_rows(key: str) -> list[dict]:
 
 
 def check_not_holdout(key: str, mjd: float) -> None:
+    if key in SEE_ONLY:
+        return
     low, high = HOLDOUT_WINDOWS_MJD[key]
     if mjd >= low - 1.0:
         raise HoldoutViolation(f"{key}: exposure at MJD {mjd} is in or after the reserved holdout window")
@@ -88,6 +94,7 @@ def process(client, key: str, row: dict, ra: float, dec: float, size: float, kin
                    "native": str(native_path.relative_to(config.CACHE_DIR))},
         "frame": str(frame_path.relative_to(config.CACHE_DIR)),
         "l2dqa": product.info.get("L2DQAFLG"),
+        "officialCollection": row.get("official_collection"),
     }
     meta_path.write_text(json.dumps(meta))
     return meta
@@ -106,8 +113,63 @@ def fixed_pair(rows: list[dict]) -> tuple[dict, dict] | None:
     return None
 
 
+def comet_rows() -> list[dict]:
+    """The official 3I/ATLAS exposure table as inventory-style rows (comet position per exposure)."""
+    import io
+
+    from astropy.io.votable import parse_single_table
+
+    response = httpx.get(COMET_TABLE, timeout=120, follow_redirects=True)
+    response.raise_for_status()
+    table = parse_single_table(io.BytesIO(response.content)).to_table()
+    rows = []
+    for row in table:
+        rows.append({
+            "obs_id": str(row["obs_id"]), "detector": int(str(row["spherex_detector"]).lstrip("Dd")),
+            "collection": str(row["obs_collection"]), "t_min_mjd": float(row["t_min"]), "t_max_mjd": float(row["t_max"]),
+            "em_min_um": float(row["em_min"]) * 1e6, "em_max_um": float(row["em_max"]) * 1e6,
+            "target_ra_at_time": float(row["comet_ra"]), "target_dec_at_time": float(row["comet_dec"]),
+            "access_url_not_opened": str(row["access_url"]), "obs_release_date": None,
+        })
+    return sorted(rows, key=lambda row: (row["t_min_mjd"], row["detector"]))
+
+
+def resolve_current(rows: list[dict], cache_path: Path) -> tuple[list[dict], list[dict]]:
+    """Find the DR1 product of each official-table exposure (the table's QR2 links no longer resolve).
+
+    Metadata only: an SIA query at the comet's tabulated position, restricted to the exposure time.
+    """
+    cached = json.loads(cache_path.read_text()) if cache_path.exists() else {}
+    resolved, missing = [], []
+    with httpx.Client(timeout=120, follow_redirects=True) as client:
+        for row in rows:
+            key = f"{row['obs_id']}:D{row['detector']}"
+            if key not in cached:
+                response = client.get(config.IRSA_SIA_URL, params={
+                    "COLLECTION": "spherex_dr1", "RESPONSEFORMAT": "CSV",
+                    "POS": f"circle {row['target_ra_at_time']} {row['target_dec_at_time']} 0.001",
+                    "TIME": f"{row['t_min_mjd'] - 0.01} {row['t_max_mjd'] + 0.01}",
+                })
+                response.raise_for_status()
+                match = [item for item in archive.parse_sia_csv(response.text)
+                         if item.obs_id == row["obs_id"] and item.detector == row["detector"]]
+                cached[key] = match[0].url if match else None
+                cache_path.parent.mkdir(parents=True, exist_ok=True)
+                cache_path.write_text(json.dumps(cached, indent=0))
+            if cached[key]:
+                resolved.append({**row, "collection": "spherex_dr1", "access_url_not_opened": cached[key],
+                                 "official_collection": row["collection"]})
+            else:
+                missing.append({"obs_key": f"{row['collection']}:{key}", "reason_key": "unavailable.no-current-product"})
+    return resolved, missing
+
+
 def acquire(key: str, size: float) -> dict:
-    rows = training_rows(key)
+    unresolved = []
+    if key in SEE_ONLY:
+        rows, unresolved = resolve_current(comet_rows(), folder_for(key) / "resolved.json")
+    else:
+        rows = training_rows(key)
     done, failed = [], []
     with httpx.Client(timeout=config.HTTP_TIMEOUT_SECONDS, follow_redirects=True) as client:
         with ThreadPoolExecutor(config.DOWNLOAD_WORKERS) as pool:
@@ -118,7 +180,7 @@ def acquire(key: str, size: float) -> dict:
                     done.append(future.result())
                 except Exception as error:  # noqa: BLE001 - one bad exposure must not stop the rest
                     failed.append({"obs_key": f"{row['collection']}:{row['obs_id']}:D{row['detector']}", "error": str(error)[:200]})
-        pair = fixed_pair(rows)
+        pair = None if key in SEE_ONLY else fixed_pair(rows)
         pair_meta = []
         if pair:
             ra = (pair[0]["target_ra_at_time"] + pair[1]["target_ra_at_time"]) / 2
@@ -126,6 +188,7 @@ def acquire(key: str, size: float) -> dict:
             for row in pair:
                 pair_meta.append(process(client, key, row, ra, dec, 0.1 * config.CUTOUT_MARGIN, "fixed"))
     summary = {"key": key, "rows": len(rows), "processed": len(done), "failed": failed, "fixed_pair": len(pair_meta),
+               "unresolved": unresolved,
                "mjd_range": [rows[0]["t_min_mjd"], rows[-1]["t_min_mjd"]] if rows else None}
     (folder_for(key) / "acquire-summary.json").write_text(json.dumps(summary, indent=1))
     return summary
@@ -133,7 +196,7 @@ def acquire(key: str, size: float) -> dict:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("key", choices=sorted(HOLDOUT_WINDOWS_MJD))
+    parser.add_argument("key", choices=sorted(HOLDOUT_WINDOWS_MJD) + sorted(SEE_ONLY))
     parser.add_argument("--size", type=float, default=0.05 * config.CUTOUT_MARGIN)
     args = parser.parse_args()
     result = acquire(args.key, args.size)

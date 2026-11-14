@@ -66,7 +66,20 @@ Decided by the team for Task A3 (phases C–D). It changes the exposed set as fo
   06-13 (QR3, 65 obs_ids) and Pluto 2026-09-29 → 10-02 (QR3, 10 obs_ids). The acquisition code
   refuses any exposure with `t_min` inside a closed window. The visits actually opened are listed in
   the "Opened in A3" table further down when they are processed.
-- **3I/ATLAS:** only the official exposure table (metadata) is used. No pixels.
+- **3I/ATLAS:** See-only, never a trial, so its pixels may be opened for viewing. Cutouts follow the
+  comet using the positions in the official exposure table (`scripts/acquire_body.py 3i-atlas`).
+- **Opened in A3** (training visits, object-following cutouts 0.0725°, plus one fixed-sky pair):
+
+  | Body | Visit (UTC) | Rows opened | Release | Processed | Opened (UB time) |
+  |---|---|---:|---|---:|---|
+  | Makemake | 2025-05-30 → 06-19 | 111 | DR1 | see below | 14 Nov, 21:15–21:37 |
+  | Makemake | 2025-07-04 → 07-06 | 14 | DR1 | see below | same run |
+  | Makemake | 2025-12-28 → 2026-01-09 | 111 | DR1 | see below | same run |
+  | Makemake | **2026-05-30 → 06-13** | **0 (closed)** | QR3 | — | — |
+
+  Makemake total: 236 rows requested, 234 processed, 2 failed after retries. The fixed-sky pair
+  (`2025W22_2B_0258_1` D3 and `2025W23_1C_0121_1` D3) re-uses two of those exposures with a
+  different cutout centre. Pluto rows are added when its run finishes.
 - Live jobs near the targets remain blocked in the web app (`static/js/reserved.js`, and
   `static/data/reserved.json` from A3).
 

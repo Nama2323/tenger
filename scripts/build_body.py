@@ -14,12 +14,12 @@ from pathlib import Path
 
 import numpy as np
 
-from backend import astrometry, config, investigation as inv
+from backend import astrometry, config, investigation as inv, stacking
 from backend.processing import group_visits, load_product
-from scripts.acquire_body import HOLDOUT_WINDOWS_MJD, check_not_holdout, folder_for
+from scripts.acquire_body import HOLDOUT_WINDOWS_MJD, SEE_ONLY, check_not_holdout, folder_for
 from scripts.build_investigation import json_bytes, preview_image
 
-NAMES = {"makemake": "Makemake", "pluto": "Pluto"}
+NAMES = {"makemake": "Makemake", "pluto": "Pluto", "3i-atlas": "3I/ATLAS"}
 MOVED_ENOUGH_ARCSEC = 30.0
 STATIC_SNR = 5.0
 
@@ -64,23 +64,27 @@ def build(key: str, out: Path) -> dict:
     folder = out / key
     (folder / "epochs").mkdir(parents=True, exist_ok=True)
 
+    see_only = key in SEE_ONLY
     observations, per_exposure = [], []
     for item in follow:
         product = item["product"]
         ra, dec = item["centre"]["ra_deg"], item["centre"]["dec_deg"]
-        position = astrometry.fit_position(product, ra, dec, product.info.get("PSF_FWHM"))
-        row = {"obs_key": item["obsKey"], "mjd": round(float(product.info.get("MJD-AVG", item["mjd"])), 6),
-               "detector": item["detector"], "visit": item["visit"], **position.to_json(),
-               "ephemeris_ra_deg": ra, "ephemeris_dec_deg": dec}
-        if position.status == "measured":
-            east, north = astrometry.tangent_offsets_arcsec(ra, dec, position.ra_deg, position.dec_deg)
-            row.update(offset_east_arcsec=round(east, 3), offset_north_arcsec=round(north, 3))
-            row["static_check"] = static_check(item, follow, position)
-            row["identification"] = ("body" if row["static_check"]["static_source"] is False
-                                     else "static_source" if row["static_check"]["static_source"] else "candidate")
+        if see_only:
+            per_exposure.append({"obs_key": item["obsKey"], "identification": "not_attempted"})
         else:
-            row["identification"] = "none"
-        per_exposure.append(row)
+            position = astrometry.fit_position(product, ra, dec, product.info.get("PSF_FWHM"))
+            row = {"obs_key": item["obsKey"], "mjd": round(float(product.info.get("MJD-AVG", item["mjd"])), 6),
+                   "detector": item["detector"], "visit": item["visit"], **position.to_json(),
+                   "ephemeris_ra_deg": ra, "ephemeris_dec_deg": dec}
+            if position.status == "measured":
+                east, north = astrometry.tangent_offsets_arcsec(ra, dec, position.ra_deg, position.dec_deg)
+                row.update(offset_east_arcsec=round(east, 3), offset_north_arcsec=round(north, 3))
+                row["static_check"] = static_check(item, follow, position)
+                row["identification"] = ("body" if row["static_check"]["static_source"] is False
+                                         else "static_source" if row["static_check"]["static_source"] else "candidate")
+            else:
+                row["identification"] = "none"
+            per_exposure.append(row)
         observations.append({
             "obs_key": item["obsKey"], "obs_id": item["obsId"], "detector": item["detector"],
             "collection": item["release"], "processing": item["processing"],
@@ -92,7 +96,8 @@ def build(key: str, out: Path) -> dict:
             "url": item["source"]["url"], "source_sha256": item["source"]["sha256"],
             "source_bytes": item["source"]["bytes"], "software": item["source"]["software"],
             "flag_schema": item["flagSchema"], "mask_policy": item["maskPolicy"],
-            "centre": item["centre"], "role": "training",
+            "centre": item["centre"], "role": "see_only" if see_only else "training",
+            "official_collection": item.get("officialCollection"),
             "quality": {"usable": item["l2dqa"] in (None, "Pass"), "reason_key": None if item["l2dqa"] in (None, "Pass")
                         else "quality.l2-dqa-not-pass", "l2_dqa": item["l2dqa"]},
         })
@@ -140,26 +145,35 @@ def build(key: str, out: Path) -> dict:
                             "reason_keys": ["compare.position-different-response"],
                             "explain_key": "explain.fixed-sky-pair"})
 
-    bodies = [row for row in per_exposure if row["identification"] == "body"]
-    candidates = [row for row in per_exposure if row["identification"] in ("body", "candidate")]
-    limitations = ["limit.ephemeris-guided", "limit.gaussian-psf-model", "limit.training-visits-only"]
-    if not bodies:
+    if see_only:
+        return write_see_only(key, folder, follow, observations, epochs)
+    epoch_fits = joint_epoch_fits(groups)
+    accepted = [row for row in epoch_fits if row["identification"] == "body"]
+    limitations = ["limit.ephemeris-guided", "limit.gaussian-psf-model", "limit.training-visits-only",
+                   "limit.joint-fit-epochs"]
+    if not accepted:
         limitations.append("limit.detection-not-validated")
     measurements = []
-    if bodies:
-        offsets = np.array([[row["offset_east_arcsec"], row["offset_north_arcsec"]] for row in bodies])
-        total = np.hypot(offsets[:, 0], offsets[:, 1])
-        measurements.append({"id": "m-offset", "quantity": "position_offset_arcsec", "content_type": "measured",
-                             "status": "measured", "value": round(float(np.median(total)), 3),
-                             "sigma": round(float(1.4826 * np.median(np.abs(total - np.median(total)))), 3),
-                             "method": "native-psf-fit near the ephemeris, static-source check passed",
-                             "n_points": len(bodies), "inputs": sorted({inv.epoch_id(r["visit"], r["detector"]) for r in bodies}),
-                             "limitation_keys": limitations})
-    else:
-        measurements.append({"id": "m-offset", "quantity": "position_offset_arcsec", "content_type": "measured",
-                             "status": "insufficient_data", "value": None, "sigma": None,
-                             "status_reason_key": "measure.low-snr" if not candidates else "measure.fit-failed",
-                             "method": "native-psf-fit near the ephemeris", "inputs": [], "limitation_keys": limitations})
+    for row in epoch_fits:
+        mid = f"m-offset-{row['epoch']}"
+        base = {"id": mid, "quantity": "position_offset_arcsec", "content_type": "measured",
+                "method": "joint forced fit on native pixels, common offset from the ephemeris",
+                "inputs": [row["epoch"]], "identification": row["identification"], "snr": row["snr"],
+                "null_snr": row["null"]["snr"], "limitation_keys": limitations}
+        if row["identification"] == "body":
+            cov = np.array(row["cov_arcsec2"])
+            east, north = row["offset_east_arcsec"], row["offset_north_arcsec"]
+            total = math.hypot(east, north)
+            sigma = math.sqrt(max(cov[0, 0], cov[1, 1]))
+            measurements.append({**base, "status": "measured", "value": round(total, 3), "sigma": round(sigma, 3),
+                                 "east_arcsec": round(east, 3), "north_arcsec": round(north, 3),
+                                 "cov_arcsec2": [[round(v, 5) for v in line] for line in cov.tolist()]})
+        else:
+            reason = row.get("reason_key") or ("measure.null-test-failed" if row["identification"] == "candidate"
+                                                else "measure.low-snr")
+            measurements.append({**base, "status": "insufficient_data", "value": None, "sigma": None,
+                                 "status_reason_key": reason})
+    bodies = accepted
     low, high = HOLDOUT_WINDOWS_MJD[key]
     manifest = {
         "schema_version": inv.SCHEMA,
@@ -178,7 +192,7 @@ def build(key: str, out: Path) -> dict:
         "epochs": epochs,
         "comparisons": comparisons,
         "measurements": measurements,
-        "astrometry": {"per_exposure": per_exposure,
+        "astrometry": {"epochs": epoch_fits, "per_exposure": per_exposure,
                        "identification_counts": {kind: sum(row["identification"] == kind for row in per_exposure)
                                                  for kind in ("body", "candidate", "static_source", "none")}},
         "photometry": None,
@@ -195,7 +209,60 @@ def build(key: str, out: Path) -> dict:
     }
     (folder / "investigation.json").write_bytes(json_bytes(manifest))
     return {"key": key, "observations": len(follow), "epochs": len(epochs),
-            "identification": manifest["astrometry"]["identification_counts"]}
+            "identification": manifest["astrometry"]["identification_counts"],
+            "epoch_identification": {row["epoch"]: row["identification"] for row in epoch_fits}}
+
+
+def joint_epoch_fits(groups: dict) -> list[dict]:
+    """One joint forced fit per epoch, with the time-shuffled null test."""
+    rows = []
+    for (visit, detector), members in sorted(groups.items()):
+        products = [member["product"] for member in members]
+        positions = [(member["centre"]["ra_deg"], member["centre"]["dec_deg"]) for member in members]
+        fit = stacking.joint_fit(products, positions)
+        null = stacking.null_test(products, positions)
+        detected = fit["status"] == "measured"
+        identification = ("body" if detected and null.get("passes") is True
+                          else "candidate" if detected else "none")
+        mjds = [float(member["product"].info.get("MJD-AVG", member["mjd"])) for member in members]
+        rows.append({"epoch": inv.epoch_id(visit, detector), "visit": visit, "detector": detector,
+                     "mean_mjd": round(float(np.mean(mjds)), 6), "n_exposures": fit.get("n_exposures"),
+                     "identification": identification, "reason_key": fit.get("reason_key"),
+                     "snr": _r(fit.get("snr")), "offset_east_arcsec": _r(fit.get("offset_east_arcsec")),
+                     "offset_north_arcsec": _r(fit.get("offset_north_arcsec")),
+                     "cov_arcsec2": fit.get("cov_arcsec2"), "chi2_red": _r(fit.get("chi2_red")),
+                     "null": {key: (_r(value) if isinstance(value, float) else value) for key, value in null.items()}})
+    return rows
+
+
+def _r(value, digits=4):
+    return None if value is None else round(float(value), digits)
+
+
+def write_see_only(key, folder, follow, observations, epochs) -> dict:
+    summary = json.loads((folder_for(key) / "acquire-summary.json").read_text())
+    unresolved = summary.get("unresolved", [])
+    manifest = {
+        "schema_version": inv.SCHEMA, "target_key": key, "contract_version": 3, "dataset_version": "a3-2026-11-14",
+        "pipeline": {"version": config.PIPELINE_VERSION, "code_sha256": inv.code_sha256()},
+        "request": {"mode": "object_following", "positions": "official SPHEREx 3I/ATLAS exposure table",
+                    "cutout_deg": round(float(follow[0]["grid"]["fov"]) * config.CUTOUT_MARGIN, 4) if follow else None},
+        "coverage": {"observations_listed": len(follow) + len(unresolved), "observations_used": len(follow),
+                     "observations_unavailable": unresolved, "releases": sorted({item["release"] for item in follow}),
+                     "official_table_collection": "spherex_qr2"},
+        "observations": observations, "epochs": epochs, "comparisons": [], "measurements": [],
+        "astrometry": None, "photometry": None,
+        "explanation": [{"key": "explain.see-only", "params": {}}, {"key": "explain.moving-object-cutouts", "params": {}}],
+        "capabilities": {"modes": ["side_by_side"], "difference": False, "spectrum": False, "light_curve": False},
+        "viewer": None, "legacy": None,
+        "data_status": "available" if follow else "unavailable",
+        "status_reason_key": None if follow else "unavailable.no-current-product",
+        "measurement_status": "not_attempted",
+        "limitation_keys": ["limit.official-table-positions", "limit.see-only"],
+        "credits_keys": ["credit.irsa", "credit.spherex", "credit.comet-table"],
+    }
+    (folder / "investigation.json").write_bytes(json_bytes(manifest))
+    return {"key": key, "observations": len(follow), "unavailable": len(unresolved), "epochs": len(epochs)}
 
 
 def _masked(item):

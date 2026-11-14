@@ -14,6 +14,7 @@
     "compare.response-shifted": "Same detector, but the wavelengths differ too much for a brightness comparison.",
     "compare.response-unknown": "The wavelength of one picture is unknown.",
     "credit.base-project": "Built on the team's earlier SPHEREx Blink project.",
+    "credit.comet-table": "3I/ATLAS exposure list: SPHEREx team, via IRSA.",
     "credit.gaia": "Positions and motions of comparison stars: ESA Gaia DR3.",
     "credit.horizons": "Ephemerides: JPL Horizons.",
     "credit.irsa": "Data: NASA/IPAC Infrared Science Archive (IRSA).",
@@ -36,10 +37,13 @@
     "limit.ephemeris-guided": "Cutouts follow the JPL Horizons ephemeris (catalogue-assisted).",
     "limit.few-visits-parallax": "Only a few visits: the parallax fit is sensitive to small errors that differ from visit to visit.",
     "limit.gaussian-psf-model": "Positions come from a simple bell-shaped star model, not the full SPHEREx PSF.",
+    "limit.joint-fit-epochs": "The body is too faint for single pictures; each date's position comes from one fit to all its pictures together.",
     "limit.no-parallax-baseline": "Straight-line fit that ignores parallax: a simple comparison, not the best model.",
+    "limit.official-table-positions": "Pictures are centred on the comet positions given in the official SPHEREx exposure table.",
     "limit.parallax-from-catalogue": "The yearly parallax wobble uses the Gaia distance (catalogue-assisted).",
     "limit.parallax-not-modelled": "The yearly parallax wobble is not modelled.",
     "limit.saturated-core-wing-fit": "The star's centre is saturated; its position comes from the outer glow only.",
+    "limit.see-only": "For looking only: no measurement or prediction is made for this target.",
     "limit.training-visits-only": "Only training visits are shown.",
     "limit.visit-systematics": "The free parallax fit disagrees with Gaia, a sign of visit-to-visit errors; uncertainties may be too small.",
     "limit.wcs-wave-approximate": "Wavelengths come from the approximate lookup table in each file (about 1 nm).",
@@ -52,6 +56,7 @@
     "measure.flagged-pixels-in-aperture": "Flagged pixels (for example saturation) cover the star.",
     "measure.low-snr": "The star is too faint here for a reliable position.",
     "measure.no-measured-matched-pair": "No matching-wavelength pair with clean pixels at the star.",
+    "measure.null-test-failed": "A check with shuffled times also found a signal (likely a star), so this is not counted.",
     "measure.outside-cutout": "The star is outside this picture.",
     "measure.too-few-epochs": "Too few positions for a motion fit.",
     "measure.too-few-good-pixels": "Too few clean pixels around the star.",
@@ -72,6 +77,7 @@
     "reserved.until-predictions-frozen": "Until the predictions are frozen and published.",
     "thumb.spherex": "SPHEREx picture (processed)",
     "unavailable.holdout-closed": "the newest visit is reserved for the prediction test",
+    "unavailable.no-current-product": "the exposure listed in the official table has no current (DR1) product",
     "unavailable.no-validated-product": "no validated SPHEREx product yet"
   }
 }

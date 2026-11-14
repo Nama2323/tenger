@@ -42,6 +42,9 @@ STRINGS = {
     "limit.few-visits-parallax": "Only a few visits: the parallax fit is sensitive to small errors that differ from visit to visit.",
     "limit.visit-systematics": "The free parallax fit disagrees with Gaia, a sign of visit-to-visit errors; uncertainties may be too small.",
     "limit.blended-binary": "This is a close pair of stars; at SPHEREx resolution both are measured together.",
+    "limit.official-table-positions": "Pictures are centred on the comet positions given in the official SPHEREx exposure table.",
+    "limit.see-only": "For looking only: no measurement or prediction is made for this target.",
+    "limit.joint-fit-epochs": "The body is too faint for single pictures; each date's position comes from one fit to all its pictures together.",
     "limit.aperture-whole-pixels": "Brightness is summed over whole pixels inside a circle.",
     "limit.wcs-wave-approximate": "Wavelengths come from the approximate lookup table in each file (about 1 nm).",
     "limit.ephemeris-guided": "Cutouts follow the JPL Horizons ephemeris (catalogue-assisted).",
@@ -71,12 +74,14 @@ STRINGS = {
     "measure.fit-at-bound": "The star model hit a limit; the position is not trusted.",
     "measure.too-few-epochs": "Too few positions for a motion fit.",
     "measure.baseline-too-short": "The dates span too short a time for a motion fit.",
+    "measure.null-test-failed": "A check with shuffled times also found a signal (likely a star), so this is not counted.",
     "measure.no-measured-matched-pair": "No matching-wavelength pair with clean pixels at the star.",
     # quality gate
     "quality.l2-dqa-not-pass": "The SPHEREx quality check did not pass for this exposure.",
     "quality.target-outside-cutout": "The target is outside this exposure's picture.",
     "product.unusable-quality-metadata": "The file's quality flags could not be read safely.",
     "unavailable.no-validated-product": "no validated SPHEREx product yet",
+    "unavailable.no-current-product": "the exposure listed in the official table has no current (DR1) product",
     "unavailable.holdout-closed": "the newest visit is reserved for the prediction test",
     # reserved sky
     "reserved.rule": "Live loading is paused near these paths so reserved observations stay unopened.",
@@ -89,6 +94,7 @@ STRINGS = {
     "credit.spherex": "SPHEREx is a NASA mission led by Caltech and managed by JPL.",
     "credit.gaia": "Positions and motions of comparison stars: ESA Gaia DR3.",
     "credit.horizons": "Ephemerides: JPL Horizons.",
+    "credit.comet-table": "3I/ATLAS exposure list: SPHEREx team, via IRSA.",
     "credit.base-project": "Built on the team's earlier SPHEREx Blink project.",
 }
 
