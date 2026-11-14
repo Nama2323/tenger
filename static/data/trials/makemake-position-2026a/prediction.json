@@ -1,0 +1,27 @@
+{
+  "schema_version": "tenger.prediction/1",
+  "contract_version": 5,
+  "trial_id": "makemake-position-2026a",
+  "trial_ref": {
+    "path": "trials/makemake-position-2026a/trial.json",
+    "sha256": "d929a6fcaf92c5202c397637466569349e07ab4fec4ecd73ff828b72151c616e"
+  },
+  "training_sha256": "526ce40149684f5c4e1fc43f52590ede6fe20e9222a7af833b1b74df42e4b910",
+  "category": "retrospective_holdout",
+  "labels": [
+    "retrospective_holdout"
+  ],
+  "open_forecast": false,
+  "created_utc": "2026-11-14T14:49:57Z",
+  "prediction_status": "insufficient_data",
+  "status_reason_key": "predict.no-training-positions",
+  "t_mjd": 61198.165163,
+  "model": null,
+  "baseline": null,
+  "track": null,
+  "diagnostics": {
+    "n_training_points": 0,
+    "n_training_visits": 0
+  },
+  "limitation_keys": []
+}
