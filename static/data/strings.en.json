@@ -2,6 +2,7 @@
   "schema_version": "tenger.strings/1",
   "language": "en",
   "strings": {
+    "abandoned.freeze-defect": "Abandoned before any prediction: the frozen file was incomplete; a corrected version replaced it.",
     "compare.field-gradient-unknown": "How the wavelength changes across the picture is unknown.",
     "compare.field-matched": "The wavelengths match across the whole picture.",
     "compare.field-no-matched-pair": "No exposure pair with matching wavelengths, so no difference image.",

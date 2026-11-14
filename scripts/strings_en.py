@@ -146,6 +146,7 @@ STRINGS = {
     "forecast.after-2026-miss": "Made after the 2026 miss, using its lessons; check when IRSA releases the data.",
     "hindcast.v2-label": "Exploratory, after the reveal: the new method tried on the 2026 visit. It does not count.",
     "limit.single-group-latest-visit": "The newest visit has only one detector group, so the forecast leans on few pictures.",
+    "abandoned.freeze-defect": "Abandoned before any prediction: the frozen file was incomplete; a corrected version replaced it.",
     # colour previews
     "composite.display-colours": "Display colours, not for measurement: red = arrays 5-6, green = 3-4, blue = 1-2.",
     "composite.missing-array-group": "No colour picture for this date: one of the three array groups has no pictures.",

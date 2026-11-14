@@ -72,7 +72,7 @@ def prediction_summary(key: str, out: Path) -> dict:
         if not trial_path.exists():
             continue
         trial = json.loads(trial_path.read_text())
-        if trial["target_key"] != key:
+        if trial["target_key"] != key or (folder / "abandoned.json").exists():
             continue
         if trial.get("open_forecast"):
             forecasts.append(trial["trial_id"])
@@ -145,7 +145,7 @@ def build(out: Path) -> dict:
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "targets": targets,
         "trials": sorted(f"trials/{folder.name}/trial.json" for folder in (out / "trials").glob("*")
-                         if (folder / "trial.json").exists()),
+                         if (folder / "trial.json").exists() and not (folder / "abandoned.json").exists()),
         "scoreboard_path": "scoreboard.json" if (out / "scoreboard.json").exists() else None,
         "game_rounds": sorted(f"game/{path.name}" for path in (out / "game").glob("*.json")) if (out / "game").exists() else [],
         "lessons": sorted(f"lessons/{path.name}" for path in (out / "lessons").glob("*.json")) if (out / "lessons").exists() else [],

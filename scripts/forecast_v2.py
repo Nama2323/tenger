@@ -39,11 +39,16 @@ SIGMA_G_FLOOR_ARCSEC = 0.2
 MC_DRAWS = 300
 SEED = 20261115
 LABEL = "made after the 2026 miss, using its lessons; check when IRSA releases the data"
+# The first v2 manifests (frozen 2026-11-15, commit 33a4171) were abandoned before any prediction: the
+# freeze step left out the starting state and described the old covariance rule, so the frozen code
+# could not predict them. They stay untouched, with an abandoned.json beside them.
+ABANDONED = {"pluto-position-open-2027a-v2": "pluto-position-open-2027a-v2b",
+             "pluto-position-open-2027b-v2": "pluto-position-open-2027b-v2b"}
 FORECASTS = {
-    "pluto-position-open-2027a-v2": {"reference_mjd": 61520.0, "window_mjd": [61490.0, 61550.0],
+    "pluto-position-open-2027a-v2b": {"reference_mjd": 61520.0, "window_mjd": [61490.0, 61550.0],
                                       "check_after_utc": "2027-05-15",
                                       "cadence_note": "Pluto visits so far start near 04-25 and 09-29 each year"},
-    "pluto-position-open-2027b-v2": {"reference_mjd": 61677.0, "window_mjd": [61647.0, 61707.0],
+    "pluto-position-open-2027b-v2b": {"reference_mjd": 61677.0, "window_mjd": [61647.0, 61707.0],
                                       "check_after_utc": "2027-10-20",
                                       "cadence_note": "Pluto visits so far start near 04-25 and 09-29 each year"},
 }
@@ -273,10 +278,14 @@ def freeze(frozen_utc: str | None = None) -> list[Path]:
                  "used_for": "barycentric frame"}],
             "model": {"id": "barycentric-two-body-group-resampled", "version": "a7-2026-11-15", "code_sha256": code_sha256(),
                       "code_files": list(CODE_FILES),
-                      "uncertainty": "larger of group Monte Carlo (offset per visit x array group, sigma_g = max(RMS of "
-                                     f"group mean residuals, {SIGMA_G_FLOOR_ARCSEC} arcsec), exposures resampled within "
-                                     "groups) and leave-one-group-out jackknife; plus sigma_g^2 and the unknown "
-                                     "spacecraft position", "lessons": "docs/postmortem-pluto.md"},
+                      "uncertainty": "envelope, separately along and across the track, of a group Monte Carlo "
+                                     "(offset per visit x array group, sigma_g = max(RMS of group mean residuals, "
+                                     f"{SIGMA_G_FLOOR_ARCSEC} arcsec), exposures resampled within groups) and a "
+                                     "leave-one-group-out jackknife; plus sigma_g^2 and the unknown spacecraft position",
+                      "lessons": "docs/postmortem-pluto.md",
+                      "start_state_bary_au_au_per_day": [float(v) for v in start],
+                      "start_t0_mjd_utc": ordered[0]["t_mjd"],
+                      "start_source": "frozen A4 Pluto orbit moved to the barycentre (starting values only)"},
             "baseline": {"id": "linear-tangent-plane", "description": "straight line in RA/Dec fitted to the same positions"},
             "scoring": predict.scoring_block({"quantity": "position"}),
             "identification": predict.identification_block({"kind": "orbit"}),
@@ -390,11 +399,34 @@ def hindcast() -> dict:
     }
 
 
+def mark_abandoned() -> list[Path]:
+    """A new file beside each abandoned manifest; the manifest itself is never edited."""
+    made = []
+    for old_id, new_id in ABANDONED.items():
+        folder = TRIALS / old_id
+        path = folder / "abandoned.json"
+        if not (folder / "trial.json").exists() or path.exists():
+            continue
+        if (folder / "prediction.json").exists():
+            raise predict.FrozenError(f"{old_id}: has a prediction; it cannot be abandoned")
+        document = {"schema_version": "tenger.abandoned/1", "contract_version": 11, "trial_id": old_id,
+                    "abandoned_utc": _now(), "predicted": False, "replaced_by": new_id,
+                    "reason_key": "abandoned.freeze-defect",
+                    "reason": "frozen manifest lacked the starting state and described the previous covariance rule, "
+                              "so the frozen code could not predict it; abandoned before any prediction was made",
+                    "trial_sha256": predict.sha256((folder / "trial.json").read_bytes())}
+        path.write_bytes(predict.json_bytes(document))
+        made.append(path)
+    return made
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("action", choices=["freeze", "predict", "receipt", "hindcast"])
+    parser.add_argument("action", choices=["abandon", "freeze", "predict", "receipt", "hindcast"])
     args = parser.parse_args(argv)
-    if args.action == "freeze":
+    if args.action == "abandon":
+        print(mark_abandoned())
+    elif args.action == "freeze":
         print(freeze())
     elif args.action == "predict":
         for trial_id in FORECASTS:

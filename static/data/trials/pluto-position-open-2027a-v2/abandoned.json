@@ -1,0 +1,11 @@
+{
+  "schema_version": "tenger.abandoned/1",
+  "contract_version": 11,
+  "trial_id": "pluto-position-open-2027a-v2",
+  "abandoned_utc": "2026-11-14T16:29:03Z",
+  "predicted": false,
+  "replaced_by": "pluto-position-open-2027a-v2b",
+  "reason_key": "abandoned.freeze-defect",
+  "reason": "frozen manifest lacked the starting state and described the previous covariance rule, so the frozen code could not predict it; abandoned before any prediction was made",
+  "trial_sha256": "ab472252fb157d351c90cf2f56c14054bcaf54d203f6c46169f9e972268a31e1"
+}

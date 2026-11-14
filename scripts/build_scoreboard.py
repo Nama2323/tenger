@@ -21,12 +21,15 @@ def _sha(path: Path) -> str:
 
 
 def build(generated_utc: str | None = None) -> dict:
-    rows, counts, open_forecasts, derived = [], {}, [], []
+    rows, counts, open_forecasts, derived, abandoned = [], {}, [], [], []
     for folder in sorted((DATA / "trials").iterdir()):
         trial_path = folder / "trial.json"
         if not trial_path.exists():
             continue
         trial = json.loads(trial_path.read_text())
+        if (folder / "abandoned.json").exists():
+            abandoned.append(trial["trial_id"])
+            continue
         derived.append({"path": f"trials/{folder.name}/trial.json", "sha256": _sha(trial_path)})
         prediction_path, verification_path = folder / "prediction.json", folder / "verification.json"
         prediction = json.loads(prediction_path.read_text()) if prediction_path.exists() else None
@@ -73,6 +76,7 @@ def build(generated_utc: str | None = None) -> dict:
         "counts": counts,
         "see_only": ["3i-atlas"],
         "open_forecasts": open_forecasts,
+        "abandoned_before_prediction": abandoned,
         "rows": rows,
     }
 

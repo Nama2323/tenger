@@ -125,6 +125,9 @@ def test_frozen_trials_have_intact_hash_chains_and_open_forecasts_are_not_counte
         pytest.skip("no trials published")
     for folder in sorted(path for path in trials_dir.iterdir() if (path / "trial.json").exists()):
         assert predict.check(folder.name) == [], folder.name
+        if (folder / "abandoned.json").exists():
+            assert not (folder / "prediction.json").exists()  # abandoned only before any prediction
+            continue
         receipt = json.loads((folder / "receipt.json").read_text())
         assert len(receipt["commit"]) == 40
     scoreboard = load("scoreboard.json")
