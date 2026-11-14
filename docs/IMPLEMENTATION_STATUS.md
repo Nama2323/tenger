@@ -372,3 +372,38 @@ Real data now on the site (`data/index.json`, `data/barnard/investigation.json`,
   the team prefers to hide them until validated, it is one line in `isViewable` (`js/targets.js`).
 - `node --test tests/*.mjs`: **105 passed** (adds a test that all five challenge targets stay viewable with the
   real index while unvalidated ones are marked legacy-only). Screenshots regenerated (see below).
+
+### Task R1, 14 Nov 2026 (visual redesign; rebased on Session A's `915c551`)
+
+Goal: TENGER looks like its own product, clearly different from SPHEREx Blink, without changing features,
+URL parameters, contract readers, the reserved-sky guard, accessibility or tests. Mood reference only: a
+"mission console" (NASA Eyes was not copied: no code, images or logos).
+
+| Page | Commit | What changed |
+|---|---|---|
+| Design system, Home | `style(web): R1 Home as a map console…` | Tokens at the top of `style.css` (background `#05070d`, glass panels `#0a0f1a` at 85% with backdrop blur and `#1e2738` border, text `#e6edf7`, muted `#8d9bb0`, accent `#5cc8ff`, stars `#ffe08a`, variables `#c9a0ff`, Solar System `#5cc8ff`, Planet Nine `#ffa94d`, hit `#5fd38d`, miss `#ffb547`, waiting `#8d9bb0`), 8 px grid, 12 px radius, one shadow. Self-hosted Space Grotesk / Inter / JetBrains Mono (`static/fonts/`, OFL texts and README; the Google Fonts request is gone). Slim top bar with an orbit mark (phone: Menu). Home is a full-screen map console: starfield, glowing Sun and markers, the "Schematic: not a sky map" note, colour key, floating search card (one box for a name or RA/Dec, FOV, Top places, Real sky, Guided demo, the five challenge shortcuts) and a collapsible Targets rail grouped by type, a bottom sheet on phones. Notices are dismissible toasts. |
+| Investigate | `style(web): R1 Investigate as a glass panel…` | A 420 px glass panel slides in over the map (200 ms; a full-screen sheet on phones) with sticky section tabs and titles. The viewer moved to a stage with a bottom time bar: epoch ticks with dates and small previews, play/pause, A and B markers, and the Blink / Swipe / Side by side / Difference control. Caption strip, A/B pickers, wavelength (bands, six arrays) and more controls are in See. Escape closes the panel. New preview mode for evidence files with epoch previews but no frame bundle (Makemake): A/B on the preview images, captions from the epoch records, comparison grade of the pair. |
+| Beat the physics | `style(web): R1 Beat the physics…` | Page header, round tabs, glass round panel; plot colours from the design system (you: accent ring; baseline: grey square; model: yellow diamond and region; real observation: green cross). DATA-CONTRACT V4: brightness units `mag_ab`, `ujy`, `ratio`; magnitudes are drawn brighter-up. |
+| Learn, About | `style(web): R1 Learn and About` | Numbered lesson cards, the Planet X Lab card in Planet Nine orange; About as cards with a Fonts section (names, designers, links to the three OFL texts). |
+
+Removed from the old look: the "What moved?"-style hero, amber pill buttons, Unbounded/Commissioner fonts,
+the old header, landing cards and the full-page AllWISE background behind Home (the Aladin sky is now an
+opt-in "Real sky" panel).
+
+**Checks**
+
+| Check | Result |
+|---|---|
+| `node --test tests/*.mjs` | **106 passed** (contrast test now checks the R1 tokens: text, muted, accent, category and verdict colours ≥ 4.5:1 on background, panel and raised surfaces; dark text on accent ≥ 4.5:1) |
+| `docs/screens/capture.mjs`, all pages at 360/390/768/1280 (+1440 for the redesign shots) | Measured viewport = requested; no horizontal scroll; no control under 44 px; no script errors except the expected 404s for files not published yet. Two bugs found on the way and fixed: a `filter` on the dimmed Home made it the containing block for its fixed starfield and sheet (16 px overflow on phones); map labels could stick out of the map on direct investigation links |
+| In-app browser | Search (name, coordinates with FOV, invalid numbers), Real sky panel (Aladin loads), rail toggle, chips, open/close the panel, Escape, Space and ←/→ on the plate, swipe, tour start/stop; `/api/observe` trapped during a reserved-path search: 0 requests |
+
+Screenshots: `docs/screens/*.png` (all pages, four widths) and `docs/screens/redesign/` (before and after at 390
+and 1440 px, see its README).
+
+**Also in this task**: re-copied `strings.en.json` (77 keys, incl. Makemake and comet keys); contract V4
+brightness units in the game.
+
+**Limits**: not checked on a real phone. The time bar shows evenly spaced epoch ticks (with dates) rather than a
+proportional time axis, so uneven gaps between visits are read from the labels. Preview mode shows previews
+only (no zoom, spectrum or motion quick look), as the evidence file provides no frames for Makemake.

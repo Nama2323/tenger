@@ -632,7 +632,7 @@ body[data-page="investigate"] .page-home .map-caption { visibility: hidden; }
   scrollbar-width: none;
   gap: 2px;
   padding: var(--s1);
-  background: rgba(10, 15, 26, 0.97);
+  background: var(--panel);
   border-bottom: 1px solid var(--border);
 }
 .panel-nav button { flex: none; min-width: var(--tap); padding: 0 8px; font-size: 13px; background: transparent; border-color: transparent; color: var(--muted); }
@@ -652,7 +652,7 @@ body[data-page="investigate"] .page-home .map-caption { visibility: hidden; }
   margin: 0 calc(-1 * var(--s2));
   padding: 12px var(--s2);
   font-size: 17px;
-  background: rgba(10, 15, 26, 0.97);
+  background: var(--panel);
   border-bottom: 1px solid var(--border);
 }
 .progress { color: var(--accent); font-size: 14px; }

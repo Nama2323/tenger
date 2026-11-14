@@ -52,6 +52,58 @@
     "consoleErrors": []
   },
   {
+    "page": "home-rail-open",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "home-rail-open",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "home-rail-open",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "home-rail-open",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
     "page": "home-fixtures-map",
     "requested": 360,
     "ready": true,
@@ -138,9 +190,7 @@
     "clientWidth": 768,
     "scrollWidth": 768,
     "wide": [],
-    "small": [
-      "summary \"8 measurements could not\" 678x24"
-    ],
+    "small": [],
     "errors": [],
     "consoleErrors": []
   },
@@ -153,9 +203,111 @@
     "clientWidth": 1280,
     "scrollWidth": 1280,
     "wide": [],
-    "small": [
-      "summary \"8 measurements could not\" 1190x24"
-    ],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "investigate-barnard-timebar",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "investigate-barnard-timebar",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "investigate-barnard-timebar",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "investigate-barnard-timebar",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "investigate-barnard-panel",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "investigate-barnard-panel",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "investigate-barnard-panel",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "investigate-barnard-panel",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
     "errors": [],
     "consoleErrors": []
   },
@@ -194,9 +346,7 @@
     "clientWidth": 768,
     "scrollWidth": 768,
     "wide": [],
-    "small": [
-      "summary \"8 measurements could not\" 678x24"
-    ],
+    "small": [],
     "errors": [],
     "consoleErrors": []
   },
@@ -209,9 +359,7 @@
     "clientWidth": 1280,
     "scrollWidth": 1280,
     "wide": [],
-    "small": [
-      "summary \"8 measurements could not\" 1190x24"
-    ],
+    "small": [],
     "errors": [],
     "consoleErrors": []
   },
@@ -302,9 +450,7 @@
     "clientWidth": 768,
     "scrollWidth": 768,
     "wide": [],
-    "small": [
-      "summary \"1 measurements could not\" 678x24"
-    ],
+    "small": [],
     "errors": [],
     "consoleErrors": []
   },
@@ -317,14 +463,12 @@
     "clientWidth": 1280,
     "scrollWidth": 1280,
     "wide": [],
-    "small": [
-      "summary \"1 measurements could not\" 1190x24"
-    ],
+    "small": [],
     "errors": [],
     "consoleErrors": []
   },
   {
-    "page": "makemake-unavailable",
+    "page": "investigate-makemake-preview",
     "requested": 360,
     "ready": true,
     "innerWidth": 360,
@@ -337,7 +481,7 @@
     "consoleErrors": []
   },
   {
-    "page": "makemake-unavailable",
+    "page": "investigate-makemake-preview",
     "requested": 390,
     "ready": true,
     "innerWidth": 390,
@@ -350,7 +494,7 @@
     "consoleErrors": []
   },
   {
-    "page": "makemake-unavailable",
+    "page": "investigate-makemake-preview",
     "requested": 768,
     "ready": true,
     "innerWidth": 768,
@@ -363,7 +507,59 @@
     "consoleErrors": []
   },
   {
-    "page": "makemake-unavailable",
+    "page": "investigate-makemake-preview",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "pluto-unavailable",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "pluto-unavailable",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "pluto-unavailable",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "pluto-unavailable",
     "requested": 1280,
     "ready": true,
     "innerWidth": 1280,

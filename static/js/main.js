@@ -885,7 +885,7 @@ function buildBandScale() {
 /** ← and → step through dates (B outside Blink); Space plays or pauses Blink, or flips the swipe. */
 function onViewerKey(event) {
   if ((!state.job && !state.previews) || event.altKey || event.ctrlKey || event.metaKey) return;
-  const target = event.target;
+  const target = event.target instanceof Element ? event.target : document.body;
   if (target.closest('input, select, textarea')) return;
   const steps = sequence();
   if (event.key in KEY_STEP && steps.length) {
@@ -1836,7 +1836,8 @@ function bindSearchList() {
     closeSearchList();
     setMenu(false);
     // Escape closes the investigation panel (not while a form field or the full-screen viewer has it).
-    if (app.page === 'investigate' && !document.fullscreenElement && !event.target.closest('input, select, textarea')) showPage('home');
+    const target = event.target instanceof Element ? event.target : null;
+    if (app.page === 'investigate' && !document.fullscreenElement && !target?.closest('input, select, textarea')) showPage('home');
   });
 }
 
@@ -1969,6 +1970,8 @@ function bindControls() {
   $('swipe').addEventListener('input', () => setSwipe($('swipe').value));
   bindPlateGestures($('plate'));
   bindPlateGestures($('plate-b'));
+  // The plate and time bar live in the stage, the rest of the viewer controls in the See section.
+  $('observatory').addEventListener('keydown', onViewerKey);
   $('panel-see').addEventListener('keydown', onViewerKey);
   $('follow').addEventListener('click', openChooser);
   $('chooser-close').addEventListener('click', unlockCamera);
