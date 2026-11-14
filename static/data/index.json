@@ -448,8 +448,7 @@
     "credit.irsa",
     "credit.spherex",
     "credit.gaia",
-    "credit.horizons",
-    "credit.base-project"
+    "credit.horizons"
   ],
   "batch_paths": [
     "batches/asteroids-2026a.json"

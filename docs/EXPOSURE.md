@@ -274,8 +274,8 @@ positions.
 
 - **Teammates** have viewed the bundled frames, thumbnails and results of the five challenge targets
   (team decision 8; `docs/tenger-context/context/KNOWN-STATE.md`). The bundled frames come from 2–7
-  committed versions of each `meta.json` (6 to 9 Nov 2026 bakes), all published on the teammate's
-  GitHub Pages site. All of them count as exposed. So do the 1,241 processed `.npz` frames in
+  committed versions of each `meta.json` (6 to 9 Nov 2026 bakes), all published on the original
+  project's GitHub Pages site. All of them count as exposed. So do the 1,241 processed `.npz` frames in
   `data/frames/`. Every one of them also appeared in some bundled version.
 - **Earlier audit (Codex, 14 Nov):** viewed the home previews, the Barnard viewer and the results table. It
   downloaded one DR1 cutout, `2025W33_2C_0321_1` D6 (Barnard field, 12×12 px). One QR3 cutout

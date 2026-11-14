@@ -33,7 +33,6 @@
     "context.service-failed": "The catalogue service could not be reached when this file was made.",
     "context.twomass-ks": "2MASS Ks (2.2 µm), with its own observation date",
     "credit.allwise": "Catalogue positions: AllWISE (NASA/IPAC Infrared Science Archive).",
-    "credit.base-project": "Built on the team's earlier SPHEREx Blink project.",
     "credit.comet-table": "3I/ATLAS exposure list: SPHEREx team, via IRSA.",
     "credit.gaia": "Positions and motions of comparison stars: ESA Gaia DR3.",
     "credit.horizons": "Ephemerides: JPL Horizons.",

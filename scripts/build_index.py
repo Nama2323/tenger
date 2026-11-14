@@ -152,7 +152,7 @@ def build(out: Path) -> dict:
         "reserved_path": "reserved.json",
         "strings_path": "strings.en.json",
         "releases": sorted({release for target in targets for release in _releases(out, target)}),
-        "credits_keys": ["credit.irsa", "credit.spherex", "credit.gaia", "credit.horizons", "credit.base-project"],
+        "credits_keys": ["credit.irsa", "credit.spherex", "credit.gaia", "credit.horizons"],
     }
     (out / "index.json").write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n")
     return {target["key"]: target["data_status"] for target in targets}
