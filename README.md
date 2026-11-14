@@ -130,9 +130,55 @@ The About page lists every source and acknowledgement in full.
 
 Narmandakh Garam, Erkhes Orgil, Anu-Ujin Bayarbaatar, Sonomlegtsog Zolzaya.
 
-TENGER extends the team's earlier project **SPHEREx Blink**
-([pythonhack000/spherex-blink](https://github.com/pythonhack000/spherex-blink), MIT licence). Its git
-history and `LICENSE` are kept.
+## What existed before Space Apps, and what we built
+
+TENGER started from **SPHEREx Blink**
+([pythonhack000/spherex-blink](https://github.com/pythonhack000/spherex-blink)), the team's earlier
+open-source SPHEREx viewer (MIT licence; its notice is kept in `LICENSE`). We reused its viewer, plate
+renderer, stacking code and archive client.
+
+**Before the hackathon:** SPHEREx Blink's own 43 commits, 6–9 Nov 2026. They are by pythonhack000, merges
+by sabr.sf and the automated frame-baking job. No TENGER-specific commit is older than the start (14 Nov
+2026, 09:00 Ulaanbaatar time). The first is `58f993b` at 19:01 that day. Times are author times: some later
+commits were rebased, so their commit times are a few minutes later.
+
+**Built during the hackathon** (every commit from `58f993b` on), in plain words:
+
+- **Checks on SPHEREx data:**
+  - quality flags decoded;
+  - DR1 and QR3 images found and named by release;
+  - images compared only when the wavelengths really match (never the "nearest" channel);
+  - catalogue lookups with a fallback mirror.
+
+  (`79f30c3`, `763237b`, `eebea63`, `dbe4664`, `facefe2`)
+- **An investigation file for every target, rebuilt from the original exposures:** Barnard's Star, WISE 0855,
+  Epsilon Indi B, RW Aurigae, R Draconis, Makemake, Pluto, and 3I/ATLAS (See only). Each one says plainly
+  when the data cannot answer (`49aa871`, `1c6715a` to `e815234`).
+- **The TENGER website:**
+  - the Home map and the 3D scene;
+  - the investigation panels;
+  - difference images only where the checks allow them;
+  - the design, the guided tour, the embed code and the About credits.
+
+  (`0b49024`, `61558c8` to `a31e7b4`, `98ed7fc`, `16da115`, `08d6898`)
+- **Forecasts frozen in git before checking, then scored:**
+  - nine trials frozen, three checked;
+  - the scoreboard and the "Watch the reveal" replay;
+  - an exploratory look at the Pluto miss;
+  - open Pluto forecasts for 2027.
+
+  (`1edb723` to `9f1641c`, `b8a10e4`, `8aa29bd`, `0c1f113` to `41e8a16`, `46b4dbb`)
+- **The "Beat the physics" game** built from those forecasts, with hints and a fix that stops it showing the
+  answer early (`15b2846`, `a422795`, `74eb2db`).
+- **Three printable lessons and the Planet X Lab:**
+  - "Could SPHEREx see Planet X? We measured it": artificial planets added to real images to measure how faint
+    one exposure can see;
+  - the "Find the hidden planet" round.
+
+  (`49d4d89`, `665a06c`, `d812de0`, `f1d0cc4`, `014b6c7`)
+- **A batch of eight asteroid forecasts:** rules written first, forecasts frozen, then checked (`b9ef625` to
+  `9cf2bfd`).
+- **Release work:** validators, link and page checks, demo clips (`5f7efe7`, `e93e9a5`, `801c783`).
 
 ## AI disclosure
 

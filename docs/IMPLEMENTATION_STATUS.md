@@ -1328,3 +1328,26 @@ within the hour. It will be recorded once the calibration is in.
   fetched after the frames. Locally the load is too fast to see it. This predates tonight.
 - **Not live yet:** the Planet X wording, the lesson fix and the real asteroid batch block (on `tenger-dev` at
   `082c98d`).
+
+### SPHEREx Blink credit moved from the pages to README, 15 Nov 2026 (user's decision)
+
+- **Removed from the site:** the footer line "Built on the team's earlier project SPHEREx Blink (MIT licence)."
+  (every page) and the "Built on SPHEREx Blink" card on About (`index.html`, `js/pages.js` `BASE_PROJECT`, keys
+  `footer.base`, `about.baseTitle`, `about.base`, `about.link.source`). The footer keeps the data credit line.
+  The Team card now spans the About grid so no half-empty row is left. Session A's `credit.base-project` key is
+  listed in `index.json` `credits_keys` but no page renders it. Data notes that say where legacy frames came from
+  ("Prepared frames from the earlier SPHEREx Blink build") stay, because they describe data provenance.
+- **README.md**, new section "What existed before Space Apps, and what we built":
+  - TENGER started from SPHEREx Blink (MIT, notice kept in `LICENSE`); its viewer, plate renderer, stacking code
+    and archive client are reused.
+  - SPHEREx Blink's 43 commits of 6–9 Nov 2026 (pythonhack000, merges by sabr.sf, the frame-baking job).
+  - No TENGER commit before 14 Nov 09:00 Ulaanbaatar time; the first is `58f993b`, 19:01. Author times are used,
+    because rebased commits have later commit times.
+  - A plain-words list of what was built, with commit references (every one checked to be on `tenger-dev`).
+- **Untouched:** `LICENSE`, git history, `LIVE_SERVER` and the backend's CORS.
+- **Test** (`tests/release.test.mjs`): no footer line or About card for the base project, the data credit is still
+  in the footer, the README section is present, and `LICENSE` is MIT. The batch loader test now covers both the
+  frozen state (no verification request) and Session A's checked batch (`9cf2bfd`; verification files read).
+  Session A's strings re-copied (193 + 3; new `batch.exploratory-horizons`, `batch.outlier-flag`).
+- **Checks:** 207 tests pass. Captures `home`, `about`, `about-refs` and the new `about-footer` at 360 and 1280:
+  no horizontal scroll, no control under 44 px, no console error.

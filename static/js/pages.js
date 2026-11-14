@@ -100,7 +100,6 @@ const FONTS = [
   { key: 'font.jetbrainsMono', family: 'JetBrains Mono', licence: 'fonts/OFL-JetBrainsMono.txt', class: 'font-mono' },
 ];
 
-export const BASE_PROJECT = 'https://github.com/pythonhack000/spherex-blink';
 export const TEAM = ['about.team.member1', 'about.team.member2', 'about.team.member3', 'about.team.member4'];
 export const AI_DISCLOSURE = ['about.ai.planning', 'about.ai.code', 'about.ai.review', 'about.ai.images'];
 
@@ -153,7 +152,6 @@ export function renderAbout() {
     el('span', { text: t(font.key) }),
     el('a', { href: font.licence, text: t('font.licence') }),
   ])));
-  $('about-base-link').replaceChildren(external(BASE_PROJECT, t('about.link.source')));
   $('about-team').replaceChildren(...TEAM.map((key) => el('li', { text: t(key) })));
   $('about-ai').replaceChildren(...AI_DISCLOSURE.map((key) => el('li', { text: t(key) })));
 }

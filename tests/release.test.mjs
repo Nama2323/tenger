@@ -80,7 +80,6 @@ test('About gives every library a licence, and every method, limit and disclosur
   for (const id of about.LIMITS) assert.ok(has(`about.l.${id}`) && has(`about.l.${id}.title`), id);
   for (const key of [...about.TEAM, ...about.AI_DISCLOSURE]) assert.ok(has(key), key);
   assert.equal(about.TEAM.length, 4);
-  assert.equal(about.BASE_PROJECT, 'https://github.com/pythonhack000/spherex-blink');
 });
 
 test('the AI disclosure names the tools and says no image was AI-generated', () => {
@@ -174,4 +173,17 @@ test('the offline sky tiles are reachable only from the Real sky panel', () => {
   assert.match(main, /async function openSkyContext\(\) \{[\s\S]*?createSky\(/);
   assert.equal(main.match(/openSkyContext\(\)/g).length, 2, 'defined once, called once (when the panel opens)');
   assert.match(main, /if \(open\) openSkyContext\(\);/);
+});
+
+test('the pages no longer carry the SPHEREx Blink footer line or About card; the data credit stays (user, 15 Nov)', () => {
+  assert.doesNotMatch(html, /footer\.base|about-base|about\.baseTitle/);
+  for (const key of ['footer.base', 'about.baseTitle', 'about.base']) assert.equal(has(key), false, key);
+  const footer = html.slice(html.indexOf('<footer'), html.indexOf('</footer>'));
+  assert.match(footer, /data-t="footer\.credit"/);
+  assert.match(t('footer.credit'), /NASA SPHEREx/);
+  // The honest record of what existed before the hackathon lives in README.md and LICENSE instead.
+  const readme = readFileSync(`${ROOT}README.md`, 'utf8');
+  assert.match(readme, /## What existed before Space Apps, and what we built/);
+  assert.match(readme, /SPHEREx Blink/);
+  assert.match(readFileSync(`${ROOT}LICENSE`, 'utf8'), /MIT License/i);
 });

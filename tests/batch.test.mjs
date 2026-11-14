@@ -194,7 +194,7 @@ test('a batch with nothing checked yet has no interval and no coverage verdict (
     'batch.secondaryLine', 'batch.baselineLine', 'batch.waiting', 'batch.insufficient', 'batch.notAttempted']) assert.ok(has(key), key);
 });
 
-test('Session A\'s frozen batch: 8 rows, 7 waiting and 1 insufficient data, nothing scored yet', { skip: realBatch() ? false : 'real batch not on this branch yet' }, () => {
+test('Session A\'s batch: one row per trial, counts from the file, a waiting row never shown as inside or outside', { skip: realBatch() ? false : 'real batch not on this branch yet' }, () => {
   const doc = realBatch();
   const batch = readBatch(doc);
   assert.equal(batch.example, false);
@@ -212,12 +212,23 @@ test('Session A\'s frozen batch: 8 rows, 7 waiting and 1 insufficient data, noth
 test('loading a published batch never requests a verification file for a row still waiting for its check', { skip: realBatch() ? false : 'real batch not on this branch yet' }, async (t) => {
   const original = globalThis.fetch;
   t.after(() => { globalThis.fetch = original; });
-  const inner = staticFetch();
-  const requested = [];
-  globalThis.fetch = async (url) => { requested.push(String(url)); return inner(url); };
-  const data = await loadBatch({ real: createSource({ fixtures: false, fetchImpl: globalThis.fetch }), fixtures: createSource({ fixtures: true, fetchImpl: globalThis.fetch }) });
-  const waiting = data.batch.rows.filter((row) => row.status === 'waiting').map((row) => row.trialId);
-  assert.ok(waiting.length > 0);
-  for (const id of waiting) assert.ok(!requested.some((url) => url.includes(`${id}/verification.json`)), `${id}: no verification request`);
-  assert.ok(data.bundles.every((bundle) => bundle.trial.state === 'ok' && bundle.prediction.state === 'ok'), 'trial and prediction files still read');
+  const doc = realBatch();
+  const run = async (overrides) => {
+    const inner = staticFetch(overrides);
+    const requested = [];
+    globalThis.fetch = async (url) => { requested.push(String(url)); return inner(url); };
+    const data = await loadBatch({ real: createSource({ fixtures: false, fetchImpl: globalThis.fetch }), fixtures: createSource({ fixtures: true, fetchImpl: globalThis.fetch }) });
+    return { data, requested };
+  };
+  // The frozen state (every row waiting, as on 15 Nov 06:03): no verification request at all.
+  const frozen = { ...doc, rows: doc.rows.map((row) => ({ ...row, status: 'waiting' })) };
+  const before = await run({ 'data/batches/asteroids-2026a.json': frozen });
+  assert.ok(!before.requested.some((url) => url.endsWith('/verification.json')), 'no verification request while waiting');
+  assert.ok(before.data.bundles.every((bundle) => bundle.trial.state === 'ok' && bundle.prediction.state === 'ok'), 'trial and prediction files still read');
+  // Session A's file as published: checked rows read their verification files.
+  const after = await run({});
+  for (const row of after.data.batch.rows.filter((item) => item.status !== 'waiting' && item.status !== 'insufficient_data')) {
+    const bundle = after.data.bundles.find((item) => item.id === row.trialId);
+    assert.equal(bundle.verification.state, 'ok', `${row.trialId}: verification read`);
+  }
 });

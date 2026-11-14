@@ -1131,7 +1131,7 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 .ack { margin: 0; padding: 4px 0 4px 12px; border-left: 2px solid var(--edge-strong); }
 .ack p { font-size: 13.5px; color: var(--text); font-style: italic; }
 .source-links { display: flex; flex-wrap: wrap; gap: 0 var(--s2); }
-.source-links a, #about-base-link a { display: inline-flex; align-items: center; min-height: var(--tap); }
+.source-links a { display: inline-flex; align-items: center; min-height: var(--tap); }
 .software-list li { font-size: 14.5px; }
 .software-list code, .about-packages code, #about-packages code { font: 12.5px var(--font-mono); color: var(--muted); }
 .team-list li { color: var(--muted); }
