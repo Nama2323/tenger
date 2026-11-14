@@ -122,6 +122,17 @@ export function resolveRoute(route, targets) {
   return { page, open, notes };
 }
 
+const escapeAttribute = (text) => String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/**
+ * The <iframe> code for an embedded viewer. `url` is absolute and already carries embed=1; the frame is
+ * responsive in width, lazy-loaded and may go full screen.
+ */
+export function embedCode(url, title, { height = 640 } = {}) {
+  return `<iframe src="${escapeAttribute(url)}" title="${escapeAttribute(title)}" width="100%" height="${Number(height)}" `
+    + 'style="border:0;max-width:960px" loading="lazy" allow="fullscreen; clipboard-write" allowfullscreen></iframe>';
+}
+
 /** The share link for a state. Order is fixed so equal states give equal links. */
 export function buildRoute(state) {
   const params = new URLSearchParams();

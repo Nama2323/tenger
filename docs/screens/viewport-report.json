@@ -166,9 +166,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard",
@@ -181,9 +179,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard",
@@ -196,9 +192,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard",
@@ -211,9 +205,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-timebar",
@@ -226,9 +218,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-timebar",
@@ -241,9 +231,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-timebar",
@@ -256,9 +244,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-timebar",
@@ -271,9 +257,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-panel",
@@ -286,9 +270,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-panel",
@@ -301,9 +283,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-panel",
@@ -316,9 +296,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-panel",
@@ -331,9 +309,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-swipe",
@@ -346,9 +322,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-swipe",
@@ -361,9 +335,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-swipe",
@@ -376,9 +348,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-barnard-swipe",
@@ -391,9 +361,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-rdra-side",
@@ -518,9 +486,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-epsindib-diff",
@@ -533,9 +499,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-epsindib-diff",
@@ -548,9 +512,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-epsindib-diff",
@@ -563,9 +525,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-wise0855",
@@ -698,9 +658,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-pluto-preview",
@@ -713,9 +671,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-pluto-preview",
@@ -728,9 +684,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "investigate-pluto-preview",
@@ -743,9 +697,7 @@
     "wide": [],
     "small": [],
     "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json"
-    ]
+    "consoleErrors": []
   },
   {
     "page": "unavailable-3i-atlas",
@@ -1019,10 +971,7 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
@@ -1042,13 +991,10 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
     ]
@@ -1065,14 +1011,11 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
     ]
   },
@@ -1088,38 +1031,32 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
+    ]
+  },
+  {
+    "page": "predictions-cards",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json"
-    ]
-  },
-  {
-    "page": "predictions-cards",
-    "requested": 360,
-    "ready": true,
-    "innerWidth": 360,
-    "innerHeight": 780,
-    "clientWidth": 360,
-    "scrollWidth": 360,
-    "wide": [],
-    "small": [],
-    "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json"
     ]
   },
   {
@@ -1134,15 +1071,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json"
     ]
   },
   {
@@ -1157,15 +1091,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json"
     ]
   },
   {
@@ -1180,13 +1111,10 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
     ]
@@ -1203,13 +1131,10 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
     ]
@@ -1226,15 +1151,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
     ]
   },
   {
@@ -1249,13 +1171,10 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
     ]
@@ -1272,14 +1191,11 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
     ]
   },
@@ -1296,8 +1212,8 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
@@ -1315,55 +1231,55 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
-    ]
-  },
-  {
-    "page": "predictions-fixtures",
-    "requested": 768,
-    "ready": true,
-    "innerWidth": 768,
-    "innerHeight": 1024,
-    "clientWidth": 768,
-    "scrollWidth": 768,
-    "wide": [],
-    "small": [],
-    "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
     ]
   },
   {
     "page": "predictions-fixtures",
-    "requested": 1280,
+    "requested": 768,
     "ready": true,
-    "innerWidth": 1280,
-    "innerHeight": 800,
-    "clientWidth": 1280,
-    "scrollWidth": 1280,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
     "wide": [],
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json"
     ]
   },
   {
+    "page": "predictions-fixtures",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
+    ]
+  },
+  {
     "page": "predictions-fixtures-forecasts",
     "requested": 360,
     "ready": true,
@@ -1376,10 +1292,10 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
     ]
   },
@@ -1415,12 +1331,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json"
     ]
   },
   {
@@ -1435,12 +1351,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
     ]
   },
   {
@@ -1456,10 +1372,10 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
     ]
   },
@@ -1475,12 +1391,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
     ]
   },
   {
@@ -1496,11 +1412,11 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json"
     ]
   },
   {
@@ -1515,11 +1431,11 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
     ]
   },
@@ -1535,12 +1451,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json"
     ]
   },
   {
@@ -1555,12 +1471,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
     ]
   },
   {
@@ -1576,11 +1492,11 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
     ]
   },
   {
@@ -1596,11 +1512,11 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
     ]
   },
   {
@@ -1616,11 +1532,11 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
     ]
   },
   {
@@ -1636,11 +1552,11 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
     ]
   },
   {
@@ -1656,11 +1572,11 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
     ]
   },
   {
@@ -1676,11 +1592,11 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json"
     ]
   },
   {
@@ -1695,12 +1611,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
     ]
   },
   {
@@ -1715,10 +1631,10 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
     ]
@@ -1735,12 +1651,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json"
     ]
   },
   {
@@ -1756,11 +1672,11 @@
     "errors": [],
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json"
     ]
   },
   {
@@ -1777,10 +1693,10 @@
     "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/wise0855-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/receipt.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/rwaur-brightness-example/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/makemake-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-example/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/dev-fixtures/trials/pluto-position-forecast-example/verification.json"
     ]
   },
   {
@@ -1795,65 +1711,56 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
-  },
-  {
-    "page": "shortcuts",
-    "requested": 390,
-    "ready": true,
-    "innerWidth": 390,
-    "innerHeight": 844,
-    "clientWidth": 390,
-    "scrollWidth": 390,
-    "wide": [],
-    "small": [],
-    "errors": [],
-    "consoleErrors": [
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
-    ]
-  },
-  {
-    "page": "shortcuts",
-    "requested": 768,
-    "ready": true,
-    "innerWidth": 768,
-    "innerHeight": 1024,
-    "clientWidth": 768,
-    "scrollWidth": 768,
-    "wide": [],
-    "small": [],
-    "errors": [],
-    "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json"
     ]
   },
   {
     "page": "shortcuts",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json"
+    ]
+  },
+  {
+    "page": "shortcuts",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
+    ]
+  },
+  {
+    "page": "shortcuts",
     "requested": 1280,
     "ready": true,
     "innerWidth": 1280,
@@ -1864,15 +1771,12 @@
     "small": [],
     "errors": [],
     "consoleErrors": [
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/barnard-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/epsindib-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-2026b/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
       "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rdra-brightness-2026a/verification.json",
-      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json"
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/wise0855-position-2026a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/pluto-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/makemake-position-open-2027a/verification.json",
+      "Failed to load resource: the server responded with a status of 404 (Not Found) http://localhost:8766/data/trials/rwaur-brightness-2026a/verification.json"
     ]
   },
   {
@@ -2182,6 +2086,344 @@
     "innerHeight": 800,
     "clientWidth": 1280,
     "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-see",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-see",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-see",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-see",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-credits",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-credits",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-credits",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "about-credits",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "tour-home",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "tour-home",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "tour-home",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "tour-home",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "tour-pluto",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "tour-pluto",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "tour-pluto",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "tour-pluto",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "embed-barnard",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "embed-barnard",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "embed-barnard",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "embed-barnard",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "embed-code",
+    "requested": 360,
+    "ready": true,
+    "innerWidth": 360,
+    "innerHeight": 780,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "embed-code",
+    "requested": 390,
+    "ready": true,
+    "innerWidth": 390,
+    "innerHeight": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "embed-code",
+    "requested": 768,
+    "ready": true,
+    "innerWidth": 768,
+    "innerHeight": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "embed-code",
+    "requested": 1280,
+    "ready": true,
+    "innerWidth": 1280,
+    "innerHeight": 800,
+    "clientWidth": 1280,
+    "scrollWidth": 1280,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "og-home",
+    "requested": "og",
+    "ready": true,
+    "innerWidth": 1200,
+    "innerHeight": 630,
+    "clientWidth": 1200,
+    "scrollWidth": 1200,
+    "wide": [],
+    "small": [],
+    "errors": [],
+    "consoleErrors": []
+  },
+  {
+    "page": "og-barnard",
+    "requested": "og",
+    "ready": true,
+    "innerWidth": 1200,
+    "innerHeight": 630,
+    "clientWidth": 1200,
+    "scrollWidth": 1200,
     "wide": [],
     "small": [],
     "errors": [],

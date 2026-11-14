@@ -21,6 +21,8 @@ const SIZES = {
   1440: { width: 1440, height: 900, mobile: false },
   // The reveal is screen-recorded at 1280×720 for the video.
   '720p': { width: 1280, height: 720, mobile: false, label: '1280x720' },
+  // Open Graph image (static/og.png): 1200×630.
+  og: { width: 1200, height: 630, mobile: false, label: 'og' },
 };
 // WIDTHS=390,1440 picks sizes; PAGES=home,about picks pages by exact name; PREFIX=before- names the files.
 const WIDTHS = (process.env.WIDTHS ?? '360,390,768,1280').split(',').map((width) => SIZES[width.trim()]).filter(Boolean);
@@ -65,7 +67,15 @@ const PAGES = [
   { name: 'learn-lesson-distance', path: '/?page=learn&lesson=distance', ready: '#lesson-view .answer-key' },
   { name: 'learn-lesson-sure', path: '/?page=learn&lesson=sure&fixtures=1', ready: '#lesson-view .answer-key', act: "document.querySelectorAll('.answer-toggle').forEach((d) => { d.open = true; })" },
   { name: 'learn-lab', path: '/?page=learn&lesson=lab', ready: '#lab-results dl' },
-  { name: 'about', path: '/?page=about', ready: '#about-credits li' },
+  { name: 'about', path: '/?page=about', ready: '#about-data li' },
+  { name: 'about-see', path: '/?page=about', ready: '#about-data li', scrollTo: '#about-limits-title' },
+  { name: 'about-credits', path: '/?page=about', ready: '#about-data li', scrollTo: '#about-data-title' },
+  { name: 'tour-home', path: '/', ready: '.map-marker', act: "document.getElementById('tour-start').click()" },
+  { name: 'tour-pluto', path: '/', ready: '.map-marker', act: "(() => { document.getElementById('tour-start').click(); document.getElementById('tour-next').click(); })()" },
+  { name: 'embed-barnard', path: '/?target=barnard&embed=1', ready: '#caption-body .caption-col' },
+  { name: 'embed-code', path: '/?target=barnard', ready: '#caption-body .caption-col', act: "document.getElementById('embed-copy').click()" },
+  { name: 'og-home', path: '/', ready: '.map-marker', sizes: ['og'] },
+  { name: 'og-barnard', path: '/?target=barnard&mode=side', ready: '#caption-body .caption-col', sizes: ['og'] },
 ];
 
 const AUDIT = `(() => {
@@ -134,6 +144,8 @@ async function main() {
   await send('Page.enable');
   await send('Runtime.enable');
   await send('Log.enable');
+  // The guided tour starts by itself on a first visit; mark it seen so it does not cover the captures.
+  await send('Page.addScriptToEvaluateOnNewDocument', { source: "try { localStorage.setItem('tenger.tour.v1', 'seen'); } catch {}" });
   const report = [];
   for (const page of PAGES) {
     if (only && !page.name.startsWith(only)) continue;

@@ -369,10 +369,13 @@ export function initLedger(options) {
 export async function showLedger() {
   if (!context) return;
   if (!ledger) {
-    $('ledger-list').replaceChildren(el('p', { class: 'note', text: t('loading') }));
+    // The page shows its heading and one loading line until everything is drawn (no layout shift).
+    $('page-predictions').dataset.loading = '';
     ledger = load().then((data) => {
       render(data);
       return data;
+    }).finally(() => {
+      delete $('page-predictions').dataset.loading;
     });
   }
   const data = await ledger;

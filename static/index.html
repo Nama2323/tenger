@@ -5,10 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>TENGER</title>
   <meta name="description" content="See real changes in the infrared sky. Make a prediction. Check it against NASA SPHEREx observations.">
+  <meta name="theme-color" content="#05070d">
+  <!-- Link previews. Crawlers do not run scripts, so these few words cannot come from js/i18n.js.
+       og.png is a screenshot of this site (Barnard's Star: AllWISE 2010 next to SPHEREx 2026).
+       When the public address is chosen, make og:image and og:url absolute (some crawlers need it). -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TENGER">
+  <meta property="og:title" content="TENGER: see the changing sky">
+  <meta property="og:description" content="See real changes in the infrared sky. Make a prediction. Check it against NASA SPHEREx observations.">
+  <meta property="og:image" content="og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="TENGER showing Barnard's Star in two infrared images, AllWISE from 2010 and NASA SPHEREx from 2026, side by side.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="data:,">
   <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=tenger-b4">
+  <link rel="stylesheet" href="css/style.css?v=tenger-h1">
 </head>
 <body data-page="home">
   <a class="skip" href="#main" data-t="site.skip"></a>
@@ -41,14 +55,20 @@
   </div>
   <p id="caption" class="caption" hidden aria-live="polite"></p>
   <div id="tour-bar" class="caption tour-bar" role="region" data-t-label="tour.label" hidden>
-    <p id="tour-text" aria-live="polite"></p>
-    <button id="tour-stop" type="button" data-t="tour.stop"></button>
+    <div class="tour-words" aria-live="polite">
+      <p id="tour-step" class="eyebrow"></p>
+      <p id="tour-text"></p>
+    </div>
+    <div class="tour-actions">
+      <button id="tour-next" type="button" class="primary"></button>
+      <button id="tour-stop" type="button" class="quiet" data-t="tour.skip"></button>
+    </div>
   </div>
 
   <main id="main" tabindex="-1">
     <div id="notices" class="notices" aria-live="polite"></div>
     <!-- ======================= Home / Investigate ======================= -->
-    <section id="page-home" class="page page-home" aria-labelledby="home-title">
+    <section id="page-home" class="page page-home" data-loading aria-labelledby="home-title">
       <h1 id="home-title" class="sr-only" tabindex="-1" data-t="home.title"></h1>
       <div class="scene">
         <div class="map-stage">
@@ -117,7 +137,7 @@
         <p class="note" data-t="sky.lead"></p>
         <div id="sky" class="sky"></div>
         <p id="sky-message" class="form-message" aria-live="polite"></p>
-        <p class="note" data-t="ack.aladin"></p>
+        <p class="note" data-t="sky.credit"></p>
       </section>
     </section>
 
@@ -126,8 +146,14 @@
       <header class="inv-head">
         <div class="inv-head-actions">
           <button id="inv-back" type="button" class="quiet" data-t="inv.back"></button>
-          <button id="share" type="button" class="quiet" data-t="inv.share"></button>
+          <span class="inv-share">
+            <button id="share" type="button" class="quiet" data-t="inv.share"></button>
+            <button id="embed-copy" type="button" class="quiet" data-t="embed.copy"></button>
+          </span>
+          <a id="embed-open" class="embed-open" href="./" target="_blank" rel="noopener" data-t="embed.open"></a>
         </div>
+        <label class="sr-only" for="embed-code" data-t="embed.codeLabel"></label>
+        <textarea id="embed-code" class="embed-code mono" rows="3" readonly hidden></textarea>
         <div class="object">
           <p id="object-kind" class="object-kind eyebrow"></p>
           <h1 id="object-name" tabindex="-1"></h1>
@@ -296,12 +322,13 @@
     </section>
 
     <!-- ======================= Predictions ======================= -->
-    <section id="page-predictions" class="page page-predictions" hidden aria-labelledby="predictions-title">
+    <section id="page-predictions" class="page page-predictions" hidden data-loading aria-labelledby="predictions-title">
       <header class="page-head">
         <p class="eyebrow" data-t="ledger.eyebrow"></p>
         <h1 id="predictions-title" tabindex="-1" data-t="ledger.title"></h1>
         <p class="lead" data-t="ledger.lead"></p>
       </header>
+      <p id="ledger-loading" class="note" role="status" data-t="loading"></p>
       <div id="ledger-source" class="ledger-source" role="note" hidden></div>
       <section id="ledger-board" class="ledger-board glass" aria-labelledby="ledger-board-title"></section>
       <section class="ledger-section" aria-labelledby="ledger-trials-title">
@@ -332,7 +359,7 @@
     </section>
 
     <!-- ======================= Learn ======================= -->
-    <section id="page-learn" class="page page-learn" hidden aria-labelledby="learn-title">
+    <section id="page-learn" class="page page-learn" hidden data-loading aria-labelledby="learn-title">
       <header class="page-head">
         <p class="eyebrow" data-t="learn.eyebrow"></p>
         <h1 id="learn-title" tabindex="-1" data-t="learn.title"></h1>
@@ -363,25 +390,52 @@
         <p class="eyebrow" data-t="about.eyebrow"></p>
         <h1 id="about-title" tabindex="-1" data-t="about.title"></h1>
         <p class="lead" data-t="about.what"></p>
+        <p class="about-story" data-t="about.story"></p>
       </header>
       <div class="about-grid">
-        <section class="about-card glass" aria-labelledby="about-data-title">
-          <h2 id="about-data-title" data-t="about.dataTitle"></h2>
-          <ul id="about-data"></ul>
-        </section>
-        <section class="about-card glass" aria-labelledby="about-methods-title">
+        <section class="about-card glass about-full" aria-labelledby="about-methods-title">
           <h2 id="about-methods-title" data-t="about.methodsTitle"></h2>
-          <ul id="about-methods"></ul>
+          <dl id="about-methods" class="about-dl"></dl>
         </section>
-        <section class="about-card glass about-wide" aria-labelledby="about-credits-title">
-          <h2 id="about-credits-title" data-t="about.creditsTitle"></h2>
-          <ul id="about-credits"></ul>
+        <section class="about-card glass" aria-labelledby="about-limits-title">
+          <h2 id="about-limits-title" data-t="about.limitsTitle"></h2>
+          <dl id="about-limits" class="about-dl"></dl>
+        </section>
+        <section class="about-card glass" aria-labelledby="about-see-title">
+          <h2 id="about-see-title" data-t="about.seeTitle"></h2>
+          <div id="about-see" class="limits-body"></div>
+        </section>
+        <section class="about-card glass about-full" aria-labelledby="about-data-title">
+          <h2 id="about-data-title" data-t="about.dataTitle"></h2>
+          <p class="note" data-t="about.dataLead"></p>
+          <ul id="about-data" class="source-list"></ul>
+        </section>
+        <section class="about-card glass" aria-labelledby="about-software-title">
+          <h2 id="about-software-title" data-t="about.softwareTitle"></h2>
+          <ul id="about-software" class="software-list"></ul>
+          <details class="data-table">
+            <summary data-t="about.allPackages"></summary>
+            <div class="table-scroll"><table id="about-packages"></table></div>
+          </details>
           <p class="note" data-t="about.license"></p>
         </section>
         <section class="about-card glass" aria-labelledby="about-fonts-title">
           <h2 id="about-fonts-title" data-t="about.fontsTitle"></h2>
           <ul id="about-fonts" class="font-list"></ul>
           <p class="note" data-t="font.selfHosted"></p>
+        </section>
+        <section class="about-card glass" aria-labelledby="about-base-title">
+          <h2 id="about-base-title" data-t="about.baseTitle"></h2>
+          <p data-t="about.base"></p>
+          <p id="about-base-link"></p>
+        </section>
+        <section class="about-card glass" aria-labelledby="about-team-title">
+          <h2 id="about-team-title" data-t="about.teamTitle"></h2>
+          <ul id="about-team" class="team-list"></ul>
+        </section>
+        <section class="about-card glass about-full" aria-labelledby="about-ai-title">
+          <h2 id="about-ai-title" data-t="about.aiTitle"></h2>
+          <ul id="about-ai"></ul>
         </section>
       </div>
     </section>
@@ -443,6 +497,6 @@
     </div>
   </dialog>
 
-  <script type="module" src="js/main.js?v=tenger-b4"></script>
+  <script type="module" src="js/main.js?v=tenger-h1"></script>
 </body>
 </html>

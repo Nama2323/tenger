@@ -58,7 +58,8 @@
   --display: var(--font-head);
   --body: var(--font-text);
 }
-body.example-data { --banner: 40px; }
+/* --chrome is re-declared where its parts change: a custom property is resolved where it is declared. */
+body.example-data { --banner: 40px; --chrome: calc(var(--topbar) + var(--banner)); }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -78,6 +79,8 @@ h1, h2, h3, h4, p { margin: 0; }
 h1 { font: 700 clamp(28px, 3.6vw, 44px)/1.1 var(--font-head); letter-spacing: -0.01em; overflow-wrap: anywhere; }
 h2 { font: 600 clamp(19px, 2vw, 24px)/1.25 var(--font-head); }
 h3 { font: 600 16px/1.3 var(--font-head); }
+/* A card title is an h2 for the outline (h1 → h2) but keeps the h3 size. */
+h2.card-title { font: 600 16px/1.3 var(--font-head); }
 h4 { font: 600 14px/1.35 var(--font-text); color: var(--muted); }
 a { color: var(--accent); }
 a:hover { color: var(--text); }
@@ -268,8 +271,14 @@ button.quiet:hover, button.ghost:hover { border-color: var(--accent); color: var
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
-.tour-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); }
-.tour-bar p { flex: 1 1 260px; font-size: 15px; }
+.tour-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); max-height: calc(100vh - 96px); overflow-y: auto; }
+.tour-words { flex: 1 1 300px; display: grid; gap: 4px; }
+.tour-bar #tour-text { font-size: 15px; }
+.tour-actions { display: flex; flex-wrap: wrap; gap: var(--s1); }
+/* In an investigation the tour sits over the side panel, so the picture and the time bar stay visible. */
+@media (min-width: 901px) {
+  body[data-page="investigate"] .tour-bar { left: auto; right: var(--s3); transform: none; width: min(var(--panel-w), calc(100vw - 32px)); }
+}
 
 .notices {
   position: fixed;
@@ -298,7 +307,16 @@ button.quiet:hover, button.ghost:hover { border-color: var(--accent); color: var
 .notice p { flex: 1; padding: 10px 0; }
 .notice button { flex: none; min-width: var(--tap); background: transparent; border-color: transparent; color: var(--muted); }
 
-main { display: block; padding: calc(var(--chrome) + var(--s3)) var(--s3) var(--s6); max-width: 1440px; margin: 0 auto; }
+main { display: block; min-height: 100vh; padding: calc(var(--chrome) + var(--s3)) var(--s3) var(--s6); max-width: 1440px; margin: 0 auto; }
+/* Until main.js has shown the page the address asks for, with its text, the content stays invisible: otherwise the
+   empty Home layout paints first and jumps away (layout shift). The min-height above keeps the footer below the
+   first screen while a page fills in. Safety net: visible after 4 s whatever happens (it beats the reduced-motion
+   rule on purpose, as it is not motion). */
+body:not(.booted) main, body:not(.booted) .site-footer { visibility: hidden; animation: boot-fallback 0s 4s forwards !important; }
+@keyframes boot-fallback { to { visibility: visible; } }
+/* Parts drawn from the data files stay invisible until they are drawn, so nothing above or beside them jumps:
+   the Home map (the challenge shortcuts above it fill in first on phones) and the Learn cards. */
+.page-home[data-loading] .scene, .page-learn[data-loading] #learn-index { visibility: hidden; }
 main:focus { outline: none; }
 .page-text { max-width: 860px; display: grid; gap: var(--s2); }
 .page-text h2 { margin-top: var(--s1); }
@@ -608,7 +626,7 @@ body[data-page="investigate"] .page-home .map-caption { visibility: hidden; }
   border-bottom: 0;
   border-radius: var(--radius) var(--radius) 0 0;
 }
-.inv-head-actions { display: flex; justify-content: space-between; gap: var(--s1); }
+.inv-head-actions { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s1); }
 .inv-head-actions button { padding: 0 12px; font-size: 13px; }
 .inv-head .object { display: grid; gap: 4px; }
 .inv-head h1 { font-size: 26px; }
@@ -920,7 +938,24 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 .about-card h2 { font-size: 18px; }
 .about-card ul { display: grid; gap: var(--s1); padding-left: 18px; }
 .about-card li { margin: 0; color: var(--text); }
-.about-wide { grid-row: span 2; }
+.about-full { grid-column: 1 / -1; }
+.about-story { max-width: 75ch; }
+.about-dl { display: grid; gap: var(--s2) var(--s3); margin: 0; }
+.about-full .about-dl { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); align-items: start; }
+.about-dl > div { display: grid; gap: 4px; }
+.about-dl dt { font-weight: 600; color: var(--text); }
+.about-dl dd { margin: 0; color: var(--muted); font-size: 14.5px; }
+.about-card .source-list { list-style: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: var(--s2); }
+.source { display: grid; gap: 6px; align-content: start; padding: var(--s2); border: 1px solid var(--edge); border-radius: 10px; }
+.source h3 { font-size: 15.5px; }
+.source p { font-size: 14px; color: var(--muted); }
+.ack { margin: 0; padding: 4px 0 4px 12px; border-left: 2px solid var(--edge-strong); }
+.ack p { font-size: 13.5px; color: var(--text); font-style: italic; }
+.source-links { display: flex; flex-wrap: wrap; gap: 0 var(--s2); }
+.source-links a, #about-base-link a { display: inline-flex; align-items: center; min-height: var(--tap); }
+.software-list li { font-size: 14.5px; }
+.software-list code, .about-packages code, #about-packages code { font: 12.5px var(--font-mono); color: var(--muted); }
+.team-list li { color: var(--muted); }
 .font-list { list-style: none; padding-left: 0 !important; }
 .font-list li { display: grid; gap: 2px; }
 .font-list strong { font-size: 17px; }
@@ -1075,6 +1110,9 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 .muted { color: var(--muted); }
 .page-predictions { max-width: 1240px; margin: 0 auto; display: grid; gap: var(--s3); }
 .page-predictions .page-head { margin-bottom: 0; }
+/* While the trial files load, only the heading and one loading line show, so nothing below them jumps. */
+.page-predictions[data-loading] > :not(.page-head):not(#ledger-loading) { display: none !important; }
+.page-predictions:not([data-loading]) #ledger-loading { display: none; }
 .ledger-source {
   padding: 12px var(--s2);
   background: #2a1c05;
@@ -1360,9 +1398,18 @@ kbd {
 
 /* ---------- Embedded viewer ---------- */
 
-body.embed .top, body.embed .site-footer, body.embed .panel-nav, body.embed .inv-head .share,
-body.embed #inv-back, body.embed .panel:not(.panel-see) { display: none !important; }
-body.embed main { padding: 0 12px 12px; }
+/* ?embed=1: the viewer and its See section only, for an <iframe> on another site. No top bar, map, tour or
+   other panels; "Open in TENGER" leads to the same view on the full site (data credits are on About). */
+.embed-open { display: none; }
+body.embed { --topbar: 0px; --chrome: calc(var(--topbar) + var(--banner)); }
+body.embed .topbar, body.embed .site-footer, body.embed .panel-nav, body.embed .inv-share, body.embed #embed-code,
+body.embed #inv-back, body.embed .panel:not(.panel-see), body.embed .page-home, body.embed #starfield,
+body.embed .tour-bar, body.embed .skip { display: none !important; }
+body.embed .embed-open { display: inline-flex; align-items: center; min-height: var(--tap); margin-left: auto; font-size: 13px; font-weight: 600; }
+body.embed main { padding: 0; }
+body.embed .panel-title { top: 0; }
+.inv-share { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--s1); }
+.embed-code { width: 100%; font-size: 12px; padding: 8px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); resize: vertical; }
 
 /* ---------- Narrow screens ---------- */
 

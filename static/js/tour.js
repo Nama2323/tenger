@@ -1,121 +1,101 @@
-// The guided demo: a scripted walk through TENGER. It shows real images, catalogue motions and the
-// labelled viewer modes, then hands over to Beat the physics. It never shows a measured motion or
-// brightness number: those wait for validated files (the old demo relied on the unvalidated motion box).
-import { t } from './i18n.js';
+// The guided tour: Home → the Pluto investigation → Predictions and the reveal → Beat the physics → Learn.
+// The reader moves on with "Next" (no timers, so there is time to read) and can skip it at any step.
+// It starts by itself once per browser, on a plain visit to Home; the "Guided tour" button replays it.
+// It shows no measured numbers of its own: every page it opens says what is and is not measured.
 
-const FRAME_WAIT_MS = 30000;
-const POLL_MS = 400;
-const SWIPE_MS = 4000;
-const SWIPE_TICK_MS = 50;
-const ARRAY_MS = 1600;
-const ARRAYS = [1, 2, 3, 4, 5, 6];
+export const TOUR_STORAGE_KEY = 'tenger.tour.v1';
 
-let activeRun = null;
-
-class Stopped extends Error {}
-
-function sleeper(run) {
-  return (milliseconds) => new Promise((resolve, reject) => {
-    setTimeout(() => (run.stopped ? reject(new Stopped()) : resolve()), milliseconds);
-  });
-}
-
-async function waitForFrames(actions, sleep) {
-  const started = Date.now();
-  while (Date.now() - started < FRAME_WAIT_MS) {
-    if (actions.ready()) return;
-    await sleep(POLL_MS);
-  }
-}
-
-/** Sweeps the swipe divider across and back; with reduced motion it simply sets the midpoint. */
-async function sweepSwipe(actions, sleep) {
-  if (actions.reducedMotion()) {
-    actions.setSwipe(50);
-    await sleep(SWIPE_MS);
-    return;
-  }
-  const steps = SWIPE_MS / SWIPE_TICK_MS;
-  for (let step = 0; step <= steps; step += 1) {
-    const phase = step / steps;
-    actions.setSwipe(100 * (phase < 0.5 ? 1 - 2 * phase : 2 * phase - 1));
-    await sleep(SWIPE_TICK_MS);
-  }
-  actions.setSwipe(50);
-}
-
-const SCRIPT = [
-  async (actions, sleep) => {
-    actions.showPage('home');
-    actions.caption(t('tour.home'));
-    await sleep(6000);
+/** Each step: the caption key and what the page does when the step opens. */
+export const TOUR_STEPS = [
+  { key: 'tour.home', run: (actions) => actions.showPage('home') },
+  {
+    key: 'tour.pluto',
+    run: (actions) => {
+      actions.open('pluto');
+      actions.whenReady(() => {
+        actions.setMode('blink');
+        actions.setPlaying(!actions.reducedMotion());
+      });
+    },
   },
-  async (actions, sleep) => {
-    actions.caption(t('tour.barnard'));
-    actions.open('barnard');
-    await sleep(500);
-    await waitForFrames(actions, sleep);
-    actions.setMode('blink');
-    actions.setPlaying(!actions.reducedMotion());
-    await sleep(8000);
+  {
+    key: 'tour.predictions',
+    run: (actions) => {
+      actions.showPage('predictions');
+      actions.showReveal();
+    },
   },
-  async (actions, sleep) => {
-    actions.caption(t('tour.follow'));
-    await actions.setFollow(true);
-    await sleep(6000);
-    await actions.setFollow(false);
-  },
-  async (actions, sleep) => {
-    actions.caption(t('tour.swipe'));
-    actions.setMode('swipe');
-    await sweepSwipe(actions, sleep);
-    actions.caption(t('tour.side'));
-    actions.setMode('side');
-    await sleep(6000);
-  },
-  async (actions, sleep) => {
-    actions.caption(t('tour.arrays'));
-    actions.open('rdra');
-    await sleep(500);
-    await waitForFrames(actions, sleep);
-    actions.setMode('blink');
-    for (const detector of ARRAYS) {
-      actions.setBand({ kind: 'detector', detector });
-      await sleep(ARRAY_MS);
-    }
-    actions.setBand({ kind: 'composite' });
-    actions.caption(t('tour.caption'));
-    await sleep(7000);
-  },
-  async (actions, sleep) => {
-    actions.caption(t('tour.game'));
-    actions.showPage('game');
-    await sleep(7000);
-  },
+  { key: 'tour.game', run: (actions) => actions.showPage('game') },
+  { key: 'tour.learn', run: (actions) => actions.showPage('learn') },
 ];
 
-export const isTourRunning = () => Boolean(activeRun);
+/** Best-effort storage: any failure (private mode, blocked site data) reads as "unavailable". */
+export function tourSeen(storage) {
+  try {
+    const value = storage?.getItem(TOUR_STORAGE_KEY);
+    return value === null ? false : value !== undefined ? true : null;
+  } catch {
+    return null;
+  }
+}
 
-/** Starts the demo, or stops it if it is already running. */
-export async function runTour(actions) {
-  if (activeRun) {
-    activeRun.stopped = true;
+export function markTourSeen(storage) {
+  try {
+    storage?.setItem(TOUR_STORAGE_KEY, 'seen');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Whether the tour starts by itself: only on a plain visit to Home (no link to a page, target, position or
+ * example data), not when embedded, and only when the browser can remember that it was shown. Without
+ * working storage it would start on every visit, so then it waits for the button.
+ */
+export function shouldAutoStart({ storage, route }) {
+  if (!route || route.embed || route.fixtures) return false;
+  if (route.page && route.page !== 'home') return false;
+  if (route.target || route.ra !== null && route.ra !== undefined || route.trial || route.round || route.lesson) return false;
+  return tourSeen(storage) === false;
+}
+
+let active = null;
+
+export const isTourRunning = () => Boolean(active);
+
+function show(run) {
+  const step = TOUR_STEPS[run.index];
+  run.actions.render({ index: run.index, total: TOUR_STEPS.length, key: step.key, last: run.index === TOUR_STEPS.length - 1 });
+  step.run(run.actions);
+}
+
+/** Starts the tour at the first step (marking it seen), or stops it if it is running. */
+export function runTour(actions, { storage } = {}) {
+  if (active) {
+    stopTour();
     return;
   }
-  const run = { stopped: false };
-  activeRun = run;
+  markTourSeen(storage);
+  active = { index: 0, actions };
   actions.started();
-  const sleep = sleeper(run);
-  try {
-    for (const step of SCRIPT) await step(actions, sleep);
-  } catch (error) {
-    if (!(error instanceof Stopped)) actions.caption(error.message);
-  } finally {
-    activeRun = null;
-    actions.finished();
+  show(active);
+}
+
+/** Next step, or the end of the tour after the last one. */
+export function nextTourStep() {
+  if (!active) return;
+  if (active.index >= TOUR_STEPS.length - 1) {
+    stopTour();
+    return;
   }
+  active.index += 1;
+  show(active);
 }
 
 export function stopTour() {
-  if (activeRun) activeRun.stopped = true;
+  if (!active) return;
+  const { actions } = active;
+  active = null;
+  actions.finished();
 }

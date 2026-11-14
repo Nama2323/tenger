@@ -24,10 +24,10 @@ import {
   drawPlate, limitsFor, paintComposite, paintDifference, paintMono, stacksFor, StackCache, tintFor,
 } from './plate.js';
 import { loadReserved, reservedRegionNear } from './reserved.js';
-import { bandToParam, buildRoute, PAGES, parseRoute, resolveRoute } from './route.js';
+import { bandToParam, buildRoute, embedCode, PAGES, parseRoute, resolveRoute } from './route.js';
 import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometry } from './science.js';
 import { createSky } from './sky.js';
-import { runTour, stopTour } from './tour.js';
+import { isTourRunning, nextTourStep, runTour, shouldAutoStart, stopTour } from './tour.js';
 import {
   channelWavelength, CHANNELS, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
   selectBand, skyToPixel, visitsOf, wellCovered,
@@ -1486,6 +1486,8 @@ function routeState() {
 function writeUrl({ push = false } = {}) {
   const search = buildRoute(routeState());
   const url = `${location.pathname}${search}`;
+  // Inside an embed, "Open in TENGER" leads to the same view on the full site.
+  if (app.embed) $('embed-open').href = `${location.pathname}${buildRoute({ ...routeState(), embed: false })}`;
   if (url === `${location.pathname}${location.search}`) return;
   if (push) history.pushState(null, '', url);
   else history.replaceState(null, '', url);
@@ -1755,11 +1757,29 @@ function applyLocation({ push = false } = {}) {
 
 async function share() {
   writeUrl();
+  $('embed-code').hidden = true;
   try {
     await navigator.clipboard.writeText(location.href);
     $('share-status').textContent = t('inv.copied');
   } catch {
     $('share-status').textContent = t('inv.copyFailed');
+  }
+}
+
+/** Copies an <iframe> of this view in embed mode (viewer and See only). If copying fails, shows the code to copy by hand. */
+async function copyEmbed() {
+  const search = buildRoute({ ...routeState(), panel: null, embed: true, fixtures: false });
+  const code = embedCode(new URL(`${location.pathname}${search}`, location.href).href, t('embed.frameTitle', { name: $('object-name').textContent }));
+  const box = $('embed-code');
+  box.value = code;
+  try {
+    await navigator.clipboard.writeText(code);
+    box.hidden = true;
+    $('share-status').textContent = t('embed.copied');
+  } catch {
+    box.hidden = false;
+    box.select();
+    $('share-status').textContent = t('embed.copyFailed');
   }
 }
 
@@ -1871,7 +1891,7 @@ function bindSearchList() {
     setMenu(false);
     // Escape closes the investigation panel (not while a form field or the full-screen viewer has it).
     const target = event.target instanceof Element ? event.target : null;
-    if (app.page === 'investigate' && !document.fullscreenElement && !target?.closest('input, select, textarea')) showPage('home');
+    if (app.page === 'investigate' && !app.embed && !document.fullscreenElement && !target?.closest('input, select, textarea')) showPage('home');
   });
 }
 
@@ -1918,40 +1938,86 @@ function savePlate() {
   el('a', { download: `tenger-${state.target?.key ?? 'sky'}-${label}.png`, href: $('plate').toDataURL('image/png') }).click();
 }
 
-/** What the guided demo may do: open targets, switch modes and pages. No measurements. */
-const demoActions = {
-  caption: (text) => {
-    $('tour-text').textContent = text ?? '';
+/** localStorage, or null where reading it throws (blocked site data). */
+function browserStorage() {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
+const TOUR_READY_MS = 30000;
+const TOUR_POLL_MS = 300;
+let tourStep = 0;
+
+/** What the guided tour may do: open a target, switch pages and viewer modes. It measures nothing. */
+const tourActions = {
+  render({ index, total, key, last }) {
+    tourStep += 1;
+    $('tour-step').textContent = t('tour.step', { n: String(index + 1), total: String(total) });
+    $('tour-text').textContent = t(key);
+    $('tour-next').textContent = t(last ? 'tour.finish' : 'tour.next');
   },
-  showPage: (page) => showPage(page, { focus: false }),
+  showPage(page) {
+    showPage(page, { focus: false });
+    scrollTo(0, 0);
+  },
   open(key) {
     const entry = app.allTargets.find((item) => item.key === key);
     if (!entry) return;
     app.panel = 'see';
     app.scrollToPanel = false;
+    // Opening a target moves focus to its name; a keyboard user stepping through the tour keeps "Next".
+    const keep = document.activeElement === $('tour-next');
     openEntry(entry);
+    if (keep) $('tour-next').focus({ preventScroll: true });
   },
-  ready: () => state.visits.length >= 2 && state.frames.length >= AUTO_SPECTRUM_FRAMES,
+  /** Runs `callback` once the opened target has two dates to compare, unless the tour has moved on. */
+  whenReady(callback) {
+    const step = tourStep;
+    const started = Date.now();
+    const poll = () => {
+      if (step !== tourStep || !isTourRunning()) return;
+      if (sequence().length >= 2) callback();
+      else if (Date.now() - started < TOUR_READY_MS) setTimeout(poll, TOUR_POLL_MS);
+    };
+    poll();
+  },
+  /** Brings a "Watch the reveal" button into view when a checked trial has one (none before verification). */
+  showReveal() {
+    const step = tourStep;
+    const started = Date.now();
+    const poll = () => {
+      if (step !== tourStep || !isTourRunning()) return;
+      const button = document.querySelector('#page-predictions [data-reveal]');
+      if (button) button.scrollIntoView({ block: 'center', behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+      else if (!document.querySelector('#page-predictions .ledger-card') && Date.now() - started < TOUR_READY_MS) setTimeout(poll, TOUR_POLL_MS);
+    };
+    poll();
+  },
   setMode: (mode) => setMode(mode),
   setPlaying,
-  setFollow: (follow) => (follow ? lockCamera(targetAsObject()) : unlockCamera()),
-  setSwipe,
-  setBand,
   reducedMotion: prefersReducedMotion,
   started() {
     $('tour-bar').hidden = false;
     $('tour-start').textContent = t('tour.stop');
+    $('tour-next').focus({ preventScroll: true });
   },
   finished() {
+    tourStep += 1;
+    const hadFocus = $('tour-bar').contains(document.activeElement);
     $('tour-bar').hidden = true;
     $('tour-start').textContent = t('tour.start');
+    if (hadFocus) $('main').focus({ preventScroll: true });
   },
 };
 
 function bindControls() {
   bindSearchList();
   initHelp({ onOpen: () => setMenu(false) });
-  $('tour-start').addEventListener('click', () => runTour(demoActions));
+  $('tour-start').addEventListener('click', () => runTour(tourActions, { storage: browserStorage() }));
+  $('tour-next').addEventListener('click', nextTourStep);
   $('tour-stop').addEventListener('click', stopTour);
   bindViewingTools();
   $('menu-toggle').addEventListener('click', () => setMenu($('menu-toggle').getAttribute('aria-expanded') !== 'true'));
@@ -1982,6 +2048,7 @@ function bindControls() {
   }
   $('inv-back').addEventListener('click', () => showPage('home'));
   $('share').addEventListener('click', share);
+  $('embed-copy').addEventListener('click', copyEmbed);
   for (const button of document.querySelectorAll('.panel-nav button')) {
     button.addEventListener('click', () => setPanel(button.dataset.panel));
   }
@@ -2092,6 +2159,7 @@ async function loadData() {
     },
   });
   showLearn(parseRoute(location.search).lesson, { notify: false, focus: false });
+  delete $('page-learn').dataset.loading;
   // Predictions: real trial files as soon as the real index lists any; until then the labelled fixtures.
   const realIndex = fixtures ? await real.index() : indexState;
   const fallback = !fixtures && !hasPublishedTrials(realIndex);
@@ -2132,9 +2200,23 @@ function openFromHome(entry) {
   openEntry(entry);
 }
 
+/**
+ * Before the data load: shows the section the address asks for (Predictions, Beat the physics, Learn, About),
+ * so the first visible paint is already the right page. applyLocation() later does the full switch.
+ */
+function showInitialPage() {
+  const { page } = parseRoute(location.search);
+  if (page && page !== 'home' && page !== 'investigate') {
+    for (const name of PAGES) $(`page-${name}`).hidden = name !== page;
+    document.body.dataset.page = page;
+  }
+  document.body.classList.add('booted');
+}
+
 async function start() {
   applyTranslations();
   document.title = `${t('site.title')} · ${t('home.title')}`;
+  showInitialPage();
   buildBandScale();
   buildArrays();
   buildFovOptions($('fov'));
@@ -2156,11 +2238,17 @@ async function start() {
     thumbsOf,
     onOpen: openFromHome,
   });
+  delete $('page-home').dataset.loading;
   startBlinking();
   applyLocation();
+  // The tour starts by itself once per browser, on a plain visit to Home.
+  const storage = browserStorage();
+  if (shouldAutoStart({ storage, route: parseRoute(location.search) })) runTour(tourActions, { storage });
 }
 
 start().catch((error) => {
+  document.body.classList.add('booted');
+  for (const id of ['page-home', 'page-learn']) delete $(id).dataset.loading;
   $('caption').hidden = false;
   $('caption').textContent = error.message;
 });

@@ -765,3 +765,57 @@ no trial has been verified yet.
 
 **Next action (proposed)**: when A5 lands, open each verified trial's reveal at 1280×720, record the video take, and
 re-capture `docs/screens/`; read A5's lesson records in Learn.
+
+### Task H1a, 14–15 Nov 2026 (phase H: release preparation that does not depend on A5; rebased on Session A's A6 `43e8731`)
+
+No new features. What changed:
+
+| Part | Files | Result |
+|---|---|---|
+| About / Data Sources | `index.html`, `js/pages.js`, `js/i18n.js`, `css/style.css` | What TENGER is and the See / Predict / Learn story. **How TENGER works**: seasons and visits, quality checks, wavelength matching (same array, 10% of the narrower bandwidth, no nearest channel), hold-out predictions and trial types, frozen git receipts, recovery of moving bodies (the pre-registered A4 rule), scoring (D² ≤ 5.991, \|z\| ≤ 1.96, the game's bounded score). **Limits**: saturation (Barnard, RW Aur, R Dra), contaminated targets (WISE 0855 neighbour, RW Aur binary), parallax-only illustrations, a small number of trials (counts are left to the scoreboard; no number is copied), approximations. **What TENGER can and can't see** (same keys as the top-bar dialog). **Data, DOIs and acknowledgements**: SPHEREx (doi:10.26131/IRSA678, doi:10.26131/IRSA679 cited, cube not used), IRSA, WISE/AllWISE, 2MASS PSC (doi:10.26131/IRSA2), Gaia DR3, SIMBAD, VizieR (doi:10.26093/cds/vizier), Sesame, AAVSO VSX (named prior, not needed), JPL Horizons, JPL SBDB (orbits in A6's `scene3d.json`), Aladin Lite (including that it reports its start-up settings and the page address to CDS); required acknowledgements quoted; `ack.spherex` is the exact text of `docs/tenger-context/context/IRSA-acknowledgement.txt` (a test compares them). **Software and licences** from the installed package metadata (Aladin Lite GPL-3.0, Astropy with its citation, NumPy, SciPy, Pillow, FastAPI, Starlette, Uvicorn, HTTPX, pytest, Node.js) plus a table of all 35 Python packages; fonts (OFL). **Built on SPHEREx Blink** (pythonhack000, MIT). **Team**: Narmandakh Garam, Erkhes Orgil, Anu-Ujin Bayarbaatar, Sonomlegtsog Zolzaya (names from the user, no roles; also sent to Session A for the README). **AI disclosure**: planning and audit with OpenAI Codex and Claude; implementation with Claude Code; team review; no AI-generated images. DOIs were resolved on doi.org and their landing pages checked (IRSA678 = DR1 spectral images, IRSA679 = DR1 all-sky cube, IRSA2 = 2MASS PSC). |
+| Fixes found on the way | `js/i18n.js`, `css/style.css` | The map text said Solar System distances are from the Sun; the index gives geocentric distances (JPL Horizons), now said so. "Can't see" listed RW Aur and R Dra as saturated but not Barnard's Star. `body.example-data` set `--banner` without re-declaring `--chrome`, so the example banner covered the top 40 px of the investigation (custom properties resolve where declared). |
+| Guided tour | `js/tour.js`, `js/main.js`, `index.html` | Home → Pluto (preview blink) → Predictions (scrolls to a "Watch the reveal" button when one exists) → Beat the physics → Learn. Step-by-step with **Next** / **Skip the tour** and "step n of 5", no timers. Starts by itself **once per browser** (`localStorage` key `tenger.tour.v1`, read and written in try/catch) only on a plain visit to Home: never with a target, coordinates, page, trial, example data or `embed=1`, and not at all when storage is blocked (it could not remember, so it waits for the "Guided tour" button). Keyboard focus stays on Next while targets open; on desktop the bar sits over the side panel during an investigation so the picture and time bar stay visible. |
+| Embed | `index.html`, `js/main.js`, `js/route.js`, `css/style.css` | `?embed=1` now matches the R1 layout (the old rule hid `.top`, which no longer exists): no top bar, map, tour, footer or other panels; the viewer and See only; Escape does not close it; an **Open in TENGER ↗** link opens the same view on the full site. **Copy embed code** next to "Copy share link" copies `<iframe src="…&embed=1" title="TENGER: <name>" width="100%" height="640" loading="lazy" allowfullscreen>` (escaped, no `fixtures`); if the clipboard is blocked the code appears in a read-only box to copy by hand. |
+| Open Graph | `index.html`, `og.png` | `og:*` and `twitter:card` tags; `og.png` is a 1200×630 headless-Chrome screenshot of this site (Barnard's Star, AllWISE 2010 next to SPHEREx 2026, side by side), palette PNG 127 KB (grey and colour palettes built separately so the amber catalogue ring keeps its colour). The tags are static English in `<head>` because crawlers do not run scripts. `og:image` is relative until the public address is chosen. |
+| Performance | `css/style.css`, `js/main.js`, `js/ledger-ui.js`, `js/learn-ui.js`, `index.html` | Layout shift fixed: the content stays invisible until main.js has shown the page the address asks for (4 s safety net); the Predictions page shows its heading and one loading line until the ledger is drawn; the Home map and the Learn cards appear when their data are drawn; `main` has a 100vh minimum so the footer never jumps. Lesson cards use `h2` (heading order). Images were already `loading="lazy"`; preview images and frame bundles load only when a target is opened. |
+| Captures | `docs/screens/capture.mjs` | Marks the tour as seen before each capture; adds About sections, the tour, embed and the OG sizes. |
+| Sky tiles | `js/sky.js` | The Real sky panel probed `alasky.cds.unistra.fr/AllWISE/RGB-W4-W2-W1`, which now answers 404, so it always fell back to the coarse local copy. It now uses IRSA's mirror of the same survey (`ivo://CDS/P/allWISE/color`, CORS `*`, the URL the backend already uses); checked in the in-app browser (tiles from IRSA). |
+| Strings | `js/i18n.js` | `strings.en.json` re-copied after A5 and A6 (142 keys); the copy test fails until this is done. |
+
+**Links** (15 Nov 2026, from this Mac; checker in the session scratchpad, not shipped)
+
+| What | Result |
+|---|---|
+| 39 distinct URLs in `static/` code and HTML | All answer 200 after fixes, except: `github.com/Nama2323/tenger/commit/` (the prefix of receipt links; the repository is private until Sunday 14:00, and all 9 receipt SHAs exist on `origin/tenger-dev`) and `spherex-blink.onrender.com` (200, live service, left as is per team decision 6). Fixed: SIMBAD home (`/simbad/` gave 404, now `simbad.cds.unistra.fr/`), Starlette and Uvicorn (old domains no longer resolve; now `starlette.dev`, `uvicorn.dev`, from their package metadata), the CDS AllWISE tile URL (see Sky tiles). |
+| DOIs | `10.26131/IRSA678`, `IRSA679`, `IRSA2` and `10.26093/cds/vizier` resolve; the IPAC landing pages name the right datasets |
+| 2,442 IRSA source URLs in `static/data/**/*.json` | All 2,438 distinct files answer HEAD 200. The cutout form of the links (`?center=…&size=…`): 4 of 25 sampled returned a FITS header; the rest got "503 Server busy, retry later" from IRSA, also for 6 single, spaced requests soon after. About 20 minutes later 2 more returned FITS headers (200). That was IRSA load, not broken links; nothing was changed |
+
+**Lighthouse 12.8.2, mobile (default simulated throttling), local server**
+
+| Page | Before | After | FCP / LCP / TBT / CLS after |
+|---|---|---|---|
+| Home | Perf 81, A11y 100, BP 100, SEO 100 (CLS 0.18) | Perf 86, A11y 100, BP 100, SEO 100 | 1.7 s / 4.0 s / 0 ms / 0 |
+| Predictions | 64 / 100 / 96 / 100 (CLS 0.69) | 91 / 100 / 96 / 100 | 1.7 s / 3.3 s / 0 ms / 0 |
+| Beat the physics | 85 / 100 / 100 / 100 (CLS 0.16) | 92 / 100 / 100 / 100 | 1.3 s / 3.3 s / 0 ms / 0 |
+| Learn | 85 / 98 / 100 / 100 (CLS 0.16, heading order) | 93 / 100 / 100 / 100 | 1.7 s / 3.2 s / 0 ms / 0 |
+
+Not fixed (not cheap or not ours): Predictions best-practices 96 = console 404s for `verification.json` of trials that have none (insufficient data at freeze, open forecasts; the page reads them as "missing"); render-blocking CSS (one 17 kB file); no long cache lifetimes (server or Pages setting); no minification (no build step by design). Home's LCP element is the tour text on a first visit. Page weights before opening a target: about 300 kB (fonts 100 kB); a target's frame bundle loads only when it is opened (Barnard 5.9 MB).
+
+**Images over 200 kB**: none in Session B's folders. Three remain in `static/data/sky/Norder3/` (Session A's folder: `Allsky.jpg` 734 kB, `Npix450.jpg` 214 kB, `Npix451.jpg` 217 kB), the offline copy of the sky tiles, loaded only if IRSA is unreachable when Real sky opens. Not recompressed here (folder ownership).
+
+**Checks**
+
+| Check | Result |
+|---|---|
+| `node --test tests/` | **141 passed, 0 failed** (adds `tests/release.test.mjs`, 8 tests: the SPHEREx acknowledgement equals the IRSA file word for word; both DOIs and every source, licence, method, limit, team and disclosure key exist; AI disclosure wording; tour order, once-per-browser rules, blocked storage, Next/Skip sequence; embed code escaping; OG tags and og.png 1200×630 under 200 kB) |
+| `node docs/screens/capture.mjs http://localhost:8766 docs/screens` | 163 captures: every page state at 360/390/768/1280 plus the About sections, the tour (Home, Pluto), embed, the embed-code fallback, the reveal at 1280×720 and the two OG candidates. Measured viewport = requested; no horizontal scroll; no control under 44 px; every page ready; the only console errors are 404s for trial files that do not exist (`verification.json` of unverified trials, the fixtures' missing receipt) |
+| In-app browser | Tour from a fresh visit (auto-start, Enter on Next through all five steps, focus kept on Next, Finish, no restart on reload); embed at 1024 px; Copy embed code (clipboard blocked in the pane, so the fallback box appeared with the escaped iframe); About at 375 px (no horizontal scroll); Real sky with IRSA tiles; a real reveal (Barnard, verdict step) with no console errors |
+
+**Not done / limits**
+
+- Built on A5/A6 data but does not present them beyond what B2–B4 already read: the Pluto post-mortem ("Why we missed", `trials/pluto/postmortem.json`), the 3D scene (`scene3d.json`) and the lesson records' new wording are not shown or checked in detail. Session A's message: post-mortem is exploratory, after the reveal, and changes no verdict.
+- `og:image` is relative; make it absolute when the public address is chosen. Receipt links work only once the repository is public.
+- Embed: the iframe uses the address it was copied from (localhost while testing). The embedded page is the whole app in embed mode, so it downloads the same files.
+- Not checked on a real phone; emulated widths and the desktop pane only.
+
+**Next action (proposed)**: when the public address is chosen, set absolute `og:url`/`og:image`; then a web task for A5/A6 content (post-mortem in Predictions and Lesson 3, the real reveals at 1280×720 for the video).

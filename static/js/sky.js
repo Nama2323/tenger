@@ -1,16 +1,18 @@
 // The all-sky map, using Aladin Lite with AllWISE tiles.
 const ALADIN_URL = 'https://cdn.jsdelivr.net/npm/aladin-lite@3.8.2/dist/aladin.js';
-const TILES_FROM_CDS = 'https://alasky.cds.unistra.fr/AllWISE/RGB-W4-W2-W1';
+// The CDS AllWISE colour survey (ivo://CDS/P/allWISE/color) as mirrored by IRSA, which allows cross-origin use.
+// (The alasky.cds.unistra.fr address answered 404 on 15 Nov 2026; the backend uses this mirror too.)
+const TILES_ONLINE = 'https://irsa.ipac.caltech.edu/data/hips/CDS/AllWISE/RGB-W4-W2-W1';
 const PROBE_TIMEOUT_MS = 2500;
 const WHOLE_SKY_FOV = 240;
 const DIVE_SECONDS = 3;
 const GALACTIC_CENTRE = { ra: 266.405, dec: -28.936 };
 
-/** CDS has every zoom level, but some networks cannot reach it; the site carries a coarse copy. */
+/** The online survey has every zoom level, but some networks cannot reach it; the site carries a coarse copy. */
 async function chooseTiles() {
   try {
-    const response = await fetch(`${TILES_FROM_CDS}/properties`, { signal: AbortSignal.timeout(PROBE_TIMEOUT_MS) });
-    if (response.ok) return TILES_FROM_CDS;
+    const response = await fetch(`${TILES_ONLINE}/properties`, { signal: AbortSignal.timeout(PROBE_TIMEOUT_MS) });
+    if (response.ok) return TILES_ONLINE;
   } catch {
     // Unreachable from this network: use the copy below.
   }

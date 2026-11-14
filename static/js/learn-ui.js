@@ -264,7 +264,7 @@ function renderIndex() {
     const content = lessonContent(lesson);
     return el('li', { class: 'page-card glass' }, [
       el('span', { class: 'lesson-number', 'aria-hidden': 'true', text: String(index + 1).padStart(2, '0') }),
-      el('h3', { text: t(`lesson.${lesson.id}.title`) }),
+      el('h2', { class: 'card-title', text: t(`lesson.${lesson.id}.title`) }),
       el('p', { text: t(`lesson.${lesson.id}.text`) }),
       el('p', { class: 'note', text: t(content.source === 'synthetic' ? 'learn.statusSynthetic' : 'learn.statusRecord') }),
       el('button', { type: 'button', class: 'primary', text: t('learn.open'), 'aria-label': `${t('learn.open')}: ${t(`lesson.${lesson.id}.title`)}`, onclick: () => showLearn(lesson.id) }),
