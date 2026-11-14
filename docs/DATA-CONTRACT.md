@@ -862,3 +862,13 @@ prediction, receipt, verification).
 are **not** included in the per-category `counts` or in `rows`.
 
 **`index.json`** adds `batch_paths[]` (for example `["batches/asteroids-2026a.json"]`).
+
+**V12 addition (15 Nov 2026, with V13):** `planetx/depth.json` `verdicts[]` gain `recovered_fraction` in
+one of three forms:
+- `{value, interpolated: true, between_ab: [m1, m2]}` (between two tested magnitudes);
+- `{value, interpolated: false, at_ab}` (on a tested magnitude);
+- `{value: null, beyond_ab, upper_95}` (fainter than the faintest test).
+
+`verdict_key` adds `planetx.verdict.partial` (≥ 5% found but fainter than the 50% depth).
+`verdict_summary.values` adds `one_in`.
+

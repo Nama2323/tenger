@@ -1,7 +1,7 @@
 {
  "schema_version": "tenger.planetx_depth/1",
  "contract_version": 12,
- "generated_utc": "2026-11-14T18:24:55Z",
+ "generated_utc": "2026-11-14T22:19:53Z",
  "artificial": true,
  "counts": false,
  "title_key": "planetx.title",
@@ -11339,6 +11339,11 @@
     "sigma": 0.04
    },
    "factor_in_flux": 55.4,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 20.0,
+    "upper_95": 0.0079
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11351,7 +11356,15 @@
     "sigma": 0.04
    },
    "factor_in_flux": 1.4,
-   "verdict_key": "planetx.verdict.too-faint"
+   "recovered_fraction": {
+    "value": 0.2831,
+    "interpolated": true,
+    "between_ab": [
+     17.25,
+     17.5
+    ]
+   },
+   "verdict_key": "planetx.verdict.partial"
   },
   {
    "band_id": "i",
@@ -11363,6 +11376,11 @@
     "sigma": 0.04
    },
    "factor_in_flux": 349.3,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 20.0,
+    "upper_95": 0.0079
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11375,6 +11393,11 @@
     "sigma": 0.04
    },
    "factor_in_flux": 134.5,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 20.0,
+    "upper_95": 0.0079
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11387,6 +11410,14 @@
     "sigma": 0.04
    },
    "factor_in_flux": 3.4,
+   "recovered_fraction": {
+    "value": 0.0,
+    "interpolated": true,
+    "between_ab": [
+     18.75,
+     19.0
+    ]
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11399,6 +11430,11 @@
     "sigma": 0.04
    },
    "factor_in_flux": 848.8,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 20.0,
+    "upper_95": 0.0079
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11411,6 +11447,11 @@
     "sigma": 0.02
    },
    "factor_in_flux": 818.1,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 18.5,
+    "upper_95": 0.008
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11423,6 +11464,11 @@
     "sigma": 0.02
    },
    "factor_in_flux": 20.5,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 18.5,
+    "upper_95": 0.008
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11435,6 +11481,11 @@
     "sigma": 0.02
    },
    "factor_in_flux": 5161.8,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 18.5,
+    "upper_95": 0.008
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11447,6 +11498,11 @@
     "sigma": 0.04
    },
    "factor_in_flux": 134524.1,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 20.0,
+    "upper_95": 0.0079
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11459,6 +11515,11 @@
     "sigma": 0.02
    },
    "factor_in_flux": 14216.7,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 18.5,
+    "upper_95": 0.008
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11471,6 +11532,11 @@
     "sigma": 0.04
    },
    "factor_in_flux": 194.4,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 20.0,
+    "upper_95": 0.0079
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11483,6 +11549,11 @@
     "sigma": 0.02
    },
    "factor_in_flux": 9835.6,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 18.5,
+    "upper_95": 0.008
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11495,6 +11566,11 @@
     "sigma": 0.04
    },
    "factor_in_flux": 48.8,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 20.0,
+    "upper_95": 0.0079
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11507,6 +11583,11 @@
     "sigma": 0.02
    },
    "factor_in_flux": 56.6,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 18.5,
+    "upper_95": 0.008
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11519,6 +11600,14 @@
     "sigma": 0.04
    },
    "factor_in_flux": 3.4,
+   "recovered_fraction": {
+    "value": 0.0,
+    "interpolated": true,
+    "between_ab": [
+     18.75,
+     19.0
+    ]
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11531,6 +11620,11 @@
     "sigma": 0.02
    },
    "factor_in_flux": 56.6,
+   "recovered_fraction": {
+    "value": null,
+    "beyond_ab": 18.5,
+    "upper_95": 0.008
+   },
    "verdict_key": "planetx.verdict.too-faint"
   },
   {
@@ -11543,6 +11637,14 @@
     "sigma": 0.04
    },
    "factor_in_flux": 5.9,
+   "recovered_fraction": {
+    "value": 0.0,
+    "interpolated": true,
+    "between_ab": [
+     19.25,
+     19.5
+    ]
+   },
    "verdict_key": "planetx.verdict.too-faint"
   }
  ],
@@ -11609,9 +11711,10 @@
    "model_i": "21.4",
    "model_w1": "22.8",
    "model_w2": "23.4",
-   "gap_w1": "5.3"
+   "gap_w1": "5.3",
+   "one_in": "4"
   },
-  "text": "One SPHEREx exposure finds half of the artificial sources at AB 17.1 near 0.8 \u00b5m, AB 17.5 near 3.4 \u00b5m and AB 16.2 near 4.6 \u00b5m. The nominal Planet Nine of Linder & Mordasini (2016) would be AB 21.4, 22.8 and 23.4: 5.3 magnitudes too faint at 3.4 \u00b5m. Only the brightest published scenarios come within reach, and the planet moves too far between exposures to pile up its light without a shift-and-stack search."
+  "text": "One SPHEREx exposure finds half of the artificial sources at AB 17.1 near 0.8 \u00b5m, AB 17.5 near 3.4 \u00b5m and AB 16.2 near 4.6 \u00b5m. The nominal Planet Nine of Linder & Mordasini (2016) would be AB 21.4, 22.8 and 23.4: 5.3 magnitudes too faint at 3.4 \u00b5m. Only the closest published case comes within reach, and one exposure would catch it about 1 time in 4. The planet also moves too far between exposures to pile up its light without a shift-and-stack search."
  },
  "limitation_keys": [
   "planetx.limit.single-exposure",

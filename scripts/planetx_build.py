@@ -308,12 +308,37 @@ def verdicts(bands: list[dict]) -> list[dict]:
         bright, faint = depth["interval"]
         sigma = (faint - bright) / (2 * 1.96) if bright is not None and faint is not None else None
         gap = model["mag_ab"] - depth["value"]
-        key = "planetx.verdict.too-faint" if gap > 0 else "planetx.verdict.within-depth"
+        found = recovered_fraction(by_id[model["band_id"]]["pooled"]["curve"], model["mag_ab"])
+        share = found["value"] if found["value"] is not None else found["upper_95"]
+        if gap <= 0:
+            key = "planetx.verdict.within-depth"
+        elif share < 0.05:
+            key = "planetx.verdict.too-faint"
+        else:
+            key = "planetx.verdict.partial"
         out.append({"band_id": model["band_id"], "model_id": model["id"], "model_mag_ab": model["mag_ab"],
                     "depth_50_ab": depth["value"], "gap_mag": {"value": round(gap, 2),
                                                                "sigma": round(sigma, 2) if sigma else None},
-                    "factor_in_flux": round(10 ** (0.4 * gap), 1), "verdict_key": key})
+                    "factor_in_flux": round(10 ** (0.4 * gap), 1), "recovered_fraction": found, "verdict_key": key})
     return out
+
+
+def recovered_fraction(curve: list[dict], mag: float) -> dict:
+    """Fraction of injections found at this magnitude: linear in magnitude between the two neighbouring curve
+    points (the website's rule, 15 Nov). Fainter than the faintest test: no value, only that point's upper 95%."""
+    points = sorted(curve, key=lambda point: point["mag_ab"])
+    if mag > points[-1]["mag_ab"]:
+        return {"value": None, "beyond_ab": points[-1]["mag_ab"], "upper_95": points[-1]["interval"][1]}
+    if mag <= points[0]["mag_ab"]:
+        return {"value": points[0]["fraction"], "interpolated": False, "at_ab": points[0]["mag_ab"]}
+    for left, right in zip(points, points[1:]):
+        if left["mag_ab"] <= mag <= right["mag_ab"]:
+            if mag == left["mag_ab"]:
+                return {"value": left["fraction"], "interpolated": False, "at_ab": left["mag_ab"]}
+            share = (mag - left["mag_ab"]) / (right["mag_ab"] - left["mag_ab"])
+            value = left["fraction"] + share * (right["fraction"] - left["fraction"])
+            return {"value": round(value, 4), "interpolated": True, "between_ab": [left["mag_ab"], right["mag_ab"]]}
+    raise ValueError("magnitude outside the curve")
 
 
 def projection(bands: list[dict]) -> list[dict]:
@@ -339,6 +364,10 @@ def verdict_summary(bands: list[dict]) -> dict:
     values.update({f"model_{b}": f"{model[b]:.1f}" for b in model})
     if depth.get("w1") is not None:
         values["gap_w1"] = f"{model['w1'] - depth['w1']:.1f}"
+    partial = [v for v in verdicts(bands) if v["verdict_key"] == "planetx.verdict.partial"]
+    if partial:
+        closest = max(partial, key=lambda v: v["recovered_fraction"]["value"])
+        values["one_in"] = str(round(1 / closest["recovered_fraction"]["value"]))
     template = STRINGS["planetx.verdict.summary"]
     try:
         text = template.format(**values)

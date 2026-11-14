@@ -80,8 +80,10 @@ uncertainty is model-dependent and much larger:
 - One SPHEREx exposure cannot see the nominal Planet Nine of Linder & Mordasini: it is 4.4 mag too
   faint at 0.8 µm, 5.3 mag at 3.4 µm and 7.3 mag at 4.6 µm.
 - Only two published cases come within about a magnitude of one exposure:
-  - Linder & Mordasini's planet at perihelion, at 0.8 µm (0.4 mag beyond our 50% depth, about 25%
-    recovery at AB 17.5). The paper itself expects Planet Nine near aphelion.
+  - Linder & Mordasini's planet at perihelion, at 0.8 µm. It sits 0.4 mag beyond our 50% depth, and
+    one exposure finds 28% of artificial sources that faint (interpolated between AB 17.25 and 17.5): about
+    1 time in 4. This is the only `planetx.verdict.partial` row. The paper itself expects Planet Nine near
+    aphelion.
   - Fortney et al.'s most extreme 50 K methane-poor atmosphere, at 3.4 µm (1.3 mag).
 - At 3.4 µm a single exposure is 1.9 mag shallower than the region WISE and NEOWISE already searched
   (W1 < 16.7 Vega).
@@ -216,3 +218,15 @@ Gaussian-fit detector are also different definitions; the comparison is indicati
   band fainter than the band average.
 - Catalogue exclusion uses Gaia DR3 and AllWISE. Unlisted faint sources can still sit under an
   injection, and the blank controls measure that effect.
+
+## Verdict classes (15 Nov 2026, website rule)
+
+Each verdict row has `recovered_fraction`. This is the pooled curve's found fraction at the model
+magnitude, linear in magnitude between the two neighbouring tested magnitudes. Fainter than the faintest
+test there is no value, only that point's upper 95% bound. The classes are:
+- `planetx.verdict.within-depth` when gap ≤ 0;
+- `planetx.verdict.too-faint` when the fraction, or that upper bound, is below 5%;
+- `planetx.verdict.partial` otherwise.
+
+The other 17 rows are 0% or beyond the curve, with upper bounds of 0.8% or less.
+

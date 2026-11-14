@@ -1,7 +1,7 @@
 {
  "schema_version": "tenger.hidden_planet/1",
  "contract_version": 12,
- "generated_utc": "2026-11-14T18:24:56Z",
+ "generated_utc": "2026-11-14T22:19:55Z",
  "artificial": true,
  "counts": false,
  "label_key": "planetx.game.label",
@@ -9,7 +9,7 @@
  "derived_from": [
   {
    "path": "planetx/depth.json",
-   "sha256": "57a47aa74ae9c9d9d3af48429e504999c2159cbc9e243be08bd401ce2739188f"
+   "sha256": "8b91ff7d73441d3fd3288fdb2d87c74889278174e3a2616c353b800feafd22d7"
   }
  ],
  "pairs": [
