@@ -1,30 +1,49 @@
-// Task B9: the 30-second demo video, made only from real screen recordings of the deployed site (no generated
-// images, video, voice or music). Each shot is recorded in headless Chrome at 1280x720 and cut to an exact number
-// of frames at 30 fps; the captions are burned in from PNGs that Chrome renders in the site's own font (this ffmpeg
-// has no text filters), and the title card is an HTML page using the site's stylesheet. Writes
-// tenger-demo-30s.mp4 (H.264 High, yuv420p, 30 fps, no audio), tenger-demo-30s.srt and tenger-demo-30s-contact.png.
-// Every shot also checks that the page names neither the base project nor its author.
-// Usage: node docs/screens/demo/make-video.mjs [base URL]   (default: the public site)
+// Task B21 (re-make of B9): the 30-second demo video of Vestigium, made only from real screen recordings of the
+// current build (no generated images, video, voice or music). Each shot is recorded in headless Chrome at 1280x720
+// and cut to an exact number of frames at 30 fps; the captions are burned in from PNGs that Chrome renders in the
+// site's own font (this ffmpeg has no text filters), and the title card is an HTML page using the site's stylesheet
+// and logo (static/img/logo.svg). Writes vestigium-demo-30s.mp4 (H.264 High, yuv420p, 30 fps, no audio),
+// vestigium-demo-30s.srt and vestigium-demo-30s-contact.png. Every shot checks that no page shows "TENGER",
+// "SPHEREx Blink" or "pythonhack000". Numbers in the captions are read from the page or the data files.
+// Usage: node docs/screens/demo/make-video.mjs [base URL]
+//   Without a URL it serves this checkout's static/ folder itself on a free local port (the build as it is now).
+//   ONLY=<shot id> records one shot and prints its frame times.
 import { spawn, spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { createServer } from 'node:http';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { dirname, extname, join, normalize } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const BASE = (process.argv[2] ?? 'https://nama2323.github.io/tenger').replace(/\/$/, '');
+const STATIC = join(HERE, '..', '..', '..', 'static');
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webp': 'image/webp', '.webmanifest': 'application/manifest+json', '.gz': 'application/gzip', '.bin': 'application/octet-stream', '.txt': 'text/plain' };
+let server = null;
+let BASE = process.argv[2]?.replace(/\/$/, '');
+if (!BASE) {
+  server = createServer((req, res) => {
+    let path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+    if (path.endsWith('/')) path += 'index.html';
+    const file = normalize(join(STATIC, path));
+    if (!file.startsWith(normalize(STATIC))) { res.writeHead(403).end(); return; }
+    try { res.writeHead(200, { 'content-type': TYPES[extname(file)] ?? 'application/octet-stream' }).end(readFileSync(file)); } catch { res.writeHead(404).end(); }
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  BASE = `http://127.0.0.1:${server.address().port}`;
+}
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const PORT = 9400 + Math.floor(Math.random() * 400); // a fresh port, so a stale Chrome can never answer instead
 const FPS = 30;
-const OUT = join(HERE, 'tenger-demo-30s');
-const WORK = mkdtempSync(join(tmpdir(), 'tenger-b9-'));
+const OUT = join(HERE, 'vestigium-demo-30s');
+const WORK = mkdtempSync(join(tmpdir(), 'vestigium-b21-'));
 const NAMES = /spherex[\s_-]*blink|pythonhack000/i;
+const OLD_BRAND = /TENGER|Tenger/;
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // ---------- Chrome over the DevTools protocol ----------
 
 const chrome = spawn(CHROME, [
-  '--headless=new', `--remote-debugging-port=${PORT}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), 'tenger-b9-chrome-'))}`,
+  '--headless=new', `--remote-debugging-port=${PORT}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), 'vestigium-b21-chrome-'))}`,
   // The Mac's GPU (Metal): with software rendering the viewer page draws about 2 frames a second and the blink is lost.
   '--no-first-run', '--no-default-browser-check', '--hide-scrollbars', '--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist',
   '--allow-file-access-from-files', 'about:blank',
@@ -73,8 +92,13 @@ async function open(path, ready) {
     if (await evaluate(`Boolean(${ready})`)) break;
   }
   await sleep(1200);
-  // The page as recorded must not name the base project or its author (user, 15 Nov).
-  if (NAMES.test(await evaluate('document.documentElement.outerHTML'))) problems.push(`names on ${path}`);
+  await checkNames(path);
+}
+
+/** No page in the video may name the base project or its author, or show the old brand (user, 15 Nov). */
+async function checkNames(where) {
+  if (NAMES.test(await evaluate('document.documentElement.outerHTML'))) problems.push(`names on ${where}`);
+  if (OLD_BRAND.test(await evaluate('document.title + " " + document.body.innerText'))) problems.push(`old brand on ${where}`);
 }
 
 const scrollTo = (selector, offset = -70) => evaluate(`scrollTo(0, document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect().top + scrollY + ${offset})`);
@@ -165,119 +189,135 @@ async function screenshotFile(url, file, transparent = false) {
 
 // ---------- The shots ----------
 
-const years = {};
+const facts = {};
+/** Scrolls an element that scrolls itself (Home on wide screens) smoothly to a child. */
+const smoothScrollIn = (scroller, selector, ms) => evaluate(`new Promise((resolve) => {
+  const box = document.querySelector(${JSON.stringify(scroller)});
+  const node = document.querySelector(${JSON.stringify(selector)});
+  const from = box.scrollTop; const to = from + node.getBoundingClientRect().top - box.getBoundingClientRect().top;
+  const t0 = performance.now();
+  const step = (now) => { const k = Math.min(1, (now - t0) / ${ms}); const ease = k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
+    box.scrollTop = from + (to - from) * ease; if (k < 1) requestAnimationFrame(step); else resolve(); };
+  requestAnimationFrame(step);
+})`);
+/** Home with its 3D map already running (woken by a pointer move), scrolled back to the first screen. */
+async function openHome() {
+  await open('/', "document.getElementById('hero-watch') && !document.getElementById('page-home').hasAttribute('data-loading')");
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 900, y: 300 });
+  for (let attempt = 0; attempt < 80; attempt += 1) { await sleep(200); if (await evaluate("!document.getElementById('space-time').hidden")) break; }
+  await evaluate("document.getElementById('map-key') && (document.getElementById('map-key').open = false); document.getElementById('page-home').scrollTop = 0");
+  await sleep(1500);
+}
+const clickAt = async (selector) => {
+  const box = await evaluate(`(() => { const r = document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; })()`);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: box[0], y: box[1] });
+  await sleep(120);
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: box[0], y: box[1], button: 'left', clickCount: 1 });
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: box[0], y: box[1], button: 'left', clickCount: 1 });
+};
 
 const SHOTS = [
   {
-    id: 's1-home-pluto', seconds: 4, caption: 'TENGER: see the sky change in NASA SPHEREx images.',
-    /** Home in 3D, then the flight to Pluto: the page clock is stepped by hand, one frame per 1/30 s. */
+    id: 's1-home', seconds: 4, caption: 'Vestigium: watch the sky move in real NASA SPHEREx pictures.',
+    /** The new first screen, then down to the 3D map below it. */
     async record() {
-      // A returning visitor: Pluto's images are already in the browser cache, so they appear as the flight lands.
-      await open('/?target=pluto&panel=see', "document.querySelectorAll('.dates button, #dates button').length > 2 && !document.body.innerText.includes('images ready')");
-      await sleep(2500);
-      await open('/', "document.body.classList.contains('space-3d') && document.querySelector('.space-canvas')");
-      await sleep(2000);
-      await evaluate("document.getElementById('map-key') && (document.getElementById('map-key').open = false)");
-      await evaluate(`(() => {
-        let now = performance.now(); let queue = [];
-        performance.now = () => now;
-        window.requestAnimationFrame = (callback) => { queue.push(callback); return queue.length; };
-        window.cancelAnimationFrame = () => {};
-        window.__step = (ms) => { now += ms; const run = queue; queue = []; run.forEach((callback) => callback(now)); };
-      })()`);
-      const frames = [];
-      const shoot = async (count, between = 0) => {
-        for (let frame = 0; frame < count; frame += 1) {
-          await evaluate(`window.__step(${1000 / FPS})`);
-          if (between) await sleep(between);
-          const shot = await send('Page.captureScreenshot', { format: 'png' });
-          frames.push({ data: shot.result.data });
-        }
-      };
-      await shoot(14);
-      await evaluate("[...document.querySelectorAll('#rail button')].find((b) => b.textContent.trim().toLowerCase().startsWith('pluto')).click()");
-      await shoot(64);
-      await shoot(44, 1000 / FPS);
-      return { frames, even: true };
-    },
-  },
-  {
-    id: 's2-barnard-blink', seconds: 3, caption: () => `Real images, ${years.a} and ${years.b}: Barnard's Star moved.`,
-    /** Barnard's Star blinking between the AllWISE frame and the newest SPHEREx frame; the caption's years are theirs. */
-    async record() {
-      await open('/?target=barnard&panel=see', "document.body.innerText.includes('Frames from the investigation') && document.querySelector('#plates')");
-      await scrollTo('#observatory', -64);
-      await sleep(600);
-      // The blink shows A and B in turn in the plate's own date label ("A · AllWISE 2010", "B · Aug 22, 2026"):
-      // sample it until both have been on screen, and take each year from its own label.
-      const labels = await evaluate(`new Promise((resolve) => {
-        const seen = {}; const t0 = performance.now();
-        const look = () => {
-          const text = document.getElementById('plate-date')?.textContent ?? '';
-          if (/^A\\b/.test(text)) seen.a = text;
-          if (/^B\\b/.test(text)) seen.b = text;
-          if ((seen.a && seen.b) || performance.now() - t0 > 6000) resolve(seen); else setTimeout(look, 50);
-        };
-        look();
-      })`);
-      years.a = (String(labels.a ?? '').match(/(19|20)\d\d/) ?? [])[0];
-      years.b = (String(labels.b ?? '').match(/(19|20)\d\d/) ?? [])[0];
-      years.labels = labels;
-      if (!years.a || !years.b) problems.push(`frame years not found: ${JSON.stringify(labels)}`);
-      return screenshotLoop(3.4);
-    },
-  },
-  {
-    id: 's3-s4-reveal', seconds: 12, captions: [
-      { at: 0, seconds: 6, text: 'We locked a Pluto forecast in GitHub before opening the newest images.' },
-      { at: 6, seconds: 6, text: '6 arcsec off: 3,000x closer than a straight line, but just outside our 95% region. A published miss.' },
-    ],
-    /** The Pluto reveal in one take: image, training track, frozen region (with its commit), then the straight line, the observation and the verdict. */
-    async record() {
-      await open('/?page=predictions&trial=pluto-position-2026b', "document.querySelector('#reveal[open] .reveal-svg')");
-      return screencast(async (t0) => {
-        const at = async (seconds) => { const wait = t0 * 1000 + seconds * 1000 - Date.now(); if (wait > 0) await sleep(wait); };
-        await at(0.9); await key('ArrowRight');
-        await at(2.2); await key('ArrowRight');
-        await at(6.1); await key('ArrowRight');
-        await at(8.2); await key('ArrowRight');
-        await at(10.0); await key('ArrowRight');
-        await at(12.4);
+      await openHome();
+      return screencast(async () => {
+        await sleep(1500);
+        await smoothScrollIn('#page-home', '#home-map', 1300);
+        await sleep(1500);
       });
     },
   },
   {
-    id: 's5-why-forecasts', seconds: 4, caption: 'We found why, and froze new forecasts for 2027.',
-    /** "Why we missed" opened on the Pluto card, then the open 2027 forecasts. */
+    id: 's2-barnard', seconds: 4, caption: () => `Real pictures, ${facts.yearA} and ${facts.yearB}: Barnard's Star moved about ${facts.shift}″.`,
+    /** A tap on "Watch Barnard's Star move", then Barnard's Star blinking; years and shift read from the page. */
+    async record() {
+      await openHome();
+      const shots = { frames: [], start: Date.now() / 1000 };
+      const grab = async () => { const shot = await send('Page.captureScreenshot', { format: 'png' }); shots.frames.push({ data: shot.result.data, t: Date.now() / 1000 }); };
+      await grab(); await sleep(250); await grab();
+      await clickAt('#hero-watch');
+      const loop = await screenshotLoop(4.0);
+      shots.frames.push(...loop.frames);
+      shots.end = loop.end;
+      const finding = await evaluate("document.getElementById('finding').textContent");
+      facts.finding = finding;
+      facts.shift = (finding.match(/about ([\d,]+)″/) ?? [])[1];
+      const labels = await evaluate(`new Promise((resolve) => {
+        const seen = {}; const t0 = performance.now();
+        const look = () => { const text = document.getElementById('plate-date')?.textContent ?? '';
+          if (/^A\\b/.test(text)) seen.a = text; if (/^B\\b/.test(text)) seen.b = text;
+          if ((seen.a && seen.b) || performance.now() - t0 > 6000) resolve(seen); else setTimeout(look, 50); };
+        look(); })`);
+      facts.labels = labels;
+      facts.yearA = (String(labels.a ?? '').match(/(19|20)\d\d/) ?? [])[0];
+      facts.yearB = (String(labels.b ?? '').match(/(19|20)\d\d/) ?? [])[0];
+      if (!facts.yearA || !facts.yearB || !facts.shift) problems.push(`Barnard facts missing: ${JSON.stringify(facts)}`);
+      await checkNames('Barnard blink');
+      return shots;
+    },
+  },
+  {
+    id: 's3-s4-reveal', seconds: 12, captions: [
+      { at: 0, seconds: 6, text: 'We locked a Pluto forecast on GitHub before opening the newest pictures.' },
+      { at: 6, seconds: 6, text: () => `${facts.plutoOff}″ off: 3,000× closer than a straight line, but just outside our 95% oval. A published miss.` },
+    ],
+    /** Predictions: the four steps; then the Pluto reveal from its first step to the verdict with the zoomed inset. */
+    async record() {
+      await open('/?page=predictions', "!document.getElementById('page-predictions').hasAttribute('data-loading') && !document.getElementById('story-pluto').disabled");
+      // The caption's numbers from the trial's own verification file.
+      const check = await evaluate("fetch('data/trials/pluto-position-2026b/verification.json').then((r) => r.json())");
+      const model = check?.residuals?.model?.error_arcsec; const line = check?.residuals?.baseline?.error_arcsec;
+      facts.plutoOff = Number.isFinite(model) ? model.toFixed(1) : null;
+      facts.plutoRatio = Number.isFinite(model) && Number.isFinite(line) ? line / model : null;
+      facts.plutoStatus = check?.status;
+      if (!facts.plutoOff || !(facts.plutoRatio >= 3000) || check?.status !== 'miss') problems.push(`Pluto facts: ${JSON.stringify({ model, line, status: check?.status })}`);
+      return screencast(async (t0) => {
+        const at = async (seconds) => { const wait = t0 * 1000 + seconds * 1000 - Date.now(); if (wait > 0) await sleep(wait); };
+        await at(0.5); await smoothScroll('#story-how-title', 900, -80);
+        await at(2.7); await evaluate("document.getElementById('story-pluto').click()");
+        await at(4.3); await key('ArrowRight');
+        await at(5.5); await key('ArrowRight');
+        await at(6.4); await key('ArrowRight');
+        await at(7.4); await key('ArrowRight');
+        await at(8.3); await key('ArrowRight');
+        await at(12.3);
+        facts.revealStep = await evaluate("document.querySelector('#reveal-steps [aria-current]')?.textContent ?? ''");
+        await checkNames('Pluto reveal');
+      });
+    },
+  },
+  {
+    id: 's5-why-2027', seconds: 4, caption: 'We found why, and locked new forecasts for 2027.',
+    /** "Why we missed" opened on the Pluto card, then the "Check us in 2027" card. */
     async record() {
       await open('/?page=predictions', "!document.getElementById('page-predictions').hasAttribute('data-loading') && document.querySelector('#trial-pluto-position-2026b .why-missed')");
       await evaluate("document.querySelector('#trial-pluto-position-2026b .why-missed').open = true");
       await sleep(500);
-      await scrollTo('#trial-pluto-position-2026b .why-missed', -90);
-      await sleep(1500);
-      await scrollTo('#trial-pluto-position-2026b .why-missed', -90);
+      await scrollTo('#trial-pluto-position-2026b .why-missed', -110);
+      await sleep(1200);
+      await scrollTo('#trial-pluto-position-2026b .why-missed', -110);
       await sleep(400);
       return screencast(async () => {
         await sleep(1500);
-        await smoothScroll('#ledger-forecasts-title', 1000);
+        await smoothScroll('#story-check', 1000, -160);
         await sleep(1800);
       });
     },
   },
   {
-    id: 's6-planetx', seconds: 4,
-    caption: 'Could SPHEREx see Planet X? We measured it: for the nominal Planet Nine, one image is 4 to 7 magnitudes too shallow.',
-    /** The Planet X Lab: "Measured by TENGER", the headline, then the first measured curve. */
+    id: 's6-planetx', seconds: 3, caption: 'Could SPHEREx see Planet X? We measured it: not in one image.',
+    /** The Planet X card on Home, a tap, and the top of the Planet X Lab. */
     async record() {
-      await open('/?page=learn&lesson=lab', "document.querySelector('#measured .planetx-chart')");
-      await scrollTo('#measured', -76);
-      await sleep(1500);
-      await scrollTo('#measured', -76);
-      await sleep(400);
+      await openHome();
+      for (let attempt = 0; attempt < 30; attempt += 1) { await sleep(150); if (await evaluate("document.getElementById('hero-planetx-line').textContent.length > 0")) break; }
       return screencast(async () => {
-        await sleep(1700);
-        await smoothScroll('#measured .planetx-band', 1000, -76);
-        await sleep(1700);
+        await sleep(1100);
+        await clickAt('#hero-planetx');
+        await sleep(2000);
+        facts.labTitle = await evaluate("document.getElementById('lab-view-title')?.textContent ?? ''");
+        await checkNames('Planet X Lab');
       });
     },
   },
@@ -290,9 +330,10 @@ if (process.env.ONLY) {
   const shot = SHOTS.find((item) => item.id === process.env.ONLY);
   const captured = await shot.record();
   const times = captured.frames.map((frame) => (frame.t ? (frame.t - captured.start).toFixed(2) : '-'));
-  console.log(JSON.stringify({ id: shot.id, frames: captured.frames.length, times: times.slice(0, 40), years, problems }));
+  console.log(JSON.stringify({ id: shot.id, frames: captured.frames.length, times: times.slice(0, 40), facts, problems }));
   socket.close();
   chrome.kill();
+  server?.close();
   process.exit(0);
 }
 
@@ -312,7 +353,7 @@ clips.push({ id: 's7-title', file: titleClip });
 const cues = [];
 let clock = 0;
 for (const shot of SHOTS) {
-  if (shot.captions) shot.captions.forEach((cue) => cues.push({ start: clock + cue.at, end: clock + cue.at + cue.seconds, text: cue.text }));
+  if (shot.captions) shot.captions.forEach((cue) => cues.push({ start: clock + cue.at, end: clock + cue.at + cue.seconds, text: typeof cue.text === 'function' ? cue.text() : cue.text }));
   else cues.push({ start: clock, end: clock + shot.seconds, text: typeof shot.caption === 'function' ? shot.caption() : shot.caption });
   clock += shot.seconds;
 }
@@ -358,8 +399,9 @@ run(['-i', `${OUT}.mp4`, '-vf', `select='${select}',scale=640:360,tile=4x2:paddi
 
 const probe = JSON.parse(spawnSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-count_frames', '-show_entries',
   'stream=codec_name,profile,width,height,pix_fmt,r_frame_rate,nb_read_frames:format=duration,size', '-of', 'json', `${OUT}.mp4`]).stdout.toString());
-console.log(JSON.stringify({ years, cues: cues.map(({ start, end, lines }) => ({ start, end, lines })), probe, bytes: statSync(`${OUT}.mp4`).size, problems }, null, 2));
+console.log(JSON.stringify({ facts, cues: cues.map(({ start, end, lines }) => ({ start, end, lines })), probe, bytes: statSync(`${OUT}.mp4`).size, problems }, null, 2));
 rmSync(WORK, { recursive: true, force: true });
 socket.close();
 chrome.kill();
+server?.close();
 process.exit(problems.length ? 1 : 0);

@@ -1,5 +1,48 @@
 # Demo clips for the 30-second video
 
+## The 30-second video, Vestigium (task B21, current build)
+
+`vestigium-demo-30s.mp4`: **30.000 s** (900 frames), **2,176,545 bytes**, 1280×720, H.264 High, yuv420p, 30 fps, no
+audio track.
+- English captions are burned in (34 px, bottom, dark box, at most 2 lines), with the same text and line breaks in
+  `vestigium-demo-30s.srt`. `vestigium-demo-30s-contact.png` has one frame per shot.
+- Made with `make-video.mjs` from this checkout's `static/` folder, which the script serves itself on a free local
+  port. That is the current build, `tenger-dev` after B19 and B18, with the Vestigium name and the B12–B19 design.
+- Real screen recordings of the site only: no generated images, video, voice or music. The captions and the title
+  card are text drawn by Chrome in the site's own font and stylesheet. The title card shows the logo file
+  `static/img/logo.svg`.
+
+| Time | Shot | Caption | Number checked against |
+|---|---|---|---|
+| 0–4 s | Home's first screen, then a scroll down to the 3D map | Vestigium: watch the sky move in real NASA SPHEREx pictures. | — |
+| 4–8 s | A tap on "Watch Barnard's Star move"; Barnard's Star blinking A ↔ B | Real pictures, 2010 and 2026: Barnard's Star moved about 168″. | Years read from the frames' own labels ("A · AllWISE 2010", "B · Aug 22, 2026"); 168″ read from the page's finding (catalogue motion 10.393″/yr × 16.1 years, as in `SUBMISSION-NUMBERS.md`) |
+| 8–14 s | Predictions: the four steps; "See how it works with Pluto"; the reveal's first steps (older pictures, the oval, the lock) | We locked a Pluto forecast on GitHub before opening the newest pictures. | `trials/pluto-position-2026b` |
+| 14–20 s | The reveal goes on (observed position, straight line, then the verdict "Miss" with the zoomed inset, shown for the last 3.7 s) | 5.9″ off: 3,000× closer than a straight line, but just outside our 95% oval. A published miss. | `verification.json`: miss, 5.90″ (D² 6.77 > 5.99); the straight line is 19,869.75″ off, 3,368× farther |
+| 20–24 s | "Why we missed" opened on the Pluto card, then "Check us in 2027" | We found why, and locked new forecasts for 2027. | `trials/pluto/postmortem.json`; open forecasts for 2027-04-25 and 2027-09-29 |
+| 24–27 s | The Planet X card on Home, a tap, the top of the Planet X Lab | Could SPHEREx see Planet X? We measured it: not in one image. | `planetx/depth.json` (the Lab's headline: 4 to 7 magnitudes too faint) |
+| 27–30 s | Title card: logo, Vestigium, nama2323.github.io/tenger, the team, "Data: NASA SPHEREx via NASA/IPAC IRSA" | (the card's own text) | README team line |
+
+Every number agrees with `docs/SUBMISSION-NUMBERS.md` and the files. "3,000×" is rounded down from 3,368×, which
+`SUBMISSION-NUMBERS.md` does not list; it comes from the trial's `verification.json`.
+
+While recording, every shot was checked:
+- no exception;
+- no request to `dev-fixtures` or onrender.com;
+- the page HTML names neither the base project nor its author;
+- the page title and visible text never say "TENGER".
+
+**Re-make** (about 1 minute; Chrome with the Mac's GPU, ffmpeg, Node 22+):
+
+```bash
+node docs/screens/demo/make-video.mjs
+```
+
+`ONLY=<shot id>` records one shot and prints its frame times and the numbers it read. A label change on the site
+needs no edit here, since captions take their numbers from the page and the files.
+
+The B9 video below (`tenger-demo-30s.*`) shows the earlier name and design; it is kept as a record and superseded
+by this one.
+
 ## The 30-second video (task B9)
 
 `tenger-demo-30s.mp4`: **30.000 s** (900 frames), **3,062,603 bytes**, 1280×720, H.264 High, yuv420p, 30 fps, no
@@ -30,8 +73,7 @@ While recording, every shot's page was checked:
 - no request to `dev-fixtures` or onrender.com;
 - the page HTML names neither the base project nor its author.
 
-Re-make: `node docs/screens/demo/make-video.mjs` (Chrome with the Mac's GPU, ffmpeg, Node 22+; about 3 minutes);
-`ONLY=<shot id>` records one shot and prints its frame times.
+B9 re-make: `make-video.mjs` as of commit d707691 (the script now makes the B21 video).
 
 Silent clips of the **public site** (no `?fixtures`, real data only), recorded on 15 Nov 2026 from a local
 server with `record.mjs` in this folder. Every clip: MP4, H.264 (High), yuv420p, 1280×720, 30 fps, no audio.

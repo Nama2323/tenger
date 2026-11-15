@@ -1906,3 +1906,31 @@ Session B was told before the work started (B14 rename and B16 Home are rebased 
   - `node --test tests/*.mjs`: 248 pass before the rebase onto B17 (`0133e4d`) and 255 after the rebase onto B19 (`5fecc0e`); the step check passed again after the rebase.
 - **Screenshots**: `docs/screens/b18-pluto-step6-{390,1280}.png`, `b18-asteroid-345-step6-390.png`, `b18-epsindib-step6-390.png`.
 - **Limits**: on phones the inset covers part of the main map's track and one date label on steps 4–6; step 1 shows the full track. Not checked on a real phone.
+
+### Task B21, 15 Nov 2026: the 30-second demo video re-made from the current build
+
+- `docs/screens/demo/vestigium-demo-30s.mp4`: **30.000 s** (900 frames), **2,176,545 bytes**, 1280×720, H.264
+  High, yuv420p, 30 fps, no audio. Captions are burned in; `vestigium-demo-30s.srt` matches them line for line
+  (6 cues). `vestigium-demo-30s-contact.png` is the contact sheet.
+- Shots as briefed:
+  - home first screen → 3D map;
+  - "Watch Barnard's Star move" → blink;
+  - Predictions' four steps → the Pluto reveal from step 1;
+  - the verdict with the zoomed inset;
+  - "Why we missed" → "Check us in 2027";
+  - the Planet X card → the Lab's top;
+  - the title card with the current logo file, the name, the address, the team and the data credit.
+- Real screen recordings of the site only, no generated media. The captions take their numbers from the page and
+  the files while recording: the frame years 2010 and 2026, the finding's 168″, Pluto's 5.90″ miss, and the
+  straight line's 3,368× (which must be at least 3,000×).
+- Every number matches `docs/SUBMISSION-NUMBERS.md`. "3,000×" is the brief's round figure for 3,368×, which is in
+  `verification.json` and not in the numbers file.
+- The recording checks found:
+  - no exception;
+  - no request to `dev-fixtures`;
+  - no "SPHEREx Blink" or "pythonhack000" in any page;
+  - no "TENGER" in any page title or visible text.
+  The B9 video (`tenger-demo-30s.*`) is kept and superseded.
+- Re-make in about a minute with `node docs/screens/demo/make-video.mjs`. The script serves this checkout's
+  `static/` itself; the docs/screens/demo README lists the shots and sources. No page of the site was changed for
+  this task.
