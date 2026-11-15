@@ -2593,3 +2593,48 @@ No login, no server and no storage. Only the game page and its strings changed; 
 
   `node --test` 280 pass.
 
+### Task B32, 15 Nov 2026: a new deploy never runs with old cached files
+
+- **Cause.** After the 21:19 deploy, a browser showed raw string keys ("nav.method", "hero.lineShort") and "Cannot
+  read properties of null (reading 'setAttribute')". GitHub Pages lets browsers cache every file for 10 minutes and
+  the module addresses never changed, so the new `index.html` ran with old cached modules.
+- **Reproduced.** A local server with Pages-like caching (`Cache-Control: max-age=600` and an ETag on every file).
+  One Chrome profile loaded the build before B29 (`e1f1ab0`), then the server switched to the 21:19 build
+  (`0f5153b`) and the page was reloaded normally. Result: 10 raw keys on Home (`nav.method`, `hero.lineShort`,
+  `famous.title`, `footer.spaceApps`, …) and no target cards.
+- **Build version on everything.**
+  - `.github/scripts/stamp-build.mjs` writes one version into `static/index.html`:
+    - `<meta name="build">`;
+    - an import map that sends every module under `js/` and `vendor/` (57 today, static and dynamic imports) to
+      `<file>?v=<version>`;
+    - `?v=<version>` on every stylesheet and on `js/main.js`.
+  - The Publish site workflow (`.github/workflows/pages.yml`) runs it with the commit (`${GITHUB_SHA::12}`) before
+    uploading, so every deploy gets a new version automatically.
+  - The committed `index.html` carries `dev`.
+  - Data files: `js/dom.js` `installVersionedFetch()` (called first in `main.js`) adds `?v=<build>` to every
+    same-site `data/` request. The API and other sites are untouched.
+  - Images keep their addresses, so they are not re-downloaded on every deploy.
+- **No raw keys, no crash on a missing part.**
+  - `t()` returns nothing for a key with no text (it returned the key); `has()` still tells them apart.
+  - The page shell (`main.js`) looks elements up with `part()`, which gives a detached stand-in and one console
+    warning instead of null. Other modules, which test for null, keep `$()`, and so does the one null check in
+    `main.js` (`#ambient`).
+- **Checks:**
+  - Same profile, normal reload, Pages-like caching:
+    - build before B29 → this build (stamped `1205772abcde`) → a next deploy (`nextdeploy01`);
+    - and the 21:19 build → this build.
+
+    Each step: no raw keys, all 8 cards, "How it works" in the menu, no errors.
+  - Investigate (all five tabs), Predictions, How it works, Learn and Beat the physics: no errors.
+  - All B29 interaction checks at 1280 and 390 pass, with no errors or warnings.
+  - `node --test` 288 pass. New: `tests/build-stamp.test.mjs`:
+    - the committed map lists every module (re-stamping changes nothing);
+    - a deploy stamp versions every module, stylesheet, the main script and the meta;
+    - every static and dynamic import goes through the map;
+    - data requests carry the build and others do not;
+    - a missing key shows nothing.
+- **Header.** The menu wrapping at 1280 (Session A's B31 note) is fixed by Session A's B33 (one line from 1240 px);
+  my own header change was dropped in favour of it.
+- **Limit.** The pre-B32 builds that browsers may already hold cannot be changed retroactively. After this deploy the
+  new `index.html` asks for new module addresses, so it loads matching files even while old ones are cached.
+

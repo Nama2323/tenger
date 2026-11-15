@@ -2357,7 +2357,8 @@ export function has(key) {
 
 /** Text for a key with {name} placeholders filled; the key itself if it is missing (tests catch those). */
 export function t(key, values = {}) {
-  const template = TEXT[language][key] ?? TEXT.en[key] ?? key;
+  // Task B32: a key with no text shows nothing (never the raw key on the page); has() still tells them apart.
+  const template = TEXT[language][key] ?? TEXT.en[key] ?? '';
   return template.replace(/\{(\w+)\}/g, (_, name) => (values[name] ?? ''));
 }
 

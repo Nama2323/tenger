@@ -7,7 +7,8 @@ import { drawLightCurve, drawSpectrum, drawWingCurve } from './chart.js';
 import { createSource } from './contract.js';
 import { allowsDifference, comparisonReasons, epochCoverage, pairComparison } from './epochs.js';
 import { parseCoordinates, separationDeg } from './coords.js';
-import { $, chip, dataTable, el, formatNumber, formatUtc, prefersReducedMotion } from './dom.js';
+// Task B32: the shell's lookups never return null (dom.js part), so a missing part cannot stop the page.
+import { part as $, chip, dataTable, el, formatNumber, formatUtc, installVersionedFetch, prefersReducedMotion } from './dom.js';
 import {
   buildFovOptions, drawStarfield, entryName, famousEntries, famousLineOf, famousResultOf, famousThumb, fillCoordinates, formatDistance, kindLabel, placeMapLabels, predictionLabel,
   renderHome, startBlinking, statusLabel,
@@ -331,7 +332,7 @@ function buildArrays() {
 
 /** The page's background glow is the current picture itself, heavily blurred (when the page has one). */
 function paintAmbient() {
-  const ambient = $('ambient');
+  const ambient = document.getElementById('ambient'); // optional: drawn only where the page has it
   if (ambient) ambient.getContext('2d').drawImage($('plate'), 0, 0, ambient.width, ambient.height);
 }
 
@@ -2133,7 +2134,7 @@ function closeMore() {
 
 function toggleSkyPanel(wanted) {
   // Real sky picks positions to load live; the public static site cannot load them, so it never opens there (B16).
-  if (!api.liveAvailable() || !$('sky-panel')) return;
+  if (!api.liveAvailable() || !document.getElementById('sky-panel')) return;
   const open = wanted ?? $('sky-panel').hidden;
   $('sky-panel').hidden = !open;
   $('sky-open').setAttribute('aria-expanded', String(open));
@@ -2704,6 +2705,8 @@ function showInitialPage() {
 }
 
 async function start() {
+  // Task B32: data files carry the build version, like the modules and stylesheets (index.html's import map).
+  installVersionedFetch();
   applyTranslations();
   document.title = `${t('site.title')} · ${t('home.title')}`;
   showInitialPage();

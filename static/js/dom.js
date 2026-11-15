@@ -3,6 +3,45 @@ import { has, t } from './i18n.js';
 
 export const $ = (id) => document.getElementById(id);
 
+/**
+ * Task B32: an element by id for the page shell (main.js), which never checks for null. A missing element (an old
+ * cached index.html with newer modules, or the reverse) gives a detached stand-in instead of null, so one missing
+ * part never stops the whole page; it is reported once as a warning. Modules that test for null keep $.
+ */
+const missingParts = new Set();
+export function part(id) {
+  const node = document.getElementById(id);
+  if (node) return node;
+  if (!missingParts.has(id)) {
+    missingParts.add(id);
+    console.warn(`Vestigium: #${id} is not on this page (an older cached file?); that part is skipped.`);
+  }
+  return document.createElement(id === 'search' ? 'form' : 'div');
+}
+
+/** Task B32: the build this page was published with (index.html's <meta name="build">); '' where there is none. */
+export const BUILD = (typeof document !== 'undefined' && document.querySelector('meta[name="build"]')?.content) || '';
+
+/**
+ * A data file's address with the build version (task B32), so a new deploy never reads an old cached data file:
+ * "data/index.json" -> "data/index.json?v=<build>". Other sites, the API and non-data paths are left as they are.
+ */
+export function versioned(url, build = BUILD, origin = typeof location !== 'undefined' ? location.origin : '') {
+  if (!build || typeof url !== 'string') return url;
+  if (/^[a-z][a-z\d+.-]*:|^\/\//i.test(url) && !(origin && url.startsWith(`${origin}/`))) return url;
+  if (!/(^|\/)data\//.test(url.split('?')[0])) return url;
+  return `${url}${url.includes('?') ? '&' : '?'}v=${encodeURIComponent(build)}`;
+}
+
+/** Task B32: every fetch of a data file carries the build version (called once, first thing in main.js). */
+export function installVersionedFetch() {
+  if (typeof window === 'undefined' || window.fetch.versioned) return;
+  const native = window.fetch.bind(window);
+  const wrapped = (input, init) => native(versioned(input), init);
+  wrapped.versioned = true;
+  window.fetch = wrapped;
+}
+
 /** Creates an element. props: class, text, dataset, on<event>, other attributes; children may nest. */
 export function el(tag, props = {}, children = []) {
   const node = document.createElement(tag);
