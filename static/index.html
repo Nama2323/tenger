@@ -102,10 +102,10 @@
         <div id="space-hud" class="space-hud space-3d-only">
           <p id="space-date"></p>
           <p id="space-target" aria-live="polite"></p>
-          <p data-t="space.scaleNote"></p>
         </div>
-        <p class="map-caption glass map-2d-only" data-t="map.caption"></p>
-        <p class="map-caption glass space-3d-only" data-t="space.caption"></p>
+        <!-- The honesty label stays on screen as a chip; the full sentence is under "About this map" in the colour key. -->
+        <p class="map-caption glass map-2d-only" data-t="map.captionShort"></p>
+        <p class="map-caption glass space-3d-only" data-t="space.captionShort"></p>
         <details id="map-key" class="map-key glass">
           <summary data-t="map.legend"></summary>
           <ul id="map-legend" class="legend" hidden>
@@ -119,16 +119,21 @@
             <p id="space-nine-text"></p>
             <p class="note" data-t="space.nineHint"></p>
           </div>
-          <p class="note map-2d-only" data-t="map.scale"></p>
-          <p id="space-key-note" class="note space-3d-only"></p>
-          <div id="map-notes" class="note map-2d-only"></div>
-          <p id="space-note" class="note" hidden></p>
+          <details id="map-about" class="more-info map-about">
+            <summary data-t="map.about"></summary>
+            <p class="note map-2d-only" data-t="map.caption"></p>
+            <p class="note space-3d-only" data-t="space.caption"></p>
+            <p class="note map-2d-only" data-t="map.scale"></p>
+            <p id="space-key-note" class="note space-3d-only"></p>
+            <div id="map-notes" class="note map-2d-only"></div>
+            <p id="space-note" class="note" hidden></p>
+          </details>
         </details>
       </div>
 
       <div class="console-left">
         <div class="search-card glass">
-          <p class="search-lead" data-t="site.tagline"></p>
+          <p class="search-lead" data-t="home.pitch"></p>
           <form id="search" class="search" aria-labelledby="search-title">
             <h2 id="search-title" class="sr-only" data-t="search.title"></h2>
             <div class="search-line">
@@ -138,20 +143,24 @@
               <select id="search-fov"></select>
               <button type="submit" class="primary" data-t="search.go"></button>
             </div>
-            <p id="search-help" class="hint" data-t="search.help"></p>
+            <!-- How to search (task B12): a tip under the empty box while it has focus, read out with the box, and in the "?" dialog. -->
+            <p id="search-help" class="hint search-tip" data-t="search.help"></p>
             <div id="search-list" class="search-list" hidden></div>
             <p id="search-message" class="form-message" aria-live="polite"></p>
+          </form>
+          <section class="shortcuts" aria-labelledby="shortcuts-title">
+            <h2 id="shortcuts-title" class="eyebrow" data-t="shortcuts.title"></h2>
+            <ul id="shortcut-list" class="chips"></ul>
+          </section>
+          <details id="search-more" class="more-info search-more">
+            <summary data-t="home.more"></summary>
             <div class="search-tools">
               <button id="top-places" type="button" class="quiet" data-t="topPlaces"></button>
               <button id="sky-open" type="button" class="quiet" aria-expanded="false" aria-controls="sky-panel" data-t="sky.openButton"></button>
               <button id="tour-start" type="button" class="quiet" data-t="tour.start"></button>
             </div>
-          </form>
-          <p class="planetx-link"><a href="?page=learn&amp;lesson=lab#measured" data-t="planetx.link"></a></p>
-          <section class="shortcuts" aria-labelledby="shortcuts-title">
-            <h2 id="shortcuts-title" class="eyebrow" data-t="shortcuts.title"></h2>
-            <ul id="shortcut-list" class="chips"></ul>
-          </section>
+            <p class="planetx-link"><a href="?page=learn&amp;lesson=lab#measured" data-t="planetx.link"></a></p>
+          </details>
         </div>
 
         <aside id="rail" class="rail glass" aria-labelledby="rail-title">

@@ -20,6 +20,19 @@ export function el(tag, props = {}, children = []) {
   return node;
 }
 
+/**
+ * A closed "Details" disclosure (task B12): the longer explanation, method note, caveat or citation sits right under
+ * the part it explains, one click (or Enter) away. Native <details>: keyboard-usable and announced as expanded/collapsed.
+ */
+export function details(children, { label = t('ui.details'), className = '' } = {}) {
+  return el('details', { class: `more-info ${className}`.trim() }, [el('summary', { text: label }), children]);
+}
+
+/** A key number as a stat tile (task B12): the number, what it counts, and an optional chip. */
+export function statTile({ value, label, badge = null, tone = '' }) {
+  return el('div', { class: `stat-tile ${tone}`.trim() }, [el('p', { class: 'stat-value', text: value }), el('p', { class: 'stat-label', text: label }), badge]);
+}
+
 /** A labelled pill, e.g. a status or a content type. */
 export const chip = (text, kind = '') => el('span', { class: `chip ${kind}`.trim(), text });
 

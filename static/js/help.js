@@ -26,7 +26,9 @@ function keyCaps(text) {
 }
 
 function fillShortcuts() {
-  $('shortcuts-body').replaceChildren(...SHORTCUTS.map(([title, rows]) => el('section', { class: 'keys-group' }, [
+  // How to search (moved here from under the Home search box, task B12), then the keyboard shortcuts.
+  const search = el('section', { class: 'keys-group' }, [el('h3', { text: t('keys.group.search') }), el('p', { class: 'note', text: t('search.help') })]);
+  $('shortcuts-body').replaceChildren(search, ...SHORTCUTS.map(([title, rows]) => el('section', { class: 'keys-group' }, [
     el('h3', { text: t(title) }),
     el('dl', {}, rows.flatMap(([keys, action]) => [el('dt', {}, keyCaps(t(keys))), el('dd', { text: t(action) })])),
   ])));

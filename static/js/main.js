@@ -1941,7 +1941,10 @@ function renderSearchList() {
     if (!members.length) return [];
     return [el('h3', { text: t(`category_${group}`) }), ...members.map(searchRow)];
   });
-  $('search-list').replaceChildren(...(groups.length ? groups : [el('p', { text: t('searchHint') })]));
+  // How to search (task B12): a tip at the top of the list while the box is empty. Screen readers hear the same
+  // words with the box itself (aria-describedby="search-help"), so the copy here is hidden from them.
+  const tip = $('search-input').value.trim() ? [] : [el('p', { class: 'search-list-tip', 'aria-hidden': 'true', text: t('search.help') })];
+  $('search-list').replaceChildren(...tip, ...(groups.length ? groups : [el('p', { text: t('searchHint') })]));
   $('search-list').hidden = false;
 }
 
@@ -2370,8 +2373,9 @@ async function start() {
   buildFovOptions($('fov'));
   buildFovOptions($('search-fov'));
   drawStarfield();
-  // Phones start with the target sheet folded and the colour key closed; wider screens show both.
-  $('rail-toggle').setAttribute('aria-expanded', String(matchMedia('(min-width: 901px)').matches));
+  // The target list starts folded (task B12: the chips and the map already name every target); the colour key is
+  // open on wide screens only.
+  $('rail-toggle').setAttribute('aria-expanded', 'false');
   $('map-key').open = matchMedia('(min-width: 1200px)').matches;
   bindControls();
   setPressed($('modes'), 'mode', 'blink');
