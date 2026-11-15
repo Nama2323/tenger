@@ -147,7 +147,7 @@ def our_pluto_orbit() -> dict:
     r, v = to_ecliptic(vector[:3]), to_ecliptic(vector[3:])
     elements = elements_from_state(r, v)
     now = orbit.propagate(vector, t0, np.array([EPOCH_JD_TDB - 2400000.5]))[0]
-    return {"source": "Vestigium A4 frozen fit: heliocentric two-body, 50 SPHEREx detections, 2 visits "
+    return {"source": "TENGER A4 frozen fit: heliocentric two-body, 50 SPHEREx detections, 2 visits "
                       "(trials/pluto-position-2026b/prediction.json)",
             "content_type": "modeled", "ours": True, "epoch_mjd_utc": t0, "frame": "heliocentric ecliptic J2000",
             "state_position_au": _r(r), "state_velocity_au_per_day": _r(v, 9), "elements": elements,
