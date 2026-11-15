@@ -995,7 +995,7 @@
     "content_type": "catalogue"
    },
    "our_orbit": {
-    "source": "TENGER A4 frozen fit: heliocentric two-body, 50 SPHEREx detections, 2 visits (trials/pluto-position-2026b/prediction.json)",
+    "source": "Vestigium A4 frozen fit: heliocentric two-body, 50 SPHEREx detections, 2 visits (trials/pluto-position-2026b/prediction.json)",
     "content_type": "modeled",
     "ours": true,
     "epoch_mjd_utc": 60943.016342,
