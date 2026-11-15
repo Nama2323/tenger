@@ -2783,3 +2783,54 @@ No login, no server and no storage. Only the game page and its strings changed; 
 - New test in `tests/build-stamp.test.mjs`: runs the script on a tiny site in a folder named "site with space" and
   checks the stamp. `node --test` 299 pass.
 
+
+
+### Task B34, 15 Nov 2026 (done by Session A at the user's request): "Path through time (3D)" in What changed
+- **What:** in Investigate → What changed, a closed panel "Path through time (3D)".
+  - The floor is the sky around the target: east left, north away from the viewer (up on screen), with a grid and an arcsecond scale bar (1, 2 or 5 × 10ⁿ″).
+  - Height is time, on a vertical axis with each visit's date.
+  - Each dot is one position measured by us from SPHEREx, joined in date order and labelled "Measured by us from SPHEREx".
+  - Controls: "Shadow on the floor" (a switch) flattens the path onto the sky. Drag to turn, scroll or pinch to zoom (OrbitControls on the label layer), and "Reset view".
+  - Caption: "The floor is the sky (east left, north up); height is time. Drag to turn."
+  - three.js (the bundled `vendor/three/three-tenger.min.js`) is imported only when the panel opens. Without WebGL, or if the download fails, the same path is drawn from above as a 2D SVG with dates. The turning controls and caption are then hidden, and a note says why. A failed download is not cached, so the next opening retries.
+  - Under reduced motion there is no auto-spin and no damping. Otherwise the view spins slowly until the first drag. It draws only while something moves and the stage is on screen (IntersectionObserver, so it stops on a hidden page), never more than one frame per frame.
+- **Which targets, and the data (only published files, nothing new):** dots are `astrometry.per_exposure` rows in `static/data/<key>/investigation.json` with `status: measured`, finite RA/Dec, and identified as the target.
+  - For stars that means `identified === true` and no contaminant. For Solar System bodies it means `identification === 'body'`.
+  - Offsets are gnomonic (the same formulae as `backend/astrometry.py tangent_offsets_arcsec`): from `astrometry.reference` for stars, and from the first measured position for bodies, which have none.
+  - Barnard's Star: **77** dots in 3 visits. Epsilon Indi B: **421** in 4 visits (the one unidentified detection is left out). Pluto: **50** in 2 visits (6 "candidate" and 7 "static_source" detections are left out).
+  - **No panel** for WISE 0855 (all 62 measured detections are `identified: false`, contaminant), Makemake (its 3 are a static source), RW Aurigae, R Draconis and the rest (no positions).
+  - Details holds the counts, the method, and a table of every dot (time UTC, east ″, north ″).
+- **No model line, on purpose (independent review, below):** the first version drew `astrometry.fit_linear` as "Model (computed)". The review showed that this is the no-parallax straight line, which the trials use as their *baseline* (`baseline.id` "linear-tangent-plane"; their model is "linear-pm-fixed-parallax"). It must not be shown under the model's name. The trials' model publishes no path over these dates: the stars' `prediction.json` `track` is null, and Pluto's tracks are for 2027. So, following "if our model path is in the published files", no line is drawn. The panel says "Our files have no computed model path over these dates, so only the measured dots are drawn."
+- **Files:**
+  - New: `static/js/path3d.js` (pure data), `static/js/path3d-ui.js` (three.js scene and 2D fallback), `static/css/path3d.css`, `tests/path3d.test.mjs`.
+  - `static/index.html`: the `#changed-path` host in What changed, the stylesheet link, and the import map re-stamped with `node .github/scripts/stamp-build.mjs static dev` after rebasing on `1b5a189`.
+  - `static/js/main.js`: one `renderPath3d` call in `refreshPanels`, re-drawn only when the target changes.
+  - `static/js/i18n.js`: `path3d.*`.
+- **Independent review (a background workflow of 2 reviewers plus 13 adversarial checks; read only):**
+  - 5 defects confirmed and fixed:
+    - **High:** the render loop could schedule two frames per frame (`update()` fires 'change', which already queued one), doubling every frame. Now it schedules only when none is pending. Measured afterwards: 1 then 7 animation-frame requests per second in headless (software rendering), bounded.
+    - The "Model (computed)" line was the straight-line baseline, so it was removed (see above).
+    - The "no model path" note over-claimed (Pluto has 2027 tracks), so it is now limited to "over these dates".
+    - A failed three.js download was cached for good and called "cannot draw 3D". It now retries, with its own note.
+    - The date labels' CSS shift was overwritten by the label renderer, so the labels are now placed by position.
+  - 9 claims refuted (e.g. Pluto's epoch null test, 2D scale, ResizeObserver loop, a lazy-import race, rendering on a hidden page, which the IntersectionObserver already handles).
+- **Checks (real runs):**
+  - `node --test tests/`: 305 of 305 pass after rebasing on `1b5a189` (B35, B36 and the stamp-script fix). That includes 6 new tests. For each of Barnard's Star, Epsilon Indi B and Pluto, every dot equals its file row: the same `obs_key`, the same `mjd`, and the offset within 10⁻⁶″ of an independent 3D-unit-vector projection, in date order and on the floor. There is no model line, and the stars' prediction tracks are null. The other targets get no panel. The strings are exact, three.js is imported dynamically only, and the reduced-motion rule is in the source.
+  - **Real GPU, final build** (the app's browser pane, Apple M3 Pro, WebGL2, loaded from `127.0.0.1` so that no old `?v=dev` file was cached), from clicking the panel to the first 3D frame:
+    - **1280 px:** Barnard's Star 42 ms, Epsilon Indi B 28 ms, Pluto 30 ms;
+    - **about 390 px:** 26, 27 and 25 ms;
+    - three.js import 6–7 ms; 77 / 421 / 50 dots; no errors; no sideways scroll.
+  - Before the rebase it was 23–40 ms. On `localhost` the pane had cached an old `space-ui.js?v=dev`, because every local build is "dev". That is a local-only effect: deploys stamp the commit.
+  - Headless Chrome, a fresh profile per run, software WebGL (SwiftShader), 3 targets × 1280×900 and 390×844, CDP mouse and key events, final build:
+    - every case draws in 3D, spins normally, and is pixel-identical over 1 s under reduced motion;
+    - a 140 px drag changes the picture;
+    - **Reset with the Enter key gives back a pixel-identical first view**;
+    - Space on the Shadow switch turns it on and changes the picture;
+    - animation-frame requests stay bounded (0–15 per second; software rendering is slow);
+    - no sideways scroll; **no console errors or exceptions**.
+    - Software rendering is much slower than a GPU: the first open took 0.43–2.8 s there and a second open 85–326 ms.
+    - Two earlier runs ended without output and passed on rerun; they were most likely a debug-port clash between my own runs.
+  - Without WebGL (headless with no GPU) at 360×780 for the three targets: the 2D view with 77/421/50 dots and the note, controls and turning caption hidden, `scrollWidth` 360.
+- **Screenshots:** `docs/screens/b34-{barnard,epsindib,pluto}-{1280,390}.png` (3D, reduced motion, final build) and `docs/screens/b34-{barnard,epsindib,pluto}-nowebgl-360.png` (2D fallback).
+- **Found while checking:** `stamp-build.mjs` did nothing when the repository path contained a space. Session A reported it, and Session B fixed it in `1b5a189`.
+- **Not verified:** touch pinch on a real phone, screen-reader speech, and real-GPU timing on the final rebased build.

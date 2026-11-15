@@ -23,6 +23,7 @@ import { hasPublishedTrials } from './ledger.js';
 import { currentReveal, initLedger, showLedger, syncRevealFromUrl } from './ledger-ui.js';
 import { renderAbout, renderReserved } from './pages.js';
 import { initMethod, showMethod } from './method-ui.js';
+import { renderPath3d } from './path3d-ui.js';
 import { POSTMORTEM_PATH, readPostmortem } from './postmortem.js';
 import {
   drawPlate, limitsFor, paintComposite, paintDifference, paintFalseColour, paintMono, stacksFor, StackCache, tintFor,
@@ -1520,6 +1521,11 @@ async function refreshPanels() {
   const custom = !entry;
   await ensureInvestigation();
   renderChanged($('changed-validated'), { investigation: app.investigation, custom });
+  // Path through time (3D) (task B34): our measured positions from the published investigation file only.
+  if ($('changed-path').dataset.key !== `${entry?.key ?? ''}|${app.investigation?.path ?? ''}`) {
+    $('changed-path').dataset.key = `${entry?.key ?? ''}|${app.investigation?.path ?? ''}`;
+    renderPath3d($('changed-path'), { investigation: custom ? null : app.investigation, name: entry ? entryName(entry) : '' });
+  }
   if (entry && state.target) describeTarget(state.target, Number($('fov').value) || state.target.fov || DEFAULT_FOV);
   captionKey = '';
   render();
