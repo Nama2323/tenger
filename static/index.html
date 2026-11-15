@@ -42,10 +42,20 @@
     <nav id="site-nav" class="nav" data-t-label="nav.label">
       <button type="button" data-page-link="home" data-t="nav.home"></button>
       <button type="button" data-page-link="predictions" data-t="nav.predictions"></button>
+      <button id="nav-planetx" type="button" class="nav-planetx"><span data-t="nav.planetx"></span><span class="new-dot" aria-hidden="true"></span><span class="sr-only" data-t="chip.new"></span></button>
       <button type="button" data-page-link="game" data-t="nav.game"></button>
       <button type="button" data-page-link="learn" data-t="nav.learn"></button>
       <button type="button" data-page-link="about" data-t="nav.about"></button>
       <button type="button" class="nav-extra" data-dialog="limits" aria-haspopup="dialog" data-t="limits.button"></button>
+      <!-- Guided tour and more (moved from the Home panel, task B16). Real sky only where the local server runs. -->
+      <details id="nav-more" class="nav-more">
+        <summary><span class="more-short" aria-hidden="true" data-t="nav.more"></span><span class="more-long" data-t="home.more"></span></summary>
+        <div class="nav-more-list">
+          <button id="tour-start" type="button" class="quiet" data-t="tour.start"></button>
+          <button id="top-places" type="button" class="quiet" data-t="topPlaces"></button>
+          <button id="sky-open" type="button" class="quiet" aria-expanded="false" aria-controls="sky-panel" data-t="sky.openButton"></button>
+        </div>
+      </details>
     </nav>
     <button id="shortcuts-open" type="button" class="icon-button" data-dialog="shortcuts" aria-haspopup="dialog" data-t="keys.symbol" data-t-label="keys.button"></button>
   </header>
@@ -70,99 +80,103 @@
     <div id="notices" class="notices" aria-live="polite"></div>
     <!-- ======================= Home / Investigate ======================= -->
     <section id="page-home" class="page page-home" data-loading aria-labelledby="home-title">
-      <h1 id="home-title" class="sr-only" tabindex="-1" data-t="home.title"></h1>
-      <div class="scene">
-        <div class="map-stage">
-          <div id="map-canvas" class="map-canvas" role="group" data-t-label="map.label" hidden></div>
-          <p id="map-waiting" class="map-waiting glass" data-t="map.waiting"></p>
-        </div>
-        <!-- 3D view (three.js), loaded after the page is usable; the 2D map above is its fallback. -->
-        <div id="space3d" class="space3d" hidden></div>
-        <div id="space-tools" class="space-tools" role="group" data-t-label="space.label" hidden>
-          <button id="space-reset" type="button" class="quiet space-3d-only" data-t="space.reset"></button>
-          <button id="space-top" type="button" class="quiet space-3d-only" data-t="space.top"></button>
-          <!-- Fly to (task B11): the camera flies to a body and follows it while time runs; Esc or Reset view returns. -->
-          <details id="space-fly" class="space-fly space-3d-only">
-            <summary data-t="space.fly"></summary>
-            <div id="space-fly-list" class="space-fly-list glass" role="group" data-t-label="space.flyLabel"></div>
-          </details>
-          <button id="space-toggle" type="button" class="quiet"></button>
-        </div>
-        <!-- Time control for the 3D view (task B10); shown once the 3D scene runs. -->
-        <div id="space-time" class="space-time glass space-3d-only" role="group" data-t-label="time.label" hidden>
-          <button id="time-live" type="button" class="time-live" aria-pressed="false" data-t-label="time.liveLabel"><i aria-hidden="true"></i><span data-t="time.live"></span></button>
-          <button id="time-play" type="button" class="time-play quiet" data-state="playing"><span aria-hidden="true"></span></button>
-          <p class="time-now" data-t-label="time.dateLabel"><span id="time-date" class="time-date"></span> <span class="time-utc" data-t="time.utc"></span></p>
-          <div class="time-speed">
-            <input id="time-rate" type="range" min="-7" max="7" step="1" value="1" data-t-label="time.rateLabel">
-            <p id="time-rate-text" class="time-rate-text" aria-hidden="true"></p>
-          </div>
-          <p id="time-note" class="time-note" role="status" hidden></p>
-        </div>
-        <div id="space-hud" class="space-hud space-3d-only">
-          <p id="space-date"></p>
-          <p id="space-target" aria-live="polite"></p>
-        </div>
-        <!-- The honesty label stays on screen as a chip; the full sentence is under "About this map" in the colour key. -->
-        <p class="map-caption glass map-2d-only" data-t="map.captionShort"></p>
-        <p class="map-caption glass space-3d-only" data-t="space.captionShort"></p>
-        <details id="map-key" class="map-key glass">
-          <summary data-t="map.legend"></summary>
-          <ul id="map-legend" class="legend" hidden>
-            <li class="colour-star"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.star"></span></li>
-            <li class="colour-variable"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.variable"></span></li>
-            <li class="colour-solar"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.solar"></span></li>
-            <li class="colour-hypothetical"><i class="dot" aria-hidden="true"></i><span class="map-2d-only" data-t="map.legend.hypothetical"></span><button id="space-nine-key" type="button" class="legend-button space-3d-only" aria-expanded="false" aria-controls="space-nine" data-t="map.legend.hypothetical"></button></li>
-          </ul>
-          <!-- The Planet Nine explanation: opens from its ring, its label or the entry above, never over the scene. -->
-          <div id="space-nine" class="space-nine space-3d-only" hidden>
-            <p id="space-nine-text"></p>
-            <p class="note" data-t="space.nineHint"></p>
-          </div>
-          <details id="map-about" class="more-info map-about">
-            <summary data-t="map.about"></summary>
-            <p class="note map-2d-only" data-t="map.caption"></p>
-            <p class="note space-3d-only" data-t="space.caption"></p>
-            <p class="note map-2d-only" data-t="map.scale"></p>
-            <p id="space-key-note" class="note space-3d-only"></p>
-            <div id="map-notes" class="note map-2d-only"></div>
-            <p id="space-note" class="note" hidden></p>
-          </details>
-        </details>
-      </div>
-
-      <div class="console-left">
-        <div class="search-card glass">
-          <p class="search-lead" data-t="home.pitch"></p>
-          <form id="search" class="search" aria-labelledby="search-title">
+      <!-- First screen (task B16): what the site is, one way in (Barnard's Star blinking), then the targets and a
+           small search. The 3D map is below it. -->
+      <div id="home-hero" class="home-hero">
+        <div class="hero-inner">
+          <h1 id="home-title" class="hero-title" tabindex="-1" data-t="hero.title"></h1>
+          <p class="hero-line" data-t="hero.line"></p>
+          <p class="hero-small" data-t="hero.small"></p>
+          <a id="hero-watch" class="hero-watch" href="?target=barnard" data-t="hero.watch"></a>
+          <!-- The Planet X Lab's answer (numbers filled in from depth.json); the whole card is one link to the Lab. -->
+          <a id="hero-planetx" class="hero-planetx" href="?page=learn&amp;lesson=lab">
+            <span class="chip chip-new" data-t="chip.new"></span>
+            <strong class="hero-planetx-title" data-t="hero.planetxTitle"></strong>
+            <span id="hero-planetx-line" class="hero-planetx-line"></span>
+          </a>
+          <p class="hero-links"><a href="?page=game" data-page-link="game" data-t="hero.game"></a><a href="?page=predictions" data-page-link="predictions" data-t="hero.predictions"></a></p>
+          <section class="hero-pick shortcuts" aria-labelledby="shortcuts-title">
+            <h2 id="shortcuts-title" class="eyebrow" data-t="hero.pick"></h2>
+            <ul id="shortcut-list" class="chips"></ul>
+          </section>
+          <form id="search" class="search hero-search" aria-labelledby="search-title">
             <h2 id="search-title" class="sr-only" data-t="search.title"></h2>
             <div class="search-line">
               <label class="sr-only" for="search-input" data-t="searchLabel"></label>
               <input id="search-input" type="text" autocomplete="off" spellcheck="false" aria-describedby="search-help search-message" data-t-placeholder="searchPlaceholder">
-              <label class="sr-only" for="search-fov" data-t="search.fov"></label>
-              <select id="search-fov"></select>
-              <button type="submit" class="primary" data-t="search.go"></button>
+              <button type="submit" class="quiet" data-t="search.go"></button>
             </div>
-            <!-- How to search (task B12): a tip under the empty box while it has focus, read out with the box, and in the "?" dialog. -->
+            <!-- How to search: read out with the search box, shown at the top of the place list, and in the "?" dialog. -->
             <p id="search-help" class="hint search-tip" data-t="search.help"></p>
             <div id="search-list" class="search-list" hidden></div>
             <p id="search-message" class="form-message" aria-live="polite"></p>
           </form>
-          <section class="shortcuts" aria-labelledby="shortcuts-title">
-            <h2 id="shortcuts-title" class="eyebrow" data-t="shortcuts.title"></h2>
-            <ul id="shortcut-list" class="chips"></ul>
-          </section>
-          <details id="search-more" class="more-info search-more">
-            <summary data-t="home.more"></summary>
-            <div class="search-tools">
-              <button id="top-places" type="button" class="quiet" data-t="topPlaces"></button>
-              <button id="sky-open" type="button" class="quiet" aria-expanded="false" aria-controls="sky-panel" data-t="sky.openButton"></button>
-              <button id="tour-start" type="button" class="quiet" data-t="tour.start"></button>
+        </div>
+        <a class="hero-down" href="#home-map" data-t-label="hero.toMap"><span aria-hidden="true"></span></a>
+      </div>
+
+      <div id="home-map" class="home-stage">
+        <div class="scene">
+          <div class="map-stage">
+            <div id="map-canvas" class="map-canvas" role="group" data-t-label="map.label" hidden></div>
+            <p id="map-waiting" class="map-waiting glass" data-t="map.waiting"></p>
+          </div>
+          <!-- 3D view (three.js), loaded after the page is usable; the 2D map above is its fallback. -->
+          <div id="space3d" class="space3d" hidden></div>
+          <div id="space-tools" class="space-tools" role="group" data-t-label="space.label" hidden>
+            <button id="space-reset" type="button" class="quiet space-3d-only" data-t="space.reset"></button>
+            <button id="space-top" type="button" class="quiet space-3d-only" data-t="space.top"></button>
+            <!-- Fly to (task B11): the camera flies to a body and follows it while time runs; Esc or Reset view returns. -->
+            <details id="space-fly" class="space-fly space-3d-only">
+              <summary data-t="space.fly"></summary>
+              <div id="space-fly-list" class="space-fly-list glass" role="group" data-t-label="space.flyLabel"></div>
+            </details>
+            <button id="space-toggle" type="button" class="quiet"></button>
+          </div>
+          <!-- Time control for the 3D view (task B10); shown once the 3D scene runs. -->
+          <div id="space-time" class="space-time glass space-3d-only" role="group" data-t-label="time.label" hidden>
+            <button id="time-live" type="button" class="time-live" aria-pressed="false" data-t-label="time.liveLabel"><i aria-hidden="true"></i><span data-t="time.live"></span></button>
+            <button id="time-play" type="button" class="time-play quiet" data-state="playing"><span aria-hidden="true"></span></button>
+            <p class="time-now" data-t-label="time.dateLabel"><span id="time-date" class="time-date"></span> <span class="time-utc" data-t="time.utc"></span></p>
+            <div class="time-speed">
+              <input id="time-rate" type="range" min="-7" max="7" step="1" value="1" data-t-label="time.rateLabel">
+              <p id="time-rate-text" class="time-rate-text" aria-hidden="true"></p>
             </div>
-            <p class="planetx-link"><a href="?page=learn&amp;lesson=lab#measured" data-t="planetx.link"></a></p>
+            <p id="time-note" class="time-note" role="status" hidden></p>
+          </div>
+          <div id="space-hud" class="space-hud space-3d-only">
+            <p id="space-date"></p>
+            <p id="space-target" aria-live="polite"></p>
+          </div>
+          <!-- The honesty label stays on screen as a chip; the full sentence is under "About this map" in the colour key. -->
+          <p class="map-caption glass map-2d-only" data-t="map.captionShort"></p>
+          <p class="map-caption glass space-3d-only" data-t="space.captionShort"></p>
+          <details id="map-key" class="map-key glass">
+            <summary data-t="map.legend"></summary>
+            <ul id="map-legend" class="legend" hidden>
+              <li class="colour-star"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.star"></span></li>
+              <li class="colour-variable"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.variable"></span></li>
+              <li class="colour-solar"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.solar"></span></li>
+              <li class="colour-hypothetical"><i class="dot" aria-hidden="true"></i><span class="map-2d-only" data-t="map.legend.hypothetical"></span><button id="space-nine-key" type="button" class="legend-button space-3d-only" aria-expanded="false" aria-controls="space-nine" data-t="map.legend.hypothetical"></button></li>
+            </ul>
+            <!-- The Planet Nine explanation: opens from its ring, its label or the entry above, never over the scene. -->
+            <div id="space-nine" class="space-nine space-3d-only" hidden>
+              <p id="space-nine-text"></p>
+              <p class="note" data-t="space.nineHint"></p>
+            </div>
+            <details id="map-about" class="more-info map-about">
+              <summary data-t="map.about"></summary>
+              <p class="note map-2d-only" data-t="map.caption"></p>
+              <p class="note space-3d-only" data-t="space.caption"></p>
+              <p class="note map-2d-only" data-t="map.scale"></p>
+              <p id="space-key-note" class="note space-3d-only"></p>
+              <div id="map-notes" class="note map-2d-only"></div>
+              <p id="space-note" class="note" hidden></p>
+            </details>
           </details>
         </div>
 
+        <div class="console-left">
         <aside id="rail" class="rail glass" aria-labelledby="rail-title">
           <button id="rail-toggle" class="rail-toggle" type="button" aria-expanded="true" aria-controls="rail-body">
             <span id="rail-title" data-t="rail.title"></span>
@@ -174,18 +188,19 @@
             <p class="rail-credit" data-t="footer.credit"></p>
           </div>
         </aside>
-      </div>
-
-      <section id="sky-panel" class="sky-panel glass" hidden aria-labelledby="sky-title">
-        <div class="sky-head">
-          <h2 id="sky-title" data-t="sky.title"></h2>
-          <button id="sky-close" type="button" class="quiet" data-t="sky.close"></button>
         </div>
-        <p class="note" data-t="sky.lead"></p>
-        <div id="sky" class="sky"></div>
-        <p id="sky-message" class="form-message" aria-live="polite"></p>
-        <p class="note" data-t="sky.credit"></p>
-      </section>
+
+        <section id="sky-panel" class="sky-panel glass" hidden aria-labelledby="sky-title">
+          <div class="sky-head">
+            <h2 id="sky-title" data-t="sky.title"></h2>
+            <button id="sky-close" type="button" class="quiet" data-t="sky.close"></button>
+          </div>
+          <p class="note" data-t="sky.lead"></p>
+          <div id="sky" class="sky"></div>
+          <p id="sky-message" class="form-message" aria-live="polite"></p>
+          <p class="note" data-t="sky.credit"></p>
+        </section>
+      </div>
     </section>
 
     <!-- ======================= Investigation ======================= -->

@@ -1714,3 +1714,52 @@ Artificial, Pending, Measured, Hypothetical, Quick look, not validated. The full
   - Lighthouse mobile Home: 80 and 81 (accessibility, best practices and SEO 100; TBT 0 ms; CLS 0.005). This is
     lower than B12's 83 and 83: FCP 1.9–2.3 s against 1.4–1.5 s, with another session busy on the same machine.
   - Not checked on a real phone.
+
+### Task B16, 15 Nov 2026: a first screen that explains the site, Real sky only where it works
+
+- **First screen** (`index.html` `#home-hero`, `css/style.css`).
+  - Headline "Watch the sky move.", the two lines as given, and a primary button "Watch Barnard's Star move"
+    (full width on phones).
+  - The Planet X card (one link, orange, "New" chip, 3 px focus ring): "Could SPHEREx see Planet X? We measured
+    it." and "Not in one image: 4 to 7 magnitudes too faint." The numbers come from `depth.json` through
+    `glanceOf()` and are fetched once the page has loaded; only that file is fetched, the game's pictures are not.
+  - Two text links ("Try to beat our physics", "See our predictions"), then "Or pick a target" with the target
+    chips, and a smaller search box ("Search a target name").
+  - The field-size menu is gone from Home: a search opens the default 6′ field, and Investigate keeps its own
+    field-size menu under More tools. "Guided tour and more" (Guided tour, Top places, Real sky) moved into the
+    top menu, shown as "More" on wide screens (accessible name unchanged).
+  - The old Planet X text link on Home is replaced by the card. A "Planet X" menu item with an orange "New" dot
+    sits between Predictions and Beat the physics, also in the phone menu.
+- **The 3D map is below the first screen.** On wide screens Home scrolls inside itself: the first screen, then
+  the map at the same full size as before. An investigation hides the first screen, so the map behind it stays
+  where it was, and Back restores where Home was scrolled. On phones the map follows the first screen as before.
+  The time control is one compact row (LIVE, play, date, slider), and the colour key stays closed until tapped.
+- **"Watch Barnard's Star move"** opens Barnard's Star in Investigate without the 3D flight, Blink playing
+  AllWISE 2010 (A) against the newest SPHEREx picture (B). The line under the picture now reads "Between these
+  two pictures, 16 years apart, the star moved about 168″." Years and shift are computed from the frame dates and
+  the catalogue proper motion, as before. A "catalogue motion" chip says where the shift comes from.
+- **Real sky only where it can work.** On github.io (`api.liveAvailable()` false) the Real sky button and panel
+  are removed and the all-sky library is never loaded; with the local server they work as before. In Investigate
+  the AllWISE 2010 picture stays as frame A.
+- **Checks.**
+  - 239 tests pass.
+  - First screen at 390×844: headline 88–176 px, the two lines to 341 px, the button to 415 px, the Planet X card
+    to 574 px, no scrolling. At 360×780 the card ends at 592 px; at 768 and 1280 everything up to the links fits.
+    No horizontal scroll and no console error at 360/390/768/1280.
+  - "Watch Barnard's Star move" at 390 and 1280: Blink playing after 0.30 s and 0.28 s; A "AllWISE 2010", B
+    "2026-08-22" (the newest); the frame alternates between them; the line reads as above; Back returns Home
+    with the first screen in view and Blink stopped.
+  - The card and the "Planet X" menu item open the Lab with its headline in view, from Home, Predictions, Beat
+    the physics, Learn, a lesson, About and an investigation. Also checked: the phone menu, and the keyboard
+    (Tab to "Planet X", Enter).
+  - github.io copy: the site served under the hostname nama2323.github.io (local HTTPS with the hostname mapped
+    to it). No Real sky button or panel, 0 requests to the all-sky service, and every request went to
+    nama2323.github.io.
+  - B11's 3D check at 360/390/768/1280 after scrolling to the map: no label under a panel or overlapping,
+    Fly to works ("Camera on: Earth / Saturn / Mars"), the Planet Nine note opens in the key. The phone time row
+    keeps LIVE, play, date and slider on one line; the date ticks, and pause holds it.
+  - Lighthouse mobile Home: 83, 82, then 86 after reserving the card line's height (layout shift 0.013;
+    accessibility, best practices and SEO 100).
+  - Screenshots `docs/screens/b16-home-<360|390|768|1280>-<before|after>.png`, `b16-watch-barnard-*`,
+    `b16-planetx-lab-390`, `b16-menu-390`, `b16-nav-1280`, `b16-githubio-menu-390`, `b16-time-row-390`.
+  - Not checked on a real phone.

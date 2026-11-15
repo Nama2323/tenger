@@ -378,6 +378,66 @@ body[data-page="home"] .site-footer, body[data-page="investigate"] .site-footer 
   overflow: hidden;
 }
 .scene { position: absolute; inset: 0; }
+
+/* ---------- Home's first screen (task B16): what the site is, then the 3D map below ---------- */
+/* Wide screens: Home scrolls inside itself, the first screen on top and the 3D map (the same size as before)
+   under it; an investigation hides the first screen, so the map behind it is where it always was. */
+body[data-page="home"] .page-home { overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
+body[data-page="investigate"] .home-hero { display: none; }
+.home-stage { position: relative; height: 100%; }
+.home-hero { position: relative; min-height: 100%; display: grid; align-content: center; padding: var(--s4) var(--s3) var(--s6); }
+.hero-inner { width: min(760px, 100%); margin: 0 auto; display: grid; justify-items: start; gap: var(--s2); }
+.hero-title { font: 700 clamp(40px, 6.4vw, 78px)/1.02 var(--font-head); letter-spacing: -0.02em; margin: 0; }
+.hero-title:focus { outline: none; }
+.hero-line { max-width: 58ch; margin: 0; font-size: clamp(17px, 1.7vw, 21px); line-height: 1.45; color: var(--text); }
+.hero-small { max-width: 60ch; margin: -4px 0 0; font-size: 15px; color: var(--muted); }
+.hero-watch {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 28px; margin-top: var(--s1);
+  border-radius: var(--radius); background: var(--accent); color: #04121d; font: 700 18px var(--font-head); text-decoration: none;
+  box-shadow: 0 8px 28px rgba(var(--accent-rgb), 0.28);
+}
+.hero-watch:hover { filter: brightness(1.08); }
+.hero-watch:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; }
+/* The Planet X card (task B16): one link, in the hypothetical orange, with a "New" chip. */
+.hero-planetx {
+  display: grid; gap: 4px; justify-items: start; width: min(560px, 100%); min-height: var(--tap); padding: 14px 18px;
+  border: 1px solid rgba(255, 169, 77, 0.6); border-left: 4px solid var(--hypothetical); border-radius: var(--radius);
+  background: rgba(255, 169, 77, 0.1); color: var(--text); text-decoration: none;
+}
+.hero-planetx:hover { background: rgba(255, 169, 77, 0.16); border-color: var(--hypothetical); }
+.hero-planetx:focus-visible { outline: 3px solid var(--hypothetical); outline-offset: 3px; }
+.hero-planetx-title { font: 700 17px/1.3 var(--font-head); color: var(--hypothetical); }
+.hero-planetx-line { min-height: 1.45em; font-size: 15px; color: var(--text); }
+.chip-new { padding: 1px 8px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #1c1205; background: var(--hypothetical); border-color: var(--hypothetical); }
+.nav-planetx { position: relative; }
+.nav-planetx { display: inline-flex; align-items: center; }
+.nav .new-dot { display: inline-block; flex: none; width: 8px; height: 8px; min-width: 0; padding: 0; margin: 0 0 0 7px; border: 0; border-radius: 50%; background: var(--hypothetical); box-shadow: 0 0 0 3px rgba(255, 169, 77, 0.22); }
+.more-short { display: none; }
+@media (min-width: 981px) {
+  /* The full menu fits on one line: "More" stands for "Guided tour and more" (still its accessible name). */
+  .more-short { display: inline; }
+  .more-long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+.hero-links { display: flex; flex-wrap: wrap; gap: 0 var(--s3); margin: -4px 0 0; }
+.hero-links a { display: inline-flex; align-items: center; min-height: var(--tap); color: var(--accent); font-weight: 600; }
+.hero-pick { display: grid; gap: var(--s1); width: 100%; margin-top: var(--s2); }
+.hero-search { width: min(420px, 100%); }
+@media (max-width: 600px) { .hero-watch { justify-self: stretch; width: 100%; } }
+.hero-search .search-line { grid-template-columns: minmax(0, 1fr) auto; }
+.hero-search .search-line input { grid-column: auto; min-height: 42px; font-size: 15px; }
+.hero-search .search-list { top: 52px; }
+.hero-down { position: absolute; left: 50%; bottom: var(--s2); transform: translateX(-50%); display: grid; place-items: center; width: var(--tap); height: var(--tap); color: var(--muted); }
+.hero-down span { width: 12px; height: 12px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-3px, -3px); }
+.hero-down:hover { color: var(--text); }
+/* "Guided tour and more" in the menu. */
+.nav-more { position: relative; }
+.nav-more > summary { min-height: var(--tap); display: inline-flex; align-items: center; padding: 0 12px; border-radius: var(--radius-sm); cursor: pointer; color: var(--muted); font-weight: 500; list-style: none; }
+.nav-more > summary::-webkit-details-marker { display: none; }
+.nav-more > summary::after { content: ''; margin-left: 8px; border: 4px solid transparent; border-top-color: currentColor; margin-top: 4px; }
+.nav-more > summary:hover, .nav-more[open] > summary { color: var(--text); }
+.nav-more-list { position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; min-width: 240px; display: grid; gap: 4px; padding: var(--s1); background: #0b111e; border: 1px solid var(--border-strong); border-radius: var(--radius); box-shadow: var(--shadow); }
+.nav-more-list button, .nav-more-list a { justify-content: flex-start; text-align: left; min-height: var(--tap); }
+.nav-more-list a { display: flex; align-items: center; padding: 0 12px; color: var(--hypothetical); font-weight: 600; }
 .starfield { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 .map-stage {
   position: absolute;
@@ -1128,6 +1188,8 @@ body[data-layout="compare"] .plate-frame { width: min(50cqw - 6px, 100cqh); }
 .explain-key { color: var(--text); font-weight: 600; }
 .changed-finding { font-weight: 600; }
 .explain-key:empty { display: none; }
+/* Where the shift comes from, as a chip after the sentence (catalogue proper motion, not a measurement here). */
+.explain-key[data-source]:not([data-source=""])::after { content: attr(data-source); display: inline-block; margin-left: 8px; padding: 1px 8px; border: 1px solid var(--border-strong); border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--muted); vertical-align: 1px; }
 .explain-more { flex: 1 1 220px; min-width: 0; }
 .explain-more > summary { font-size: 13.5px; }
 .explain-more .explain { margin-top: 2px; }
@@ -1804,7 +1866,17 @@ body.embed .panel-title { top: 0; }
 @media (max-width: 900px) {
   /* Home becomes a scrolling column: search, map, colour key; the target rail is a bottom sheet. */
   .page-home { position: static; overflow: visible; padding-bottom: 72px; display: flex; flex-direction: column; }
-  .search-card { order: 1; }
+  .home-hero { order: 0; min-height: 0; padding: var(--s2) var(--s2) var(--s4); }
+  .home-stage { display: contents; }
+  .hero-title { font-size: clamp(38px, 11vw, 52px); }
+  .hero-inner { gap: 12px; }
+  .hero-line { font-size: 17px; }
+  .hero-planetx { width: 100%; }
+  .hero-planetx-title { font-size: 16px; }
+  .hero-search { width: 100%; }
+  .hero-down { display: none; }
+  .nav-more { width: 100%; }
+  .nav-more-list { position: static; min-width: 0; box-shadow: none; margin-top: 4px; }
   .scene { order: 2; }
   .scene { position: relative; inset: auto; display: grid; gap: 12px; padding: 0 var(--s2) var(--s2); }
   .map-stage { position: relative; inset: auto; container-type: normal; }
@@ -1817,8 +1889,16 @@ body.embed .panel-title { top: 0; }
   /* The containing block of the Fly to list; inset auto drops the wide-screen offsets. */
   .space-tools { position: relative; inset: auto; }
   .space-time { position: static; order: 1; width: auto; max-width: none; margin: 0; justify-content: space-between; }
+  /* Phones (task B16): LIVE, play, date and the speed slider in one compact row. */
+  .space-time { flex-wrap: nowrap; gap: 6px; padding: 4px 8px; }
+  .time-live { flex: none; padding: 0 8px; }
+  .time-now { flex: none; flex-direction: column; align-items: flex-start; gap: 0; }
+  .time-date { font-size: 13px; }
+  .time-utc { font-size: 10.5px; }
   .time-speed, .time-speed input[type="range"] { width: 100%; min-width: 0; }
-  .time-speed { flex: 1 1 100%; }
+  .time-speed { flex: 1 1 auto; min-width: 64px; }
+  .time-rate-text { font-size: 11px; }
+  .time-note { flex-basis: auto; }
   .space-hud { width: fit-content; }
   .map-caption { order: 3; }
   .map-key { order: 4; }
@@ -1968,6 +2048,6 @@ body.embed .panel-title { top: 0; }
 .tl-date-low { top: 47px; }
 
 @media (max-width: 420px) {
-  /* The time control's date and its UTC label stay on one line on the narrowest phones. */
-  .time-date { font-size: 18px; }
+  /* The time control's date stays compact on the narrowest phones (one row with LIVE, play and the slider). */
+  .time-date { font-size: 12.5px; }
 }

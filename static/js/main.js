@@ -32,6 +32,7 @@ import { createSky } from './sky.js';
 import { flyThen, homeShown, initSpace } from './space-ui.js';
 import { showLoopPage } from './loop-ui.js';
 import { loadPlanetX, renderHiddenRound } from './planetx-ui.js';
+import { DEPTH_PATH, glanceOf, readDepth } from './planetx.js';
 import { loadBatch } from './batch-ui.js';
 import { isTourRunning, nextTourStep, runTour, shouldAutoStart, stopTour } from './tour.js';
 import {
@@ -278,7 +279,10 @@ function render() {
   // Task B12: the expected shift is the key number in view; how to read the picture sits under "How to look".
   $('explain').textContent = explainNow();
   const key = mode !== 'blink' || state.playing ? rangeNote() : '';
-  if ($('explain-key').textContent !== key) $('explain-key').textContent = key;
+  if ($('explain-key').textContent !== key) {
+    $('explain-key').textContent = key;
+    $('explain-key').dataset.source = key ? t('rangeSource') : '';
+  }
   markFilm();
   paintAmbient();
 }
@@ -916,7 +920,7 @@ function rangeNote() {
   const [aStep, bStep] = abSteps();
   if (speed < MIN_NOTED_SPEED || !aStep || !bStep || aStep === bStep) return '';
   const years = Math.abs(yearOf(bStep) - yearOf(aStep));
-  return t('rangeNote', { years: number(years, 1), shift: number(speed * years, 0) });
+  return t('rangeNote', { years: number(years, years >= 10 ? 0 : 1), shift: number(speed * years, 0) });
 }
 
 function setBand(band, { write = true } = {}) {
@@ -1545,6 +1549,9 @@ function setMenu(open) {
 }
 
 function showPage(page, { push = true, focus = true } = {}) {
+  // Home scrolls inside itself on wide screens (first screen, then the 3D map): an investigation hides the first
+  // screen, so remember where Home was and return there.
+  if (app.page === 'home' && page !== 'home') app.homeScroll = $('page-home').scrollTop;
   app.page = page;
   setMenu(false);
   for (const name of PAGES) $(`page-${name}`).hidden = name !== page && !(page === 'investigate' && name === 'home');
@@ -1572,6 +1579,10 @@ function showPage(page, { push = true, focus = true } = {}) {
     document.title = page === 'home' ? `${t('site.title')} · ${t('home.title')}` : `${t(`nav.${page}`)} · ${t('site.title')}`;
   }
   writeUrl({ push });
+  if (page === 'home') {
+    const top = app.homeScroll ?? 0;
+    requestAnimationFrame(() => { $('page-home').scrollTop = top; });
+  }
   if (focus) {
     scrollTo(0, 0);
     $('inv-panel').scrollTo(0, 0);
@@ -1879,7 +1890,8 @@ async function search(text) {
   if (!query) return;
   const coordinates = parseCoordinates(query);
   if (coordinates) {
-    openPosition({ ...coordinates, fov: Number($('search-fov').value) || DEFAULT_FOV });
+    // The field size is chosen in Investigate (More tools); a search opens the default 6′ field (task B16).
+    openPosition({ ...coordinates, fov: DEFAULT_FOV });
     return;
   }
   // Two numbers that are not valid coordinates: say so instead of searching for a name.
@@ -1971,6 +1983,10 @@ function bindSearchList() {
   input.addEventListener('focus', renderSearchList);
   input.addEventListener('input', renderSearchList);
   $('top-places').addEventListener('click', () => {
+    closeMore();
+    if (app.page !== 'home') showPage('home', { focus: false });
+    app.homeScroll = 0;
+    $('page-home').scrollTop = 0;
     input.value = '';
     input.focus();
     renderSearchList();
@@ -1992,7 +2008,32 @@ function bindSearchList() {
 
 // ---------- Real sky context (Aladin Lite, loaded on demand) ----------
 
-function toggleSkyPanel(open = $('sky-panel').hidden) {
+/** The first screen's Planet X card (task B16): "4 to 7 magnitudes" comes from depth.json, read after the page has
+ *  loaded (only that file: the game's pictures are not fetched on Home). Without it the card keeps its title. */
+async function fillPlanetXCard() {
+  const url = app.realSource?.url(DEPTH_PATH);
+  if (!url) return;
+  try {
+    const response = await fetch(url);
+    const glance = response.ok ? glanceOf(readDepth(await response.json())) : null;
+    if (glance) {
+      $('hero-planetx-line').textContent = t(glance.low === glance.high ? 'hero.planetxLineOne' : 'hero.planetxLine', { low: String(glance.low), high: String(glance.high) });
+    }
+  } catch {
+    // The card still opens the Lab, which says what it can.
+  }
+}
+
+/** "Guided tour and more" in the menu closes once one of its items is used. */
+function closeMore() {
+  $('nav-more').open = false;
+  setMenu(false);
+}
+
+function toggleSkyPanel(wanted) {
+  // Real sky picks positions to load live; the public static site cannot load them, so it never opens there (B16).
+  if (!api.liveAvailable() || !$('sky-panel')) return;
+  const open = wanted ?? $('sky-panel').hidden;
   $('sky-panel').hidden = !open;
   $('sky-open').setAttribute('aria-expanded', String(open));
   if (open) openSkyContext();
@@ -2114,7 +2155,11 @@ const tourActions = {
 function bindControls() {
   bindSearchList();
   initHelp({ onOpen: () => setMenu(false) });
-  $('tour-start').addEventListener('click', () => runTour(tourActions, { storage: browserStorage() }));
+  $('tour-start').addEventListener('click', () => {
+    closeMore();
+    if (app.page !== 'home' && !isTourRunning()) showPage('home', { focus: false });
+    runTour(tourActions, { storage: browserStorage() });
+  });
   $('tour-next').addEventListener('click', nextTourStep);
   $('tour-stop').addEventListener('click', stopTour);
   bindViewingTools();
@@ -2123,10 +2168,42 @@ function bindControls() {
     const open = $('rail-toggle').getAttribute('aria-expanded') !== 'true';
     $('rail-toggle').setAttribute('aria-expanded', String(open));
   });
-  $('sky-open').addEventListener('click', () => toggleSkyPanel());
-  $('sky-close').addEventListener('click', () => {
-    toggleSkyPanel(false);
-    $('sky-open').focus();
+  // Real sky only where the local server runs: on github.io the button is removed and the map library never loads.
+  if (api.liveAvailable()) {
+    $('sky-open').addEventListener('click', () => {
+      closeMore();
+      if (app.page !== 'home') showPage('home', { focus: false });
+      $('home-map').scrollIntoView({ block: 'start' });
+      toggleSkyPanel(true);
+    });
+    $('sky-close').addEventListener('click', () => {
+      toggleSkyPanel(false);
+      $('sky-open').focus();
+    });
+  } else {
+    $('sky-open').remove();
+    $('sky-panel').remove();
+  }
+  // Planet X: the first screen's card and the menu item both open the Lab at its top (task B16).
+  const openLab = (event) => {
+    event?.preventDefault();
+    app.notices = [];
+    renderNotices();
+    showPage('learn', { focus: false });
+    showLearn('lab');
+  };
+  $('hero-planetx').addEventListener('click', openLab);
+  $('nav-planetx').addEventListener('click', openLab);
+  // The first screen's way in (task B16): Barnard's Star in Investigate, Blink playing AllWISE 2010 against the
+  // newest SPHEREx picture (the default pair), without the 3D flight first.
+  $('hero-watch').addEventListener('click', (event) => {
+    event.preventDefault();
+    const entry = findEntry('barnard');
+    if (!entry) return;
+    app.panel = 'see';
+    app.scrollToPanel = false;
+    setMode('blink');
+    openEntry(entry);
   });
   $('search').addEventListener('submit', (event) => {
     event.preventDefault();
@@ -2253,6 +2330,10 @@ async function loadData() {
   // The exploratory Pluto post-mortem (V8) for Lesson 3; always the real file, never a fixture.
   const postmortem = fixtures ? null : await fetch(real.url(POSTMORTEM_PATH) ?? '').then((response) => (response.ok ? response.json() : null)).catch(() => null);
   app.realSource = real;
+  // After the page has loaded and gone quiet, so the first screen paints first.
+  const fillCard = () => (window.requestIdleCallback ?? ((callback) => setTimeout(callback, 200)))(() => fillPlanetXCard(), { timeout: 3000 });
+  if (document.readyState === 'complete') fillCard();
+  else addEventListener('load', fillCard, { once: true });
   initLearn({
     records: lessons,
     scoreboard: app.scoreboard,
@@ -2385,7 +2466,6 @@ async function start() {
   buildBandScale();
   buildArrays();
   buildFovOptions($('fov'));
-  buildFovOptions($('search-fov'));
   drawStarfield();
   // The target list starts folded (task B12: the chips and the map already name every target); the colour key is
   // open on wide screens only.
