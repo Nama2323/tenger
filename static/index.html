@@ -44,6 +44,8 @@
     <nav id="site-nav" class="nav" data-t-label="nav.label">
       <button type="button" data-page-link="home" data-t="nav.home"></button>
       <button type="button" data-page-link="predictions" data-t="nav.predictions"></button>
+      <!-- Task B29f: Session A's "How it works" page (B30), between Predictions and Planet X. -->
+      <button type="button" data-page-link="method" data-t="nav.method"></button>
       <button id="nav-planetx" type="button" class="nav-planetx"><span data-t="nav.planetx"></span><span class="new-dot" aria-hidden="true"></span><span class="sr-only" data-t="chip.new"></span></button>
       <button type="button" data-page-link="game" data-t="nav.game"></button>
       <button type="button" data-page-link="learn" data-t="nav.learn"></button>
@@ -195,6 +197,8 @@
           <div id="famous-filters" class="famous-filters" role="group" data-t-label="filter.label"></div>
           <p id="famous-filter-status" class="sr-only" aria-live="polite"></p>
           <ul id="famous-list" class="famous-list"></ul>
+          <!-- The Space Apps line (B30) on every page: here under the targets, since Home has no footer. -->
+          <p class="famous-foot" data-t="footer.spaceApps"></p>
         </section>
         <div id="target-pop" class="target-pop glass" role="dialog" aria-labelledby="pop-name" hidden>
           <button id="pop-close" type="button" class="quiet pop-close" data-t-label="famous.close" data-t-title="famous.close"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
@@ -428,6 +432,8 @@
           <p id="chart-note" class="note"></p>
           <div id="spectrum-table"></div>
         </section>
+        <!-- The Space Apps line (B30) on every page: here at the end of the panel, since Investigate has no footer. -->
+        <p class="inv-foot" data-t="footer.spaceApps"></p>
       </div>
     </section>
 

@@ -48,3 +48,11 @@ test('Home has one Solar System view: the rail, the popup, the Auto rotate switc
   assert.match(html, /<details id="head-search" class="head-search">[\s\S]*<form id="search"/);
   assert.match(html, /<p id="famous-filter-status" class="sr-only" aria-live="polite"><\/p>/);
 });
+
+test('"How it works" sits between Predictions and Planet X; the Space Apps line shows on Home and Investigate too', () => {
+  const nav = html.slice(html.indexOf('<nav id="site-nav"'), html.indexOf('</nav>', html.indexOf('<nav id="site-nav"')));
+  const at = (needle) => nav.indexOf(needle);
+  assert.ok(at('data-t="nav.predictions"') < at('data-t="nav.method"') && at('data-t="nav.method"') < at('id="nav-planetx"'));
+  assert.match(html, /<p class="famous-foot" data-t="footer\.spaceApps"><\/p>\s*<\/section>/);
+  assert.match(html, /<p class="inv-foot" data-t="footer\.spaceApps"><\/p>/);
+});

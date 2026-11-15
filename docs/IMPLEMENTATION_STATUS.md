@@ -2472,3 +2472,24 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - **Not used: none of the listed sources.** The only service the page had listed without using it was SkyBoT, now removed.
   - **Count:** the eight Planet Nine papers are the three in `depth.json` (Linder & Mordasini 2016, Fortney et al. 2016, Meisner et al. 2018, a WISE/NEOWISE Planet Nine search) and the five in `scene3d.json`; all eight are used.
 - **Checks:** `node --test tests/` 275 of 275 pass after rebasing onto B29 (`f32e27e`). On top of B29, `?page=method` at 1280 and 390 still shows the new logo, 2 catalogue cards, 4 source cards, no SkyBoT text and no sideways scroll. The header menu item for "How it works" is still Session B's to add.
+
+### Task B29f, 15 Nov 2026: "How it works" in the menu; the Space Apps line on Home and Investigate
+
+- **Menu.** "How it works" (Session A's B30 page, `?page=method`) is in the header menu between "Predictions" and
+  "Planet X", in the same order in the phone menu. Checked at 360, 390, 768, 1024, 1100, 1101 and 1280: the order is
+  Investigate, Predictions, How it works, Planet X. Clicking it opens the page.
+- **Header width.** With the B29 search icon and the extra item, the full menu no longer fits below about 1090 px, so
+  the menu collapses into "Menu" at 1100 px and below (it was 980). At 1101 px the "?" button ends at 1085 px, inside
+  the 16 px margin.
+- **Space Apps line** (Session A's request; `footer.spaceApps`). Home and Investigate hide the site footer, so the
+  line also sits:
+  - at the bottom of the Famous targets rail (phones: under the swipe row);
+  - at the end of the Investigate panel.
+
+  The phone row's reserved height default was raised to 176 px to match, so Home still has no layout shift.
+- **Checks:**
+  - `node --test` 276 pass (new: menu order and the two lines).
+  - All B29 checks at 1280 and 390 pass again. 360: no sideways overflow with the Key, a popup or the search open.
+  - Lighthouse mobile on Home: 83 and 81, CLS 0.
+  - No console errors.
+
