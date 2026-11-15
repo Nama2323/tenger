@@ -1139,6 +1139,16 @@ const TEXT = {
     'footer.spaceApps': 'Built for the NASA Space Apps Challenge 2026. Not affiliated with or endorsed by NASA.',
     'download.label': 'Download the data (JSON):',
     'download.aria': 'Download {file} for {name}',
+
+    // ---------- Colour slider under the picture (task B31) ----------
+    'colourStep.label': 'Colour',
+    'colourStep.line': 'SPHEREx sees every patch of sky in {channels} colours, recorded by {arrays} detector arrays. Slide to see each one.',
+    'colourStep.all': 'All',
+    'colourStep.array': 'D{n}',
+    'colourStep.allValue': 'All · {low}–{high} µm',
+    'colourStep.arrayValue': 'D{n} · {low}–{high} µm',
+    'colourStep.channelValue': 'D{n} · one channel, ≈{um} µm',
+    'colourStep.single': 'Only one colour is available for this picture.',
     'game.leadShort': 'The dots show where it was on each date. Tap where you think it will be on the next date.',
     'game.taskPositionShort': 'Tap your guess on the chart, or use the arrow keys.',
     'game.taskScalarShort': 'Tap your guess on the dashed line, or use the arrow keys.',

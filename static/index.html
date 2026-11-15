@@ -31,6 +31,7 @@
   <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css?v=tenger-h1">
   <link rel="stylesheet" href="css/method.css?v=b30">
+  <link rel="stylesheet" href="css/colour-step.css?v=b31">
 </head>
 <body data-page="home">
   <a class="skip" href="#main" data-t="site.skip"></a>
@@ -300,6 +301,21 @@
               <label for="contrast" data-t="toolContrast"></label>
               <input id="contrast" type="range" min="0.4" max="4" step="0.1" value="1">
               <button id="contrast-reset" type="button" class="contrast-reset" data-t="contrast.reset"></button>
+            </div>
+            <!-- Colour (task B31): All or one detector array, display only, the same stretch for every date. Uses the
+                 existing per-array images and the URL band value; off where a picture has only one colour. -->
+            <div id="colour-step-control" class="colour-step-control">
+              <p id="colour-step-line" class="colour-step-line"></p>
+              <div class="colour-step-row">
+                <label for="colour-step" data-t="colourStep.label"></label>
+                <div class="colour-step-track">
+                  <input id="colour-step" type="range" min="0" max="6" step="1" value="0" list="colour-step-ticks" aria-describedby="colour-step-value">
+                  <datalist id="colour-step-ticks"></datalist>
+                  <div id="colour-step-names" class="colour-step-names" aria-hidden="true"></div>
+                </div>
+                <output id="colour-step-value" class="colour-step-value mono" for="colour-step"></output>
+              </div>
+              <p id="colour-step-single" class="sr-only" hidden data-t="colourStep.single"></p>
             </div>
             <button id="colour-toggle" type="button" class="quiet colour-toggle" aria-pressed="false" data-t="colour.grayscale"></button>
             <!-- Task B12: the key number (the expected shift between A and B) stays in view; how to read the picture

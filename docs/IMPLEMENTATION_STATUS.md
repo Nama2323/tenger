@@ -2493,3 +2493,25 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - Lighthouse mobile on Home: 83 and 81, CLS 0.
   - No console errors.
 
+
+### Task B31, 15 Nov 2026 (done by Session A at the user's request): the Colour slider under the picture
+- **What:** under the picture, right after Contrast, a "Colour" slider with seven steps: All · D1 · D2 · D3 · D4 · D5 · D6. Above it is one line: "SPHEREx sees every patch of sky in 102 colours, recorded by 6 detector arrays. Slide to see each one." (102 is `CHANNELS` and 6 is the size of `DETECTOR_RANGES` in `static/js/stack.js`.) Beside the slider, the current step and its range are shown from the same table (`D3 · 1.63–2.41 µm`, `All · 0.75–5.00 µm`), and this is also the slider's `aria-valuetext`.
+- **How:** the slider calls the existing `setBand()`, the same path as the six array tiles and `?band=`. Each step shows that array's real per-array image for both A and B. The URL `band` value updates (`all`, `d1` … `d6`) and is read back on reload, and `setBand()` keeps the slider in step with the tiles and the URL. Display only: a single array is painted with `sharedLimits()`, one stretch per array for every date. No measurement, data file or caption number changes.
+- **Off when a picture has one colour:** when A or B is AllWISE, for preview-only targets (e.g. Pluto) and with no frames, the slider is `disabled`. Hovering the control shows "Only one colour is available for this picture." (the title is on the control's box and the input), and screen readers get the same sentence through `aria-describedby`. **Note:** Barnard's Star, WISE 0855 and the other fast movers open with AllWISE 2010 as A, so the slider starts disabled there. It turns on as soon as A and B are both SPHEREx dates, for example `?target=barnard&a=2025-08-29&b=2026-08-22`. That is exactly rule 3; if the team would rather have it on by default for Barnard's Star, the default pair would have to change.
+- **Files:**
+  - `static/index.html`: the control after `.contrast-control`, and the link to `css/colour-step.css`.
+  - `static/js/main.js`: `buildColourStep`, `syncColourStep`, `singleColour`, `colourStepText`; `render()` calls `syncColourStep()`.
+  - `static/js/i18n.js`: `colourStep.*`.
+  - `static/css/colour-step.css`: new.
+  - `tests/colour-step.test.mjs`: new, 3 tests.
+- **Checks (real runs):**
+  - `node --test tests/`: 279 of 279 pass.
+  - CDP script with real key presses (`Input.dispatchKeyEvent`), in a fresh Chrome profile. Barnard's Star (`a=2025-08-29&b=2026-08-22`) and RW Aurigae (default pair), each at 1280×900 and 390×844:
+    - All seven steps give seven different pictures of the same date (B), from a fingerprint of the plate's pixels. None is empty, and each is painted at most 22 ms after the input.
+    - The URL `band` goes all → d1 … d6.
+    - With D2 chosen, Blink keeps playing: Pause stays pressed, and the plate shows both A and B within 3 s.
+    - With the slider focused: ArrowRight, ArrowRight, ArrowLeft, Home give D3, D4, D3, All, with the URL following.
+    - After choosing D5 and reloading, the URL had `band=d5`, and the page comes back with the slider on D5, "D5 · 3.83–4.41 µm" and a picture.
+  - At 360×780 on Barnard's Star, Pluto, RW Aurigae and WISE 0855, `scrollWidth` is 360 (no sideways scroll), and the control ends at x = 335. It is disabled, with the sentence, on Barnard's Star (A = AllWISE), WISE 0855 (A = AllWISE) and Pluto (previews), and enabled on RW Aurigae.
+- **Screenshots:** `docs/screens/b31-barnard-1280.png`, `b31-barnard-390.png`, `b31-rwaur-1280.png`, `b31-rwaur-390.png` (all on D3), `b31-rwaur-360.png`, and `b31-{barnard,pluto,wise0855}-360-disabled-check.png`.
+- **Not verified:** a real phone or touch dragging (only keys and input events were driven), and screen-reader speech.

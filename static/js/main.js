@@ -248,6 +248,7 @@ function plateLabel(step) {
 }
 
 function render() {
+  syncColourStep();
   if (state.previews) {
     renderPreview();
     return;
@@ -943,6 +944,56 @@ function setBand(band, { write = true } = {}) {
   render();
   drawCharts();
   if (write) writeUrl();
+}
+
+// ---------- Colour slider under the picture (task B31) ----------
+// All, or one detector array (D1–D6), for both A and B: the existing per-array images and the URL band value.
+// Display only: each array keeps one stretch for every date (sharedLimits), and no measurement changes.
+
+const rangeText = (low, high) => ({ low: low.toFixed(2), high: high.toFixed(2) });
+
+/** The step's words, e.g. "D3 · 1.63–2.41 µm", from our array table. */
+function colourStepText(band) {
+  if (band.kind === 'detector') return t('colourStep.arrayValue', { n: String(band.detector), ...rangeText(...DETECTOR_RANGES[band.detector]) });
+  if (band.kind === 'channel') return t('colourStep.channelValue', { n: String(detectorOfChannel(band.channel)), um: channelWavelength(band.channel).toFixed(2) });
+  return t('colourStep.allValue', rangeText(DETECTOR_RANGES[1][0], DETECTOR_RANGES[6][1]));
+}
+
+/** Pictures with only one colour: AllWISE as A or B, a preview-only target, or no frames at all. */
+function singleColour() {
+  if (state.previews || !state.job || !state.frames.length) return true;
+  return abSteps().some((step) => step?.key === WISE_STEP);
+}
+
+function syncColourStep() {
+  const input = $('colour-step');
+  const band = state.band;
+  const value = band.kind === 'detector' ? band.detector : band.kind === 'channel' ? detectorOfChannel(band.channel) : 0;
+  if (Number(input.value) !== value) input.value = String(value);
+  const text = colourStepText(band);
+  $('colour-step-value').textContent = text;
+  input.setAttribute('aria-valuetext', text);
+  const single = singleColour();
+  input.disabled = single;
+  $('colour-step-control').classList.toggle('is-single', single);
+  $('colour-step-control').title = single ? t('colourStep.single') : '';
+  input.title = single ? t('colourStep.single') : '';
+  $('colour-step-single').hidden = !single;
+  input.setAttribute('aria-describedby', single ? 'colour-step-value colour-step-single' : 'colour-step-value');
+}
+
+function buildColourStep() {
+  const arrays = Object.keys(DETECTOR_RANGES).length;
+  $('colour-step-line').textContent = t('colourStep.line', { channels: String(CHANNELS), arrays: String(arrays) });
+  $('colour-step').max = String(arrays);
+  const steps = [['0', t('colourStep.all')], ...Object.keys(DETECTOR_RANGES).map((n) => [n, t('colourStep.array', { n })])];
+  $('colour-step-ticks').replaceChildren(...steps.map(([value, label]) => el('option', { value, label })));
+  $('colour-step-names').replaceChildren(...steps.map(([value, label]) => el('span', { dataset: { step: value }, text: label })));
+  $('colour-step').addEventListener('input', () => {
+    const step = Number($('colour-step').value);
+    setBand(step >= 1 && step <= arrays ? { kind: 'detector', detector: step } : { kind: 'composite' });
+  });
+  syncColourStep();
 }
 
 function buildBandScale() {
@@ -2657,6 +2708,7 @@ async function start() {
   showInitialPage();
   buildBandScale();
   buildArrays();
+  buildColourStep();
   buildFovOptions($('fov'));
   drawStarfield();
   // The Key starts closed (task B29: a calmer first screen; the "Schematic · not to scale" chip stays on screen).
