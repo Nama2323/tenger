@@ -77,6 +77,8 @@ function setMode(mode, { shown = mode === '2d' } = {}) {
 function stop3d() {
   state.time?.dispose();
   state.time = null;
+  state.focus?.dispose();
+  state.focus = null;
   state.controller?.dispose();
   state.controller = null;
 }
@@ -88,8 +90,10 @@ async function start3d() {
   const { hooks } = state;
   state.loading = (async () => {
     try {
-      // The time control (B10) arrives with the 3D view, so Home's first load does not grow.
-      const [{ createSpace }, scene, { createTimeControl }] = await Promise.all([import('./space3d.js'), loadSceneFile(), import('./time-ui.js')]);
+      // The time control (B10) and the Fly to list (B11) arrive with the 3D view, so Home's first load does not grow.
+      const [{ createSpace }, scene, { createTimeControl }, { createFocusControl }] = await Promise.all([
+        import('./space3d.js'), loadSceneFile(), import('./time-ui.js'), import('./focus-ui.js'),
+      ]);
       if (state.mode !== '3d') return;
       const sceneDate = scene?.epoch_jd_tdb ? formatUtc(new Date((scene.epoch_jd_tdb - 2440587.5) * 86400000), { time: false }) : '—';
       $('space-key-note').textContent = t('space.keyNote', { date: sceneDate });
@@ -103,7 +107,13 @@ async function start3d() {
         distanceOf: hooks.distanceOf,
         labelOf: (key, values) => t(key.startsWith('planet.') ? key : `space.${key}`, values),
         insetLeft: hooks.insetLeft,
+        // No label shows under these panels (on phones they sit below the scene, so none of them counts).
+        blockers: () => [
+          document.querySelector('.console-left'), $('space-tools'), $('space-fly-list'), $('space-hud'), $('space-time'),
+          $('map-key'), document.querySelector('.map-caption.space-3d-only'),
+        ],
         onPick: (key) => hooks.onPick(key),
+        onNine: (kind) => state.focus?.nine(kind),
         onHud: ({ target }) => {
           $('space-target').textContent = t('space.target', { name: target });
         },
@@ -123,6 +133,7 @@ async function start3d() {
       setMode('3d', { shown: true });
       controller.resize();
       state.time = createTimeControl({ controller, host: $('space3d'), reducedMotion: prefersReducedMotion() });
+      state.focus = createFocusControl({ controller });
       const unplaced = hooks.entries().filter((entry) => entry.key && !controller.has(entry.key)).map(hooks.nameOfEntry);
       showNote(scene ? (unplaced.length ? 'space.unplaced' : null) : 'space.noSceneFile', { names: unplaced.join(', ') });
     } catch (error) {

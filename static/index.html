@@ -81,6 +81,11 @@
         <div id="space-tools" class="space-tools" role="group" data-t-label="space.label" hidden>
           <button id="space-reset" type="button" class="quiet space-3d-only" data-t="space.reset"></button>
           <button id="space-top" type="button" class="quiet space-3d-only" data-t="space.top"></button>
+          <!-- Fly to (task B11): the camera flies to a body and follows it while time runs; Esc or Reset view returns. -->
+          <details id="space-fly" class="space-fly space-3d-only">
+            <summary data-t="space.fly"></summary>
+            <div id="space-fly-list" class="space-fly-list glass" role="group" data-t-label="space.flyLabel"></div>
+          </details>
           <button id="space-toggle" type="button" class="quiet"></button>
         </div>
         <!-- Time control for the 3D view (task B10); shown once the 3D scene runs. -->
@@ -107,8 +112,13 @@
             <li class="colour-star"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.star"></span></li>
             <li class="colour-variable"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.variable"></span></li>
             <li class="colour-solar"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.solar"></span></li>
-            <li class="colour-hypothetical"><i class="dot" aria-hidden="true"></i><span data-t="map.legend.hypothetical"></span></li>
+            <li class="colour-hypothetical"><i class="dot" aria-hidden="true"></i><span class="map-2d-only" data-t="map.legend.hypothetical"></span><button id="space-nine-key" type="button" class="legend-button space-3d-only" aria-expanded="false" aria-controls="space-nine" data-t="map.legend.hypothetical"></button></li>
           </ul>
+          <!-- The Planet Nine explanation: opens from its ring, its label or the entry above, never over the scene. -->
+          <div id="space-nine" class="space-nine space-3d-only" hidden>
+            <p id="space-nine-text"></p>
+            <p class="note" data-t="space.nineHint"></p>
+          </div>
           <p class="note map-2d-only" data-t="map.scale"></p>
           <p id="space-key-note" class="note space-3d-only"></p>
           <div id="map-notes" class="note map-2d-only"></div>

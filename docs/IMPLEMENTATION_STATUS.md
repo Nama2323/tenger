@@ -1508,3 +1508,71 @@ Session A's verification: 345 Tercidina inside (D² 0.12); 4 ambiguous; 3 insuff
     - Reduced motion: paused, 0 frames, the date unchanged.
   - Captures `home-time` at 360/390/768/1280: no horizontal scroll, every control at least 44 px, no console error.
   - Lighthouse mobile Home: 83 and 83 (accessibility, best practices, SEO 100; CLS 0; TBT 0 ms).
+
+### Task B11, 15 Nov 2026: fly to any body in the 3D Solar System on Home
+
+- **Choosing a body** (`js/space3d.js`, `js/focus-ui.js`, `index.html` `#space-fly`).
+  - The Sun, the eight planets, Pluto and Makemake can be chosen by a click or tap on the dot or its label, or from
+    the "Fly to" list next to Reset view and Top view. Keyboard: Tab to "Fly to", Enter opens the list, Tab to a body,
+    Enter flies there; the list then closes and focus returns to "Fly to".
+  - A click or tap counts for the body nearest the pointer within 22 px (a 44 px target) or on its disc
+    (`js/focus.js` `pickOnScreen`, screen space instead of invisible hit spheres). A click on a label right over
+    another body's dot (within 8 px) means that body.
+  - Pluto and Makemake (challenge targets) still open their investigation after the flight, as before; from the
+    list they are only flown to. Stars keep their earlier flight and investigation.
+- **Following.** The camera flies to the body and keeps it centred while time runs (it also aims at the body's new
+  place during the flight); panning is off while a body is followed. "Camera on: …" names the body ("Earth", not
+  the label text). Esc or Reset view returns to the home view. Esc first closes the "Fly to" list or the Planet Nine
+  note if open, and leaves an open investigation to the page's own Esc (capture phase), so one press does one thing.
+- **Zoom limits** (`js/focus.js`).
+  - Closest: per body, 2.5 × its drawn size (Saturn with its rings), where the body about fills the view; Earth
+    0.725 scene units, Mercury 0.425, the Sun 2.25. For each inner planet this is under 0.75 of the closest approach
+    of its neighbours' orbits in the scene, so zoomed in they sit well apart. The home view keeps 1.2.
+  - Farthest, from any target: the whole scene, star shell and glows included (radius 155.75 plus a 26-unit target
+    reach, with 8 % to spare), fits the narrower half-angle of the free view: 548 scene units on landscape screens,
+    607 at a phone's 0.89 aspect (the home view stays at 86–112).
+- **Labels** (`js/focus.js` `chooseLabels`).
+  - In order: the followed body's label, then Sun and challenge targets, Earth, planets, Planet Nine, rings and
+    notes; nearer first within a kind (a label already showing counts 15 % nearer, so labels do not flicker).
+  - Each label takes its first free place around its point (right, left, above, below; its current place tried
+    first). A place under a panel (search console, tools, the "Fly to" list when open, the camera note, time bar,
+    colour key, caption) or outside the scene box is not free, not even for the followed body; with no free place
+    the label fades. On phones the panels sit below the scene, so only overlaps count.
+  - Sizes are read once (and after a resize or the fonts load); panels are measured again when they change size or
+    open/close. The followed body's label gets a dark backing, since close up it sits on the body.
+  - A wheel over a label zooms the scene like one over the canvas.
+- **Planet Nine.** The scene now shows only a short label, "Planet Nine? (hypothetical)". The explanation with the
+  cited ranges opens in the colour key when the faint ring, that label or the key's entry (now a button with
+  `aria-expanded`) is pointed at (it closes when the pointer leaves) or clicked (it stays until clicked again, Esc,
+  a click elsewhere in the scene, or the key is closed). On phones the colour key is under the scene and a tap
+  scrolls it into view. The ring brightens while the note is open. On wide screens the colour key now scrolls
+  instead of running under the time bar.
+- **Time control, reduced motion, accessibility.** B10's control is unchanged and drives the follow. Reduced motion:
+  every flight is a jump, no animation frames, no label fades. Every new control is a real button or summary,
+  at least 44 px, labelled; the shortcuts dialog lists Enter ("Fly to" list) and Esc.
+- **Size.** Home's first load +1.3 KB gzip (markup, styles, strings); the lazy 3D part +7.9 KB gzip
+  (`space3d.js` +3.1, new `focus.js` 2.9 and `focus-ui.js` 1.9).
+- **Checks.**
+  - `tests/focus.test.mjs` (11): the focus bodies and their names; the "Fly to" markup and shortcut rows; closest
+    zoom per body (outside the body, fills much of the view, closer than its flight); neighbours of the inner
+    planets well apart at the closest zoom; the zoom-out limit fits the whole scene for aspects 0.6–2.2; picking
+    (a planet in front of the Sun, 22 px reach, nearer wins a tie); the overlap order (focused, importance,
+    distance, no flicker); no label under a panel; moving to a free side; staying inside the scene; Planet Nine's
+    short label and the note in the key. 232 tests pass.
+  - Headless Chrome on the GPU (`localhost`, real mouse, wheel and key events):
+    - Keyboard: Tab to "Fly to", Enter, Tab ×4, Enter: "Camera on: Earth", list closed, focus back on "Fly to".
+    - Following Earth at 1 month/s for 3 s (three months of simulated time): Earth moved 0 px on screen.
+    - Wheel in on Earth stops at the closest zoom (Earth fills the view); wheel out from Earth and from the home
+      view stops with the whole star shell in view.
+    - Clicks: Mars's dot (lying under Earth's label) → Mars; a planet label → that planet; Pluto → its
+      investigation, "Camera on: Pluto"; first Esc closes the investigation only, the second returns home.
+    - Planet Nine: hover on the key entry and on the ring opens the note (ring cursor "pointer"), leaving closes
+      it; a click on the label keeps it; Esc closes it. At 1280 with the note open the key ends at 632 px, above
+      the time bar (649 px).
+    - At 360/390/768/1280, fresh loads, home view, "Fly to" open and a body followed: no label under a panel, no
+      two labels overlapping, no horizontal scroll, no control under 44 px, no console error.
+    - Reduced motion: the list jumps to Jupiter at once; 0 animation frames in 2 s; no label transition; Esc
+      returns at once.
+  - Captures `home-fly`, `home-flylist` (360/390/768/1280) and `home-nine-1280` in `docs/screens/`.
+  - Lighthouse mobile Home: 83 and 83 (accessibility, best practices, SEO 100; CLS 0; TBT 0 ms), as after B10.
+  - Not checked on a real phone.

@@ -2338,9 +2338,12 @@ function startSpace() {
     insetLeft: () => (matchMedia('(min-width: 901px)').matches
       ? Math.max(0, document.querySelector('.console-left').getBoundingClientRect().right - $('space3d').getBoundingClientRect().left)
       : 0),
+    // A challenge target opens its investigation (after the flight); any other body is only flown to (true = handled).
     onPick: (key) => {
       const entry = findEntry(key);
-      if (entry && isOpenable(entry)) openFromHome(entry);
+      if (!entry || !isOpenable(entry)) return false;
+      openFromHome(entry);
+      return true;
     },
   });
 }
