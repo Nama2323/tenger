@@ -662,6 +662,20 @@ button.map-marker:hover span, button.map-marker:focus-visible span { color: var(
 .why-table th, .why-table td { text-align: left; padding: 6px 10px 6px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
 .why-table thead th { color: var(--muted); font-weight: 500; }
 .reveal-text .why-missed { margin-top: var(--s1); }
+/* Task B22: a card's open details use the whole card; the Pluto card (the one with "Why we missed") takes the full
+   content width from 768 px up; tables keep a readable minimum width and scroll inside their own box on phones. */
+.ledger-card details.more-info > :not(summary), .ledger-card .why-missed > :not(summary) { max-width: none; }
+.why-missed > *, .ledger-card details.more-info > * { min-width: 0; }
+/* As a block (not a grid) the open details never grow past the card, so a wide table scrolls in its own box. */
+.ledger-card .why-missed { display: block; min-width: 0; max-width: 100%; }
+.ledger-card .why-missed > * + * { margin-top: 10px; }
+.why-table { min-width: 560px; }
+.why-missed .table-scroll { max-height: none; }
+@media (min-width: 768px) {
+  .story-cards > .story-card:has(.why-missed) { grid-column: 1 / -1; }
+}
+/* "Check us in 2027" sits right under the Pluto card while "Why we missed" is open (moved there by ledger-ui.js). */
+.story-cards > .story-check.is-under-why { grid-column: 1 / -1; margin: 0; }
 
 /* ---------- Home: the 3D view (three.js) and its 2D fallback ---------- */
 

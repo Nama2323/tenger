@@ -290,7 +290,7 @@ const SHOTS = [
   },
   {
     id: 's5-why-2027', seconds: 4, caption: 'We found why, and locked new forecasts for 2027.',
-    /** "Why we missed" opened on the Pluto card, then the "Check us in 2027" card. */
+    /** "Why we missed" opened on the Pluto card (full width), then the "Check us in 2027" card right under it. */
     async record() {
       await open('/?page=predictions', "!document.getElementById('page-predictions').hasAttribute('data-loading') && document.querySelector('#trial-pluto-position-2026b .why-missed')");
       await evaluate("document.querySelector('#trial-pluto-position-2026b .why-missed').open = true");
@@ -299,10 +299,12 @@ const SHOTS = [
       await sleep(1200);
       await scrollTo('#trial-pluto-position-2026b .why-missed', -110);
       await sleep(400);
+      // Since B22 the Pluto card is full width and "Check us in 2027" sits right under it while "Why we missed" is open:
+      // read the reasons, then scroll until the end of "Why we missed" and the 2027 card are on screen together.
       return screencast(async () => {
-        await sleep(1500);
-        await smoothScroll('#story-check', 1000, -160);
-        await sleep(1800);
+        await sleep(1700);
+        await smoothScroll('#story-check', 1000, -400);
+        await sleep(1600);
       });
     },
   },

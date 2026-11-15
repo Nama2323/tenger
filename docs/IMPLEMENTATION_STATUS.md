@@ -1982,3 +1982,33 @@ Session B was told and stayed off the game files. Only the game page and its str
   - Dates use the en-GB short month ("27 Sept 2026").
   - The hidden-planet round (`planetx-ui.js`) is unchanged.
   - Not checked on a real phone.
+
+### Task B22, 15 Nov 2026: "Why we missed" at full width on Predictions
+
+Layout only: no text or number on the page changed.
+- **The card with "Why we missed"** (the Pluto card) spans the full content width from 768 px up; the other result
+  cards keep their grid.
+- **A card's open details use the whole card:** B12's 70-character cap does not apply inside cards.
+- **"Why we missed" lays out as a block,** so it never grows past its card.
+- **Its tables keep a minimum width of 560 px** and scroll sideways inside their own box on phones, never the page.
+- **"Check us in 2027" moves right under the Pluto card** while "Why we missed" is open, and goes back when it
+  closes (`js/ledger-ui.js` `keepCheckUnderWhy`).
+
+Checked with "Why we missed" open (before → after):
+
+| Width | Pluto card | Table cells one word per line | Fewest characters per line of long text | Page scrolls sideways |
+|---|---|---|---|---|
+| 1280 | 400 → 1232 px (full width) | "95% region" → none (every cell 1 line) | 35 → 101 | no → no |
+| 768 | 352 → 720 px (full width) | 4 cells → none (at most 2 lines) | 31 → 58 | no → no |
+| 390 | 358 px | 2 cells → none (tables scroll in their own 288 px box) | 31 (the card is the screen's width) | no → no |
+
+At every width "Check us in 2027" follows the Pluto card directly, 16 px below it.
+
+- **Demo video:** re-made with `node docs/screens/demo/make-video.mjs`. Shot 5 (0:20–0:24) now reads "Why we missed"
+  at full width, then scrolls to the 2027 card right under it. The video is still 30.000 s and 900 frames, now
+  2,265,379 bytes, and the recording checks raised no problem. I looked at the contact sheet and at four frames of
+  shot 5.
+- **Tests:** 260 pass.
+- **Screenshots:** `docs/screens/b22-why-missed-<390|768|1280>-<before|after>.png` and
+  `b22-why-missed-<width>-after-2027.png`.
+- Not checked on a real phone.

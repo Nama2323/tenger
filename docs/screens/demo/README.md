@@ -2,7 +2,7 @@
 
 ## The 30-second video, Vestigium (task B21, current build)
 
-`vestigium-demo-30s.mp4`: **30.000 s** (900 frames), **2,176,545 bytes**, 1280×720, H.264 High, yuv420p, 30 fps, no
+`vestigium-demo-30s.mp4`: **30.000 s** (900 frames), **2,265,379 bytes** (re-made after B22), 1280×720, H.264 High, yuv420p, 30 fps, no
 audio track.
 - English captions are burned in (34 px, bottom, dark box, at most 2 lines), with the same text and line breaks in
   `vestigium-demo-30s.srt`. `vestigium-demo-30s-contact.png` has one frame per shot.
@@ -18,7 +18,7 @@ audio track.
 | 4–8 s | A tap on "Watch Barnard's Star move"; Barnard's Star blinking A ↔ B | Real pictures, 2010 and 2026: Barnard's Star moved about 168″. | Years read from the frames' own labels ("A · AllWISE 2010", "B · Aug 22, 2026"); 168″ read from the page's finding (catalogue motion 10.393″/yr × 16.1 years, as in `SUBMISSION-NUMBERS.md`) |
 | 8–14 s | Predictions: the four steps; "See how it works with Pluto"; the reveal's first steps (older pictures, the oval, the lock) | We locked a Pluto forecast on GitHub before opening the newest pictures. | `trials/pluto-position-2026b` |
 | 14–20 s | The reveal goes on (observed position, straight line, then the verdict "Miss" with the zoomed inset, shown for the last 3.7 s) | 5.9″ off: 3,000× closer than a straight line, but just outside our 95% oval. A published miss. | `verification.json`: miss, 5.90″ (D² 6.77 > 5.99); the straight line is 19,869.75″ off, 3,368× farther |
-| 20–24 s | "Why we missed" opened on the Pluto card, then "Check us in 2027" | We found why, and locked new forecasts for 2027. | `trials/pluto/postmortem.json`; open forecasts for 2027-04-25 and 2027-09-29 |
+| 20–24 s | "Why we missed" opened on the Pluto card, readable at full width since B22, then "Check us in 2027" right under it | We found why, and locked new forecasts for 2027. | `trials/pluto/postmortem.json`; open forecasts for 2027-04-25 and 2027-09-29 |
 | 24–27 s | The Planet X card on Home, a tap, the top of the Planet X Lab | Could SPHEREx see Planet X? We measured it: not in one image. | `planetx/depth.json` (the Lab's headline: 4 to 7 magnitudes too faint) |
 | 27–30 s | Title card: logo, Vestigium, nama2323.github.io/tenger, the team, "Data: NASA SPHEREx via NASA/IPAC IRSA" | (the card's own text) | README team line |
 

@@ -334,6 +334,25 @@ function storyCard(entry, { practice }, data) {
   ]);
 }
 
+// Task B22: while "Why we missed" is open on the Pluto card, "Check us in 2027" moves right under that card (a
+// layout change only), so the reason and the new forecasts are seen together; closing it puts the card back.
+let checkHome = null;
+function keepCheckUnderWhy(check) {
+  const why = document.querySelector('#story-groups .why-missed');
+  if (!why || check.hidden) return;
+  if (!checkHome) {
+    checkHome = document.createComment('story-check');
+    check.before(checkHome);
+  }
+  const place = () => {
+    if (why.open) why.closest('.story-card')?.after(check);
+    else checkHome.after(check);
+    check.classList.toggle('is-under-why', why.open);
+  };
+  why.addEventListener('toggle', place);
+  place();
+}
+
 function storySection(data) {
   const model = storyModel({ board: data.boardDoc, bundles: data.bundles });
   const group = (titleKey, entries, practice) => (entries.length ? el('div', { class: 'story-group' }, [
@@ -374,6 +393,7 @@ function storySection(data) {
     $('story-check-title').textContent = title;
     $('story-check-text').textContent = text;
   }
+  keepCheckUnderWhy(check);
 
   // "See how it works with Pluto" opens the Pluto reveal at step 1.
   const button = $('story-pluto');
