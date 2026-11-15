@@ -36,7 +36,10 @@ test('the three lines say exactly what the user asked for', () => {
   assert.equal(texts.predict, "Our real tests (Pluto and the asteroids) are locked on GitHub before the newest pictures are opened. Practice runs (Barnard's Star, Epsilon Indi B) use data we had already seen, and are labelled that way.");
   assert.equal(t('limits.do.proof'), '→ We log who opened which data, and a test stays marked ‘confirmation pending’ until all four teammates confirm.');
   assert.equal(texts.saturatedLimit, "Very bright stars saturate SPHEREx, so their brightness cannot be measured (Barnard's Star and R Draconis).");
-  assert.equal(texts.saturatedDo, "→ For Barnard's Star we use the position instead; R Draconis is marked ‘too little data’. RW Aurigae has 15 brightness measurements, but no regular pattern to forecast from.");
+  assert.equal(texts.saturatedDo, "→ For Barnard's Star we use the position instead; R Draconis is marked ‘too little data’. RW Aurigae’s forecast had 15 brightness measurements to learn from, but no regular pattern to forecast from.");
+  // The 15 is the frozen trial's training set (the investigation has more usable measurements, some held out).
+  assert.equal(read('trials/rwaur-brightness-2026a/training.json').points.length, 15);
+  assert.ok(all.rwaur.photometry.n_measured >= 15);
   // Before the files load: no names at all.
   const plain = honestyTexts({});
   assert.ok(!/Pluto|Barnard|Draconis|Aurigae/.test(Object.values(plain).join(' ')));

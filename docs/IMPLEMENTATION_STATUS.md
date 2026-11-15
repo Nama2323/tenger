@@ -2687,4 +2687,14 @@ No login, no server and no storage. Only the game page and its strings changed; 
 - **Screenshots:** `docs/screens/b32a-limits-can-1280.png`, `b32a-limits-cannot-1280.png`,
   `b32a-limits-can-390.png`, `b32a-limits-cannot-390.png`.
 - **B33.** Session A's 25f823a is accepted, so B33 was not re-done here.
+- **Precision fix** (Session A's science check). The line now reads "RW Aurigae’s forecast had 15 brightness
+  measurements to learn from, but no regular pattern to forecast from." The 15 is the frozen trial's training set:
+  `training.json` has 15 points and `n_training_points` is 15. The investigation has 17 usable measurements; the
+  2026 W36–38 season was held out for the check. "Has 15" understated the total.
+  - Session A also confirmed the rest against the files: the saturation counts, the trial categories, and "until all
+    four teammates confirm" (`docs/EXPOSURE.md`).
+  - The test now pins the 15 to `training.json`.
+  - The two "limits" screenshots were re-taken.
+
+  `node --test` 291 pass.
 

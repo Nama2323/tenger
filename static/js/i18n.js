@@ -1763,8 +1763,9 @@ const TEXT = {
     'limits.do.satTooLittleOne': '{names} is marked ‘too little data’',
     'limits.do.satTooLittleMany': '{names} are marked ‘too little data’',
     'limits.do.saturated': '→ Where that happens we use the position instead, or mark the target ‘too little data’.',
-    'limits.do.noPattern': '{name} has {n} brightness measurements, but no regular pattern to forecast from.',
-    'limits.do.noPatternPlain': '{name} has brightness measurements, but no regular pattern to forecast from.',
+    // {n}: the frozen forecast's training set (prediction.json n_training_points), not every usable measurement.
+    'limits.do.noPattern': '{name}’s forecast had {n} brightness measurements to learn from, but no regular pattern to forecast from.',
+    'limits.do.noPatternPlain': '{name}’s forecast had brightness measurements to learn from, but no regular pattern to forecast from.',
     'limits.limit.proof': 'A GitHub time stamp proves when a forecast was locked, not who had already seen the data.',
     'limits.do.proof': '→ We log who opened which data, and a test stays marked ‘confirmation pending’ until all four teammates confirm.',
     // ---------- About ----------
