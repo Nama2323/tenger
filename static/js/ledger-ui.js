@@ -115,6 +115,7 @@ function boardSection(data) {
   // The full table, its notes and the trial types sit under one closed "Details" (task B12); the stat tiles at the
   // top of the page carry the key numbers.
   host.replaceChildren(details([
+    el('p', { text: t('ledger.lead') }),
     el('div', { class: 'board-head' }, [
       el('h2', { id: 'ledger-board-title', text: t('ledger.boardTitle') }),
       table.example ? exampleChip({ example: true }) : null,

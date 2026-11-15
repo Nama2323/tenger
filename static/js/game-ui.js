@@ -566,8 +566,10 @@ function startRound(roundId) {
   context.onSelect(entry.doc.round_id);
 }
 
-function pickerLabel(entry) {
+function pickerLabel(entry, sameQuantity = false) {
   const name = context.nameOf(entry.bundle?.trial?.doc?.target_key) ?? entry.doc.trial_id;
+  // Task B12: when every round asks the same kind of question, the target's name is enough.
+  if (sameQuantity) return name;
   return t('game.pickerLabel', { name, quantity: has(`quantity.${entry.doc.quantity}`) ? t(`quantity.${entry.doc.quantity}`) : entry.doc.quantity });
 }
 
@@ -597,7 +599,7 @@ export function renderGamePage(options) {
   host.replaceChildren(
     el('nav', { id: 'round-picker', class: 'round-picker', 'aria-label': t('game.rounds') }, playable.map((entry) => el('button', {
       type: 'button', dataset: { round: entry.doc.round_id }, onclick: () => startRound(entry.doc.round_id), 'aria-pressed': 'false',
-    }, [pickerLabel(entry), ' ', categoryChip(entry.doc.category)]))),
+    }, [pickerLabel(entry, new Set(playable.map((item) => item.doc.quantity)).size === 1), ' ', categoryChip(entry.doc.category)]))),
     ...problems.map((text) => el('p', { class: 'note warn', text })),
     el('div', { id: 'round-area' }),
   );

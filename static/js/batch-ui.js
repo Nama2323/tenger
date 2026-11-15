@@ -68,6 +68,15 @@ function statusCounts(batch) {
   return [...counts].sort((a, b) => rank(a[0]) - rank(b[0])).map(([status, count]) => t(has(`batch.count.${status}`) ? `batch.count.${status}` : 'batch.count.other', { n: String(count), status })).join(t('batch.countJoin'));
 }
 
+/** "7 of 8 could not be scored: 4 ambiguous, 3 with too little data." (task B12), counted from the rows. */
+function unscoredLine(batch, scored) {
+  const counts = new Map();
+  for (const row of batch.rows) if (!['hit', 'miss'].includes(row.status)) counts.set(row.status ?? 'other', (counts.get(row.status ?? 'other') ?? 0) + 1);
+  const words = [...counts].sort((a, b) => b[1] - a[1]).map(([status, count]) => (has(`ledger.count.${status}.one`)
+    ? t(`ledger.count.${status}.${count === 1 ? 'one' : 'many'}`, { n: String(count) }) : t('ledger.count.other', { n: String(count) })));
+  return t('batch.unscored', { n: String(batch.rows.length - scored), total: String(batch.rows.length), counts: words.join(', ') });
+}
+
 function summary(batch) {
   const { n, k, interval, expected, method, computed, noteKey } = batch.calibration;
   if (!(n > 0)) {
@@ -91,8 +100,9 @@ function summary(batch) {
   // At a glance (task B12): the section title carries "k of n"; one line says what could not be scored; the interval,
   // the verdict and every caveat sit under "Details" right below.
   return el('div', { class: 'batch-summary' }, [
-    batch.rows.length > n ? el('p', { text: t('batch.ofAll', { total: String(batch.rows.length), counts: statusCounts(batch) }) }) : null,
+    batch.rows.length > n ? el('p', { text: unscoredLine(batch, n) }) : null,
     details([
+      batch.rows.length > n ? el('p', { text: t('batch.ofAll', { total: String(batch.rows.length), counts: statusCounts(batch) }) }) : null,
       el('p', { class: 'note', text: t('batch.lead') }),
       interval ? el('p', { text: t('batch.interval', { low: pct(interval[0]), high: pct(interval[1]), method: t(`batch.method.${method === 'wilson' ? 'wilson' : 'exact'}`) }) }) : null,
       verdictKey ? el('p', { text: t(verdictKey, { n: String(n) }) }) : null,
