@@ -2012,3 +2012,29 @@ At every width "Check us in 2027" follows the Pluto card directly, 16 px below i
 - **Screenshots:** `docs/screens/b22-why-missed-<390|768|1280>-<before|after>.png` and
   `b22-why-missed-<width>-after-2027.png`.
 - Not checked on a real phone.
+
+### Task B23, 15 Nov 2026: Contrast in view under the picture
+
+- **Placement.** The existing Contrast slider (`#contrast`, 0.4 to 4) moved out of the closed panel into the main
+  viewer controls, right after the Blink / Swipe / Side by side / Difference switch. On phones it has its own row
+  under that switch. It has a "Contrast" label and a small "Reset" text button that sets it back to 1. The slider
+  is at least 160 px wide and 44 px tall; its `aria-valuetext` reads, for example, "1.5 times".
+- **What it changes, unchanged from before.** It stays display only: one stretch for every date, now covering the
+  AllWISE frame too (`sharedLimits` and `withContrast`), and no measurement reads it. Moving it repaints the frame on
+  screen, and Blink keeps playing, painting each next frame with the new value.
+- **Memory.** The value is kept in memory while the visitor switches targets in the page; nothing is written to
+  storage.
+- **"More tools".** The panel ("More controls" before) keeps field of view, speed, Negative, Gaia stars, AllWISE and
+  flagged pixels. In preview mode (Pluto, Makemake and 3I/ATLAS, whose images are previews) the Contrast control is
+  hidden, since it does not act on preview images.
+- **Checks** (headless Chrome, Barnard's Star):
+  - The slider is shown without opening anything at 360, 390 and 1280. At 390 it is 219×44 px on its own row,
+    8 px under the switch; at 1280 it is 180×44 px on the switch's row, in view.
+  - Side by side, contrast 1 → 3, counting bright pixels: AllWISE 2010 went from 27,325 to 51,679 and SPHEREx 2026
+    from 11,338 to 22,337, so fainter stars show in both frames.
+  - Blink kept playing through a change (`aria-pressed` true, the frames still alternating). Reset returned it to
+    1 ("1.0 times"). Two ArrowRight presses gave 1.2. The accessibility tree names it "Contrast" (slider).
+  - Set to 2.5, then "← All targets" and the Epsilon Indi B chip: the slider still reads 2.5 and nothing was stored.
+  - No horizontal scroll at 360, 390 or 1280, and no console errors. 260 tests pass.
+  - Screenshots: `docs/screens/b23-contrast-<390|1280>-<before|after>.png` and `b23-contrast-1280-side-3x.png`.
+  - Not checked on a real phone.

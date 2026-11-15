@@ -2092,10 +2092,17 @@ function bindViewingTools() {
     state.speedMs = Number($('speed').value);
     if (state.playing) setPlaying(true);
   });
-  $('contrast').addEventListener('input', () => {
-    state.contrast = Number($('contrast').value);
+  // Contrast (task B23): display only, the same stretch for every date; kept in memory while the visitor moves
+  // between targets. render() repaints the frame on screen; Blink keeps playing and paints each next frame with it.
+  const setContrast = (value) => {
+    state.contrast = value;
+    $('contrast').value = String(value);
+    $('contrast').setAttribute('aria-valuetext', t('contrast.value', { value: formatNumber(value, 1) }));
     render();
-  });
+  };
+  $('contrast').addEventListener('input', () => setContrast(Number($('contrast').value)));
+  $('contrast-reset').addEventListener('click', () => setContrast(1));
+  $('contrast').setAttribute('aria-valuetext', t('contrast.value', { value: formatNumber(1, 1) }));
   $('negative').addEventListener('change', () => {
     document.body.classList.toggle('negative', $('negative').checked);
   });

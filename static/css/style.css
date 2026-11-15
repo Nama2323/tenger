@@ -1193,6 +1193,17 @@ body[data-layout="compare"] .plate-frame { width: min(50cqw - 6px, 100cqh); }
 }
 .film-tile[data-ab="b"]::after { background: var(--star); }
 .timebar-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); }
+/* Contrast (task B23): in view under the picture, at least 160 px wide with a 44 px touch area, and a Reset link. */
+.contrast-control { display: flex; align-items: center; gap: 8px; }
+.contrast-control label { font-size: 13.5px; font-weight: 600; color: var(--muted); }
+.contrast-control input[type="range"] { width: 180px; min-width: 160px; height: var(--tap); margin: 0; accent-color: var(--accent); cursor: pointer; }
+.contrast-reset { min-height: var(--tap); padding: 0 6px; border: 0; background: none; color: var(--accent); font-size: 13.5px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.contrast-reset:hover { background: none; color: var(--text); }
+body.preview-mode .contrast-control { display: none; }
+@media (max-width: 720px) {
+  .contrast-control { flex: 1 1 100%; }
+  .contrast-control input[type="range"] { flex: 1 1 auto; width: auto; }
+}
 .segment { display: inline-flex; padding: 3px; gap: 2px; border: 1px solid var(--border-strong); border-radius: 10px; background: rgba(5, 7, 13, 0.6); }
 .segment button { padding: 0 14px; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--muted); font-size: 13.5px; }
 .segment button:hover { color: var(--text); }

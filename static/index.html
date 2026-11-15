@@ -272,6 +272,12 @@
               <button type="button" data-mode="side" data-t="mode.side"></button>
               <button type="button" data-mode="diff" data-t="mode.diff"></button>
             </div>
+            <!-- Contrast (task B23), out of "More tools": display only, one stretch shared by every date. -->
+            <div class="contrast-control">
+              <label for="contrast" data-t="toolContrast"></label>
+              <input id="contrast" type="range" min="0.4" max="4" step="0.1" value="1">
+              <button id="contrast-reset" type="button" class="contrast-reset" data-t="contrast.reset"></button>
+            </div>
             <button id="colour-toggle" type="button" class="quiet colour-toggle" aria-pressed="false" data-t="colour.grayscale"></button>
             <!-- Task B12: the key number (the expected shift between A and B) stays in view; how to read the picture
                  sits behind a disclosure. -->
@@ -332,9 +338,6 @@
                     <option value="900" selected data-t="speedNormal"></option>
                     <option value="350" data-t="speedFast"></option>
                   </select>
-                </label>
-                <label class="tool wide"><span data-t="toolContrast"></span>
-                  <input id="contrast" type="range" min="0.4" max="4" step="0.1" value="1">
                 </label>
                 <label class="tool check"><input id="negative" type="checkbox"><span data-t="toolNegative"></span></label>
                 <label class="tool check"><input id="gaia" type="checkbox"><span data-t="gaia"></span></label>
