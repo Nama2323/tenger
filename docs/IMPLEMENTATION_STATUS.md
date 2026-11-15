@@ -1799,3 +1799,43 @@ Session B was told before the work started (B14 rename and B16 Home are rebased 
 - **Limits**:
   - The node test reads the markup and the story text, not a live DOM. The DOM check above was run in headless Chrome and is not part of `node --test`.
   - The "too faint, too bright, or too few clean pictures" summary is the user's wording; the exact reason of each target is under "Which ones, and why".
+
+### Task B17, 15 Nov 2026: the target view for a first-time visitor
+
+- **Top bar.** "← All targets" on the left (its accessible name is "All targets"). A single "Share" button opens a
+  small menu with "Copy link" and "Copy embed code"; after copying, the button reads "Copied" for 2 s. The status
+  line says the same to screen readers. Escape closes the menu first, and a click elsewhere closes it too.
+- **Under the name**, one plain line from the data (`js/describe.js` `plainLine`, tested), using the target's kind
+  and its map distance in light-years, computed with the same constants as the map and the target list:
+  - "A fast-moving star, 6 light-years away." (Barnard's Star)
+  - "A brown dwarf, 7.4 light-years away." (WISE 0855); "A brown dwarf, 12 light-years away." (Epsilon Indi B)
+  - "A variable star, 598 light-years away." (RW Aurigae); "A variable star, 2,607 light-years away." (R Draconis)
+  - "A dwarf planet in our Solar System." (Pluto, Makemake)
+  - "An interstellar comet passing through our Solar System." (3I/ATLAS)
+  - "A position you chose in the sky." (a custom position)
+
+  The kind label, the RA/Dec/field line and the chips moved into a closed "About this target".
+- **Above the picture**, one caption: "Watch the star in the orange ring jump between the two pictures." The Solar
+  System version is "Watch the object in the orange ring move."; variable stars get "… change brightness between
+  the two pictures." Targets with no picture yet get no caption.
+- **Directly under the picture**, the finding in large text, with the "catalogue motion" chip: "Between these two
+  pictures, 16 years apart, Barnard's Star moved about 168″, about a tenth of the full Moon's width."
+  - The years and the shift come from the frame dates and the catalogue proper motion, as before.
+  - The comparison uses a full Moon 31′ (1,860″) across (`moonShare`, tested).
+  - The same sentence no longer appears again in the time bar. Timeline, Pause, the mode switch and "How to look"
+    are unchanged.
+- **Checks.**
+  - 247 tests pass. The new `tests/describe.test.mjs` (3) covers the plain lines, the light-year rounding and the
+    Moon comparison.
+  - At 390×844, after "Watch Barnard's Star move" and without scrolling: name (124–153 px), plain line (157–181),
+    caption (257–298), the blinking picture (311–675) and the finding (688–783) are all in view, and the
+    coordinates are not. At 1280×800 all of them are in view too.
+  - Share: the menu shows the two options. Copy link put the page URL on the clipboard (equal to `location.href`)
+    and the button read "Copied", then "Share" again after 2 s. Escape closed the menu and kept the
+    investigation; Copy embed code copied the `<iframe>`.
+  - "About this target": one Tab from the name, then Enter, opens it, showing the RA/Dec/field line, the three chips
+    and the kind.
+  - All 8 targets at 360/390/768/1280 (32 views): no console error and no horizontal scroll.
+  - Screenshots: `docs/screens/b17-watch-<390|1280>-<before|after>.png`, `b17-share-menu-390`,
+    `b17-about-open-390`, `b17-target-<pluto|rwaur|wise0855|3i-atlas>-390`.
+  - Not checked on a real phone.

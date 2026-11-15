@@ -207,26 +207,37 @@
     <section id="page-investigate" class="page page-investigate" hidden aria-labelledby="object-name">
       <header class="inv-head">
         <div class="inv-head-actions">
-          <button id="inv-back" type="button" class="quiet" data-t="inv.back"></button>
+          <button id="inv-back" type="button" class="quiet" data-t="inv.back" data-t-label="inv.backLabel"></button>
+          <!-- One Share button (task B17): a small menu with Copy link and Copy embed code. -->
           <span class="inv-share">
-            <button id="share" type="button" class="quiet" data-t="inv.share"></button>
-            <button id="embed-copy" type="button" class="quiet" data-t="embed.copy"></button>
+            <button id="share-toggle" type="button" class="quiet" aria-expanded="false" aria-controls="share-menu" data-t="inv.share"></button>
+            <span id="share-menu" class="share-menu" role="group" data-t-label="inv.share" hidden>
+              <button id="share" type="button" class="quiet" data-t="inv.copyLink"></button>
+              <button id="embed-copy" type="button" class="quiet" data-t="embed.copy"></button>
+            </span>
           </span>
           <a id="embed-open" class="embed-open" href="./" target="_blank" rel="noopener" data-t="embed.open"></a>
         </div>
         <label class="sr-only" for="embed-code" data-t="embed.codeLabel"></label>
         <textarea id="embed-code" class="embed-code mono" rows="3" readonly hidden></textarea>
         <div class="object">
-          <p id="object-kind" class="object-kind eyebrow"></p>
           <h1 id="object-name" tabindex="-1"></h1>
-          <p id="object-coords" class="object-coords mono"></p>
-          <p id="object-status" class="stamps"></p>
+          <!-- What it is and how far, in plain words (task B17); coordinates, field and labels under the disclosure. -->
+          <p id="object-plain" class="object-plain"></p>
           <p id="loop-link-wrap" class="loop-link" hidden><a href="?page=loop" data-t="loop.link"></a></p>
+          <details id="object-about" class="more-info object-about">
+            <summary data-t="inv.about"></summary>
+            <p id="object-kind" class="object-kind eyebrow"></p>
+            <p id="object-coords" class="object-coords mono"></p>
+            <p id="object-status" class="stamps"></p>
+          </details>
           <span id="share-status" class="note" role="status"></span>
         </div>
       </header>
 
       <div id="observatory" class="stage" data-mode="blink">
+        <!-- What to look at (task B17), above the picture. -->
+        <p id="stage-caption" class="stage-caption" hidden></p>
         <section class="stage-view" data-t-label="viewer.label">
           <div id="plates" class="plates" data-mode="blink">
             <div id="frame-a" class="plate-frame">
@@ -247,6 +258,8 @@
         <label id="swipe-control" class="swipe-control" hidden><span data-t="swipe.label"></span>
           <input id="swipe" type="range" min="0" max="100" step="1" value="50">
         </label>
+        <!-- The finding (task B17), right under the picture: how far the object moved, with numbers from the files. -->
+        <p id="finding" class="finding" aria-live="polite" hidden></p>
         <div class="timebar glass" role="group" data-t-label="timebar.label">
           <div class="timebar-track">
             <button id="play" type="button" class="primary play-button"></button>
@@ -262,7 +275,6 @@
             <button id="colour-toggle" type="button" class="quiet colour-toggle" aria-pressed="false" data-t="colour.grayscale"></button>
             <!-- Task B12: the key number (the expected shift between A and B) stays in view; how to read the picture
                  sits behind a disclosure. -->
-            <p id="explain-key" class="explain explain-key" aria-live="polite"></p>
             <details id="explain-more" class="more-info explain-more">
               <summary data-t="viewer.howToLook"></summary>
               <p id="explain" class="explain"></p>

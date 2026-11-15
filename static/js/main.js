@@ -33,6 +33,7 @@ import { flyThen, homeShown, initSpace } from './space-ui.js';
 import { showLoopPage } from './loop-ui.js';
 import { loadPlanetX, renderHiddenRound } from './planetx-ui.js';
 import { DEPTH_PATH, glanceOf, readDepth } from './planetx.js';
+import { moonShare, plainLine } from './describe.js';
 import { loadBatch } from './batch-ui.js';
 import { isTourRunning, nextTourStep, runTour, shouldAutoStart, stopTour } from './tour.js';
 import {
@@ -40,7 +41,7 @@ import {
   selectBand, skyToPixel, visitsOf, wellCovered,
 } from './stack.js';
 import {
-  buildTargets, canonicalKey, findCoveringTarget, isLegacyOnly, isOpenable, isViewable, legacyPlaces,
+  buildTargets, canonicalKey, colourOf, findCoveringTarget, isLegacyOnly, isOpenable, isViewable, legacyPlaces,
 } from './targets.js';
 import { canvasToPlate, fullView, panBy, zoomAt } from './viewport.js';
 
@@ -276,13 +277,15 @@ function render() {
   document.body.dataset.layout = mode === 'side' ? 'compare' : 'one';
   describeStep(left);
   renderCaption(left, aStep, bStep);
-  // Task B12: the expected shift is the key number in view; how to read the picture sits under "How to look".
+  // How to read the picture sits under "How to look"; the finding (how far it moved) is right under the picture
+  // (task B17), with a chip saying the shift comes from the catalogue motion.
   $('explain').textContent = explainNow();
-  const key = mode !== 'blink' || state.playing ? rangeNote() : '';
-  if ($('explain-key').textContent !== key) {
-    $('explain-key').textContent = key;
-    $('explain-key').dataset.source = key ? t('rangeSource') : '';
+  const finding = rangeNote();
+  if ($('finding').textContent !== finding) {
+    $('finding').textContent = finding;
+    $('finding').dataset.source = finding ? t('rangeSource') : '';
   }
+  $('finding').hidden = !finding;
   markFilm();
   paintAmbient();
 }
@@ -920,7 +923,11 @@ function rangeNote() {
   const [aStep, bStep] = abSteps();
   if (speed < MIN_NOTED_SPEED || !aStep || !bStep || aStep === bStep) return '';
   const years = Math.abs(yearOf(bStep) - yearOf(aStep));
-  return t('rangeNote', { years: number(years, years >= 10 ? 0 : 1), shift: number(speed * years, 0) });
+  const shift = speed * years;
+  // The target by its heading name; a star the camera was locked on by its own name.
+  const name = object === state.target ? $('object-name').textContent : object?.name;
+  if (!name) return t('rangeNote', { years: number(years, years >= 10 ? 0 : 1), shift: number(shift, 0) });
+  return t('finding.moved', { years: number(years, years >= 10 ? 0 : 1), name, shift: number(shift, 0), moon: moonShare(shift) });
 }
 
 function setBand(band, { write = true } = {}) {
@@ -1116,6 +1123,15 @@ function fillFovSelect(fov) {
   $('fov').value = String(fov);
 }
 
+/** The plain line under the name and the caption above the picture (task B17), from the target's kind and distance. */
+function describePlain(entry, kind, { picture = true } = {}) {
+  $('object-plain').textContent = plainLine({ kind: entry?.kind ?? kind, distance: entry?.map?.distance ?? null });
+  const family = colourOf(entry?.kind ?? kind);
+  const caption = !entry || !picture ? '' : family === 'solar' ? t('stage.captionSolar') : family === 'variable' ? t('stage.captionVariable') : t('stage.captionStar');
+  $('stage-caption').textContent = caption;
+  $('stage-caption').hidden = !caption;
+}
+
 function describeTarget(target, fov) {
   const { ra, dec } = centreOf(target);
   const entry = app.entry;
@@ -1135,6 +1151,7 @@ function describeTarget(target, fov) {
   }
   $('object-status').replaceChildren(...chips);
   $('loop-link-wrap').hidden = entry?.key !== 'pluto';
+  describePlain(entry, target.kind ?? 'custom');
   document.title = `${$('object-name').textContent} · ${t('site.title')}`;
 }
 
@@ -1777,6 +1794,8 @@ function describeEntryOnly(entry) {
   $('object-coords').textContent = '';
   $('object-status').replaceChildren(chip(t(`role.${entry.role}`)), chip(t(`data.${entry.dataStatus}`)), chip(predictionLabel(entry)));
   $('loop-link-wrap').hidden = entry.key !== 'pluto';
+  // No picture to look at (not available yet): no "watch the ring" caption.
+  describePlain(entry, entry.kind, { picture: false });
   document.title = `${entryName(entry)} · ${t('site.title')}`;
 }
 
@@ -1853,12 +1872,28 @@ function applyLocation({ push = false } = {}) {
   }
 }
 
+/** The Share menu (task B17): Copy link and Copy embed code. */
+function setShareMenu(open) {
+  $('share-menu').hidden = !open;
+  $('share-toggle').setAttribute('aria-expanded', String(open));
+}
+
+let copiedTimer = 0;
+/** After a copy the Share button reads "Copied" for 2 seconds; the status line says the same to screen readers. */
+function flashCopied() {
+  clearTimeout(copiedTimer);
+  $('share-toggle').textContent = t('inv.copiedShort');
+  copiedTimer = setTimeout(() => { $('share-toggle').textContent = t('inv.share'); }, 2000);
+}
+
 async function share() {
   writeUrl();
+  setShareMenu(false);
   $('embed-code').hidden = true;
   try {
     await navigator.clipboard.writeText(location.href);
     $('share-status').textContent = t('inv.copied');
+    flashCopied();
   } catch {
     $('share-status').textContent = t('inv.copyFailed');
   }
@@ -1870,10 +1905,12 @@ async function copyEmbed() {
   const code = embedCode(new URL(`${location.pathname}${search}`, location.href).href, t('embed.frameTitle', { name: $('object-name').textContent }));
   const box = $('embed-code');
   box.value = code;
+  setShareMenu(false);
   try {
     await navigator.clipboard.writeText(code);
     box.hidden = true;
     $('share-status').textContent = t('embed.copied');
+    flashCopied();
   } catch {
     box.hidden = false;
     box.select();
@@ -2222,6 +2259,17 @@ function bindControls() {
     });
   }
   $('inv-back').addEventListener('click', () => showPage('home'));
+  $('share-toggle').addEventListener('click', () => setShareMenu($('share-menu').hidden));
+  document.addEventListener('click', (event) => {
+    if (!$('share-menu').hidden && !event.target.closest('.inv-share')) setShareMenu(false);
+  });
+  // Escape closes the Share menu first (capture phase, before the page's own Escape closes the investigation).
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || $('share-menu').hidden) return;
+    event.stopPropagation();
+    setShareMenu(false);
+    $('share-toggle').focus();
+  }, true);
   $('share').addEventListener('click', share);
   $('embed-copy').addEventListener('click', copyEmbed);
   for (const button of document.querySelectorAll('.panel-nav button')) {

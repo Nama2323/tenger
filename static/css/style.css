@@ -1185,6 +1185,17 @@ body[data-layout="compare"] .plate-frame { width: min(50cqw - 6px, 100cqh); }
 .segment button[aria-pressed="true"] { background: rgba(var(--accent-rgb), 0.16); color: var(--accent); }
 .segment button[aria-disabled="true"] { border: 0; text-decoration: line-through; text-decoration-color: rgba(141, 155, 176, 0.6); }
 .explain { flex: 1 1 260px; min-width: 0; color: var(--muted); font-size: 13.5px; line-height: 1.4; }
+/* The target view for a first-time visitor (task B17). */
+.object-plain { font-size: 16px; color: var(--text); margin: 0; }
+.object-about > summary { font-size: 13.5px; }
+.object-about[open] { display: grid; gap: 6px; }
+.inv-share { position: relative; }
+.share-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 40; display: grid; gap: 4px; min-width: 200px; padding: var(--s1); background: #0b111e; border: 1px solid var(--border-strong); border-radius: var(--radius); box-shadow: var(--shadow); }
+.share-menu[hidden] { display: none; }
+.share-menu button { justify-content: flex-start; text-align: left; }
+.stage-caption { margin: 0; text-align: center; font: 600 15px/1.35 var(--font-head); color: var(--text); }
+.finding { margin: 0; font: 600 clamp(17px, 1.9vw, 21px)/1.4 var(--font-head); color: var(--text); }
+.finding[data-source]:not([data-source=""])::after { content: attr(data-source); display: inline-block; margin-left: 8px; padding: 1px 8px; border: 1px solid var(--border-strong); border-radius: 999px; font: 500 12px var(--font-text); color: var(--muted); vertical-align: 2px; }
 .explain-key { color: var(--text); font-weight: 600; }
 .changed-finding { font-weight: 600; }
 .explain-key:empty { display: none; }
