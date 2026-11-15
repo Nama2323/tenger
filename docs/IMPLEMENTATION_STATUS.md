@@ -2215,8 +2215,9 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - The Investigate background is rgb(5, 7, 13). Back ("All targets") returns to Home.
   - Screenshots: `docs/screens/b27a-barnard-open-{1280,390}.png`.
   - `node --test tests/*.mjs`: 265 pass.
-- **Not verified**:
-  - That rendering actually stops while a target is open and restarts after Back, with Home's controls working again.
-  - The WebGL draw counter read 0 even on Home in headless Chrome, so it cannot show a pause.
-  - The in-app browser was hidden, so it drew no animation frames.
-  - The pause and resume are therefore checked by code only (the observer and `setPaused`). They need a look with a visible browser.
+- **Pause and resume, checked by Session B on the Mac's GPU** (headless Chrome with `--use-angle=metal --enable-gpu`, counting WebGL `drawArrays`/`drawElements` calls per second). My own headless run used software GL, where the counter read 0 even on Home.
+  - On Home's first screen: 2,700 draws/s, and the scene visibly turns.
+  - With Barnard's Star opened from its chip, after the flight: 0 draws/s, and `elementFromPoint(1000, 400)` is not in `#space3d`.
+  - After `history.back()`: 2,469 draws/s, turning again, with hero mode back on.
+  - "Watch Barnard's Star move" is under its centre and opens Barnard's Star again. A point on the scene outside the text lands in `#space3d`, so drag-to-turn reaches it.
+  - No exceptions.
