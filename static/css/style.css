@@ -2251,3 +2251,9 @@ body.embed .panel-title { top: 0; }
 .challenge-form input { min-height: var(--tap); }
 .challenge-form .note { margin: 0; }
 .challenge-actions { display: flex; flex-wrap: wrap; gap: var(--s1); margin: 0; }
+
+/* Task B27a: an open target covers the live 3D scene completely: an opaque view, and the scene, its controls,
+   labels, time bar, colour key and captions hidden (not just faded) and out of reach until Back or All targets. */
+body[data-page="investigate"] .page-investigate { background: var(--bg); }
+body[data-page="investigate"] .page-home .home-stage :is(.space3d, .space3d *, .space-tools, .space-hud, .space-time, .map-caption.space-3d-only, .map-key, .console-left),
+body[data-page="investigate"] .page-home .home-hero { visibility: hidden !important; pointer-events: none !important; }

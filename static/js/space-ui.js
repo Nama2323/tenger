@@ -75,6 +75,8 @@ function setMode(mode, { shown = mode === '2d' } = {}) {
 }
 
 function stop3d() {
+  state.pauseWatch?.disconnect();
+  state.pauseWatch = null;
   state.hero?.dispose();
   state.hero = null;
   state.time?.dispose();
@@ -219,6 +221,12 @@ async function start3d() {
         return;
       }
       state.controller = controller;
+      // Task B27a: while a target is open (the investigation covers Home), the scene draws nothing.
+      const pauseWhileInvestigating = () => controller.setPaused(document.body.dataset.page === 'investigate');
+      state.pauseWatch?.disconnect();
+      state.pauseWatch = new MutationObserver(pauseWhileInvestigating);
+      state.pauseWatch.observe(document.body, { attributes: true, attributeFilter: ['data-page'] });
+      pauseWhileInvestigating();
       setMode('3d', { shown: true });
       controller.resize();
       state.time = createTimeControl({ controller, host: $('space3d'), reducedMotion: prefersReducedMotion() });

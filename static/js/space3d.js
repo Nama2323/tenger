@@ -361,6 +361,8 @@ export function createSpace(host, options) {
   const frameTimes = [];
   let judging = !reducedMotion;
   let alive = true;
+  /** Task B27a: no frames while an investigation covers the scene. */
+  let paused = false;
   let size = { width: 1, height: 1 };
 
   /** A body the camera then follows: seen from outside its orbit, to one side and above, at its flight distance. */
@@ -505,7 +507,7 @@ export function createSpace(host, options) {
   }
 
   function requestRender() {
-    if (!frame && alive) frame = requestAnimationFrame(tick);
+    if (!frame && alive && !paused) frame = requestAnimationFrame(tick);
   }
 
   function go(view, { then = null, duration = FLIGHT_MS } = {}) {
@@ -713,6 +715,16 @@ export function createSpace(host, options) {
       requestRender();
     },
     render: requestRender,
+    /** Task B27a: stops drawing (an open target covers the scene) and starts again when it is closed. */
+    setPaused(on) {
+      paused = Boolean(on);
+      if (paused && frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
+      if (!paused) requestRender();
+    },
+    isPaused: () => paused,
     resize,
     dispose() {
       alive = false;

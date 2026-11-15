@@ -2201,3 +2201,22 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - No page in the take showed "TENGER", "SPHEREx Blink" or "pythonhack000".
   - The contact sheet and eight sampled frames show the cursor in shots 1–6 and none on the title card.
 - Re-make with `node docs/screens/demo/make-video.mjs` (about 1 minute). No page of the site was changed.
+
+### Bug fix B27a, 15 Nov 2026 (done by Session A at the user's request): an open target covers the 3D scene
+
+- **Cause**: since B25, Home (still on screen, inert, behind an investigation) is the live 3D scene. Nothing covered it, so its controls, labels and planets showed around and through the Investigate view.
+- **Fix**, changing nothing else:
+  - `static/css/style.css` (block at the end): with `body[data-page="investigate"]`, the Investigate view has an opaque `var(--bg)` background. The 3D host and all its labels, the 3D tools (Reset view, Top view, Fly to, 2D view), the HUD, the time bar, the 3D caption, the colour key, the left console and the first screen get `visibility: hidden` and `pointer-events: none`.
+  - `static/js/space3d.js`: the controller gains `setPaused(on)` and `isPaused()`. While paused, `requestRender` schedules no frame and a pending frame is cancelled; un-pausing requests a frame.
+  - `static/js/space-ui.js`: once the 3D view starts, a `MutationObserver` on `body[data-page]` pauses the scene while the page is `investigate` and resumes it otherwise. `stop3d` disconnects it.
+- **Checks** (headless Chrome with software WebGL; the 3D view started, with its canvas present):
+  - At 1280, 768 and 390, with Barnard's Star, WISE 0855 and Pluto open, no 3D element is visible.
+  - A grid of `elementFromPoint` probes every 20–25 px over the whole view hit nothing inside Home.
+  - The Investigate background is rgb(5, 7, 13). Back ("All targets") returns to Home.
+  - Screenshots: `docs/screens/b27a-barnard-open-{1280,390}.png`.
+  - `node --test tests/*.mjs`: 265 pass.
+- **Not verified**:
+  - That rendering actually stops while a target is open and restarts after Back, with Home's controls working again.
+  - The WebGL draw counter read 0 even on Home in headless Chrome, so it cannot show a pause.
+  - The in-app browser was hidden, so it drew no animation frames.
+  - The pause and resume are therefore checked by code only (the observer and `setPaused`). They need a look with a visible browser.
