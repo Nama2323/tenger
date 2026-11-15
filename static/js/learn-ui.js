@@ -181,7 +181,8 @@ function renderLesson(lesson) {
     ]),
     el('header', { class: 'lesson-head' }, [
       // The printed sheet names the site it came from (shown only on paper; task B14).
-      el('p', { class: 'print-brand', text: t('learn.printBrand', { site: t('site.title'), url: t('site.url') }) }),
+      // The team's navy logo for white paper, then the address (shown only when printed).
+      el('p', { class: 'print-brand' }, [el('img', { src: 'img/vestigium-logo-navy.png', alt: t('site.title'), width: '121', height: '30' }), el('span', { text: t('site.url') })]),
       el('p', { class: 'eyebrow', text: t('learn.meta', {
         n: String(index), grades: content.record?.gradeBand ?? t('learn.gradeDefault'), minutes: String(LESSON_MINUTES[lesson.id]),
       }) }),

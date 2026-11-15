@@ -39,17 +39,27 @@ test('the README is titled Vestigium and keeps the tenger address only as the re
   assert.ok(!OLD.test(readme), 'README.md names TENGER');
 });
 
-test('the logo is one file: header, favicon and manifest use img/logo.svg; its renders exist', () => {
+// The team's logo files (task B27 logo swap): copied unchanged into static/img/, each used where its README says.
+test('the header, tab, home-screen and manifest icons and the printed lessons use the team logo files', () => {
   const html = read('static/index.html');
-  assert.match(html, /<img class="brand-mark" src="img\/logo\.svg"/);
-  assert.match(html, /<link rel="icon" href="img\/logo\.svg" type="image\/svg\+xml">/);
-  assert.match(html, /<link rel="apple-touch-icon" href="img\/apple-touch-icon\.png">/);
-  assert.ok(JSON.parse(read('static/site.webmanifest')).icons.some((icon) => icon.src === 'img/logo.svg'));
-  assert.ok(read('static/img/logo.svg').startsWith('<svg'));
-  for (const [path, width, height] of [['static/img/apple-touch-icon.png', 180, 180], ['static/og.png', 1200, 630]]) {
+  assert.match(html, /<img class="brand-logo" src="img\/vestigium-logo-white\.png" alt="Vestigium"/);
+  assert.match(html, /<link rel="icon" href="img\/favicon\.svg" type="image\/svg\+xml">/);
+  assert.match(html, /<link rel="icon" href="img\/favicon-32\.png" sizes="32x32" type="image\/png">/);
+  assert.match(html, /<link rel="apple-touch-icon" href="img\/favicon-180\.png">/);
+  const icons = JSON.parse(read('static/site.webmanifest')).icons.map((icon) => [icon.src, icon.sizes]);
+  assert.deepEqual(icons, [['img/favicon-192.png', '192x192'], ['img/favicon-512.png', '512x512']]);
+  assert.match(read('static/js/learn-ui.js'), /img\/vestigium-logo-navy\.png/);
+  for (const [path, width, height] of [
+    ['static/img/vestigium-logo-white.png', 712, 176], ['static/img/vestigium-logo-navy.png', 712, 176], ['static/img/favicon-32.png', 32, 32],
+    ['static/img/favicon-180.png', 180, 180], ['static/img/favicon-192.png', 192, 192], ['static/img/favicon-512.png', 512, 512], ['static/og.png', 1200, 630],
+  ]) {
     assert.ok(existsSync(new URL(path, ROOT)), path);
     const png = readFileSync(new URL(path, ROOT));
     assert.equal(png.readUInt32BE(16), width, `${path} width`);
     assert.equal(png.readUInt32BE(20), height, `${path} height`);
+  }
+  for (const path of ['static/img/favicon.svg', 'static/img/vestigium-mark-white.svg']) {
+    const svg = read(path);
+    assert.ok(svg.startsWith('<svg') && !/script|href|foreignObject/i.test(svg), path);
   }
 });

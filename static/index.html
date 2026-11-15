@@ -20,10 +20,12 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Vestigium showing Barnard's Star in two infrared images, AllWISE from 2010 and NASA SPHEREx from 2026, side by side.">
   <meta name="twitter:card" content="summary_large_image">
-  <!-- The logo lives in one file, img/logo.svg (header, favicon, manifest). apple-touch-icon.png and og.png are
-       rendered from it; re-render them after swapping the logo. -->
-  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <!-- The team's logo, from the team's files in img/ (unchanged): header vestigium-logo-white.png, tab icons
+       favicon.svg and favicon-32.png, home-screen icon favicon-180.png, manifest favicon-192/512.png, printed
+       lessons vestigium-logo-navy.png. og.png is a screenshot of the site, re-rendered after a logo change. -->
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="img/favicon-180.png">
   <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -35,8 +37,7 @@
 
   <header class="topbar">
     <a id="logo" class="brand" href="./" data-page-link="home">
-      <img class="brand-mark" src="img/logo.svg" alt="" width="30" height="30">
-      <span data-t="site.title"></span>
+      <img class="brand-logo" src="img/vestigium-logo-white.png" alt="Vestigium" width="121" height="30">
     </a>
     <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-t="nav.menu"></button>
     <nav id="site-nav" class="nav" data-t-label="nav.label">

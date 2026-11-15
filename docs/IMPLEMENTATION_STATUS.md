@@ -2221,3 +2221,38 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - After `history.back()`: 2,469 draws/s, turning again, with hero mode back on.
   - "Watch Barnard's Star move" is under its centre and opens Barnard's Star again. A point on the scene outside the text lands in `#space3d`, so drag-to-turn reaches it.
   - No exceptions.
+
+- **Not verified**:
+  - That rendering actually stops while a target is open and restarts after Back, with Home's controls working again.
+  - The WebGL draw counter read 0 even on Home in headless Chrome, so it cannot show a pause.
+  - The in-app browser was hidden, so it drew no animation frames.
+  - The pause and resume are therefore checked by code only (the observer and `setPaused`). They need a look with a visible browser.
+
+### Task B27 (logo), 15 Nov 2026: the team's Vestigium logo
+
+- **Files.** The team's files are copied unchanged from `vestigium-logo.zip` into `static/img/`, one place, as
+  B14 set up (each file checked to be byte-identical to the zip):
+  - `vestigium-logo-white.png` (712×176), `vestigium-logo-navy.png` (712×176), `vestigium-mark-white.svg`;
+  - `favicon.svg`, `favicon-32.png`, `favicon-180.png`, `favicon-192.png`, `favicon-512.png`.
+
+  The SVGs were checked: no scripts or outside links. B14's stand-ins `img/logo.svg` and
+  `img/apple-touch-icon.png` are removed.
+- **Where each file is used:**
+  - Header: `vestigium-logo-white.png`, ring and wordmark together, 30 px tall (26 px on phones), alt "Vestigium".
+    It replaces the old icon and text; at 390 it sits 121 px clear of Menu, so the mark-plus-text fallback was
+    not needed.
+  - Browser tab: `favicon.svg` and `favicon-32.png`.
+  - Home screen (apple-touch-icon): `favicon-180.png`.
+  - Web manifest: `favicon-192.png` and `favicon-512.png`.
+  - Printed lessons: `vestigium-logo-navy.png` beside the site address.
+  - `og.png` was re-rendered from the site (now showing the logo and the B27a target view), 256 colours, 107 KB.
+    The demo video's title card uses the white logo.
+- **Checks.**
+  - At 390 and 1280 on 2× screens, the logo needs 52 and 60 device pixels of height and the file has 176, so it
+    stays sharp.
+  - Every icon and the manifest load (HTTP 200). The printed lesson header shows the navy logo. No console errors.
+  - `tests/brand.test.mjs` now checks the new wiring (header, tab, home-screen and manifest icons, print logo,
+    PNG sizes, clean SVGs) and still checks that no visible text says TENGER. 265 tests pass.
+  - Screenshots: `docs/screens/b27-header-390-2x.png`, `b27-header-1280-2x.png` and `b27-print-header.png`.
+  - The tab icon itself cannot be seen in headless Chrome, so that check is the icon files loading, not a look at
+    a real tab.

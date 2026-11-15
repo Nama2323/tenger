@@ -266,7 +266,9 @@ details.more-info > p, details.more-info > ul, details.more-info > div { margin-
   letter-spacing: 0.06em;
 }
 .brand:hover { color: var(--accent); }
-.brand-mark { width: 30px; height: 30px; flex: none; }
+/* The team's logo (ring and wordmark, 712×176 px, so sharp at 2× too): about 30 px tall, 26 px on phones. */
+.brand-logo { display: block; height: 30px; width: auto; flex: none; }
+@media (max-width: 720px) { .brand-logo { height: 26px; } }
 /* The site's name on printed lessons only (task B14). */
 .print-brand { display: none; }
 .nav { display: flex; gap: 4px; margin-left: auto; }
@@ -1519,7 +1521,8 @@ body[data-lesson]:not([data-lesson=""]) .page-learn > .page-head { display: none
   body[data-page="learn"] .exercises li { min-height: 50mm; }
   body[data-page="learn"] .exercises li::marker { color: #000; }
   body[data-page="learn"] .lesson a { text-decoration: none; }
-  body[data-page="learn"] .print-brand { display: block; font-size: 9pt; letter-spacing: 0.04em; border-bottom: 1px solid #999; padding-bottom: 2mm; margin-bottom: 2mm; }
+  body[data-page="learn"] .print-brand { display: flex; align-items: center; gap: 3mm; font-size: 9pt; letter-spacing: 0.04em; border-bottom: 1px solid #999; padding-bottom: 2mm; margin-bottom: 2mm; }
+  body[data-page="learn"] .print-brand img { height: 8mm; width: auto; }
   body[data-page="learn"] .lesson a::after { content: " (" attr(href) ")"; font-size: 9pt; }
   body[data-page="learn"] .answer-key { display: block; break-before: page; }
   body[data-page="learn"] .answer-key h3 { margin-bottom: 8mm; }
