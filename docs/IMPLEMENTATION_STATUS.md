@@ -1934,3 +1934,51 @@ Session B was told before the work started (B14 rename and B16 Home are rebased 
 - Re-make in about a minute with `node docs/screens/demo/make-video.mjs`. The script serves this checkout's
   `static/` itself; the docs/screens/demo README lists the shots and sources. No page of the site was changed for
   this task.
+
+### Task B20, 15 Nov 2026 (done by Session A at the user's request; Beat the physics for a first-time player)
+
+Session B was told and stayed off the game files. Only the game page and its strings changed.
+- **Top** (`game.headline`, `game.leadShort`):
+  - The headline is "Can you guess where it goes next?", followed by one line telling the player to tap the next position.
+  - The round picker is three plain buttons ordered by difficulty: "Barnard's Star · Easy", "Epsilon Indi B · Medium", "Pluto · Hard" (`game.js roundDifficulty`).
+  - The trial-type chips moved into each round's closed "About this round", led by "Practice run" for the stars or "Real test" for Pluto. The earlier chips ("Retrospective demo", "Blind", "Not counted as prospective"), the task and the trial note are kept there.
+- **Chart first**:
+  - The round title is "Where will Barnard's Star be on 21 Aug 2026?", with the date in words from `reveal_t_mjd`. The chart follows directly.
+  - "How to predict", the timeline and the training table moved below the chart.
+  - At 390×844 the whole chart (479–811 px) is on the first screen.
+- **Easy mode** (on by default; the Easy / Hard switch sits beside the chart):
+  - The track is joined in date order with an arrowhead, and the visit dates are labelled.
+  - Hints 1 and 2 are drawn and written out without being asked. Hint 2's ruler has month ticks ("1 mo" …) and ends in a hollow circle labelled with the target date.
+  - Pluto adds "Pluto loops once a year because Earth moves. Why Pluto loops" (link to `?page=loop`).
+  - Hard mode hides the arrowhead, the hint arrow and the ruler; its hints work as before.
+- **Controls**:
+  - A compass (N, E) and a scale bar ("2″ (the Moon is 1,800″ wide)") replace the axis titles and tick numbers.
+  - A tap places the marker, and a second tap moves it.
+  - The number boxes and arrow buttons are in a closed "Type it or use keys instead"; arrow keys on the chart still work.
+  - "Check my guess" replaces "Lock in my guess" and stays disabled until a marker is placed. It plays the reveal in the fixed order (straight line, then model, then real position, 0.7 s apart, none under reduced motion).
+- **Result**:
+  - The result opens with "You were X away. The straight line was Y away, and our physics Z.", using the round file's positions.
+  - Stars follow: ★★★ inside the model's 95% oval (the round's `cov_arcsec2` and `region_d2`), ★★ closer than the straight line, ★ otherwise.
+  - Then come "Try the next round" (easy → medium → hard → back to easy) and "Play this round again".
+  - The verdict, the score table (its player row says "You (Easy mode)" or "You (Hard mode[, n hints])"), the official result, the star rule, the explanation and the score rule are in a closed "Scores and details". The mark legend is under "What the marks mean".
+- **Answer-leak rule**:
+  - `preRevealState` gains an `easy` part (scale bar, month ticks, target date). The existing leak test and the new `tests/game-easy.test.mjs` confirm that moving the model, baseline and actual positions changes nothing drawn before the reveal, and that no drawn pair equals an answer.
+  - `roundStars` and `scoreRound` are called only from `showResults()`.
+- **Test** `tests/game-easy.test.mjs` (5 tests):
+  - the Easy-mode leak check above;
+  - the star rules;
+  - the straight-line and physics errors match the scoreboard (within 0.01″ or 1 part in 10⁵; Pluto's 19,870″ differs by 0.05″ between the round file's offsets and the verification);
+  - the title, picker, difficulty and scale-bar strings.
+- **Results**: `node --test tests/*.mjs`: 260 pass, 0 fail, before and after the rebase onto B21 (`c610187`); the keyboard flow passed again after the rebase.
+- **Browser checks** (headless Chrome at exact sizes):
+  - At 360/390/768/1280 the page width equals the viewport width.
+  - Keyboard: Tab to the chart, arrows place and move the marker, and Enter checks. The plain line and stars appear, and focus moves to "Try the next round", which opens Epsilon Indi B.
+  - A second tap moves the marker, with one marker on the chart.
+  - Hard mode removes the hint arrow, the ruler and the track arrowhead; Hint 1 still works on request.
+  - Pluto's Easy line links to `?page=loop`.
+- **Screenshots**: `docs/screens/b20-before-game-{390,1280}.png`, `b20-before-game-result-{390,1280}.png`, `b20-after-game-{390,1280}.png` (before a guess), `b20-after-game-result-{390,1280}.png` (after the reveal).
+- **Limits**:
+  - Visit dates are labelled per group of dots (one SPHEREx visit), not per dot: Epsilon Indi B has 18 dots in a few visits.
+  - Dates use the en-GB short month ("27 Sept 2026").
+  - The hidden-planet round (`planetx-ui.js`) is unchanged.
+  - Not checked on a real phone.

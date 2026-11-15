@@ -2136,3 +2136,34 @@ body.embed .panel-title { top: 0; }
 .rv-inset-pane .rv-test-region { stroke-dasharray: 5 4; }
 .rv-zoom-mark { fill: none; stroke: var(--text); stroke-width: 1.5; }
 .rv-zoom-link { stroke: var(--text); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.8; }
+
+/* ---------- Task B20: Beat the physics for a first-time player ---------- */
+.round-picker button { min-height: var(--tap); font-weight: 600; }
+.round-picker button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.page-game .round-head h2 { font-size: 20px; }
+.game-plot .track-easy { stroke: rgba(230, 237, 247, 0.75); stroke-width: 2; }
+.game-plot .track-head { fill: rgba(230, 237, 247, 0.9); }
+.game-plot .game-compass line { stroke: var(--text); stroke-width: 1.5; }
+.game-plot .game-compass text { fill: var(--text); font: 700 12px var(--font-text); }
+.game-plot .game-scale line { stroke: var(--text); stroke-width: 2.5; }
+.game-plot .game-scale text { fill: var(--text); font: 11.5px var(--font-text); }
+.game-plot .hint-label { font-size: 11.5px; }
+.mode-switch { display: inline-flex; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); overflow: hidden; }
+.mode-switch .mode-option { min-height: var(--tap); border: 0; border-radius: 0; background: var(--raise); color: var(--muted); padding: 0 var(--s2); font-weight: 600; }
+.mode-switch .mode-option[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.mode-switch .mode-option:disabled { opacity: 0.6; }
+.easy-note { margin: 0; color: var(--muted); font-size: 14px; }
+.plain-result { margin: 0; font-size: 17px; line-height: 1.45; font-weight: 600; }
+.stars { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1); margin: 0; }
+.star-marks { font-size: 30px; letter-spacing: 2px; color: var(--star); line-height: 1; }
+.star-words { color: var(--text); }
+.round-next { display: flex; flex-wrap: wrap; gap: var(--s1); margin: 0; }
+.round-side { display: grid; gap: 12px; align-content: start; }
+.page-game .page-head .lead { max-width: 52ch; }
+@media (max-width: 720px) {
+  .page-game .page-head h1 { font-size: 26px; }
+  .page-game .page-head .lead { font-size: 15px; margin-top: 4px; }
+  .round-picker { gap: 6px; }
+  .round-picker button { padding: 0 12px; font-size: 14px; }
+}
+.mode-switch { justify-self: start; }

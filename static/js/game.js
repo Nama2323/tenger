@@ -223,14 +223,64 @@ export function hintRuler(round, stepDays = 30) {
  */
 export function preRevealState(round) {
   const origin = lastMeasurement(round);
+  const view = guessView(round);
   return {
-    view: guessView(round),
+    view,
     training: byTime(round).map((point) => ({ ...toOffset(origin, point), t_mjd: point.t_mjd })),
     clusters: dateClusters(round),
     motion: trainingMotion(round),
     daysToTarget: daysToTarget(round),
     hints: { direction: hintDirection(round), ruler: hintRuler(round) },
+    // Task B20, Easy mode: the scale bar and the ruler's month ticks come from the same training-only view and ruler.
+    easy: { scaleArcsec: scaleBarArcsec(view.east[1] - view.east[0]), months: monthTicks(hintRuler(round)), targetMjd: round.reveal_t_mjd },
   };
+}
+
+// ---------- Task B20: Easy mode, difficulty and stars ----------
+
+/** A round scale-bar length (1, 2 or 5 × 10ⁿ arcsec) about a quarter of the view's width. */
+export function scaleBarArcsec(spanArcsec) {
+  if (!(spanArcsec > 0)) return null;
+  const target = spanArcsec / 4;
+  const power = 10 ** Math.floor(Math.log10(target));
+  return [5, 2, 1].map((step) => step * power).find((value) => value <= target * (1 + 1e-9)) ?? power;
+}
+
+/** The ruler's 30-day ticks as months (1, 2, 3 …), from the training-only ruler. */
+export const monthTicks = (ruler) => (ruler ? ruler.ticks.map((tick) => ({ ...tick, months: Math.round(tick.days / 30) })) : []);
+
+/** How hard a round is for a first-time player, by target (the stars drift; Pluto loops). */
+const DIFFICULTY = { barnard: 'easy', epsindib: 'medium', pluto: 'hard' };
+export const DIFFICULTY_ORDER = ['easy', 'medium', 'hard'];
+export function roundDifficulty(targetKey, type) {
+  if (DIFFICULTY[targetKey]) return DIFFICULTY[targetKey];
+  return type === 'solar' ? 'hard' : 'medium';
+}
+
+/**
+ * Whether a guess lies inside the frozen model's 95% oval (the round's model.cov_arcsec2 and region_d2). Only called
+ * after the reveal: it reads the model. null when the round gives no oval.
+ */
+export function insideModelOval(round, guess) {
+  const cov = round?.model?.cov_arcsec2;
+  const d2 = round?.model?.region_d2;
+  if (!isPosition(guess) || !isPosition(round?.model) || !Array.isArray(cov) || !Number.isFinite(d2)) return null;
+  const [[a, b], [c, d]] = cov;
+  const det = a * d - b * c;
+  if (!(det > 0)) return null;
+  const east = guess.east_arcsec - round.model.east_arcsec;
+  const north = guess.north_arcsec - round.model.north_arcsec;
+  const value = (d * east * east - (b + c) * east * north + a * north * north) / det;
+  return value <= d2;
+}
+
+/** ★★★ inside the physics oval, ★★ closer than the straight line, ★ otherwise (after the reveal). */
+export function roundStars(round, guess, result) {
+  if (insideModelOval(round, guess) === true) return 3;
+  const player = result?.errors?.player;
+  const baseline = result?.errors?.baseline;
+  if (Number.isFinite(player) && Number.isFinite(baseline) && player < baseline) return 2;
+  return 1;
 }
 
 /** Time and value ranges for a scalar round: training points to the reveal date; values padded the same way. */

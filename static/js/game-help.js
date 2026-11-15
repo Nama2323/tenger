@@ -18,6 +18,12 @@ const words = (text) => document.createTextNode(text);
 const dateOf = (mjd) => formatUtc(mjdToDate(mjd), { time: false });
 export const HINT_COUNT = 3;
 
+/** "21 Aug 2026" from an MJD (UTC): the date in words for titles and the ruler's end (task B20). */
+export function wordDate(mjd) {
+  if (!Number.isFinite(mjd)) return '—';
+  return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(mjdToDate(mjd));
+}
+
 /** "2025-08-10", or "2025-08-10 – 08-16" for a group of dots over several days (the year again if it changes). */
 export function clusterDate({ start, end }) {
   const [first, last] = [dateOf(start), dateOf(end)];
@@ -174,11 +180,13 @@ export function hintOverlay(round, shown, { offsetToPlot, span }) {
     ruler.ticks.forEach((tick, index) => {
       const at = offsetToPlot(tick);
       nodes.push(svg('line', { x1: at.x - nx * 5, y1: at.y - ny * 5, x2: at.x + nx * 5, y2: at.y + ny * 5, class: 'hint-tick' }));
-      if ((index + 1) % every === 0) nodes.push(svg('text', { x: at.x + nx * 10, y: at.y + ny * 10 + 4, class: 'hint-label', 'text-anchor': anchor }, [words(t('game.hint2.tick', { days: String(tick.days) }))]));
+      // Month ticks (every 30 days), labelled "1 mo", "2 mo" … (task B20).
+      if ((index + 1) % every === 0) nodes.push(svg('text', { x: at.x + nx * 10, y: at.y + ny * 10 + 4, class: 'hint-label', 'text-anchor': anchor }, [words(t('game.hint2.tickMonth', { n: String(Math.round(tick.days / 30)) }))]));
     });
+    // The ruler ends in a hollow circle labelled with the target date: where a straight line would put it then.
     nodes.push(
-      svg('circle', { cx: end.x, cy: end.y, r: 4, class: 'hint-end' }),
-      svg('text', { x: end.x + nx * 12, y: end.y + ny * 12 + 4, class: 'hint-label hint-label-end', 'text-anchor': anchor }, [words(t('game.hint2.end'))]),
+      svg('circle', { cx: end.x, cy: end.y, r: 8, class: 'hint-end' }),
+      svg('text', { x: end.x + nx * 16, y: end.y + ny * 16 + 4, class: 'hint-label hint-label-end', 'text-anchor': anchor }, [words(wordDate(round.reveal_t_mjd))]),
     );
   }
   return nodes;

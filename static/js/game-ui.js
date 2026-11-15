@@ -4,10 +4,10 @@
 import { covarianceEllipse } from './coords.js';
 import { $, chip, dataTable, details, el, formatNumber, formatUtc, withUnit } from './dom.js';
 import {
-  checkRound, dateClusters, errorUnit, fromOffset, isMagnitude, lastMeasurement, physicsLost, readBest, revealView, roundKind, roundType, saveBest,
-  scalarView, scoreRound, ticks, toOffset,
+  checkRound, dateClusters, DIFFICULTY_ORDER, errorUnit, fromOffset, isMagnitude, lastMeasurement, physicsLost, readBest, revealView, roundDifficulty,
+  roundKind, roundStars, roundType, saveBest, scalarView, scaleBarArcsec, scoreRound, ticks, toOffset,
 } from './game.js';
-import { clusterDate, explainResult, HINT_COUNT, hintBody, hintOverlay, howToBox, timelineStrip } from './game-help.js';
+import { angleText, clusterDate, explainResult, HINT_COUNT, hintBody, hintOverlay, howToBox, timelineStrip, wordDate } from './game-help.js';
 import { has, t } from './i18n.js';
 import { categoryChip, categoryNote, exampleChip, prospectiveChip, trialStatusChip } from './labels.js';
 import { mjdToDate } from './stack.js';
@@ -21,11 +21,17 @@ const STAGES = ['guess', 'locked', 'baseline', 'model', 'actual'];
 const NEXT_LABEL = { locked: 'game.showBaseline', baseline: 'game.showModel', model: 'game.showActual' };
 const FROM_ARCSEC = { arcsec: 1, arcmin: 1 / 60, deg: 1 / 3600 };
 const SVG_NS = 'http://www.w3.org/2000/svg';
+const ARROW_ID = 'track-head';
 
 /** Everything the page needs, set by main.js. */
 let context = null;
 /** The round being played. */
 let play = null;
+/** Task B20: Easy mode (on by default) draws the track's arrowhead and hints 1–2 without being asked. */
+let easyMode = true;
+/** The automatic reveal after "Check my guess": straight line, then the model, then the real position. */
+let revealTimer = null;
+const REVEAL_STEP_MS = 700;
 
 const storage = () => {
   try {
@@ -41,6 +47,13 @@ function svg(name, attributes = {}, text) {
     if (value !== null && value !== undefined) node.setAttribute(key, String(value));
   }
   if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+/** An SVG group holding child nodes (svg() takes text, not children). */
+function group(attributes, children) {
+  const node = svg('g', attributes);
+  node.append(...children);
   return node;
 }
 
@@ -130,18 +143,31 @@ function drawAxes(plot, geo) {
   const { round } = play;
   const factor = displayFactor(round);
   if (play.kind === 'position') {
+    // Task B20: a faint grid, a compass (N up, E left) and a scale bar in arcseconds instead of axis titles.
     for (const tick of ticks(geo.view.east[0] * factor, geo.view.east[1] * factor)) {
       const { x } = geo.offsetToPlot({ east: tick / factor, north: geo.view.north[0] });
       plot.append(svg('line', { x1: x, x2: x, y1: PAD, y2: SIZE - PAD, class: 'grid' }));
-      plot.append(svg('text', { x, y: SIZE - PAD + 16, class: 'tick', 'text-anchor': 'middle' }, formatNumber(tick, tick % 1 ? 1 : 0)));
     }
     for (const tick of ticks(geo.view.north[0] * factor, geo.view.north[1] * factor)) {
       const { y } = geo.offsetToPlot({ east: geo.view.east[0], north: tick / factor });
       plot.append(svg('line', { x1: PAD, x2: SIZE - PAD, y1: y, y2: y, class: 'grid' }));
-      plot.append(svg('text', { x: PAD - 6, y: y + 4, class: 'tick', 'text-anchor': 'end' }, formatNumber(tick, tick % 1 ? 1 : 0)));
     }
-    plot.append(svg('text', { x: PAD, y: SIZE - 8, class: 'axis' }, t('game.axisEast', { unit: t(`unit.${errorUnit(round)}`) })));
-    plot.append(svg('text', { x: 6, y: PAD - 14, class: 'axis' }, t('game.axisNorth', { unit: t(`unit.${errorUnit(round)}`) })));
+    const cx = SIZE - 22;
+    const cy = 30;
+    plot.append(group({ class: 'game-compass', 'aria-hidden': 'true' }, [
+      svg('line', { x1: cx, y1: cy + 14, x2: cx, y2: cy - 6 }), svg('line', { x1: cx, y1: cy + 14, x2: cx - 20, y2: cy + 14 }),
+      svg('text', { x: cx, y: cy - 10, 'text-anchor': 'middle' }, t('game.compassN')),
+      svg('text', { x: cx - 30, y: cy + 18, 'text-anchor': 'middle' }, t('game.compassE')),
+    ]));
+    const length = scaleBarArcsec(geo.span);
+    if (length) {
+      const pixels = (length / geo.span) * INNER;
+      const y = SIZE - 16;
+      plot.append(group({ class: 'game-scale' }, [
+        svg('line', { x1: PAD, x2: PAD + pixels, y1: y, y2: y }),
+        svg('text', { x: PAD + pixels + 8, y: y + 4 }, t('game.scaleBar', { length: `${new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(length)}″` })),
+      ]));
+    }
     return;
   }
   for (const tick of ticks(geo.view.time[0], geo.view.time[1], 4)) {
@@ -201,7 +227,17 @@ function drawPlot() {
   drawAxes(plot, geo);
   const training = [...round.training_points].sort((a, b) => a.t_mjd - b.t_mjd);
   const trainingXY = training.map((point) => (play.kind === 'position' ? geo.toPlot(point) : geo.toPlot(point, point.t_mjd)));
-  plot.append(svg('polyline', { points: trainingXY.map(({ x, y }) => `${x},${y}`).join(' '), class: 'track' }));
+  if (easyMode && play.kind === 'position') {
+    const head = svg('marker', { id: ARROW_ID, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 8, markerHeight: 8, orient: 'auto-start-reverse' });
+    head.append(svg('path', { d: 'M0,0L10,5L0,10Z', class: 'track-head' }));
+    const defs = svg('defs');
+    defs.append(head);
+    plot.append(defs);
+  }
+  plot.append(svg('polyline', {
+    points: trainingXY.map(({ x, y }) => `${x},${y}`).join(' '), class: `track${easyMode ? ' track-easy' : ''}`,
+    'marker-end': easyMode && play.kind === 'position' ? `url(#${ARROW_ID})` : null,
+  }));
   trainingXY.forEach(({ x, y }) => plot.append(marker('training', x, y)));
   // Every group of dots (one SPHEREx visit) carries its dates.
   for (const cluster of dateClusters(round)) {
@@ -327,7 +363,16 @@ function lockGuess() {
   renderControls();
   drawPlot();
   $('round-status').textContent = `${t('game.locked')} ${guessText()}`;
-  $('reveal-next').focus({ preventScroll: true });
+  // Task B20: "Check my guess" plays the reveal in its fixed order, one part at a time: the straight line, the
+  // frozen model with its oval, then the real position and the result (no waiting under reduced motion).
+  const delay = globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 0 : REVEAL_STEP_MS;
+  const step = () => {
+    revealTimer = null;
+    if (!play || play.stage === 'actual' || play.stage === 'guess') return;
+    revealNext();
+    if (play.stage !== 'actual') revealTimer = setTimeout(step, delay);
+  };
+  revealTimer = setTimeout(step, delay);
 }
 
 function revealNext() {
@@ -338,7 +383,10 @@ function revealNext() {
   renderControls();
   const messages = { baseline: 'game.saidBaseline', model: 'game.saidModel', actual: 'game.saidActual' };
   $('round-status').textContent = t(messages[next]);
-  if (next === 'actual') showResults();
+  if (next === 'actual') {
+    showResults();
+    $('next-round')?.focus({ preventScroll: true });
+  }
 }
 
 // ---------- Hints (position rounds) ----------
@@ -378,10 +426,17 @@ function hintsPanel() {
 
 // ---------- Results ----------
 
+/** "You (Easy mode)", "You (Hard mode)" or "You (Hard mode, 2 hints)". */
+function playerLabel() {
+  if (play.easy) return t('game.who.playerEasy');
+  if (!play.hints) return t('game.who.playerHard');
+  return t(play.hints === 1 ? 'game.who.playerHardHint' : 'game.who.playerHardHints', { n: String(play.hints) });
+}
+
 function resultRow(who, result, unit) {
   const best = result.best.includes(who);
   return el('tr', { class: best ? 'is-best' : '' }, [
-    el('th', { scope: 'row' }, [legendIcon(who), who === 'player' && play.hints ? t(play.hints === 1 ? 'game.who.playerHint' : 'game.who.playerHints', { n: String(play.hints) }) : t(`game.who.${who}`)]),
+    el('th', { scope: 'row' }, [legendIcon(who), who === 'player' ? playerLabel() : t(`game.who.${who}`)]),
     el('td', { text: withUnit(result.errors[who], unit, 3) }),
     el('td', { text: result.scores[who] === null ? '—' : String(result.scores[who]) }),
     el('td', { text: best ? t('game.closest') : '' }),
@@ -420,18 +475,32 @@ function showResults() {
   const official = verification?.state === 'ok'
     ? el('p', { class: 'stamps' }, [el('span', { text: t('game.official') }), trialStatusChip(verification.doc.status)])
     : el('p', { class: 'panel-note', text: t('game.noVerification') });
-  // At a glance (task B12): the verdict, the raw errors and the official result; the explanation and the score
-  // rule under Details.
+  // Task B20: the plain result first (three distances and stars), then the next round; the verdict, the score
+  // table, the official result, the explanation and the score rule under Details.
+  const perArcsec = { arcsec: 1, arcmin: 1 / 60, deg: 1 / 3600 }[unit] ?? 1;
+  const away = (value) => (play.kind === 'position' ? angleText(value / perArcsec, unit) : withUnit(value, unit, 2));
+  const stars = play.kind === 'position' ? roundStars(round, play.guess, result) : null;
   $('round-results').replaceChildren(...[
-    el('h3', { text: t('game.resultsTitle') }),
-    el('p', { class: 'verdict', text: verdict(result) }),
-    el('div', { class: 'table-scroll' }, el('table', { class: 'results-table' }, [
-      el('caption', { text: t('game.tableCaption') }),
-      el('thead', {}, el('tr', {}, [t('game.colWho'), t('game.colError'), t('game.colScore'), ''].map((text) => el('th', { scope: 'col', text })))),
-      el('tbody', {}, ['player', 'baseline', 'model'].map((who) => resultRow(who, result, unit))),
-    ])),
-    official,
+    el('p', { class: 'plain-result', text: t('game.plainResult', { player: away(result.errors.player), baseline: away(result.errors.baseline), model: away(result.errors.model) }) }),
+    stars ? el('p', { class: `stars stars-${stars}` }, [
+      el('span', { class: 'star-marks', 'aria-hidden': 'true', text: '★'.repeat(stars) + '☆'.repeat(3 - stars) }),
+      el('span', { class: 'sr-only', text: t('game.starsLabel', { n: String(stars) }) }),
+      el('span', { class: 'star-words', text: t(`game.stars.${stars}`) }),
+    ]) : null,
+    el('p', { class: 'round-next' }, [
+      el('button', { id: 'next-round', type: 'button', class: 'primary', text: t('game.nextRound'), onclick: () => startRound(nextRoundId(round.round_id)) }),
+      el('button', { id: 'play-again', type: 'button', class: 'quiet', text: t('game.again'), onclick: () => startRound(round.round_id) }),
+    ]),
     details([
+      el('h3', { text: t('game.resultsTitle') }),
+      el('p', { class: 'verdict', text: verdict(result) }),
+      el('div', { class: 'table-scroll' }, el('table', { class: 'results-table' }, [
+        el('caption', { text: t('game.tableCaption') }),
+        el('thead', {}, el('tr', {}, [t('game.colWho'), t('game.colError'), t('game.colScore'), ''].map((text) => el('th', { scope: 'col', text })))),
+        el('tbody', {}, ['player', 'baseline', 'model'].map((who) => resultRow(who, result, unit))),
+      ])),
+      official,
+      stars ? el('p', { class: 'note', text: t('game.starsRule') }) : null,
       explainResult(round, play.type, play.name, result),
       physicsLost(result) ? el('p', { class: 'note', text: t('game.physicsMayLose') }) : null,
       el('p', { class: 'note', text: result.scored
@@ -439,7 +508,7 @@ function showResults() {
         : t('game.noScore') }),
       play.regionShown === false ? el('p', { class: 'note', text: t('game.noRegion') }) : null,
       best !== null ? el('p', { class: 'note', text: t('game.best', { best: String(best) }) }) : null,
-    ]),
+    ], { label: t('game.resultDetails') }),
     actualImage(),
   ].filter(Boolean));
 }
@@ -455,7 +524,9 @@ function renderControls() {
   const label = NEXT_LABEL[play.stage];
   $('reveal-next').hidden = !label;
   if (label) $('reveal-next').textContent = t(label);
-  $('play-again').hidden = play.stage !== 'actual';
+  if ($('mode-easy')) {
+    for (const id of ['mode-easy', 'mode-hard']) $(id).disabled = !guessing;
+  }
   const reached = STAGES.indexOf(play.stage);
   for (const item of document.querySelectorAll('#reveal-steps li')) {
     const done = reached >= STAGES.indexOf(item.dataset.stage) && !(item.dataset.stage === 'locked' && guessing);
@@ -480,11 +551,31 @@ function guessInputs() {
   const nudges = play.kind === 'position'
     ? [nudgeButton('game.nudgeNorth', 0, 1), nudgeButton('game.nudgeEast', 1, 0), nudgeButton('game.nudgeWest', -1, 0), nudgeButton('game.nudgeSouth', 0, -1)]
     : [nudgeButton(isMagnitude(play.round.units) ? 'game.nudgeBrighter' : 'game.nudgeUp', 0, 1), nudgeButton(isMagnitude(play.round.units) ? 'game.nudgeFainter' : 'game.nudgeDown', 0, -1)];
-  return el('fieldset', { id: 'guess-inputs', class: 'guess-inputs' }, [
+  // Task B20: the number boxes and the arrow buttons sit in a closed Details; arrow keys on the chart still work.
+  return details(el('fieldset', { id: 'guess-inputs', class: 'guess-inputs' }, [
     el('legend', { text: t('game.yourGuess') }),
     el('div', { class: 'guess-fields' }, fields),
     el('div', { class: `nudges nudges-${play.kind}` }, nudges),
-  ]);
+  ]), { label: t('game.typeOrKeys'), className: 'guess-details' });
+}
+
+/** The Easy / Hard switch: two buttons, the current one pressed. */
+function modeSwitch() {
+  const button = (mode) => el('button', {
+    id: `mode-${mode}`, type: 'button', class: 'mode-option', 'aria-pressed': String((mode === 'easy') === easyMode),
+    text: t(`game.mode.${mode}`), onclick: () => setMode(mode === 'easy'),
+  });
+  return el('div', { class: 'mode-switch', role: 'group', 'aria-label': t('game.mode.label') }, [button('easy'), button('hard')]);
+}
+
+/** Easy mode shows hints 1 and 2 at once; Hard mode starts with none, as before. Only while guessing. */
+function setMode(easy) {
+  if (!play || play.stage !== 'guess' || easy === easyMode) return;
+  easyMode = easy;
+  const guess = play.guess;
+  renderRound();
+  if (guess) setGuess(guess, { announce: false });
+  $(easy ? 'mode-easy' : 'mode-hard')?.focus({ preventScroll: true });
 }
 
 function legend() {
@@ -516,43 +607,71 @@ function renderRound() {
   const date = dateOf(round.reveal_t_mjd);
   const count = String(round.training_points.length);
   const row = context.scoreboardRow(round.trial_id);
+  const position = play.kind === 'position';
+  play.easy = easyMode && position;
+  play.hints = play.easy ? 2 : 0;
+  // Task B20: the title asks the question with the date in words; the trial type ("Practice run" or "Real test")
+  // and the earlier chips sit in the round's Details. The chart comes right after the title.
+  const storyKey = round.category === 'prospective_unexposed' ? 'story.chip.real' : round.category === 'retrospective_holdout' ? 'story.chip.practice' : null;
   $('round-area').replaceChildren(el('article', { class: 'round', 'aria-labelledby': 'round-title' }, [
     el('header', { class: 'round-head' }, [
-      el('h2', { id: 'round-title', text: t(play.kind === 'position' ? 'game.titlePosition' : 'game.titleScalar', { name, date }) }),
-      el('p', { class: 'stamps' }, [exampleChip(round), categoryChip(round.category), prospectiveChip(row)]),
-      // At a glance (task B12): the task in one line; the full task and what the trial type means under Details.
-      el('p', { id: 'round-task', class: 'round-task', text: t(play.kind === 'position' ? 'game.taskPositionShort' : 'game.taskScalarShort', { name, date }) }),
-      details([
-        el('p', { text: t(play.kind === 'position' ? 'game.taskPosition' : 'game.taskScalar', { name, date, count }) }),
-        el('p', { class: 'note', text: categoryNote(round.category) }),
-      ]),
+      el('h2', { id: 'round-title', text: position ? t('game.titleWhere', { name, date: wordDate(round.reveal_t_mjd) }) : t('game.titleScalar', { name, date }) }),
+      exampleChip(round),
     ]),
-    howToBox(play.type, name),
     el('div', { class: 'round-grid' }, [
       el('figure', { class: 'round-figure' }, [
         el('div', { id: 'round-plot', class: 'round-plot' }),
-        el('figcaption', {}, [legend(), el('p', { id: 'game-keys', class: 'note', text: t('game.keys') })]),
-        timelineStrip(round),
+        el('figcaption', {}, [
+          el('p', { id: 'game-keys', class: 'note', text: t('game.keys') }),
+          details(legend(), { label: t('game.legendDetails') }),
+        ]),
       ]),
       el('div', { class: 'round-side' }, [
-        guessInputs(),
-        hintsPanel(),
-        el('button', { id: 'lock-guess', type: 'button', class: 'glow', text: t('game.lock'), onclick: lockGuess, disabled: true }),
+        position ? modeSwitch() : null,
+        play.easy && play.type === 'solar' ? el('p', { class: 'easy-note' }, [`${t('game.easy.pluto')} `, el('a', { href: '?page=loop', text: t('game.easy.plutoLink') })]) : null,
+        el('button', { id: 'lock-guess', type: 'button', class: 'glow', text: t('game.check'), onclick: lockGuess, disabled: true }),
+        el('p', { id: 'round-status', class: 'round-status', role: 'status' }),
+        el('div', { id: 'round-results', class: 'round-results' }),
         el('ol', { id: 'reveal-steps', class: 'reveal-steps' }, ['locked', 'baseline', 'model', 'actual']
           .map((stage) => el('li', { dataset: { stage }, text: t(`game.step.${stage}`) }))),
         el('button', { id: 'reveal-next', type: 'button', class: 'glow', onclick: revealNext, hidden: true }),
-        el('p', { id: 'round-status', class: 'round-status', role: 'status' }),
-        el('div', { id: 'round-results', class: 'round-results' }),
-        el('button', { id: 'play-again', type: 'button', text: t('game.again'), onclick: () => startRound(round.round_id), hidden: true }),
+        hintsPanel(),
+        guessInputs(),
       ]),
     ]),
+    details([
+      el('p', { class: 'stamps' }, [storyKey ? chip(t(storyKey), `chip-story chip-category-${round.category}`) : null, categoryChip(round.category), prospectiveChip(row)]),
+      el('p', { id: 'round-task', class: 'round-task', text: t(position ? 'game.taskPositionShort' : 'game.taskScalarShort', { name, date }) }),
+      el('p', { text: t(position ? 'game.taskPosition' : 'game.taskScalar', { name, date, count }) }),
+      el('p', { class: 'note', text: categoryNote(round.category) }),
+    ], { label: t('game.roundDetails') }),
+    howToBox(play.type, name),
+    timelineStrip(round),
     trainingTable(),
   ]));
+  // Easy mode: hints 1 and 2 are already written out in the hints panel.
+  if (play.easy) {
+    for (let n = 1; n <= 2; n += 1) {
+      $('hint-list').append(el('article', { class: 'game-hint', id: `hint-${n}`, tabindex: '-1' }, [
+        el('h4', { text: t(`game.hint${n}.title`) }), ...hintBody(n, round, play.type, play.name, errorUnit(round)),
+      ]));
+    }
+    $('hint-next').textContent = hintButtonLabel();
+    $('hint-count').textContent = t('game.hints.used', { n: String(play.hints), total: String(HINT_COUNT) });
+  }
   renderControls();
   drawPlot();
 }
 
+/** The round after this one in the picker's order (easy → medium → hard), then back to the first. */
+function nextRoundId(roundId) {
+  const ids = context.rounds.map((entry) => entry.doc.round_id);
+  return ids[(ids.indexOf(roundId) + 1) % ids.length];
+}
+
 function startRound(roundId) {
+  if (revealTimer) clearTimeout(revealTimer);
+  revealTimer = null;
   const entry = context.rounds.find((item) => item.doc.round_id === roundId) ?? context.rounds[0];
   const targetKey = entry.bundle?.trial?.doc?.target_key ?? null;
   play = {
@@ -566,10 +685,12 @@ function startRound(roundId) {
   context.onSelect(entry.doc.round_id);
 }
 
+const difficultyOf = (entry) => roundDifficulty(entry.bundle?.trial?.doc?.target_key, roundType(entry.doc, entry.bundle?.trial?.doc?.target_key));
+
 function pickerLabel(entry, sameQuantity = false) {
   const name = context.nameOf(entry.bundle?.trial?.doc?.target_key) ?? entry.doc.trial_id;
-  // Task B12: when every round asks the same kind of question, the target's name is enough.
-  if (sameQuantity) return name;
+  // Task B20: "Barnard's Star · Easy": the name and how hard the round is, no chips.
+  if (sameQuantity) return t('game.pickerLevel', { name, level: t(`game.level.${difficultyOf(entry)}`) });
   return t('game.pickerLabel', { name, quantity: has(`quantity.${entry.doc.quantity}`) ? t(`quantity.${entry.doc.quantity}`) : entry.doc.quantity });
 }
 
@@ -579,7 +700,8 @@ function pickerLabel(entry, sameQuantity = false) {
  */
 export function renderGamePage(options) {
   context = options;
-  const playable = options.rounds.filter((entry) => checkRound(entry.doc).ok);
+  const playable = options.rounds.filter((entry) => checkRound(entry.doc).ok)
+    .sort((a, b) => DIFFICULTY_ORDER.indexOf(difficultyOf(a)) - DIFFICULTY_ORDER.indexOf(difficultyOf(b)));
   const problems = [
     ...options.skipped.map((item) => t('game.skipped', { path: item.path, reason: t(`state.${item.reason}`) })),
     ...options.rounds.filter((entry) => !checkRound(entry.doc).ok)
@@ -599,7 +721,7 @@ export function renderGamePage(options) {
   host.replaceChildren(
     el('nav', { id: 'round-picker', class: 'round-picker', 'aria-label': t('game.rounds') }, playable.map((entry) => el('button', {
       type: 'button', dataset: { round: entry.doc.round_id }, onclick: () => startRound(entry.doc.round_id), 'aria-pressed': 'false',
-    }, [pickerLabel(entry, new Set(playable.map((item) => item.doc.quantity)).size === 1), ' ', categoryChip(entry.doc.category)]))),
+    }, [pickerLabel(entry, new Set(playable.map((item) => item.doc.quantity)).size === 1)]))),
     ...problems.map((text) => el('p', { class: 'note warn', text })),
     el('div', { id: 'round-area' }),
   );
