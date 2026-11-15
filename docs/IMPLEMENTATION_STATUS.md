@@ -2698,3 +2698,34 @@ No login, no server and no storage. Only the game page and its strings changed; 
 
   `node --test` 291 pass.
 
+### Task B35, 15 Nov 2026: "More to explore" on Home (pictures only), no archive objects in public search
+
+- **Rows.** Under the 8 Famous target cards (unchanged), "More to explore" lists the search list's prepared objects,
+  grouped as in search: Fast stars (6), Galaxies (4), Nebulae (4), Star clusters (3). Each card has:
+  - its thumbnail;
+  - "Pictures only: no forecast";
+  - its one-line description (the search list's `hook_*` text).
+
+  Wide screens: the rows sit in the rail under the targets and the whole rail scrolls; all 8 targets stay visible
+  at 1280×800. Phones: a swipe row per group below the first screen, which is now 40 px short so the heading shows.
+  Code: `home.js` `exploreGroups`, `renderExplore`; `main.js` `placeExplore`.
+- **Click.** The same popup as a target: name, "Pictures only: no forecast" as its first line, then the
+  description, and "See the pictures" (Investigate, Blink). There is no 3D flight, since these objects are not in
+  the scene. That none of the 17 has a trial is checked against `scoreboard.json` and `index.json`.
+- **Public site.** All 17 were opened one by one on a github.io build (static files served as
+  `https://nama2323.github.io/tenger/` in headless Chrome). Each opened Investigate with its pictures drawn (A/B
+  dates, lit pixels), with no errors and no request to a server. None failed, so none is left out (`exploreGroups`
+  takes an exclusion list if one ever does).
+- **Search.** "More famous objects" (`names.js` CATALOG, loaded from the archive through our server) are not
+  listed on the public site, and a typed one gives the "needs the Vestigium server" note. With the local server they
+  stay, as before. On the github.io build the list shows Fast stars, Galaxies, Nebulae, Star clusters and NASA
+  challenge; locally it also shows More famous objects.
+- **Checks:**
+  - 1280 and 390: the new rows appear below the 8 cards, and Andromeda's card → popup → Investigate works.
+  - 360: no sideways overflow.
+  - No console errors.
+  - Lighthouse mobile on Home: 80, 80 and 81 (meets the rule, with a thin margin).
+  - `node --test` 295 pass (new `tests/explore-b35.test.mjs`).
+- **Screenshots:** `docs/screens/b35-home-1280.png`, `b35-home-390.png`, `b35-explore-390.png`,
+  `b35-popup-1280.png`.
+

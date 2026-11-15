@@ -11,7 +11,7 @@ import { parseCoordinates, separationDeg } from './coords.js';
 import { part as $, chip, dataTable, el, formatNumber, formatUtc, installVersionedFetch, prefersReducedMotion } from './dom.js';
 import {
   buildFovOptions, drawStarfield, entryName, famousEntries, famousLineOf, famousResultOf, famousThumb, fillCoordinates, formatDistance, kindLabel, placeMapLabels, predictionLabel,
-  renderHome, startBlinking, statusLabel,
+  renderExplore, renderHome, startBlinking, statusLabel,
 } from './home.js';
 import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
 import { findByName, searchMatches } from './names.js';
@@ -2002,6 +2002,10 @@ async function search(text) {
   }
   $('search-input').setAttribute('aria-invalid', 'false');
   const named = findByName(query, app.legacyPresets);
+  if (named && (named.category ?? 'more') === 'more' && !api.liveAvailable()) {
+    $('search-message').textContent = t('note.liveUnavailable');
+    return;
+  }
   if (named) {
     openNamed(named);
     return;
@@ -2062,7 +2066,8 @@ function searchRow(entry) {
 
 function renderSearchList() {
   const matches = searchMatches($('search-input').value, app.legacyPresets);
-  const groups = [...SEARCH_GROUPS, 'more'].flatMap((group) => {
+  // Task B35: "More famous objects" load from the archive through our server, so the public site leaves them out.
+  const groups = [...SEARCH_GROUPS, ...(api.liveAvailable() ? ['more'] : [])].flatMap((group) => {
     const members = matches.filter((entry) => (entry.category ?? 'more') === group);
     if (!members.length) return [];
     return [el('h3', { text: t(`category_${group}`) }), ...members.map(searchRow)];
@@ -2552,9 +2557,15 @@ function selectFamous(entry) {
   for (const card of document.querySelectorAll('.famous-card')) card.setAttribute('aria-pressed', String(card.dataset.key === entry.key));
   $('pop-thumb').replaceChildren(famousThumb(entry, thumbsOf(entry)));
   $('pop-name').textContent = entryName(entry);
-  $('pop-line').textContent = famousLineOf(entry, app.scoreboard);
-  // The result in plain words with the trial type, from scoreboard.json (task B29g).
-  $('pop-status').textContent = famousResultOf(entry, app.scoreboard).popup;
+  if (entry.role === 'place') {
+    // Task B35: a "More to explore" object has pictures and no trial; the popup says so first.
+    $('pop-line').textContent = t('explore.picturesOnly');
+    $('pop-status').textContent = has(`hook_${entry.key}`) ? t(`hook_${entry.key}`) : '';
+  } else {
+    $('pop-line').textContent = famousLineOf(entry, app.scoreboard);
+    // The result in plain words with the trial type, from scoreboard.json (task B29g).
+    $('pop-status').textContent = famousResultOf(entry, app.scoreboard).popup;
+  }
   const see = $('pop-see');
   see.disabled = !isOpenable(entry);
   see.textContent = t(isOpenable(entry) ? 'famous.see' : 'famous.notReady');
@@ -2614,7 +2625,17 @@ function renderFamousExtras() {
   for (const name of ['pointerdown', 'wheel', 'touchstart', 'keydown']) $('home-map').addEventListener(name, fade, { passive: true });
 }
 
+/** Task B35: "More to explore" sits in the rail on wide screens (it scrolls) and below the first screen on phones. */
+const PHONE_LAYOUT = '(max-width: 900px)';
+function placeExplore() {
+  const section = $('explore-more');
+  if (matchMedia(PHONE_LAYOUT).matches) {
+    if (section.parentElement !== $('page-home')) $('home-map').after(section);
+  } else if (section.parentElement !== $('famous')) $('famous').insertBefore(section, document.querySelector('.famous-foot'));
+}
+
 function bindFamous() {
+  matchMedia(PHONE_LAYOUT).addEventListener('change', placeExplore);
   // The Key's layer switches (task B29): each shows or hides one layer of the 3D scene at once.
   for (const button of document.querySelectorAll('#key-layers [data-layer]')) {
     button.addEventListener('click', () => {
@@ -2733,6 +2754,9 @@ async function start() {
     board: app.scoreboard,
   });
   renderFamousExtras();
+  // Task B35: more prepared objects, pictures only (all 17 open on the public site: checked on a github.io build).
+  renderExplore(app.allTargets.filter((entry) => entry.role === 'place'), thumbsOf, (entry) => selectFamous(entry));
+  placeExplore();
   delete $('page-home').dataset.loading;
   renderReserved((key) => (findEntry(key) ? entryName(findEntry(key)) : null));
   startSpace();

@@ -60,6 +60,11 @@ const TEXT = {
     'famous.see': 'See the pictures',
     'famous.close': 'Close and return to the whole view',
     'famous.card': '{name}: {line}. {result}.',
+    // Task B35: prepared objects with pictures and no trial.
+    'explore.title': 'More to explore',
+    'explore.picturesOnly': 'Pictures only: no forecast',
+    'explore.card': '{name}: {line}. {hook}.',
+    'explore.groupLabel': '{group}: {count} objects',
     'famous.cardShort': '{name}: {line}.',
     'famous.kind.faststar': 'fast-moving star',
     'famous.kind.star': 'star',

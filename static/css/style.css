@@ -2283,7 +2283,8 @@ body[data-page="investigate"] .page-home :is(.famous, .target-pop, .space-hint) 
    no touch (dragging scrolls the page); "Explore in 3D" gives full-screen control. */
 @media (max-width: 900px) {
   .page-home { position: relative; inset: auto; overflow: visible; }
-  .home-stage { height: calc(100svh - var(--chrome)); min-height: 540px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
+  /* Task B35: 40 px short of the screen, so the "More to explore" heading shows below the target row. */
+  .home-stage { height: calc(100svh - var(--chrome) - 40px); min-height: 540px; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; }
   .scene { position: absolute; inset: 0; }
   .space3d { position: absolute; inset: 0; border-radius: 0; }
   body:not(.exploring) .page-home .space3d { pointer-events: none; }
@@ -2355,4 +2356,28 @@ body[data-page="investigate"] .page-home :is(.famous, .target-pop, .space-hint) 
 .inv-foot { padding: 12px var(--s2) var(--s2); }
 @media (max-width: 900px) {
   .famous-foot { margin: 0; padding: 0 12px; }
+}
+
+/* ---------- More to explore (task B35): prepared objects, pictures only ---------- */
+/* Wide screens: the section sits in the Famous targets rail under the 8 cards, and the whole rail scrolls. */
+.famous { overflow-y: auto; overscroll-behavior: contain; }
+.famous > .famous-list { flex: none; overflow: visible; }
+.explore-more { display: grid; gap: 8px; margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--border); }
+.explore-groups { display: grid; gap: 10px; }
+.explore-group { display: grid; gap: 4px; }
+.explore-group-title { margin: 0 4px; font: 600 12.5px var(--font-head); color: var(--muted); }
+.explore-card { border-left-style: dashed; }
+.explore-card .explore-only { color: var(--hypothetical); font-weight: 600; }
+body[data-page="investigate"] .page-home .explore-more { visibility: hidden; }
+/* Phones: below the first screen, one swipe row per group. */
+@media (max-width: 900px) {
+  .famous { overflow: visible; }
+  #page-home > .explore-more { margin: 0; padding: 14px 0 24px; border-top: 1px solid var(--border); background: var(--bg); }
+  #page-home > .explore-more > .famous-title { margin: 0 12px; }
+  .explore-group-title { margin: 0 12px; }
+  .explore-list { display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; padding: 0 12px; scroll-snap-type: x mandatory; touch-action: pan-x pan-y; }
+  .explore-list::-webkit-scrollbar { display: none; }
+  .explore-list li { flex: none; scroll-snap-align: start; }
+  .explore-list .famous-card { width: 264px; min-height: 66px; }
+  body[data-page="home"] .page-home { padding-bottom: 0; }
 }

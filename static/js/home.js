@@ -252,6 +252,39 @@ export function drawStarfield(canvas = $('starfield')) {
 // ---------- Page ----------
 
 /** thumbsOf(entry) returns { kind, frames } prepared thumbnails or null. */
+/** Task B35: the search list's prepared groups (the five challenge targets are the Famous targets already). */
+export const EXPLORE_GROUPS = ['stars', 'galaxies', 'nebulae', 'clusters'];
+
+/**
+ * Prepared objects for "More to explore": the search list's places (targets.json) in the given groups, minus any
+ * whose pictures do not open on the public site (`excluded`, found by opening each on a github.io build).
+ */
+export function exploreGroups(places, excluded = []) {
+  return EXPLORE_GROUPS.map((group) => ({
+    group, members: places.filter((entry) => entry.legacy?.category === group && !excluded.includes(entry.key)),
+  })).filter((item) => item.members.length);
+}
+
+/** "More to explore": one row per group; each card has its thumbnail, "Pictures only: no forecast" and its line. */
+export function renderExplore(places, thumbsOf, onSelect, excluded = []) {
+  $('explore-groups').replaceChildren(...exploreGroups(places, excluded).map(({ group, members }) => el('section', { class: 'explore-group' }, [
+    el('h3', { class: 'explore-group-title', text: t(`category_${group}`) }),
+    el('ul', { class: 'famous-list explore-list', 'aria-label': t('explore.groupLabel', { group: t(`category_${group}`), count: String(members.length) }) }, members.map((entry) => {
+      const hook = has(`hook_${entry.key}`) ? t(`hook_${entry.key}`) : '';
+      const thumb = famousThumb(entry, thumbsOf(entry));
+      if (thumb.tagName === 'IMG') thumb.loading = 'lazy';
+      return el('li', {}, el('button', {
+        type: 'button', class: `famous-card explore-card colour-${entry.colour}`, 'data-key': entry.key, 'aria-pressed': 'false',
+        'aria-label': t('explore.card', { name: entryName(entry), line: t('explore.picturesOnly'), hook }),
+        onclick: () => onSelect(entry),
+      }, [
+        el('span', { class: 'famous-thumb', 'aria-hidden': 'true' }, thumb),
+        el('span', { class: 'famous-words', 'aria-hidden': 'true' }, [el('strong', { text: entryName(entry) }), el('small', { class: 'explore-only', text: t('explore.picturesOnly') }), el('small', { text: hook })]),
+      ]));
+    })),
+  ])));
+}
+
 export function renderHome({ entries, indexLoaded, thumbsOf, onOpen, onSelect, board = null }) {
   renderFamous(entries, thumbsOf, onSelect, board);
   renderMap(entries, indexLoaded, onOpen);
