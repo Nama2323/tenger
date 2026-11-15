@@ -2906,3 +2906,28 @@ No login, no server and no storage. Only the game page and its strings changed; 
   changed).
 - **Not verified:** phone widths. Chrome would not narrow below 1100 px, so the one-column layout under 900 px is
   untested.
+
+### Fix CF2, 16 Nov 2026 (Session A, at the user's request): live server only on the local machine
+- **Why:** the Space Apps project link is now the Cloudflare Pages copy, https://vestigium-82p.pages.dev. `liveAvailable()` in `static/js/api.js` only checked for `github.io`, so on pages.dev it returned true. Archive-only objects came back into search, Real sky could appear, and coordinate search called a server that does not exist there.
+- **Change:** `liveAvailable()` is true only for `LOCAL_HOSTS` = `localhost`, `127.0.0.1`, `[::1]`, `::1` (case-insensitive). Every other host behaves like the public site: github.io, pages.dev, a custom domain and a LAN address.
+  - It is the only hostname test in the site. Every caller already uses it: main.js's archive-only search group and objects, coordinate search, the Real sky button and panel, and the live API calls in api.js.
+  - home.js and skymap.js mention github.io only in comments. A new test fails if any other module starts testing the host itself.
+  - Unchanged on github.io (public) and localhost (live).
+  - **Changed for LAN addresses:** a phone opening `http://<mac-ip>:8765` now gets the public behaviour. The prepared targets all work; live search does not.
+- **tenger-dev now contains main:** before committing, `tenger-dev` was fast-forwarded to `origin/main` `aa8439c` (the merge of PR #1, which includes B37). This commit sits on top, so main can be updated by a plain fast-forward push. The `cloudflare-mirror` branch was left alone.
+- **Checks (real runs):**
+  - `node --test tests/`: 317 of 317 pass. `tests/live.test.mjs`:
+    - github.io, `vestigium-82p.pages.dev`, `cloudflare-mirror.vestigium-82p.pages.dev`, `vestigium.example.org` and `192.168.1.20` are public: `liveAvailable()` false, and five live calls each reject with `liveUnavailable` and fetch nothing;
+    - `localhost`, `127.0.0.1`, `[::1]` and `LOCALHOST` are live: a request to the same origin's `/api/observe`;
+    - no other module tests the host.
+  - Headless Chrome, a coordinate search for "10 00 24 +02 12 00" on Home:
+    - on `localhost` the Real sky button and panel are present, and the search calls `/api/observe` and `/api/job/…` (unchanged);
+    - on `172.20.10.3` (this Mac's LAN address, now public) there is no Real sky button or panel and **no `/api/` request**;
+    - neither host made any onrender.com request.
+  - **B37's sky view in Beat the physics, before the reveal** (Barnard's Star, 1280 and 390):
+    - **Swapped answers (headless):** the round was opened twice in one browser, the second time with the round files' `model`, `baseline` and `actual` replaced in the browser by far-away values (3 files swapped). The panel's text was identical both times, at both widths, with no console errors and no sideways scroll. The sky picture itself stays black in headless Chrome, so its pixel comparison proves nothing and is not counted.
+    - **Real GPU** (the app's browser, a fresh address): at the chart zoom only the yellow ring ("where SPHEREx last measured it", 29 Mar 2026, a training point) and the blue chart square are drawn. There is no forecast, straight-line or true-position marker, no console errors, and `scrollWidth` 390 at 390. `tests/game-sky.test.mjs` already checks that the ring and square come from the training points only.
+    - **Note (not from our answer files):** the panel says the IRSA survey picture blends observations from 24 Apr 2025 to 14 May 2026. That is after Barnard's last training point but before the round's target date (21 Aug 2026).
+    - At the chart zoom a diamond of the sky stayed black in the app's browser, apparently survey tiles not yet loaded there.
+  - Screenshots: `docs/screens/cf2-game-sky-barnard-{1280,390}.jpg`.
+- **Cloudflare copy:** at the time of the fix, https://vestigium-82p.pages.dev still served the old rule with build "dev", that is, main before this fix. It gets the fix when main is updated with this commit and Cloudflare rebuilds.
