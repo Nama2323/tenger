@@ -374,30 +374,32 @@
 
     <!-- ======================= Predictions ======================= -->
     <section id="page-predictions" class="page page-predictions" hidden data-loading aria-labelledby="predictions-title">
+      <!-- Task B12: the blind forecast's result is the headline, with three key numbers from scoreboard.json. -->
       <header class="page-head">
         <p class="eyebrow" data-t="ledger.eyebrow"></p>
         <h1 id="predictions-title" tabindex="-1" data-t="ledger.title"></h1>
+        <div id="ledger-glance" class="stat-tiles" hidden></div>
         <p class="lead" data-t="ledger.lead"></p>
-        <p class="planetx-link"><a href="?page=learn&amp;lesson=lab#measured" data-t="planetx.link"></a></p>
       </header>
       <p id="ledger-loading" class="note" role="status" data-t="loading"></p>
       <div id="ledger-source" class="ledger-source" role="note" hidden></div>
-      <section id="ledger-board" class="ledger-board glass" aria-labelledby="ledger-board-title"></section>
+      <section id="ledger-board" class="ledger-board" aria-labelledby="ledger-board-title"></section>
       <div id="ledger-batch-host" hidden></div>
       <section class="ledger-section" aria-labelledby="ledger-trials-title">
         <h2 id="ledger-trials-title" data-t="ledger.trialsTitle"></h2>
-        <p class="note" data-t="ledger.trialsLead"></p>
+        <details class="more-info"><summary data-t="ui.details"></summary><p class="note" data-t="ledger.trialsLead"></p></details>
         <div id="ledger-list" class="ledger-list"></div>
       </section>
       <section class="ledger-section" aria-labelledby="ledger-forecasts-title">
         <h2 id="ledger-forecasts-title" data-t="ledger.forecastsTitle"></h2>
-        <p class="note" data-t="ledger.forecastsLead"></p>
+        <details class="more-info"><summary data-t="ui.details"></summary><p class="note" data-t="ledger.forecastsLead"></p></details>
         <div id="ledger-forecast-list" class="ledger-list"></div>
       </section>
       <section id="ledger-seeonly-wrap" class="ledger-section" aria-labelledby="ledger-seeonly-title" hidden>
         <h2 id="ledger-seeonly-title" data-t="ledger.seeOnlyTitle"></h2>
         <div id="ledger-seeonly" class="ledger-list"></div>
       </section>
+      <p class="planetx-link"><a href="?page=learn&amp;lesson=lab#measured" data-t="planetx.link"></a></p>
     </section>
 
     <!-- ======================= Beat the physics ======================= -->

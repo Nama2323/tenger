@@ -5,6 +5,8 @@ import { has, t } from './i18n.js';
 
 export const categoryLabel = (category) => (has(`category.${category}`) ? t(`category.${category}`) : String(category ?? '—'));
 export const categoryNote = (category) => (has(`category.${category}.note`) ? t(`category.${category}.note`) : '');
+/** The full name of a trial type for the "what the trial types mean" lists, e.g. "Blind (prospective, unexposed)". */
+export const categoryTerm = (category) => (has(`category.${category}.term`) ? t(`category.${category}.term`) : categoryLabel(category));
 export const categoryChip = (category) => chip(categoryLabel(category), `chip-category-${category}`);
 export const trialStatusChip = (status) => chip(has(`trial.${status}`) ? t(`trial.${status}`) : String(status ?? '—'), `chip-trial-${status}`);
 export const exampleChip = (doc) => (doc?.example ? chip(t('example.tag'), 'chip-example') : null);

@@ -2,11 +2,11 @@
 // See-only targets, built only from the trial files Session A publishes (DATA-CONTRACT V1 §6–10 and V5).
 // Until real trial files exist, main.js hands this page the labelled development fixtures instead.
 import { covarianceEllipse } from './coords.js';
-import { $, chip, dataTable, el, formatNumber } from './dom.js';
+import { $, chip, dataTable, details, el, formatNumber, statTile } from './dom.js';
 import { has, t, tData } from './i18n.js';
-import { categoryLabel, categoryNote, exampleChip } from './labels.js';
+import { categoryLabel, categoryNote, categoryTerm, exampleChip } from './labels.js';
 import {
-  CATEGORIES, forecastModel, formatArcsec, isOpenForecast, ledgerTrialIds, niceLength, predictedOf, revealModel, scoreboardTable, sortByStatus,
+  CATEGORIES, forecastModel, formatArcsec, glanceModel, isOpenForecast, ledgerTrialIds, niceLength, predictedOf, revealModel, scoreboardTable, sortByStatus,
   trialLabels, trialStatus,
 } from './ledger.js';
 import { dateOfMjd, labelChips, receiptLine, residualTable, statusChip, utcText } from './ledger-parts.js';
@@ -112,7 +112,9 @@ function boardSection(data) {
     const key = bundle?.trial?.doc?.target_key;
     return key ? nameOf(key) : id;
   });
-  host.replaceChildren(
+  // The full table, its notes and the trial types sit under one closed "Details" (task B12); the stat tiles at the
+  // top of the page carry the key numbers.
+  host.replaceChildren(details([
     el('div', { class: 'board-head' }, [
       el('h2', { id: 'ledger-board-title', text: t('ledger.boardTitle') }),
       table.example ? exampleChip({ example: true }) : null,
@@ -134,14 +136,62 @@ function boardSection(data) {
       table.openForecasts ? el('li', { text: forecastNames.length ? t('ledger.boardOpen', { names: forecastNames.join(', ') }) : t('ledger.boardOpenNone') }) : null,
       el('li', { text: table.seeOnly.length ? t('ledger.boardSeeOnly', { names: table.seeOnly.map(nameOf).join(', ') }) : t('ledger.boardSeeOnlyNone') }),
     ]),
-    el('details', { class: 'category-notes' }, [
-      el('summary', { text: t('ledger.categoriesTitle') }),
-      el('dl', {}, CATEGORIES.flatMap((category) => [
-        el('dt', {}, chip(categoryLabel(category), `chip-category-${category}`)),
-        el('dd', { text: categoryNote(category) }),
-      ])),
-    ]),
-  );
+    el('h3', { class: 'category-title', text: t('ledger.categoriesTitle') }),
+    el('dl', { class: 'category-list' }, CATEGORIES.flatMap((category) => [
+      el('dt', {}, [chip(categoryLabel(category), `chip-category-${category}`), el('span', { class: 'sr-only', text: ` ${categoryTerm(category)}` })]),
+      el('dd', { text: `${categoryTerm(category)}: ${categoryNote(category)}` }),
+    ])),
+  ], { label: t('ledger.boardDetails'), className: 'board-details' }));
+}
+
+// ---------- At a glance: the headline and the key numbers (task B12) ----------
+
+/** "2 hits", "1 miss", "4 with too little data". */
+const counted = (status, n) => (has(`ledger.count.${status}.one`) ? t(`ledger.count.${status}.${n === 1 ? 'one' : 'many'}`, { n: String(n) }) : t('ledger.count.other', { n: String(n) }));
+
+/** "2 hits, 1 miss, 4 with too little data" from a list of statuses, results first. */
+function statusSummary(statuses) {
+  const order = ['hit', 'miss', 'waiting', 'insufficient_data', 'ambiguous', 'invalid_comparison'];
+  const counts = new Map();
+  for (const status of statuses) counts.set(status ?? 'other', (counts.get(status ?? 'other') ?? 0) + 1);
+  const rank = (status) => (order.includes(status) ? order.indexOf(status) : order.length);
+  return [...counts].sort((a, b) => rank(a[0]) - rank(b[0])).map(([status, n]) => counted(status, n)).join(', ');
+}
+
+function resultValue(tile) {
+  const parts = [tile.hit ? counted('hit', tile.hit) : null, tile.miss ? counted('miss', tile.miss) : null, tile.waiting ? counted('waiting', tile.waiting) : null].filter(Boolean);
+  return parts.length ? parts.join(t('ledger.tile.join')) : t('ledger.tile.none');
+}
+
+function glanceSection(data) {
+  const glance = glanceModel(data.boardDoc);
+  const host = $('ledger-glance');
+  if (!glance) {
+    host.hidden = true;
+    return;
+  }
+  const lead = glance.lead;
+  const leadName = lead ? nameOf(lead.targetKey) : null;
+  if (lead && Number.isFinite(lead.errorArcsec)) {
+    $('predictions-title').textContent = t(`ledger.headline.${lead.status}`, { name: leadName, error: `${formatNumber(lead.errorArcsec, 1)} ${t('unit.arcsecWord')}` });
+  }
+  const categoryBadge = (tile) => chip(categoryLabel(tile.category), `chip-category-${tile.category}`);
+  const tone = (tile) => (tile.hit && !tile.miss ? 'is-hit' : tile.miss && !tile.hit ? 'is-miss' : '');
+  host.replaceChildren(...glance.tiles.map((tile) => {
+    if (tile.id === 'batch') {
+      return statTile({
+        value: t('ledger.tile.kOfN', { k: String(tile.k), n: String(tile.n) }),
+        label: t('ledger.tile.batch', { unusable: String(tile.unusable) }),
+        badge: el('span', { class: 'stamps' }, [categoryBadge(tile), tile.pending ? chip(t('chip.pending'), 'chip-pending') : null]),
+        tone: tile.n && tile.k === tile.n ? 'is-hit' : '',
+      });
+    }
+    if (tile.id === 'blind') {
+      return statTile({ value: resultValue(tile), label: lead ? t('ledger.tile.blindOne', { name: leadName }) : t('ledger.tile.blind'), badge: categoryBadge(tile), tone: tone(tile) });
+    }
+    return statTile({ value: resultValue(tile), label: t('ledger.tile.retro', { unusable: String(tile.unusable) }), badge: categoryBadge(tile), tone: tone(tile) });
+  }), ...(glance.example ? [exampleChip({ example: true })] : []));
+  host.hidden = false;
 }
 
 // ---------- One card per trial ----------
@@ -177,8 +227,8 @@ function stamps(trial, row, extra = []) {
   return el('p', { class: 'stamps' }, [
     ...labelChips(trialLabels(trial)),
     ...extra,
-    trial?.confirmation_pending === true ? chip(t('ledger.confirmationPending'), 'chip-pending') : null,
-    trial?.exploratory === true ? chip(t('ledger.exploratory'), 'chip-pending') : null,
+    trial?.confirmation_pending === true ? chip(t('chip.pending'), 'chip-pending') : null,
+    trial?.exploratory === true ? chip(t('chip.exploratory'), 'chip-pending') : null,
     row?.counts_as_prospective === true ? chip(t('score.counts'), 'chip-trial-hit') : null,
     exampleChip(trial),
   ]);
@@ -215,18 +265,25 @@ function trialCard(card) {
   if (bundle.prediction?.state && !['ok', 'missing'].includes(bundle.prediction.state)) warnings.push(t('ledger.fileState', { file: 'prediction.json', state: t(`state.${bundle.prediction.state}`) }));
   if (bundle.verification?.state && !['ok', 'missing'].includes(bundle.verification.state)) warnings.push(t('ledger.fileState', { file: 'verification.json', state: t(`state.${bundle.verification.state}`) }));
   const reason = status.reasonKey ? tData(status.reasonKey, 'explain.unknown') : null;
+  // At a glance: name, result and chips, and the error as the key number; the rest under "Details" (task B12).
+  const modelError = Number.isFinite(row?.model_error_arcsec) ? formatArcsec(row.model_error_arcsec) : null;
+  const baselineError = Number.isFinite(row?.baseline_error_arcsec) ? formatArcsec(row.baseline_error_arcsec) : null;
   return el('article', { class: `ledger-card glass status-${status.status ?? 'none'}`, id: `trial-${bundle.id}` }, [
     cardHead(trial, bundle.id, statusChip(status.status)),
     stamps(trial, row),
-    predictedLine(trial, prediction, threshold),
-    receiptLine(bundle.receipt),
-    trial.confirmation_pending === true ? el('p', { class: 'note', text: t('ledger.confirmationPendingNote') }) : null,
-    status.status === 'waiting' ? el('p', { class: 'note', text: t('ledger.waitingNote', { date: dateOfMjd(trial.holdout?.t_mjd) }) }) : null,
-    reason ? el('p', { class: 'panel-note', text: reason }) : null,
-    verification ? residualTable(verification.residuals, {
-      position, limit: Number.isFinite(threshold) ? Math.sqrt(threshold) : null, unit: verification.observed?.unit ?? '',
-    }) : null,
-    verification ? el('p', { class: 'note', text: t('ledger.checkedOn', { utc: utcText(verification.revealed_utc) }) }) : null,
+    modelError ? el('p', { class: 'card-key' }, el('strong', { text: baselineError ? t('ledger.cardOff', { model: modelError, baseline: baselineError }) : t('ledger.cardOffModel', { model: modelError }) })) : null,
+    details([
+      predictedLine(trial, prediction, threshold),
+      receiptLine(bundle.receipt),
+      trial.exploratory === true ? el('p', { class: 'note', text: t('ledger.exploratory') }) : null,
+      trial.confirmation_pending === true ? el('p', { class: 'note', text: t('ledger.confirmationPendingNote') }) : null,
+      status.status === 'waiting' ? el('p', { class: 'note', text: t('ledger.waitingNote', { date: dateOfMjd(trial.holdout?.t_mjd) }) }) : null,
+      reason ? el('p', { class: 'panel-note', text: reason }) : null,
+      verification ? residualTable(verification.residuals, {
+        position, limit: Number.isFinite(threshold) ? Math.sqrt(threshold) : null, unit: verification.observed?.unit ?? '',
+      }) : null,
+      verification ? el('p', { class: 'note', text: t('ledger.checkedOn', { utc: utcText(verification.revealed_utc) }) }) : null,
+    ]),
     verification ? whyFor(bundle.id) : null,
     ...warnings.map((text) => el('p', { class: 'panel-note warn', text })),
     el('div', { class: 'card-actions' }, [
@@ -357,15 +414,17 @@ function forecastCard(card) {
   return el('article', { class: 'ledger-card forecast-card glass', id: `trial-${bundle.id}` }, [
     cardHead(trial, bundle.id, insufficient ? statusChip('insufficient_data') : chip(t('ledger.status.open'), 'chip-trial chip-trial-open')),
     stamps(trial, row),
-    predictedLine(trial, prediction, trial.scoring?.threshold_d2),
     el('p', { class: 'check-date' }, [el('strong', {
       text: typeof checkAfter === 'string' ? t('ledger.forecast.checkAfter', { date: utcText(checkAfter).replace(' 00:00 UTC', '') }) : t('ledger.forecast.checkUnknown'),
     })]),
-    receiptLine(bundle.receipt),
-    insufficient && prediction.status_reason_key ? el('p', { class: 'panel-note', text: tData(prediction.status_reason_key, 'explain.unknown') }) : null,
-    trial.forecast_label_key ? el('p', { class: 'note', text: tData(trial.forecast_label_key, 'explain.unknown') }) : null,
-    prediction && !insufficient ? forecastChart(prediction, trial, name) : null,
-    el('p', { class: 'note', text: t('ledger.forecast.notCounted') }),
+    details([
+      predictedLine(trial, prediction, trial.scoring?.threshold_d2),
+      receiptLine(bundle.receipt),
+      insufficient && prediction.status_reason_key ? el('p', { class: 'panel-note', text: tData(prediction.status_reason_key, 'explain.unknown') }) : null,
+      trial.forecast_label_key ? el('p', { class: 'note', text: tData(trial.forecast_label_key, 'explain.unknown') }) : null,
+      prediction && !insufficient ? forecastChart(prediction, trial, name) : null,
+      el('p', { class: 'note', text: t('ledger.forecast.notCounted') }),
+    ]),
     trial.target_key === 'pluto' ? el('p', {}, el('a', { class: 'button-link', href: '?page=loop', text: t('loop.link') })) : null,
   ]);
 }
@@ -373,7 +432,7 @@ function forecastCard(card) {
 function seeOnlyCard(key) {
   return el('article', { class: 'ledger-card see-only-card glass' }, [
     el('div', { class: 'card-head' }, [el('h3', { text: nameOf(key) }), statusChip('see_only')]),
-    el('p', { class: 'note', text: t('ledger.seeOnlyNote') }),
+    details(el('p', { class: 'note', text: t('ledger.seeOnlyNote') })),
   ]);
 }
 
@@ -383,7 +442,11 @@ function render(data) {
   const banner = $('ledger-source');
   banner.hidden = !(context.fallback || context.fixtures);
   banner.replaceChildren(el('p', { text: t(context.fallback ? 'ledger.fallback' : 'ledger.fixtures') }));
+  glanceSection(data);
   boardSection(data);
+  // Section headlines state what the section holds (task B12), counted from the cards on the page.
+  $('ledger-trials-title').textContent = data.cards.length ? t('ledger.trialsHeadline', { n: String(data.cards.length), counts: statusSummary(data.cards.map((card) => card.status?.status)) }) : t('ledger.trialsTitle');
+  $('ledger-forecasts-title').textContent = data.forecasts.length === 1 ? t('ledger.forecastsHeadlineOne') : data.forecasts.length ? t('ledger.forecastsHeadline', { n: String(data.forecasts.length) }) : t('ledger.forecastsTitle');
   const batch = batchSection(data.batch);
   $('ledger-batch-host').replaceChildren(...(batch ? [batch] : []));
   $('ledger-batch-host').hidden = !batch;

@@ -199,19 +199,28 @@ details.more-info > summary::before {
 }
 details.more-info[open] > summary::before { transform: rotate(45deg); }
 details.more-info > summary:hover { color: var(--text); }
-details.more-info > :not(summary) { max-width: 70ch; }
+details.more-info { min-width: 0; max-width: 100%; }
+details.more-info > :not(summary) { max-width: min(70ch, 100%); }
 details.more-info[open] { padding-bottom: var(--s1); }
+details.more-info > * { min-width: 0; }
 details.more-info > p, details.more-info > ul, details.more-info > div { margin-top: var(--s1); }
 .headline { font: 700 clamp(22px, 2.6vw, 30px)/1.2 var(--font-head); max-width: 34ch; margin: 0; }
 .headline-sub { max-width: 62ch; color: var(--muted); font-size: 16px; margin: var(--s1) 0 0; }
 .stat-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: var(--s2) 0 0; }
-.stat-tile { display: grid; align-content: start; gap: 4px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: rgba(255, 255, 255, 0.025); }
+.stat-tile { display: grid; align-content: start; gap: 6px; padding: 18px 20px; border: 1px solid var(--border); border-radius: var(--radius); background: rgba(255, 255, 255, 0.025); }
 .stat-tile .chip { justify-self: start; margin-top: 4px; }
-.stat-value { margin: 0; font: 700 28px/1.1 var(--font-head); color: var(--text); }
+.stat-value { margin: 0; font: 700 32px/1.1 var(--font-head); color: var(--text); }
 .stat-label { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.35; }
 .stat-tile.is-hit .stat-value { color: var(--hit); }
 .stat-tile.is-miss .stat-value { color: var(--miss); }
 .stat-tile.is-waiting .stat-value { color: var(--waiting); }
+/* Phones: one compact row per tile, the number on the left. */
+@media (max-width: 560px) {
+  .stat-tiles { grid-template-columns: minmax(0, 1fr); gap: var(--s1); }
+  .stat-tile { grid-template-columns: minmax(84px, auto) minmax(0, 1fr); align-items: center; column-gap: 14px; padding: 10px 14px; }
+  .stat-tile .stat-value { grid-row: span 2; font-size: 24px; }
+  .stat-tile .chip, .stat-tile .stamps { grid-column: 2; }
+}
 @media (prefers-reduced-motion: reduce) { details.more-info > summary::before { transition: none; } }
 .stamps:empty { display: none; }
 
@@ -1348,6 +1357,10 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 /* ---------- Text pages share a header ---------- */
 
 .page-head { display: grid; gap: var(--s1); max-width: 860px; margin-bottom: var(--s3); }
+/* Task B12: the page's h1 states the finding, so it reads as a headline rather than a poster title. */
+.page-head h1 { font-size: clamp(26px, 3.2vw, 38px); line-height: 1.15; max-width: 30ch; }
+.page-head .lead { font-size: 16.5px; max-width: 62ch; }
+.page-head .stat-tiles { margin: var(--s1) 0 var(--s1); }
 .page-head .lead { color: var(--text); }
 
 /* ---------- Beat the physics ---------- */
@@ -1428,7 +1441,7 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 
 .muted { color: var(--muted); }
 .page-predictions { max-width: 1240px; margin: 0 auto; display: grid; gap: var(--s3); }
-.page-predictions .page-head { margin-bottom: 0; }
+.page-predictions .page-head { margin-bottom: var(--s2); }
 /* While the trial files load, only the heading and one loading line show, so nothing below them jumps. */
 .page-predictions[data-loading] > :not(.page-head):not(#ledger-loading) { display: none !important; }
 .page-predictions:not([data-loading]) #ledger-loading { display: none; }
@@ -1439,7 +1452,14 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
   border-radius: var(--radius-sm);
   font-weight: 500;
 }
-.ledger-board { padding: var(--s3); display: grid; gap: 12px; }
+.ledger-board { display: grid; }
+.board-details[open] { padding: var(--s2) var(--s3) var(--s3); border: 1px solid var(--border); border-radius: var(--radius); background: var(--glass); }
+.board-details > :not(summary) { max-width: none; margin-top: 12px; }
+.category-title { font-size: 16px; margin-top: var(--s1); }
+.category-list { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px var(--s2); margin: 0; }
+.category-list dd { margin: 0; color: var(--muted); font-size: 14px; max-width: 70ch; }
+.card-key { font-size: 15px; }
+.card-key strong { font-weight: 600; }
 .board-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s2); }
 .board-table { border-collapse: collapse; font-size: 15px; min-width: 100%; }
 .board-table th, .board-table td { padding: 10px 14px 10px 0; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }

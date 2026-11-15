@@ -1,7 +1,7 @@
 // "Asteroid batch" on the Predictions page: how often the truth landed inside our 95% regions, a chart of each
 // trial's distance D against the 2.45 line, model versus straight-line errors, and one compact card per asteroid.
 // Numbers come from the batch file and each asteroid's own trial files.
-import { chip, el, formatNumber, formatUtc } from './dom.js';
+import { chip, details, el, formatNumber, formatUtc } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { categoryLabel } from './labels.js';
 import { addCovariance, covarianceEllipse } from './coords.js';
@@ -88,25 +88,33 @@ function summary(batch) {
   const exploratory = batch.exploratory?.primary?.n > 0 ? batch.exploratory : null;
   // The file's own independence note when it has one (shown once, with the other notes), else ours.
   const independence = noteKey ? (batch.noteKeys.includes(noteKey) ? null : note(noteKey)) : t('batch.assumeIndependent');
+  // At a glance (task B12): the section title carries "k of n"; one line says what could not be scored; the interval,
+  // the verdict and every caveat sit under "Details" right below.
   return el('div', { class: 'batch-summary' }, [
-    el('p', { class: 'batch-headline' }, [el('strong', { text: t('batch.headline', { k: String(k), n: String(n) }) })]),
     batch.rows.length > n ? el('p', { text: t('batch.ofAll', { total: String(batch.rows.length), counts: statusCounts(batch) }) }) : null,
-    interval ? el('p', { text: t('batch.interval', { low: pct(interval[0]), high: pct(interval[1]), method: t(`batch.method.${method === 'wilson' ? 'wilson' : 'exact'}`) }) }) : null,
-    verdictKey ? el('p', { text: t(verdictKey, { n: String(n) }) }) : null,
-    el('p', { class: 'note', text: t('batch.expected', { expected: formatNumber(expected, 1), n: String(n) }) }),
-    otherLine('batch.secondaryLine', batch.secondaryCalibration),
-    otherLine('batch.baselineLine', batch.baselineCalibration),
-    batch.notAttempted.length ? el('p', { class: 'note', text: t('batch.notAttempted', { n: String(batch.notAttempted.length) }) }) : null,
-    el('p', { class: 'note', text: t('batch.smallN') }),
-    independence ? el('p', { class: 'note', text: independence }) : null,
-    computed ? el('p', { class: 'note', text: t('batch.computed') }) : null,
-    exploratory ? el('p', { class: 'note batch-exploratory' }, [
-      chip(t('batch.exploratoryChip'), 'chip-exploratory'),
-      el('span', { text: ` ${exploratory.noteKey ? note(exploratory.noteKey) : ''} ${t('batch.exploratoryCounts', {
-        k: String(exploratory.primary.k), n: String(exploratory.primary.n),
-        k2: exploratory.secondary ? String(exploratory.secondary.k) : '—', n2: exploratory.secondary ? String(exploratory.secondary.n) : '—',
-      })}`.trim() }),
-    ]) : null,
+    details([
+      el('p', { class: 'note', text: t('batch.lead') }),
+      interval ? el('p', { text: t('batch.interval', { low: pct(interval[0]), high: pct(interval[1]), method: t(`batch.method.${method === 'wilson' ? 'wilson' : 'exact'}`) }) }) : null,
+      verdictKey ? el('p', { text: t(verdictKey, { n: String(n) }) }) : null,
+      el('p', { class: 'note', text: t('batch.expected', { expected: formatNumber(expected, 1), n: String(n) }) }),
+      otherLine('batch.secondaryLine', batch.secondaryCalibration),
+      otherLine('batch.baselineLine', batch.baselineCalibration),
+      batch.notAttempted.length ? el('p', { class: 'note', text: t('batch.notAttempted', { n: String(batch.notAttempted.length) }) }) : null,
+      el('p', { class: 'note', text: t('batch.smallN') }),
+      independence ? el('p', { class: 'note', text: independence }) : null,
+      computed ? el('p', { class: 'note', text: t('batch.computed') }) : null,
+      exploratory ? el('p', { class: 'note batch-exploratory' }, [
+        chip(t('batch.exploratoryChip'), 'chip-exploratory'),
+        el('span', { text: ` ${exploratory.noteKey ? note(exploratory.noteKey) : ''} ${t('batch.exploratoryCounts', {
+          k: String(exploratory.primary.k), n: String(exploratory.primary.n),
+          k2: exploratory.secondary ? String(exploratory.secondary.k) : '—', n2: exploratory.secondary ? String(exploratory.secondary.n) : '—',
+        })}`.trim() }),
+      ]) : null,
+      ...batch.noteKeys.map((key) => el('p', { class: 'note', text: note(key) })),
+      batch.statementPending && !batch.noteKeys.includes('batch.team-statement-pending') ? el('p', { class: 'note', text: t('batch.statementPendingNote') }) : null,
+      el('p', { class: 'note', text: t('batch.plotLegend') }),
+      errorChart(batch),
+    ]),
   ]);
 }
 
@@ -250,12 +258,14 @@ function card(row, bundle) {
         row.horizons && Number.isFinite(row.horizons.error) ? el('dd', { text: t(row.horizons.inside === true ? 'batch.horizonsInside' : row.horizons.inside === false ? 'batch.horizonsOutside' : 'batch.horizonsValue', { error: formatNumber(row.horizons.error, 1) }) }) : null,
       ]),
     ]),
-    region && !region.withMeasurement ? el('p', { class: 'note', text: t('batch.regionForecastNote') }) : null,
-    row.excludedKey ? el('p', { class: 'note', text: note(row.excludedKey) }) : null,
-    !row.excludedKey && row.statusKey ? el('p', { class: 'note', text: note(row.statusKey) }) : null,
-    receipt?.url
-      ? el('p', { class: 'note' }, [el('span', { text: `${t('batch.frozen')} ` }), el('a', { href: receipt.url, rel: 'noopener', class: 'mono', text: receipt.short })])
-      : el('p', { class: 'note', text: receipt?.example ? t('batch.frozenExample') : t('batch.frozenNoLink') }),
+    details([
+      region && !region.withMeasurement ? el('p', { class: 'note', text: t('batch.regionForecastNote') }) : null,
+      row.excludedKey ? el('p', { class: 'note', text: note(row.excludedKey) }) : null,
+      !row.excludedKey && row.statusKey ? el('p', { class: 'note', text: note(row.statusKey) }) : null,
+      receipt?.url
+        ? el('p', { class: 'note' }, [el('span', { text: `${t('batch.frozen')} ` }), el('a', { href: receipt.url, rel: 'noopener', class: 'mono', text: receipt.short })])
+        : el('p', { class: 'note', text: receipt?.example ? t('batch.frozenExample') : t('batch.frozenNoLink') }),
+    ]),
   ]);
 }
 
@@ -264,21 +274,21 @@ export function batchSection(data) {
   if (!data?.batch) return null;
   const { batch, bundles } = data;
   const bundleOf = (id) => bundles.find((bundle) => bundle?.id === id) ?? null;
+  const { n, k } = batch.calibration;
+  // Waiting batches keep their own headline inside summary(); a checked batch says "k of n" in its title (task B12).
+  const scored = n > 0 && !batch.example;
   return el('section', { id: 'ledger-batch', class: 'ledger-section batch-section', 'aria-labelledby': 'batch-title' }, [
-    el('h2', { id: 'batch-title', text: t('batch.title') }),
+    el('h2', { id: 'batch-title', text: scored ? t('batch.titleResult', { k: String(k), n: String(n) }) : t('batch.title') }),
     el('p', { class: 'stamps' }, [
       batch.category ? chip(categoryLabel(batch.category), `chip-category chip-${batch.category}`) : null,
       batch.example ? chip(t('example.tag'), 'chip-example') : null,
-      batch.statementPending ? chip(t('batch.statementPending'), 'chip-pending') : null,
+      batch.statementPending ? chip(t('chip.pending'), 'chip-pending') : null,
     ]),
     batch.example ? el('p', { class: 'panel-note warn', text: t('batch.exampleNote') }) : null,
-    batch.statementPending && !batch.noteKeys.includes('batch.team-statement-pending') ? el('p', { class: 'note', text: t('batch.statementPendingNote') }) : null,
-    el('p', { class: 'note', text: t('batch.lead') }),
+    n > 0 && !scored ? el('p', { class: 'batch-headline' }, [el('strong', { text: t('batch.headline', { k: String(k), n: String(n) }) })]) : null,
     summary(batch),
-    el('div', { class: 'batch-charts' }, [distanceChart(batch), errorChart(batch)]),
-    ...batch.noteKeys.map((key) => el('p', { class: 'note', text: note(key) })),
-    el('p', { class: 'note', text: t('batch.plotLegend') }),
-    el('div', { class: 'batch-cards' }, batch.rows.map((row) => card(row, bundleOf(row.trialId)))),
+    el('div', { class: 'batch-charts' }, [distanceChart(batch)]),
+    details(el('div', { class: 'batch-cards' }, batch.rows.map((row) => card(row, bundleOf(row.trialId)))), { label: t('batch.cardsDetails', { n: String(batch.rows.length) }) }),
   ]);
 }
 

@@ -127,6 +127,39 @@ export function scoreboardTable(doc) {
   };
 }
 
+const countOf = (counts, status) => (Number.isInteger(counts?.[status]) ? counts[status] : 0);
+const UNUSABLE = ['insufficient_data', 'ambiguous', 'invalid_comparison'];
+
+/**
+ * The Predictions page at a glance (task B12), counted only from the scoreboard file, never typed in by hand.
+ * lead: the one blind (prospective, unexposed) trial that has a result, with its model error, or null when there is
+ * not exactly one. tiles: blind trials, the asteroid batch (scored k of n, the rest unusable) and the retrospective
+ * demos, each { id, category, hit, miss, waiting, unusable } plus { k, n, pending } for the batch.
+ */
+export function glanceModel(doc) {
+  if (!doc?.counts || typeof doc.counts !== 'object') return null;
+  const rows = Array.isArray(doc.rows) ? doc.rows : [];
+  const decided = rows.filter((row) => row?.category === 'prospective_unexposed' && row.exploratory !== true && ['hit', 'miss'].includes(row.status));
+  const lead = decided.length === 1 && typeof decided[0].target_key === 'string'
+    ? { status: decided[0].status, targetKey: decided[0].target_key, trialId: decided[0].trial_id ?? null, errorArcsec: Number.isFinite(decided[0].model_error_arcsec) ? decided[0].model_error_arcsec : null }
+    : null;
+  const tileOf = (id, category, counts) => ({
+    id, category, hit: countOf(counts, 'hit'), miss: countOf(counts, 'miss'), waiting: countOf(counts, 'waiting'),
+    unusable: UNUSABLE.reduce((sum, status) => sum + countOf(counts, status), 0),
+  });
+  const tiles = [];
+  if (doc.counts.prospective_unexposed) tiles.push(tileOf('blind', 'prospective_unexposed', doc.counts.prospective_unexposed));
+  const batch = doc.asteroid_batch;
+  if (batch?.counts && Number.isInteger(batch.calibration?.n)) {
+    tiles.push({
+      ...tileOf('batch', batch.category ?? 'prospective_unexposed', batch.counts),
+      k: Number.isInteger(batch.calibration.k_inside) ? batch.calibration.k_inside : 0, n: batch.calibration.n, pending: batch.team_statement_pending === true,
+    });
+  }
+  if (doc.counts.retrospective_holdout) tiles.push(tileOf('retro', 'retrospective_holdout', doc.counts.retrospective_holdout));
+  return { lead, tiles, example: doc.example === true };
+}
+
 /** Cards sorted by status (checked, then waiting, then insufficient data); stable within a status. */
 export function sortByStatus(cards) {
   const rank = (card) => {

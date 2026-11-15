@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { tangentOffsetArcsec } from '../static/js/coords.js';
 import { has } from '../static/js/i18n.js';
 import {
-  COMMIT_URL, commitInfo, forecastModel, formatArcsec, hasPublishedTrials, imagePlacement, isOpenForecast, ledgerTrialIds, niceLength,
+  COMMIT_URL, commitInfo, forecastModel, formatArcsec, glanceModel, hasPublishedTrials, imagePlacement, isOpenForecast, ledgerTrialIds, niceLength,
   predictedOf, residualCheck, revealModel, scoreboardTable, sortByStatus, trialIdFromPath, trialLabels, trialStatus,
 } from '../static/js/ledger.js';
 import { buildRoute, parseRoute } from '../static/js/route.js';
@@ -263,4 +263,40 @@ test('every reveal step, status, shortcut and limit has English text', () => {
     for (const [keys, action] of rows) assert.ok(has(keys) && has(action), `${keys} ${action}`);
   }
   for (const key of [...CAN_SEE, ...CANNOT_SEE]) assert.ok(has(key), key);
+});
+
+// Task B12: the Predictions page leads with the blind forecast's result and three key numbers, all counted from
+// scoreboard.json (never typed in), so the headline and the tiles cannot drift from the file.
+test('the Predictions headline and tiles are counted from scoreboard.json', () => {
+  const doc = read(join(DATA, 'scoreboard.json'));
+  const glance = glanceModel(doc);
+  const blind = doc.rows.filter((row) => row.category === 'prospective_unexposed' && !row.exploratory && ['hit', 'miss'].includes(row.status));
+  if (blind.length === 1) {
+    assert.equal(glance.lead.targetKey, blind[0].target_key);
+    assert.equal(glance.lead.status, blind[0].status);
+    assert.equal(glance.lead.errorArcsec, blind[0].model_error_arcsec);
+  } else {
+    assert.equal(glance.lead, null);
+  }
+  const tile = (id) => glance.tiles.find((item) => item.id === id);
+  assert.equal(tile('blind').miss, doc.counts.prospective_unexposed.miss);
+  assert.equal(tile('blind').hit, doc.counts.prospective_unexposed.hit);
+  assert.equal(tile('retro').hit, doc.counts.retrospective_holdout.hit);
+  assert.equal(tile('retro').unusable, ['insufficient_data', 'ambiguous', 'invalid_comparison'].reduce((sum, key) => sum + (doc.counts.retrospective_holdout[key] ?? 0), 0));
+  if (doc.asteroid_batch) {
+    assert.equal(tile('batch').k, doc.asteroid_batch.calibration.k_inside);
+    assert.equal(tile('batch').n, doc.asteroid_batch.calibration.n);
+    assert.equal(tile('batch').pending, doc.asteroid_batch.team_statement_pending === true);
+  }
+});
+
+test('the glance has no headline unless exactly one blind trial has a result', () => {
+  const base = { counts: { prospective_unexposed: { hit: 1, miss: 1 } } };
+  const row = (key, status, extra = {}) => ({ target_key: key, category: 'prospective_unexposed', status, model_error_arcsec: 1.2, ...extra });
+  assert.equal(glanceModel({ ...base, rows: [row('a', 'hit'), row('b', 'miss')] }).lead, null);
+  assert.equal(glanceModel({ ...base, rows: [row('a', 'hit'), row('b', 'miss', { exploratory: true })] }).lead.targetKey, 'a');
+  assert.equal(glanceModel({ ...base, rows: [row('a', 'waiting')] }).lead, null);
+  assert.equal(glanceModel({ rows: [] }), null);
+  // No batch in the file: no batch tile, never an invented "0 of 0".
+  assert.deepEqual(glanceModel({ ...base, rows: [] }).tiles.map((tile) => tile.id), ['blind']);
 });
