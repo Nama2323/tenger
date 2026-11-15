@@ -9,6 +9,7 @@ import {
 } from './game.js';
 import { angleText, clusterDate, explainResult, HINT_COUNT, hintBody, hintOverlay, howToBox, timelineStrip, wordDate } from './game-help.js';
 import { has, t } from './i18n.js';
+import { challengeOutcome, challengeUrl, NAME_MAX, readChallenge, starText } from './challenge.js';
 import { categoryChip, categoryNote, exampleChip, prospectiveChip, trialStatusChip } from './labels.js';
 import { mjdToDate } from './stack.js';
 
@@ -31,6 +32,8 @@ let play = null;
 let easyMode = true;
 /** The automatic reveal after "Check my guess": straight line, then the model, then the real position. */
 let revealTimer = null;
+/** Task B24: the challenge read from the page's link (validated; never stored), or null. */
+let challenge = null;
 const REVEAL_STEP_MS = 700;
 
 const storage = () => {
@@ -487,10 +490,16 @@ function showResults() {
       el('span', { class: 'sr-only', text: t('game.starsLabel', { n: String(stars) }) }),
       el('span', { class: 'star-words', text: t(`game.stars.${stars}`) }),
     ]) : null,
+    stars && activeChallenge() ? el('p', { id: 'challenge-outcome', class: 'challenge-outcome', text: outcomeText(stars) }) : null,
     el('p', { class: 'round-next' }, [
       el('button', { id: 'next-round', type: 'button', class: 'primary', text: t('game.nextRound'), onclick: () => startRound(nextRoundId(round.round_id)) }),
       el('button', { id: 'play-again', type: 'button', class: 'quiet', text: t('game.again'), onclick: () => startRound(round.round_id) }),
+      stars ? el('button', {
+        id: 'challenge-open', type: 'button', class: 'quiet', text: t(activeChallenge() ? 'challenge.back' : 'challenge.button'),
+        onclick: () => openChallengeForm(stars),
+      }) : null,
     ]),
+    el('div', { id: 'challenge-host' }),
     details([
       el('h3', { text: t('game.resultsTitle') }),
       el('p', { class: 'verdict', text: verdict(result) }),
@@ -511,6 +520,72 @@ function showResults() {
     ], { label: t('game.resultDetails') }),
     actualImage(),
   ].filter(Boolean));
+}
+
+// ---------- Challenge a friend (task B24) ----------
+
+/** The challenge from the link, if it is for the round being played. */
+const activeChallenge = () => (challenge && play && challenge.roundId === play.round.round_id ? challenge : null);
+
+function outcomeText(stars) {
+  const result = challengeOutcome(stars, challenge.stars);
+  return t(`challenge.outcome.${result}`, { mine: starText(stars), name: challenge.name || t('challenge.friend') });
+}
+
+/** The banner above a challenged round. Only text: the name was validated, and it is set as textContent. */
+function challengeBanner() {
+  const active = activeChallenge();
+  if (!active) return null;
+  return el('p', { id: 'challenge-banner', class: 'challenge-banner', role: 'note', text: t(active.name ? 'challenge.banner' : 'challenge.bannerNoName', {
+    name: active.name, stars: starText(active.stars), target: play.name, mode: t(`challenge.mode.${active.mode}`),
+  }) });
+}
+
+/** Asks for an optional first name, then copies the link (and offers the share sheet where there is one). */
+function openChallengeForm(stars) {
+  const host = $('challenge-host');
+  if (!host) return;
+  const input = el('input', {
+    id: 'challenge-name', type: 'text', maxlength: String(NAME_MAX), autocomplete: 'off', spellcheck: 'false', 'aria-describedby': 'challenge-hint',
+  });
+  const status = el('p', { id: 'challenge-status', class: 'note', role: 'status' });
+  const link = el('input', { id: 'challenge-link', type: 'text', readonly: true, hidden: true, 'aria-label': t('challenge.linkLabel') });
+  const share = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
+    ? el('button', { id: 'challenge-share', type: 'button', class: 'quiet', text: t('challenge.share'), hidden: true }) : null;
+  const form = el('form', { class: 'challenge-form', novalidate: true }, [
+    el('label', { for: 'challenge-name', text: t('challenge.nameLabel') }),
+    input,
+    el('p', { id: 'challenge-hint', class: 'note', text: t('challenge.nameHint') }),
+    el('p', { class: 'challenge-actions' }, [el('button', { type: 'submit', class: 'primary', text: t('challenge.copy') }), share]),
+    status,
+    link,
+  ]);
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const url = challengeUrl(`${location.origin}${location.pathname}`, {
+      roundId: play.round.round_id, name: input.value, stars, mode: play.easy ? 'easy' : 'hard',
+    });
+    if (!url) {
+      status.textContent = t('challenge.badName');
+      input.focus();
+      return;
+    }
+    link.value = url;
+    link.hidden = false;
+    if (share) {
+      share.hidden = false;
+      share.onclick = () => navigator.share({ title: t('challenge.shareTitle'), text: t('challenge.shareText', { stars: starText(stars), target: play.name }), url }).catch(() => {});
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      status.textContent = t('challenge.copied');
+    } catch {
+      status.textContent = t('challenge.copyManually');
+      link.select();
+    }
+  });
+  host.replaceChildren(form);
+  input.focus({ preventScroll: false });
 }
 
 // ---------- Layout of one round ----------
@@ -614,6 +689,7 @@ function renderRound() {
   // and the earlier chips sit in the round's Details. The chart comes right after the title.
   const storyKey = round.category === 'prospective_unexposed' ? 'story.chip.real' : round.category === 'retrospective_holdout' ? 'story.chip.practice' : null;
   $('round-area').replaceChildren(el('article', { class: 'round', 'aria-labelledby': 'round-title' }, [
+    challengeBanner(),
     el('header', { class: 'round-head' }, [
       el('h2', { id: 'round-title', text: position ? t('game.titleWhere', { name, date: wordDate(round.reveal_t_mjd) }) : t('game.titleScalar', { name, date }) }),
       exampleChip(round),
@@ -644,6 +720,7 @@ function renderRound() {
       el('p', { id: 'round-task', class: 'round-task', text: t(position ? 'game.taskPositionShort' : 'game.taskScalarShort', { name, date }) }),
       el('p', { text: t(position ? 'game.taskPosition' : 'game.taskScalar', { name, date, count }) }),
       el('p', { class: 'note', text: categoryNote(round.category) }),
+      el('p', { class: 'note', text: t('challenge.unverified') }),
     ], { label: t('game.roundDetails') }),
     howToBox(play.type, name),
     timelineStrip(round),
@@ -708,6 +785,8 @@ export function renderGamePage(options) {
       .map((entry) => t('game.unplayable', { id: entry.doc.round_id, parts: checkRound(entry.doc).blocking.join(', ') })),
   ];
   context.rounds = playable;
+  challenge = readChallenge(globalThis.location?.search ?? '', playable.map((entry) => entry.doc.round_id));
+  if (challenge) easyMode = challenge.mode === 'easy';
   const host = $('game-rounds');
   if (!playable.length) {
     play = null;
@@ -725,7 +804,8 @@ export function renderGamePage(options) {
     ...problems.map((text) => el('p', { class: 'note warn', text })),
     el('div', { id: 'round-area' }),
   );
-  startRound(options.selected && playable.some((entry) => entry.doc.round_id === options.selected) ? options.selected : playable[0].doc.round_id);
+  const first = challenge?.roundId ?? options.selected;
+  startRound(first && playable.some((entry) => entry.doc.round_id === first) ? first : playable[0].doc.round_id);
 }
 
 export const currentRoundId = () => play?.round?.round_id ?? null;

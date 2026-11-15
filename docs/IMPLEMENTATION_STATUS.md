@@ -2038,3 +2038,43 @@ At every width "Check us in 2027" follows the Pluto card directly, 16 px below i
   - No horizontal scroll at 360, 390 or 1280, and no console errors. 260 tests pass.
   - Screenshots: `docs/screens/b23-contrast-<390|1280>-<before|after>.png` and `b23-contrast-1280-side-3x.png`.
   - Not checked on a real phone.
+
+### Task B24, 15 Nov 2026 (done by Session A at the user's request; Challenge a friend in Beat the physics)
+
+No login, no server and no storage. Only the game page and its strings changed; Session B is on the viewer contrast slider.
+- **New `static/js/challenge.js`** (pure):
+  - `cleanName` accepts letters of any script, spaces and hyphens, at most 20 characters; anything else is refused.
+  - `challengeUrl` builds `?page=game&round=<id>&from=<name>&stars=<1–3>&mode=<easy|hard>` from the page's origin and path, dropping any other parameter and the hash. It refuses bad values.
+  - `readChallenge` validates every URL value against the playable rounds. A link with any bad value is ignored, with no error shown.
+  - `challengeOutcome` gives win, tie or loss.
+- **Game page** (`static/js/game-ui.js`, strings `challenge.*`, a CSS block):
+  - After a round's result, "Challenge a friend" opens a small form ("Your first name (optional)"). It builds the link, copies it to the clipboard and shows "Link copied", or shows the link to copy by hand when the clipboard is refused. Where the browser has `navigator.share`, it also offers "Share…".
+  - Opening a challenge link starts that round in that mode. A banner above the round reads "Narmandakh got ★★ on Barnard's Star (Easy). Can you beat it?", or "A friend got …" without a name.
+  - After the reveal, the result says "You got ★★★. You win!", "You got ★★★. It's a tie." or "You got ★. Narmandakh wins this time.", followed by "Challenge them back".
+  - The challenge is read once when the page loads (the page then rewrites its own URL) and kept only in memory.
+  - Each round's "About this round" says "Challenge links are not verified scores."
+- **Safety**:
+  - Names and banner text are set as text (`textContent` through `el(…, { text })`); the game code has no `innerHTML`.
+  - The link carries only the round, name, stars and mode: never the guess, the model, the baseline, the real position or a training point.
+  - `challenge.js` has no storage, `fetch` or beacon calls.
+  - The best score that Beat the physics already keeps in `localStorage` (earlier task, best-effort) is unchanged; the challenge itself stores nothing.
+- **Test** `tests/challenge.test.mjs` (5 tests):
+  - Names: crafted `<script>`, `<img onerror>`, quotes, `&`, over 20 characters, digits and a leading hyphen are refused.
+  - Crafted links (HTML or script in the name, stars 4 or 2.5 or HTML, an unknown or HTML round, a missing mode) are ignored.
+  - The source checks: no HTML parsing; the banner and outcome are set as text; no storage or network in the challenge code.
+  - For all three real rounds, the link's query keys are only page, round, from, stars and mode. The only number in the query is the star count, and none of the round's coordinates appears at 1–4 decimals.
+  - Win, tie and loss, and the English texts.
+- **Results**: `node --test tests/*.mjs`: 265 pass, 0 fail.
+- **Browser checks** (headless Chrome at exact sizes, with clipboard permission and focus emulation):
+  - At 390 and 1280: finishing the Barnard round with ★★★, then "Challenge a friend", the name "Narmandakh" and "Copy the link", shows "Link copied". The clipboard then held `…?page=game&round=barnard-position&from=Narmandakh&stars=3&mode=easy`. Focus moves to the name box when the form opens.
+  - Opening links in a fresh page:
+    - stars=2, guess ★★★: banner shown, same round and Easy mode, "You win!".
+    - stars=3, guess ★★★: "It's a tie."
+    - stars=3, guess ★: "Narmandakh wins this time."
+    - A Hard-mode Pluto link with no name: "A friend got ★★ on Pluto (Hard)", with Hard mode selected.
+    - Two crafted links (`<img onerror>` in the name; `<b>` with stars=9): no banner, no error, and no extra element in the page; the round opens normally.
+  - Without focus emulation, headless Chrome refuses the clipboard, and the page correctly falls back to "Copy this link:" with the link selected.
+- **Screenshots**: `docs/screens/b24-challenge-banner-{390,1280}.png`, `b24-challenge-outcome-{390,1280}.png`, `b24-challenge-link-copied-{390,1280}.png`.
+- **Limits**:
+  - The share sheet was only seen offered in phone emulation; it was not opened on a real phone.
+  - Stars in a link are self-reported: the round's Details says so.
