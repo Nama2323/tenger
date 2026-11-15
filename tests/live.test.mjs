@@ -39,12 +39,23 @@ test('on github.io no live call makes any request; each says live search is unav
 });
 
 test('running locally keeps live search, on this same origin and never on another host', async () => {
-  for (const hostname of ['localhost', '127.0.0.1', '192.168.1.20']) {
+  for (const hostname of ['localhost', '127.0.0.1']) {
     const requested = await onHost(hostname, async () => {
       assert.equal(api.liveAvailable(), true);
       await api.observe(150.1, 2.2, 0.1);
     });
     assert.deepEqual(requested, ['/api/observe?ra=150.1&dec=2.2&fov=0.1'], hostname);
+  }
+});
+
+// Cloudflare mirror (branch cloudflare-mirror): every other host behaves like the public site, with no request.
+test('the mirror: any host other than localhost and 127.0.0.1 makes no live request', async () => {
+  for (const hostname of ['192.168.1.20', 'vestigium.pages.dev', 'main.vestigium.pages.dev', 'nama2323.github.io']) {
+    const requested = await onHost(hostname, async () => {
+      assert.equal(api.liveAvailable(), false, hostname);
+      await assert.rejects(api.observe(150.1, 2.2, 0.1), (error) => error.liveUnavailable === true);
+    });
+    assert.deepEqual(requested, [], hostname);
   }
 });
 

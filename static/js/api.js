@@ -10,7 +10,10 @@ const STATIC_RETRY_MS = 800;
  * (uvicorn backend.api:app). The public site on GitHub Pages is static and has no server, so there the client
  * makes no live request at all and says so (user's decision, 15 Nov 2026). The prepared targets need no server.
  */
-export const liveAvailable = (hostname = globalThis.location?.hostname ?? '') => !String(hostname).endsWith('github.io');
+// Cloudflare mirror (branch cloudflare-mirror; GitHub Pages publishes main): the live server and Real sky only where the local
+// server runs (localhost, 127.0.0.1); every other host, github.io and pages.dev included, behaves like the public site.
+const LIVE_HOSTS = new Set(['localhost', '127.0.0.1']);
+export const liveAvailable = (hostname = globalThis.location?.hostname ?? '') => LIVE_HOSTS.has(String(hostname));
 
 /** The error a live call gives on the public static site; nothing was requested. */
 export const liveUnavailableError = () => Object.assign(new Error('live-unavailable'), { liveUnavailable: true });
