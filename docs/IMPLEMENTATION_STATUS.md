@@ -1678,3 +1678,39 @@ Artificial, Pending, Measured, Hypothetical, Quick look, not validated. The full
     Lab, Beat the physics, Investigate (See, and the Prediction panel), Learn and About.
   - Size: +7.9 KB gzip over the changed files, all loaded with the first page.
   - Not checked on a real phone.
+
+### Task B14, 15 Nov 2026: the visible brand is now Vestigium
+
+- **Renamed (text people see only):**
+  - The header wordmark and every page `<title>` (built from `site.title`).
+  - `og:title`, `og:site_name` and the `og:image` alt text. The meta description never named the site.
+  - Every English string that said TENGER (31 values in `js/i18n.js`), covering About, the help dialog, the Planet
+    X Lab, the lessons, the tour, the embed title and "Open in Vestigium".
+  - Printed lessons now carry a header, shown only on paper: "Vestigium · nama2323.github.io/tenger".
+  - README title and text, with one line saying the repository and address keep the working name `tenger`.
+  - The footer never named the site.
+- **New web manifest** (`site.webmanifest`): there was none before; `name` and `short_name` are Vestigium.
+- **Not changed:**
+  - The repository name, the web address (nama2323.github.io/tenger) and the `tenger-dev` branch.
+  - Frozen trial files, storage keys (`tenger.*`), schema ids (`tenger.trial/1` …), file paths, code identifiers
+    and code comments.
+  - No frozen or hashed file contains the visible name. Two items in Session A's files were sent to Session A:
+    - `static/data/scene3d.json` `our_orbit.source` ("TENGER A4 frozen fit …", not shown on any page).
+    - The pipeline version `tenger-a2-2026.11.14` that the Evidence panel shows from each `investigation.json`
+      (an identifier tied to config and code hashes; left as it is).
+  - The B9 demo video still shows the old wordmark (not re-recorded).
+- **Logo in one place: `static/img/logo.svg`** (the current icon, with its colours written into the file).
+  - The header `<img>`, the favicon and the manifest use it directly.
+  - `img/apple-touch-icon.png` (180×180, iOS ignores SVG touch icons) and `og.png` (the site at 1200×630, Barnard's
+    Star side by side, 256 colours, 130 KB) are rendered from the running site with headless Chrome, not drawn.
+  - After the Vestigium logo arrives: replace `logo.svg`, then re-render those two PNGs the same way.
+- **Checks.**
+  - 239 tests pass. New `tests/brand.test.mjs` (4) checks that no English string, `index.html` outside comments,
+    the manifest, the README or `static/data/strings.en.json` says TENGER, and that the logo is wired up as above
+    (PNG sizes read from the files). `tests/live.test.mjs` and `tests/release.test.mjs` now expect the new name.
+  - Headless Chrome at 390 and 1280 on Home, Predictions, Beat the physics, Learn, a lesson, About and an
+    investigation: wordmark "Vestigium", logo loaded, favicon `img/logo.svg`, titles such as
+    "Predictions · Vestigium", no old name in the page text, no horizontal scroll, no console errors.
+  - Lighthouse mobile Home: 80 and 81 (accessibility, best practices and SEO 100; TBT 0 ms; CLS 0.005). This is
+    lower than B12's 83 and 83: FCP 1.9–2.3 s against 1.4–1.5 s, with another session busy on the same machine.
+  - Not checked on a real phone.

@@ -3,24 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TENGER</title>
+  <title>Vestigium</title>
   <meta name="description" content="See real changes in the infrared sky. Make a prediction. Check it against NASA SPHEREx observations.">
   <meta name="theme-color" content="#05070d">
   <!-- Link previews. Crawlers do not run scripts, so these few words cannot come from js/i18n.js.
        og.png is a screenshot of this site (Barnard's Star: AllWISE 2010 next to SPHEREx 2026).
        Absolute addresses: the public site is https://nama2323.github.io/tenger/ (repository public, 15 Nov 2026). -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="TENGER">
-  <meta property="og:title" content="TENGER: see the changing sky">
+  <meta property="og:site_name" content="Vestigium">
+  <meta property="og:title" content="Vestigium: see the changing sky">
   <meta property="og:description" content="See real changes in the infrared sky. Make a prediction. Check it against NASA SPHEREx observations.">
   <meta property="og:url" content="https://nama2323.github.io/tenger/">
   <meta property="og:image" content="https://nama2323.github.io/tenger/og.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="TENGER showing Barnard's Star in two infrared images, AllWISE from 2010 and NASA SPHEREx from 2026, side by side.">
+  <meta property="og:image:alt" content="Vestigium showing Barnard's Star in two infrared images, AllWISE from 2010 and NASA SPHEREx from 2026, side by side.">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="data:,">
+  <!-- The logo lives in one file, img/logo.svg (header, favicon, manifest). apple-touch-icon.png and og.png are
+       rendered from it; re-render them after swapping the logo. -->
+  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css?v=tenger-h1">
@@ -31,11 +35,7 @@
 
   <header class="topbar">
     <a id="logo" class="brand" href="./" data-page-link="home">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-        <ellipse cx="16" cy="16" rx="14" ry="6.5" transform="rotate(-24 16 16)" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.7"/>
-        <circle cx="16" cy="16" r="5" fill="currentColor"/>
-        <circle cx="28.2" cy="10.6" r="2.2" class="brand-moon"/>
-      </svg>
+      <img class="brand-mark" src="img/logo.svg" alt="" width="30" height="30">
       <span data-t="site.title"></span>
     </a>
     <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-t="nav.menu"></button>

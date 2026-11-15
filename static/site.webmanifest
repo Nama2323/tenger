@@ -1,0 +1,14 @@
+{
+  "name": "Vestigium",
+  "short_name": "Vestigium",
+  "description": "See real changes in the infrared sky. Make a prediction. Check it against NASA SPHEREx observations.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#05070d",
+  "theme_color": "#05070d",
+  "icons": [
+    { "src": "img/logo.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

@@ -60,5 +60,5 @@ test('no file the site serves names onrender.com; the note says what works', () 
   walk(STATIC.replace(/\/$/, ''));
   assert.deepEqual(files.filter((path) => /onrender\.com/i.test(readFileSync(path, 'utf8'))), []);
   assert.ok(has('note.liveUnavailable'));
-  assert.equal(t('note.liveUnavailable'), 'Live search needs the TENGER server, which is not running on this public site; the prepared targets work.');
+  assert.equal(t('note.liveUnavailable'), 'Live search needs the Vestigium server, which is not running on this public site; the prepared targets work.');
 });

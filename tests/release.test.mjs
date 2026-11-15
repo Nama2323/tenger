@@ -140,9 +140,9 @@ test('the tour steps on with Next, can be skipped, and marks itself seen when it
 });
 
 test('the embed code is an escaped, lazy, responsive iframe of an embed=1 link', () => {
-  const code = embedCode('https://example.org/?target=barnard&embed=1', 'TENGER: "A" <b>');
+  const code = embedCode('https://example.org/?target=barnard&embed=1', 'Vestigium: "A" <b>');
   assert.match(code, /^<iframe src="https:\/\/example\.org\/\?target=barnard&amp;embed=1" /);
-  assert.match(code, /title="TENGER: &quot;A&quot; &lt;b&gt;"/);
+  assert.match(code, /title="Vestigium: &quot;A&quot; &lt;b&gt;"/);
   assert.match(code, /width="100%"/);
   assert.match(code, /loading="lazy"/);
   assert.match(code, /<\/iframe>$/);

@@ -1,4 +1,6 @@
-# TENGER: see, predict and learn with NASA SPHEREx
+# Vestigium: see, predict and learn with NASA SPHEREx
+
+The repository and the web address keep the project's earlier working name, `tenger`.
 
 A web app for the NASA Space Apps 2026 challenge "Planet X and SPHEREx". It shows real SPHEREx
 images of a patch of sky changing over time, makes forecasts that are frozen before they are
@@ -101,7 +103,7 @@ How the data were made: `docs/IMPLEMENTATION_STATUS.md` (every step, command and
   that visit's archive listing (which may include JPL-predicted positions), never its pixels. The
   forecast did not use it (`docs/EXPOSURE.md`).
 - On the public GitHub Pages site the prepared targets work offline. Live search for other
-  coordinates needs the TENGER server (run it locally), so it is switched off there with a note
+  coordinates needs the Vestigium server (run it locally), so it is switched off there with a note
   (see `docs/RELEASE.md`).
 
 ## Data credits and DOIs
@@ -137,7 +139,7 @@ This repository started from open-source code (MIT licence; see Licence below an
 its viewer, plate renderer, stacking code and archive client.
 
 **Before the hackathon:** that code's own 43 commits, 6–9 Nov 2026, including merges and an automated
-frame-baking job. No TENGER-specific commit is older than the start (14 Nov 2026, 09:00 Ulaanbaatar time).
+frame-baking job. No Vestigium-specific commit is older than the start (14 Nov 2026, 09:00 Ulaanbaatar time).
 The first is `58f993b` at 19:01 that day. Times are author times: some later commits were rebased, so their
 commit times are a few minutes later.
 
@@ -153,7 +155,7 @@ commit times are a few minutes later.
 - **An investigation file for every target, rebuilt from the original exposures:** Barnard's Star, WISE 0855,
   Epsilon Indi B, RW Aurigae, R Draconis, Makemake, Pluto, and 3I/ATLAS (See only). Each one says plainly
   when the data cannot answer (`49aa871`, `1c6715a` to `e815234`).
-- **The TENGER website:**
+- **The Vestigium website:**
   - the Home map and the 3D scene;
   - the investigation panels;
   - difference images only where the checks allow them;

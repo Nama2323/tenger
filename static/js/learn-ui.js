@@ -180,6 +180,8 @@ function renderLesson(lesson) {
       el('button', { type: 'button', class: 'primary', text: t('learn.print'), onclick: () => window.print() }),
     ]),
     el('header', { class: 'lesson-head' }, [
+      // The printed sheet names the site it came from (shown only on paper; task B14).
+      el('p', { class: 'print-brand', text: t('learn.printBrand', { site: t('site.title'), url: t('site.url') }) }),
       el('p', { class: 'eyebrow', text: t('learn.meta', {
         n: String(index), grades: content.record?.gradeBand ?? t('learn.gradeDefault'), minutes: String(LESSON_MINUTES[lesson.id]),
       }) }),
