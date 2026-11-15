@@ -35,17 +35,50 @@ export function plainLine({ kind, distance } = {}) {
   return ly === null ? t('plain.noDistance', { noun }) : t('plain.far', { noun, ly: formatLightYears(ly) });
 }
 
+/** Trial types in plain words (the Predictions page's own chips). */
+const TRIAL_TYPE = { retrospective_holdout: 'story.chip.practice', prospective_unexposed: 'story.chip.real' };
+
+/** An error on the sky in arcseconds, to two decimals without trailing zeros: 1.52″, 0.08″, 5.9″. */
+export const arcsecShort = (value) => `${new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(value)}″`;
+
 /**
- * The short line on a Famous targets card (task B29), from the data files: "fast-moving star · 6 ly", "dwarf planet ·
- * our blind forecast" (an open forecast not yet checked), "interstellar comet · pictures only" (See only).
+ * What Home says about a target's forecast (task B29g), taken only from scoreboard.json: its see-only list and the
+ * target's scored row (status, trial type, confirmation pending, the model's error). Never stronger than the record:
+ * an open forecast without a model is not "a forecast". Returns { card, popup }: card is the short status for a
+ * Solar System card's line (stars keep kind · distance), popup the plain result line.
  */
-export function famousLine({ kind, distance, openForecasts = 0, seeOnly = false } = {}) {
+export function famousResult({ key, board, trialIds = [] } = {}) {
+  if (board?.see_only?.includes(key)) return { card: t('famous.seeOnly'), popup: t('famous.pop.seeOnly') };
+  const rows = (board?.rows ?? []).filter((row) => row.target_key === key);
+  const row = rows.find((item) => trialIds.includes(item.trial_id)) ?? rows[0] ?? null;
+  if (!row) return { card: null, popup: t('famous.pop.none') };
+  if (row.status === 'insufficient_data') return { card: t('famous.tooLittle'), popup: t('famous.pop.tooLittle') };
+  const real = row.category === 'prospective_unexposed';
+  const type = t(TRIAL_TYPE[row.category] ?? 'famous.type.other');
+  const error = Number.isFinite(row.model_error_arcsec) ? arcsecShort(row.model_error_arcsec) : null;
+  let popup;
+  if (row.status === 'hit' && error) popup = t('famous.pop.hit', { type, error });
+  else if (row.status === 'miss' && error) popup = t('famous.pop.miss', { type, error });
+  else popup = t(has(`famous.pop.${row.status}`) ? `famous.pop.${row.status}` : 'famous.pop.notScored', { type });
+  let card;
+  if (row.status === 'waiting') card = t('famous.waiting');
+  else if (row.status !== 'hit' && row.status !== 'miss') card = t('famous.notScored');
+  else if (real && row.confirmation_pending) card = t('famous.blindPending');
+  else card = t(`famous.${real ? 'blind' : 'practice'}${row.status === 'hit' ? 'Hit' : 'Miss'}`);
+  return { card, popup };
+}
+
+/**
+ * The short line on a Famous targets card (task B29), from the data files: stars "fast-moving star · 6 ly"; Solar
+ * System bodies their kind and their status from famousResult ("dwarf planet · too little data to forecast",
+ * "dwarf planet · blind forecast, confirmation pending", "interstellar comet · pictures only").
+ */
+export function famousLine({ kind, distance, status = null } = {}) {
   const noun = t(has(`famous.kind.${kind}`) ? `famous.kind.${kind}` : 'famous.kind.other');
   const ly = lightYears(distance);
   let detail;
   if (ly !== null && colourOf(kind) !== 'solar') detail = t('famous.ly', { ly: formatLightYears(ly) });
-  else if (seeOnly) detail = t('famous.seeOnly');
-  else if (openForecasts > 0) detail = t('famous.forecast');
+  else if (status) detail = status;
   else if (colourOf(kind) === 'solar') detail = t('famous.solar');
   return detail ? `${noun} · ${detail}` : noun;
 }

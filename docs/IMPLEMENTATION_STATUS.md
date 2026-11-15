@@ -2535,3 +2535,45 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - `node --test tests/`: 279 of 279 pass.
 - **Screenshots (header strip):** `docs/screens/b33-header-{1239,1240,1280,1366,1440,1920}.png`, and the opened menu at `docs/screens/b33-menu-open-{360,768,1239}.png`.
 - **Not verified:** Windows with classic scrollbars, which is covered by the 33 px margin but not run, and a real 1280 laptop screen.
+
+### Task B29g, 15 Nov 2026: Home's target lines say no more than the record
+
+- **Source.** Every word now comes from `scoreboard.json`, which `loadData` already reads before Home is drawn:
+  - its see-only list;
+  - the target's scored row: status, `category` (retrospective_holdout = "Practice run", prospective_unexposed =
+    "Real test", the Predictions page's own chips), `confirmation_pending` and `model_error_arcsec`.
+
+  Pure functions: `describe.js` `famousResult` and `famousLine`. `index.json`'s `open_forecast_ids` is no longer used
+  for the wording. Makemake has an open forecast, but its `prediction.json` says `prediction_status:
+  insufficient_data` with no model, so B29's "our blind forecast" overstated it.
+- **Cards.** Stars keep kind and distance (they claim nothing about forecasts):
+  - Pluto: "dwarf planet · blind forecast, confirmation pending".
+  - Makemake: "dwarf planet · too little data to forecast".
+  - 3I/ATLAS: "interstellar comet · pictures only".
+
+  Card lines now wrap instead of ending in an ellipsis, which had cut "confirmation pending" to "co…". The rail was
+  tightened so all 8 cards still fit at 1280×720, and phone cards are 264 px wide with one height (66 px).
+- **Popup result line**, in plain words with the trial type (replacing "Images ready · Hit: inside the
+  preregistered region"):
+  - Barnard's Star: "Practice run: hit, 1.52″ off" (1.5188).
+  - Epsilon Indi B: "Practice run: hit, 0.08″ off" (0.0755).
+  - Pluto: "Real test: missed by 5.9″" (5.8991).
+  - WISE 0855, RW Aurigae, R Draconis, Makemake: "Too little data to forecast".
+  - 3I/ATLAS: "Pictures only".
+
+  Each card's accessible name uses the same two lines. Home's visible text no longer contains "preregistered"
+  (checked in the browser).
+- **Tests:** `tests/home-b29g.test.mjs` checks every card and popup line against `scoreboard.json` for all 8 targets:
+  - the exact lines above;
+  - "pictures only" exactly for the see-only list, and "too little data" exactly for `insufficient_data`;
+  - "blind" only for a scored real test, "confirmation pending" only where the row says so;
+  - the error matches `model_error_arcsec`;
+  - Makemake's open forecast is not called a forecast;
+  - without the scoreboard no card claims anything.
+
+  `node --test` 279 pass.
+- **Checks:** all B29 interaction checks pass again at 1280 and 390. Lighthouse mobile on Home 84, CLS 0 (the
+  phone row's reserved height default is now 190 px).
+- **Screenshots:** `docs/screens/b29g-rail-1280.png`, `b29g-popup-barnard-1280.png`,
+  `b29g-popup-makemake-1280.png`.
+

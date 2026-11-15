@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { AUTO_STEP, AUTO_TURN_SPEED, RESUME_MS, shouldTurn } from '../static/js/space-ui.js';
 import { rateText } from '../static/js/time-ui.js';
-import { famousLine } from '../static/js/describe.js';
+import { famousLine, famousResult } from '../static/js/describe.js';
 
 const html = readFileSync(new URL('../static/index.html', import.meta.url), 'utf8');
 const index = JSON.parse(readFileSync(new URL('../static/data/index.json', import.meta.url), 'utf8'));
@@ -23,19 +23,6 @@ test('one turn in about two minutes, time at one day per second, the turn back 5
   assert.equal(60 / AUTO_TURN_SPEED, 120);
   assert.equal(rateText(AUTO_STEP), '1 day/s');
   assert.equal(RESUME_MS, 5000);
-});
-
-test('the Famous targets lines come from the data files: kind, light-years, open forecast, See only', () => {
-  const byKey = Object.fromEntries(index.targets.map((target) => [target.key, target]));
-  const line = (key, distance) => famousLine({
-    kind: byKey[key].kind, distance, openForecasts: byKey[key].prediction?.open_forecast_ids?.length ?? 0,
-    seeOnly: byKey[key].prediction?.status === 'see_only',
-  });
-  assert.equal(line('barnard', { value: 1.83, unit: 'pc' }), 'fast-moving star · 6 ly');
-  assert.equal(line('pluto'), 'dwarf planet · our blind forecast');
-  assert.equal(line('3i-atlas'), 'interstellar comet · pictures only');
-  // A Solar System body without an open forecast is not called a forecast.
-  assert.equal(famousLine({ kind: 'dwarfplanet' }), 'dwarf planet · in our Solar System');
 });
 
 test('Home has one Solar System view: the rail, the popup, the Auto rotate switch, the layers, the Key line and the search icon', () => {

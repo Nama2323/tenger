@@ -9,7 +9,7 @@ import { allowsDifference, comparisonReasons, epochCoverage, pairComparison } fr
 import { parseCoordinates, separationDeg } from './coords.js';
 import { $, chip, dataTable, el, formatNumber, formatUtc, prefersReducedMotion } from './dom.js';
 import {
-  buildFovOptions, drawStarfield, entryName, famousEntries, famousLineOf, famousThumb, fillCoordinates, formatDistance, kindLabel, placeMapLabels, predictionLabel,
+  buildFovOptions, drawStarfield, entryName, famousEntries, famousLineOf, famousResultOf, famousThumb, fillCoordinates, formatDistance, kindLabel, placeMapLabels, predictionLabel,
   renderHome, startBlinking, statusLabel,
 } from './home.js';
 import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
@@ -2551,8 +2551,9 @@ function selectFamous(entry) {
   for (const card of document.querySelectorAll('.famous-card')) card.setAttribute('aria-pressed', String(card.dataset.key === entry.key));
   $('pop-thumb').replaceChildren(famousThumb(entry, thumbsOf(entry)));
   $('pop-name').textContent = entryName(entry);
-  $('pop-line').textContent = famousLineOf(entry);
-  $('pop-status').textContent = `${statusLabel(entry)} · ${predictionLabel(entry)}`;
+  $('pop-line').textContent = famousLineOf(entry, app.scoreboard);
+  // The result in plain words with the trial type, from scoreboard.json (task B29g).
+  $('pop-status').textContent = famousResultOf(entry, app.scoreboard).popup;
   const see = $('pop-see');
   see.disabled = !isOpenable(entry);
   see.textContent = t(isOpenable(entry) ? 'famous.see' : 'famous.notReady');
@@ -2726,6 +2727,7 @@ async function start() {
     thumbsOf,
     onOpen: openFromHome,
     onSelect: (entry) => selectFamous(entry),
+    board: app.scoreboard,
   });
   renderFamousExtras();
   delete $('page-home').dataset.loading;

@@ -3,7 +3,7 @@
 import { $, el, prefersReducedMotion } from './dom.js';
 import { has, t } from './i18n.js';
 import { AU_PER_UNIT, RINGS, mapRadius, placeOnMap } from './map.js';
-import { famousLine } from './describe.js';
+import { famousLine, famousResult } from './describe.js';
 import { isLegacyOnly, isOpenable } from './targets.js';
 
 const BLINK_MS = 900;
@@ -55,10 +55,11 @@ const FAMOUS_ORDER = ['barnard', 'wise0855', 'epsindib', 'rwaur', 'rdra', 'pluto
 
 export const famousEntries = (entries) => FAMOUS_ORDER.map((key) => entries.find((entry) => entry.key === key)).filter(Boolean);
 
+/** What Home says about a target's forecast, from scoreboard.json (`board`; describe.js famousResult, task B29g). */
+export const famousResultOf = (entry, board) => famousResult({ key: entry.key, board, trialIds: entry.prediction.trialIds });
+
 /** The card's line, from the data files (describe.js famousLine). */
-export const famousLineOf = (entry) => famousLine({
-  kind: entry.kind, distance: entry.map?.distance, openForecasts: entry.prediction.openForecastIds?.length ?? 0, seeOnly: entry.seeOnly,
-});
+export const famousLineOf = (entry, board) => famousLine({ kind: entry.kind, distance: entry.map?.distance, status: famousResultOf(entry, board).card });
 
 /** A still thumbnail (the newer prepared picture), or a dot in the target's colour when there is none. */
 export function famousThumb(entry, thumbs) {
@@ -67,15 +68,15 @@ export function famousThumb(entry, thumbs) {
   return el('img', { src: frame.src ?? `data/${entry.key}/${frame.file}`, alt: '', width: '44', height: '44', decoding: 'async' });
 }
 
-function renderFamous(entries, thumbsOf, onSelect) {
+function renderFamous(entries, thumbsOf, onSelect, board) {
   $('famous-list').replaceChildren(...famousEntries(entries).map((entry) => {
-    const line = famousLineOf(entry);
+    const line = famousLineOf(entry, board);
     return el('li', {}, el('button', {
       type: 'button',
       class: `famous-card colour-${entry.colour}`,
       'data-key': entry.key,
       'aria-pressed': 'false',
-      'aria-label': t('famous.card', { name: entryName(entry), line, status: statusLabel(entry), prediction: predictionLabel(entry) }),
+      'aria-label': t('famous.card', { name: entryName(entry), line, result: famousResultOf(entry, board).popup }),
       onclick: () => onSelect(entry),
     }, [
       el('span', { class: 'famous-thumb', 'aria-hidden': 'true' }, famousThumb(entry, thumbsOf(entry))),
@@ -250,7 +251,7 @@ export function drawStarfield(canvas = $('starfield')) {
 // ---------- Page ----------
 
 /** thumbsOf(entry) returns { kind, frames } prepared thumbnails or null. */
-export function renderHome({ entries, indexLoaded, thumbsOf, onOpen, onSelect }) {
-  renderFamous(entries, thumbsOf, onSelect);
+export function renderHome({ entries, indexLoaded, thumbsOf, onOpen, onSelect, board = null }) {
+  renderFamous(entries, thumbsOf, onSelect, board);
   renderMap(entries, indexLoaded, onOpen);
 }
