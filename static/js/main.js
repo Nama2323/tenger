@@ -21,6 +21,7 @@ import { initHelp } from './help.js';
 import { hasPublishedTrials } from './ledger.js';
 import { currentReveal, initLedger, showLedger, syncRevealFromUrl } from './ledger-ui.js';
 import { renderAbout, renderReserved } from './pages.js';
+import { initMethod, showMethod } from './method-ui.js';
 import { POSTMORTEM_PATH, readPostmortem } from './postmortem.js';
 import {
   drawPlate, limitsFor, paintComposite, paintDifference, paintFalseColour, paintMono, stacksFor, StackCache, tintFor,
@@ -1476,6 +1477,13 @@ async function refreshPanels() {
     epochs: app.investigation?.state !== 'ok' ? null : state.previews
       ? { matched: state.previews.length, total: app.investigation.doc.epochs?.length ?? 0, preview: true }
       : epochCoverage(app.investigation.doc, state.visits.map((visit) => visit.visit)),
+    // Task B30: the target's published investigation file, as it is on the server.
+    download: entry && app.investigation?.path ? {
+      href: `${app.source.base}${app.investigation.path}`,
+      file: app.investigation.path.split('/').pop(),
+      saveAs: app.investigation.path.replaceAll('/', '-'),
+      name: entryName(entry),
+    } : null,
   });
   renderSpectrumNote($('spectrum-note'), { investigation: app.investigation });
   $('explore-box').hidden = !state.frames.length;
@@ -1586,6 +1594,7 @@ function showPage(page, { push = true, focus = true } = {}) {
     homeShown();
   }
   if (page === 'predictions') showLedger();
+  if (page === 'method') showMethod();
   if (page === 'game' || page === 'learn') ensurePlanetX();
   if (page === 'learn') ensureBatch()?.then(setBatch);
   if (page === 'loop' && app.source) {
@@ -1857,7 +1866,7 @@ function applyLocation({ push = false } = {}) {
     if (resolved.page === 'game' && route.round && route.round !== currentRoundId()) selectRound(route.round);
     if (resolved.page === 'learn' && (route.lesson ?? null) !== currentLearnView()) showLearn(route.lesson, { notify: false, focus: false });
     showPage(resolved.page, { push, focus: false });
-    if (resolved.page === 'predictions') syncRevealFromUrl(route.trial);
+    if (resolved.page === 'predictions') syncRevealFromUrl(route.trial, route.step);
     return;
   }
   app.panel = route.panel ?? 'see';
@@ -2408,6 +2417,17 @@ async function loadData() {
   // Predictions: real trial files as soon as the real index lists any; until then the labelled fixtures.
   const realIndex = fixtures ? await real.index() : indexState;
   const fallback = !fixtures && !hasPublishedTrials(realIndex);
+  // "How it works" (task B30): real files only; its links to other pages switch the page in place.
+  initMethod({
+    nameOf: (key) => {
+      const entry = key ? app.allTargets.find((item) => item.key === canonicalKey(key)) : null;
+      return entry ? entryName(entry) : key;
+    },
+    onNavigate: (href) => {
+      history.pushState(null, '', href);
+      applyLocation();
+    },
+  });
   initLedger({
     source: fallback ? createSource({ fixtures: true }) : app.source,
     fallback,

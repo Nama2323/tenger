@@ -30,6 +30,7 @@
   <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css?v=tenger-h1">
+  <link rel="stylesheet" href="css/method.css?v=b30">
 </head>
 <body data-page="home">
   <a class="skip" href="#main" data-t="site.skip"></a>
@@ -427,6 +428,7 @@
         <h1 id="predictions-title" tabindex="-1" data-t="story.title"></h1>
         <p class="lead" data-t="story.lead"></p>
         <p class="story-cta"><button id="story-pluto" type="button" class="primary" data-t="story.cta" disabled></button></p>
+        <p class="method-link"><a href="?page=method" data-page-link="method" data-t="method.link"></a></p>
       </header>
       <p id="ledger-loading" class="note" role="status" data-t="loading"></p>
       <div id="ledger-source" class="ledger-source" role="note" hidden></div>
@@ -592,6 +594,7 @@
         <p class="eyebrow" data-t="about.title"></p>
         <h1 id="about-title" tabindex="-1" data-t="about.headline"></h1>
         <p class="lead" data-t="about.lineShort"></p>
+        <p class="method-link"><a href="?page=method" data-page-link="method" data-t="method.link"></a></p>
         <details class="more-info">
           <summary data-t="ui.details"></summary>
           <p class="eyebrow" data-t="about.eyebrow"></p>
@@ -657,10 +660,23 @@
         </section>
       </div>
     </section>
+
+    <!-- ======================= How it works (task B30) ======================= -->
+    <!-- Our own words; every number comes from the data files (method.js) or a cited mission document. -->
+    <section id="page-method" class="page page-method" hidden aria-labelledby="method-title">
+      <header class="page-head">
+        <p class="eyebrow" data-t="nav.method"></p>
+        <h1 id="method-title" tabindex="-1" data-t="method.headline"></h1>
+        <p class="lead" data-t="method.lead"></p>
+        <p class="method-badge"><span class="chip" data-t="method.badge"></span></p>
+      </header>
+      <div id="method-body" class="method-body"></div>
+    </section>
   </main>
 
   <footer class="site-footer">
     <p data-t="footer.credit"></p>
+    <p data-t="footer.spaceApps"></p>
   </footer>
 
   <dialog id="reveal" class="reveal" aria-labelledby="reveal-title">
@@ -713,6 +729,7 @@
       </header>
       <p class="note" data-t="limits.lead"></p>
       <div id="limits-body" class="limits-body"></div>
+      <p class="method-link"><a href="?page=method" data-page-link="method" data-t="method.link"></a></p>
     </div>
   </dialog>
 

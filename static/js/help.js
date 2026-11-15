@@ -1,6 +1,6 @@
 // Two small dialogs reachable from the top bar on every page: the keyboard shortcuts (also opened with "?")
 // and "What TENGER can and can't see". Native <dialog>: focus stays inside, Escape closes, focus returns.
-import { $, el } from './dom.js';
+import { $, details, el } from './dom.js';
 import { t } from './i18n.js';
 import { limitsNumbers } from './limits.js';
 import { readDepth } from './planetx.js';
@@ -53,6 +53,14 @@ function doText(id) {
 }
 
 function fill(host) {
+  // "How it works" (task B30) shows only the limits: each in one line, what we do about them in closed Details.
+  if (host.dataset.only === 'cannot') {
+    host.replaceChildren(
+      el('ul', { class: 'limits-list' }, LIMITS_DO.map((id) => el('li', { text: limitText(id) }))),
+      details(el('ul', { class: 'limits-list' }, LIMITS_DO.map((id) => el('li', { class: 'limits-do', text: doText(id) }))), { label: t('method.cannot.do') }),
+    );
+    return;
+  }
   host.replaceChildren(
     el('section', { class: 'limits-group can' }, [el('h3', { text: t('limits.canTitle') }), el('ul', {}, CAN_DO.map((id) => el('li', { text: canText(id) })))]),
     el('section', { class: 'limits-group cannot' }, [
@@ -62,9 +70,14 @@ function fill(host) {
   );
 }
 
-/** Draws the two lists into host (the dialog's body or the About card) and fills in the numbers once loaded. */
-export function renderLimits(host) {
+/**
+ * Draws the two lists into host (the dialog's body or the About card) and fills in the numbers once loaded.
+ * only: 'cannot' draws the limits alone ("How it works").
+ */
+export function renderLimits(host, { only = null } = {}) {
   if (!host) return;
+  if (only) host.dataset.only = only;
+  for (const each of hosts) if (!each.isConnected && each !== host) hosts.delete(each);
   hosts.add(host);
   fill(host);
   loading ??= Promise.all([json('data/barnard/investigation.json'), json('data/planetx/depth.json')]).then(([barnard, depth]) => {
@@ -109,6 +122,8 @@ export function initHelp({ onOpen = () => {} } = {}) {
   }
   for (const dialog of document.querySelectorAll('dialog.sheet')) {
     dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
+    // A link to another page ("How it works", task B30) closes the sheet as the page changes.
+    for (const pageLink of dialog.querySelectorAll('[data-page-link]')) pageLink.addEventListener('click', () => dialog.close());
     // A click on the dimmed backdrop (outside the sheet's box) closes it too.
     dialog.addEventListener('click', (event) => {
       if (event.target === dialog) dialog.close();

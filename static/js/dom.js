@@ -33,6 +33,19 @@ export function statTile({ value, label, badge = null, tone = '' }) {
   return el('div', { class: `stat-tile ${tone}`.trim() }, [el('p', { class: 'stat-value', text: value }), el('p', { class: 'stat-label', text: label }), badge]);
 }
 
+/**
+ * "Download the data (JSON): a.json · b.json" (task B30). Links only to files that are already published; each
+ * file: { href, file, saveAs }. Null when there is none.
+ */
+export function downloadLine(files, name) {
+  if (!files?.length) return null;
+  const links = files.flatMap(({ href, file, saveAs }, index) => [
+    index ? ' · ' : null,
+    el('a', { href, download: saveAs ?? file, text: file, 'aria-label': t('download.aria', { file, name }) }),
+  ]);
+  return el('p', { class: 'download-line' }, [el('span', { text: t('download.label') }), ' ', links]);
+}
+
 /** A labelled pill, e.g. a status or a content type. */
 export const chip = (text, kind = '') => el('span', { class: `chip ${kind}`.trim(), text });
 

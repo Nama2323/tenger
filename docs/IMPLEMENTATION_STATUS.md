@@ -2317,3 +2317,35 @@ No login, no server and no storage. Only the game page and its strings changed; 
     Catalogue 10.39″/yr row clear of the caption. Every click hit; the largest cursor step was 56 px per frame;
     no problems were reported.
 - **Tests:** `node --test` 266 pass.
+
+### Task B30, 15 Nov 2026 (done by Session A at the user's request): "How it works", evidence downloads, footer
+- **New page `?page=method`** ("How it works"): `static/js/method.js` (pure: facts, steps, numbers, links), `static/js/method-ui.js` (renderer), `static/css/method.css` (own file, so Session B's Home work in style.css stays apart), section `#page-method` in `index.html`, `'method'` added to `PAGES` in `route.js`, the `method.*` strings plus `nav.method`, `footer.spaceApps` and `download.*` in `i18n.js`. Each section is a headline, one short line, and cards; longer text sits in closed Details. The header menu item is left to Session B (header off limits during B29).
+- **Where every number and fact comes from:**
+  - Wavelengths "0.75 to 5 µm": `WAVE_MIN`/`WAVE_MAX` in `static/js/stack.js`. The IRSA DR1 overview says "from 0.75 to 5.0 um across the entire sky" (https://irsa.ipac.caltech.edu/data/SPHEREx/docs/overview_dr1.html, read 15 Nov 2026).
+  - "6" detector arrays and the D1–D6 ranges (0.75–1.09, 1.1–1.62, 1.63–2.41, 2.42–3.82, 3.83–4.41, 4.42–5 µm): `DETECTOR_RANGES` in `static/js/stack.js` (same as `backend/processing.py`). The Caltech instrument page says "Six 2K x 2K HgCdTe detector arrays" with Bands 1–6 at exactly these ranges (https://spherex.caltech.edu/page/instrument).
+  - "Every 6 months": the JPL mission page says "Every six months, SPHEREx will survey the entire sky" (https://www.jpl.nasa.gov/missions/spherex/).
+  - "March 2025": the IRSA DR1 overview says "launched in March 2025"; the JPL page gives March 11, 2025.
+  - "NASA/IPAC IRSA": the IRSA SPHEREx mission page (https://irsa.ipac.caltech.edu/Missions/spherex.html) serves DR1.
+  - Pluto "5.9″", Miss: `scoreboard.json` row `pluto-position-2026b`, fields `model_error_arcsec` (5.8991) and `status`. "Why: our oval was too small" is shown only when `trials/pluto/postmortem.json` (exploratory, `frozen.d2` 6.7728 > 5.991) is present, and is labelled as found after the reveal. "Team confirmation pending" on the Check step comes from the row's `confirmation_pending`.
+  - Practice runs "2 of 2" and "1.52″" / "0.08″": `scoreboard.json` rows `barnard-position-2026b` and `epsindib-position-2026b` (`status`, `model_error_arcsec` 1.5188 and 0.0755), which match `counts.retrospective_holdout.hit` = 2.
+  - Asteroid batch "1 of 1", "7 not scorable", "(3)" and "(4)": `scoreboard.json` `asteroid_batch.counts` (hit 1, miss 0, insufficient_data 3, ambiguous 4, invalid_comparison 0), plus `team_statement_pending`.
+  - Planet X "4 to 7" magnitudes: `planetx/depth.json` through `readDepth` and `glanceOf` (`planetx.js`), the same numbers as the "Can and can't do" dialog (`limits.js`).
+  - The 15″ in "What this cannot tell you": Barnard's `investigation.json` `pipeline.settings.core_radius_arcsec`, through the dialog's own code (`help.js` `renderLimits(host, { only: 'cannot' })`).
+  - The Lock link: `trials/pluto-position-2026b/receipt.json` `commit` (b2df072…). The Model and Check links open the Pluto reveal at steps 2 and 6 through a new `?step=1–6` parameter, which is read once when the reveal opens and is not written back.
+- **Honest statuses:** all eight steps are "Done" because each step's result is visible on the site. Check reads "Done · team confirmation pending" from the scoreboard. "Ruling out the familiar": stars come from Gaia DR3 (`backend/investigation.py`, `scripts/build_investigation.py`), with SIMBAD for WISE 0855 and Epsilon Indi B. Asteroids come from JPL Horizons and the SBDB, through IRSA MOST (`scripts/asteroids.py`, including the Gaia DR3/AllWISE 15″ star check). **IMCCE SkyBoT is not called anywhere in our code**, so its card and source say "Not used yet".
+- **Download the data (JSON):** in Investigate's Evidence tab, a link to the target's published `investigation.json` (path from `index.json`, served from the source's own base). On every prediction card's Details (story cards, scoreboard cards and asteroid batch cards), links to that trial's published files that loaded (`trial`, `prediction`, `receipt`, `training`, `verification`). These are existing files only; no data file is new or changed.
+- **Links:** "How it works →" at the top of Predictions, under About's headline, and in the "Can and can't do" dialog (the link closes the dialog).
+- **Footer:** "Built for the NASA Space Apps Challenge 2026. Not affiliated with or endorsed by NASA." is added to the site footer. **Limit:** the footer is hidden on Home and Investigate by an existing rule (`style.css`: `body[data-page="home"] .site-footer, body[data-page="investigate"] .site-footer { display: none; }`). Both pages are Session B's and off limits during B29, so the line is not on those two pages yet. Session B has been told.
+- **Checks (real runs):**
+  - `node --test tests/`: 271 of 271 pass after rebasing onto `e1f1ab0` (270 before). This includes the new `tests/method-page.test.mjs` (5 tests): numbers equal the files' fields; eight steps in order; the Lock commit; the pending status; `?step=` parsing; facts with https mission sources; SkyBoT marked not used; the four limits equal the dialog's; every trial's files exist; the footer and the three links are in `index.html`.
+  - `python -m scripts.validate_release`: 120 contract files checked, 0 failures.
+  - Headless Chrome (CDP, exact viewports):
+    - At 360, 390 and 1280, `scrollWidth` equals the viewport width (no sideways scroll) and no element ends past the right edge.
+    - On the first screen no visible paragraph is longer than 3 lines (measured; two longer card lines were shortened).
+    - All nine headline values render from the files.
+    - `?target=barnard&panel=evidence` shows "Download the data (JSON): investigation.json"; fetching `data/barnard/investigation.json` returns 200 with `tenger.investigation/1`.
+    - On Predictions there are 16 download lines, including 8 batch cards, and all 55 linked files return 200. The top link is `?page=method`.
+    - `?page=predictions&trial=pluto-position-2026b&step=2` opens the reveal on step 2 ("Physics predicts Pluto's path…"), and `&step=6` opens the verdict ("5.9″ from our forecast, just outside the oval: a miss").
+  - Accessibility: sections use `aria-labelledby` and headings, and cards are list items with an h3. The band strip is a labelled list, Details are native `<details>`/`<summary>` (keyboard and screen-reader ready), and each download link has an `aria-label` naming the file and the target.
+- **Screenshots:** `docs/screens/b30-method-360.png`, `docs/screens/b30-method-390.png`, `docs/screens/b30-method-1280.png` (full page), `docs/screens/b30-reveal-step2-390.png`.
+- **Not verified:** a real phone, and screen-reader speech (only the markup was checked).
