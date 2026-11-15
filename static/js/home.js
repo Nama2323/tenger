@@ -56,7 +56,7 @@ const FAMOUS_ORDER = ['barnard', 'wise0855', 'epsindib', 'rwaur', 'rdra', 'pluto
 export const famousEntries = (entries) => FAMOUS_ORDER.map((key) => entries.find((entry) => entry.key === key)).filter(Boolean);
 
 /** What Home says about a target's forecast, from scoreboard.json (`board`; describe.js famousResult, task B29g). */
-export const famousResultOf = (entry, board) => famousResult({ key: entry.key, board, trialIds: entry.prediction.trialIds });
+export const famousResultOf = (entry, board) => famousResult({ key: entry.key, board, trialIds: entry.prediction.trialIds, seeOnly: entry.seeOnly });
 
 /** The card's line, from the data files (describe.js famousLine). */
 export const famousLineOf = (entry, board) => famousLine({ kind: entry.kind, distance: entry.map?.distance, status: famousResultOf(entry, board).card });
@@ -76,7 +76,8 @@ function renderFamous(entries, thumbsOf, onSelect, board) {
       class: `famous-card colour-${entry.colour}`,
       'data-key': entry.key,
       'aria-pressed': 'false',
-      'aria-label': t('famous.card', { name: entryName(entry), line, result: famousResultOf(entry, board).popup }),
+      // The result once only: not again when the line already says it ("too little data to forecast").
+      'aria-label': (() => { const result = famousResultOf(entry, board).popup; return line.toLowerCase().includes(result.toLowerCase()) ? t('famous.cardShort', { name: entryName(entry), line }) : t('famous.card', { name: entryName(entry), line, result }); })(),
       onclick: () => onSelect(entry),
     }, [
       el('span', { class: 'famous-thumb', 'aria-hidden': 'true' }, famousThumb(entry, thumbsOf(entry))),

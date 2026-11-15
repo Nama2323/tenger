@@ -47,10 +47,13 @@ export const arcsecShort = (value) => `${new Intl.NumberFormat('en', { maximumFr
  * an open forecast without a model is not "a forecast". Returns { card, popup }: card is the short status for a
  * Solar System card's line (stars keep kind · distance), popup the plain result line.
  */
-export function famousResult({ key, board, trialIds = [] } = {}) {
-  if (board?.see_only?.includes(key)) return { card: t('famous.seeOnly'), popup: t('famous.pop.seeOnly') };
-  const rows = (board?.rows ?? []).filter((row) => row.target_key === key);
-  const row = rows.find((item) => trialIds.includes(item.trial_id)) ?? rows[0] ?? null;
+export function famousResult({ key, board, trialIds = [], seeOnly = false } = {}) {
+  if (board?.see_only?.includes(key) || seeOnly) return { card: t('famous.seeOnly'), popup: t('famous.pop.seeOnly') };
+  // Without the scoreboard Home says it does not know, never "no forecast" (the trial files may hold one).
+  if (!board) return { card: null, popup: t('famous.pop.unknown') };
+  // The target's own trial (index.json), else a non-exploratory row; an exploratory revision is never the headline.
+  const rows = board.rows?.filter((row) => row.target_key === key) ?? [];
+  const row = rows.find((item) => trialIds.includes(item.trial_id)) ?? rows.find((item) => !item.exploratory) ?? null;
   if (!row) return { card: null, popup: t('famous.pop.none') };
   if (row.status === 'insufficient_data') return { card: t('famous.tooLittle'), popup: t('famous.pop.tooLittle') };
   const real = row.category === 'prospective_unexposed';
@@ -61,10 +64,12 @@ export function famousResult({ key, board, trialIds = [] } = {}) {
   else if (row.status === 'miss' && error) popup = t('famous.pop.miss', { type, error });
   else popup = t(has(`famous.pop.${row.status}`) ? `famous.pop.${row.status}` : 'famous.pop.notScored', { type });
   let card;
+  const practice = row.category === 'retrospective_holdout';
   if (row.status === 'waiting') card = t('famous.waiting');
   else if (row.status !== 'hit' && row.status !== 'miss') card = t('famous.notScored');
   else if (real && row.confirmation_pending) card = t('famous.blindPending');
-  else card = t(`famous.${real ? 'blind' : 'practice'}${row.status === 'hit' ? 'Hit' : 'Miss'}`);
+  else if (real || practice) card = t(`famous.${real ? 'blind' : 'practice'}${row.status === 'hit' ? 'Hit' : 'Miss'}`);
+  else card = null; // another trial type (e.g. illustrative) is not called a forecast on a card
   return { card, popup };
 }
 

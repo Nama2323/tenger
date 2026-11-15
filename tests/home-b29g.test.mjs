@@ -59,10 +59,17 @@ test('an open forecast without a model is not called a forecast (Makemake)', () 
   assert.ok(makemake);
 });
 
-test('without the scoreboard the cards claim nothing about forecasts', () => {
+test('without the scoreboard the cards claim nothing and say the status is unknown (See only still from index.json)', () => {
   for (const entry of entries) {
-    const result = famousResult({ key: entry.key, board: null });
-    assert.equal(result.card, null);
-    assert.equal(result.popup, 'No forecast yet');
+    const result = famousResult({ key: entry.key, board: null, seeOnly: entry.seeOnly });
+    if (entry.seeOnly) assert.deepEqual(result, { card: 'pictures only', popup: 'Pictures only' });
+    else assert.deepEqual(result, { card: null, popup: 'Forecast status unavailable' });
   }
+});
+
+test('another trial type is not called a practice run, and an exploratory row is never the headline', () => {
+  const row = { target_key: 'x', trial_id: 'x-1', category: 'illustrative', status: 'hit', model_error_arcsec: 1, exploratory: false };
+  assert.deepEqual(famousResult({ key: 'x', board: { see_only: [], rows: [row] } }), { card: null, popup: 'Trial: hit, 1″ off' });
+  const exploratory = { ...row, category: 'retrospective_holdout', exploratory: true };
+  assert.equal(famousResult({ key: 'x', board: { see_only: [], rows: [exploratory] } }).popup, 'No forecast yet');
 });

@@ -2576,4 +2576,20 @@ No login, no server and no storage. Only the game page and its strings changed; 
   phone row's reserved height default is now 190 px).
 - **Screenshots:** `docs/screens/b29g-rail-1280.png`, `b29g-popup-barnard-1280.png`,
   `b29g-popup-makemake-1280.png`.
+- **Independent review** (two read-only reviewers that had not seen this work):
+  - Re-derived from the files, every Home line matches the record and nothing overstates a result.
+  - Fixed from their low findings:
+    - Without `scoreboard.json` the popup now says "Forecast status unavailable" (it said "No forecast yet", which
+      the trial files contradict), and 3I/ATLAS keeps "pictures only" from `index.json`.
+    - A trial type other than practice run or real test is not named on a card.
+    - An exploratory row is never the headline.
+    - Screen readers hear the status once, not twice.
+  - Left for the user:
+    - Pluto's card wording (requested) does not show the miss; the popup does.
+    - "Too little data" for RW Aurigae, whose record says no period model was justified (15 measurements exist).
+    - Outside B29g, the "Can and can't do" dialog (B19's dictated texts) says every forecast was locked before the
+      newest pictures were opened, which is untrue for the two practice runs. It also says "every teammate confirms"
+      (still pending), and that RW Aurigae's brightness cannot be measured.
+
+  `node --test` 280 pass.
 
