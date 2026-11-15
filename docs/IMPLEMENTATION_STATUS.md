@@ -1576,6 +1576,12 @@ Session A's verification: 345 Tercidina inside (D² 0.12); 4 ambiguous; 3 insuff
   - Captures `home-fly`, `home-flylist` (360/390/768/1280) and `home-nine-1280` in `docs/screens/`.
   - Lighthouse mobile Home: 83 and 83 (accessibility, best practices, SEO 100; CLS 0; TBT 0 ms), as after B10.
   - Not checked on a real phone.
+- **Live time after the first screen.** Leaving the first screen gives back live time if the visitor was live,
+  otherwise their own speed (`time-ui` `isLive`/`goLive`). Checked: scrolled to the full section at 1280, the time
+  bar reads LIVE with today's date, at real-time speed.
+- **Demo video.** Re-made with `node docs/screens/demo/make-video.mjs`: shot 1 now shows the first screen over the
+  turning 3D scene, then the full 3D section on LIVE time. The video is 30.000 s and 900 frames, now 2,501,831
+  bytes, and the recording checks raised no problem. I checked the contact sheet and two frames of shot 1.
 
 ### Task B12, 15 Nov 2026: every page readable at a glance
 
@@ -1678,6 +1684,12 @@ Artificial, Pending, Measured, Hypothetical, Quick look, not validated. The full
     Lab, Beat the physics, Investigate (See, and the Prediction panel), Learn and About.
   - Size: +7.9 KB gzip over the changed files, all loaded with the first page.
   - Not checked on a real phone.
+- **Live time after the first screen.** Leaving the first screen gives back live time if the visitor was live,
+  otherwise their own speed (`time-ui` `isLive`/`goLive`). Checked: scrolled to the full section at 1280, the time
+  bar reads LIVE with today's date, at real-time speed.
+- **Demo video.** Re-made with `node docs/screens/demo/make-video.mjs`: shot 1 now shows the first screen over the
+  turning 3D scene, then the full 3D section on LIVE time. The video is 30.000 s and 900 frames, now 2,501,831
+  bytes, and the recording checks raised no problem. I checked the contact sheet and two frames of shot 1.
 
 ### Task B14, 15 Nov 2026: the visible brand is now Vestigium
 
@@ -1714,6 +1726,12 @@ Artificial, Pending, Measured, Hypothetical, Quick look, not validated. The full
   - Lighthouse mobile Home: 80 and 81 (accessibility, best practices and SEO 100; TBT 0 ms; CLS 0.005). This is
     lower than B12's 83 and 83: FCP 1.9–2.3 s against 1.4–1.5 s, with another session busy on the same machine.
   - Not checked on a real phone.
+- **Live time after the first screen.** Leaving the first screen gives back live time if the visitor was live,
+  otherwise their own speed (`time-ui` `isLive`/`goLive`). Checked: scrolled to the full section at 1280, the time
+  bar reads LIVE with today's date, at real-time speed.
+- **Demo video.** Re-made with `node docs/screens/demo/make-video.mjs`: shot 1 now shows the first screen over the
+  turning 3D scene, then the full 3D section on LIVE time. The video is 30.000 s and 900 frames, now 2,501,831
+  bytes, and the recording checks raised no problem. I checked the contact sheet and two frames of shot 1.
 
 ### Task B16, 15 Nov 2026: a first screen that explains the site, Real sky only where it works
 
@@ -1763,6 +1781,12 @@ Artificial, Pending, Measured, Hypothetical, Quick look, not validated. The full
   - Screenshots `docs/screens/b16-home-<360|390|768|1280>-<before|after>.png`, `b16-watch-barnard-*`,
     `b16-planetx-lab-390`, `b16-menu-390`, `b16-nav-1280`, `b16-githubio-menu-390`, `b16-time-row-390`.
   - Not checked on a real phone.
+- **Live time after the first screen.** Leaving the first screen gives back live time if the visitor was live,
+  otherwise their own speed (`time-ui` `isLive`/`goLive`). Checked: scrolled to the full section at 1280, the time
+  bar reads LIVE with today's date, at real-time speed.
+- **Demo video.** Re-made with `node docs/screens/demo/make-video.mjs`: shot 1 now shows the first screen over the
+  turning 3D scene, then the full 3D section on LIVE time. The video is 30.000 s and 900 frames, now 2,501,831
+  bytes, and the recording checks raised no problem. I checked the contact sheet and two frames of shot 1.
 
 ### Task B15, 15 Nov 2026 (done by Session A at the user's request; Predictions page and Pluto reveal only)
 
@@ -1839,6 +1863,12 @@ Session B was told before the work started (B14 rename and B16 Home are rebased 
   - Screenshots: `docs/screens/b17-watch-<390|1280>-<before|after>.png`, `b17-share-menu-390`,
     `b17-about-open-390`, `b17-target-<pluto|rwaur|wise0855|3i-atlas>-390`.
   - Not checked on a real phone.
+- **Live time after the first screen.** Leaving the first screen gives back live time if the visitor was live,
+  otherwise their own speed (`time-ui` `isLive`/`goLive`). Checked: scrolled to the full section at 1280, the time
+  bar reads LIVE with today's date, at real-time speed.
+- **Demo video.** Re-made with `node docs/screens/demo/make-video.mjs`: shot 1 now shows the first screen over the
+  turning 3D scene, then the full 3D section on LIVE time. The video is 30.000 s and 900 frames, now 2,501,831
+  bytes, and the recording checks raised no problem. I checked the contact sheet and two frames of shot 1.
 
 ### Task B19, 15 Nov 2026: "What Vestigium can and can't do"
 
@@ -1878,6 +1908,12 @@ Session B was told before the work started (B14 rename and B16 Home are rebased 
     console errors.
   - Screenshots: `docs/screens/b19-limits-<390|1280>-<before|after>.png` and `b19-limits-390-after-end.png`.
   - Not checked on a real phone.
+- **Live time after the first screen.** Leaving the first screen gives back live time if the visitor was live,
+  otherwise their own speed (`time-ui` `isLive`/`goLive`). Checked: scrolled to the full section at 1280, the time
+  bar reads LIVE with today's date, at real-time speed.
+- **Demo video.** Re-made with `node docs/screens/demo/make-video.mjs`: shot 1 now shows the first screen over the
+  turning 3D scene, then the full 3D section on LIVE time. The video is 30.000 s and 900 frames, now 2,501,831
+  bytes, and the recording checks raised no problem. I checked the contact sheet and two frames of shot 1.
 
 ### Task B18, 15 Nov 2026 (done by Session A at the user's request; reveal inset)
 
@@ -1982,6 +2018,12 @@ Session B was told and stayed off the game files. Only the game page and its str
   - Dates use the en-GB short month ("27 Sept 2026").
   - The hidden-planet round (`planetx-ui.js`) is unchanged.
   - Not checked on a real phone.
+- **Live time after the first screen.** Leaving the first screen gives back live time if the visitor was live,
+  otherwise their own speed (`time-ui` `isLive`/`goLive`). Checked: scrolled to the full section at 1280, the time
+  bar reads LIVE with today's date, at real-time speed.
+- **Demo video.** Re-made with `node docs/screens/demo/make-video.mjs`: shot 1 now shows the first screen over the
+  turning 3D scene, then the full 3D section on LIVE time. The video is 30.000 s and 900 frames, now 2,501,831
+  bytes, and the recording checks raised no problem. I checked the contact sheet and two frames of shot 1.
 
 ### Task B22, 15 Nov 2026: "Why we missed" at full width on Predictions
 
@@ -2038,6 +2080,12 @@ At every width "Check us in 2027" follows the Pluto card directly, 16 px below i
   - No horizontal scroll at 360, 390 or 1280, and no console errors. 260 tests pass.
   - Screenshots: `docs/screens/b23-contrast-<390|1280>-<before|after>.png` and `b23-contrast-1280-side-3x.png`.
   - Not checked on a real phone.
+- **Live time after the first screen.** Leaving the first screen gives back live time if the visitor was live,
+  otherwise their own speed (`time-ui` `isLive`/`goLive`). Checked: scrolled to the full section at 1280, the time
+  bar reads LIVE with today's date, at real-time speed.
+- **Demo video.** Re-made with `node docs/screens/demo/make-video.mjs`: shot 1 now shows the first screen over the
+  turning 3D scene, then the full 3D section on LIVE time. The video is 30.000 s and 900 frames, now 2,501,831
+  bytes, and the recording checks raised no problem. I checked the contact sheet and two frames of shot 1.
 
 ### Task B24, 15 Nov 2026 (done by Session A at the user's request; Challenge a friend in Beat the physics)
 
@@ -2078,6 +2126,7 @@ No login, no server and no storage. Only the game page and its strings changed; 
 - **Limits**:
   - The share sheet was only seen offered in phone emulation; it was not opened on a real phone.
   - Stars in a link are self-reported: the round's Details says so.
+
 ### Task B25, 15 Nov 2026: the live 3D Solar System behind the first screen
 
 - **Desktop.** The same 3D scene (one WebGL view, not a second one) is the background of Home's first screen.

@@ -174,6 +174,8 @@ export function createTimeControl({ controller, host, reducedMotion = false }) {
     /** The speed step (task B25: Home's first screen runs time gently, then gives the visitor's speed back). */
     step: () => clock.step(),
     setStep: (step) => act((at) => clock.setStep(step, at)),
+    isLive: () => clock.isLive(Date.now()),
+    goLive: () => act((at) => clock.goLive(at)),
     dispose() {
       stopLoop();
       clearTimeout(noteTimer);

@@ -102,6 +102,7 @@ function watchHero(controller, time) {
   const reduced = prefersReducedMotion();
   let on = false;
   let saved = null;
+  let wasLive = false;
   let ratio = 0;
   const apply = () => {
     const wanted = ratio >= 0.5 && document.body.dataset.page === 'home' && !document.body.classList.contains('exploring');
@@ -111,9 +112,12 @@ function watchHero(controller, time) {
     controller.heroMode(on, { rotate: !reduced });
     if (!reduced && on) {
       saved = time.step();
+      wasLive = time.isLive();
       time.setStep(HERO_STEP);
     } else if (!reduced && saved !== null) {
-      time.setStep(saved);
+      // Back to what the visitor had: live time again if it was live, else their speed.
+      if (wasLive) time.goLive();
+      else time.setStep(saved);
       saved = null;
     }
     controller.relayout();

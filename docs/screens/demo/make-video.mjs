@@ -219,13 +219,13 @@ const clickAt = async (selector) => {
 const SHOTS = [
   {
     id: 's1-home', seconds: 4, caption: 'Vestigium: watch the sky move in real NASA SPHEREx pictures.',
-    /** The new first screen, then down to the 3D map below it. */
+    /** The first screen over the live, slowly turning 3D scene (B25), then its text slides off the full 3D section. */
     async record() {
       await openHome();
       return screencast(async () => {
-        await sleep(1500);
-        await smoothScrollIn('#page-home', '#home-map', 1300);
-        await sleep(1500);
+        await sleep(1700);
+        await smoothScrollIn('#page-home', '.home-spacer', 1300);
+        await sleep(1300);
       });
     },
   },
