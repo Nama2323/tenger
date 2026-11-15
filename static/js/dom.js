@@ -80,7 +80,8 @@ export function downloadLine(files, name) {
   if (!files?.length) return null;
   const links = files.flatMap(({ href, file, saveAs }, index) => [
     index ? ' · ' : null,
-    el('a', { href, download: saveAs ?? file, text: file, 'aria-label': t('download.aria', { file, name }) }),
+    // The build version (task B32) on the link too, so a download right after a deploy is never an old cached copy.
+    el('a', { href: versioned(href), download: saveAs ?? file, text: file, 'aria-label': t('download.aria', { file, name }) }),
   ]);
   return el('p', { class: 'download-line' }, [el('span', { text: t('download.label') }), ' ', links]);
 }

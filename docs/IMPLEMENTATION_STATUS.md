@@ -2638,3 +2638,53 @@ No login, no server and no storage. Only the game page and its strings changed; 
 - **Limit.** The pre-B32 builds that browsers may already hold cannot be changed retroactively. After this deploy the
   new `index.html` asks for new module addresses, so it loads matching files even while old ones are cached.
 
+### Task B32a, 15 Nov 2026: "Can and can't do" says no more than the files (dialog, About, How it works)
+
+- **Source.** The three lines the B29g review flagged now come from the data, through `limits.js` `honestyFacts`
+  (pure) and `help.js` `honestyTexts`. One renderer draws the dialog, the About card and How it works, so all three
+  changed together.
+  - **Forecasts.** "Our real tests (Pluto and the asteroids) are locked on GitHub before the newest pictures are
+    opened. Practice runs (Barnard's Star, Epsilon Indi B) use data we had already seen, and are labelled that way."
+    - Real tests: scoreboard rows with `category: prospective_unexposed` (Pluto), plus the asteroid batch, whose
+      category and all 8 trials are `prospective_unexposed`.
+    - Practice runs: scored `retrospective_holdout` rows (the two hits).
+  - **Time stamp.** "→ We log who opened which data, and a test stays marked ‘confirmation pending’ until all four
+    teammates confirm." It replaces "every teammate confirms": Pluto's trial says "other teammates not answered yet"
+    and its row has `confirmation_pending: true`. The number four is the user's; the files do not record it.
+  - **Saturation.** "Very bright stars saturate SPHEREx, so their brightness cannot be measured (Barnard's Star and
+    R Draconis)." A target is listed when its investigation has no usable brightness and most pictures were refused
+    for flagged pixels:
+    - Barnard's Star: 0 of 356 usable, 356 flagged.
+    - R Draconis: 0 of 299 usable, 299 flagged.
+    - Not listed: Epsilon Indi B (338 of 458 usable); WISE 0855 (no usable pictures, but 198 of 256 refused for
+      neighbour light, which the blend line covers).
+
+    The → line: "For Barnard's Star we use the position instead; R Draconis is marked ‘too little data’. RW Aurigae
+    has 15 brightness measurements, but no regular pattern to forecast from." The 15 is `n_training_points`, and
+    the reason is `predict.no-period-model`.
+  - The dialog reads Barnard's investigation (already loaded), `index.json`, `scoreboard.json`, and the brightness
+    trials' predictions and investigations (RW Aurigae, R Draconis), only when the list opens. Until then each line
+    shows without names.
+- **Same claim elsewhere:**
+  - About, "Saturation": now names Barnard's Star and R Draconis, and gives RW Aurigae its real reason.
+  - About, the VSX source note: "R Dra has saturated or flagged pixels on the star in every exposure" (299 of 299);
+    it said "is saturated".
+  - Lessons only mention Barnard's flagged pixels, which is right, so they were left alone.
+- **Download links.** The "Download the data (JSON)" links (Session A's B30 note) now carry `?v=<build>` too
+  (`dom.js` `downloadLine`). The file still saves under its own name, and the response is 200.
+- **Tests:** `tests/limits-honesty.test.mjs`:
+  - the facts from the files;
+  - the dialog's partial load gives the same saturated set as all 8 investigations;
+  - the exact three lines;
+  - no names before the files load;
+  - no English string says RW Aurigae saturates, that each forecast was locked before the pictures were opened, or
+    that every teammate confirms;
+  - About's saturated list.
+
+  `node --test` 291 pass.
+- **Browser** (1280 and 390): the dialog shows the three lines with no errors, and About and How it works show the
+  same.
+- **Screenshots:** `docs/screens/b32a-limits-can-1280.png`, `b32a-limits-cannot-1280.png`,
+  `b32a-limits-can-390.png`, `b32a-limits-cannot-390.png`.
+- **B33.** Session A's 25f823a is accepted, so B33 was not re-done here.
+
