@@ -2349,3 +2349,98 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - Accessibility: sections use `aria-labelledby` and headings, and cards are list items with an h3. The band strip is a labelled list, Details are native `<details>`/`<summary>` (keyboard and screen-reader ready), and each download link has an `aria-label` naming the file and the target.
 - **Screenshots:** `docs/screens/b30-method-360.png`, `docs/screens/b30-method-390.png`, `docs/screens/b30-method-1280.png` (full page), `docs/screens/b30-reveal-step2-390.png`.
 - **Not verified:** a real phone, and screen-reader speech (only the markup was checked).
+
+### Task B29 (with additions a–e), 15 Nov 2026: Home is the Solar System, moving on its own
+
+- **One view.** The 3D Solar System fills Home under the header. The separate text-first screen and the second 3D
+  section are gone (no `home-spacer`, no old target rail).
+  - A compact title block sits top-left: "Watch the sky move.", "Real NASA SPHEREx pictures of stars and worlds that
+    move.", the "Watch Barnard's Star move" button and a "New: Could SPHEREx see Planet X?" chip. The chip links to the
+    Lab; its measured line from `depth.json` is the chip's tooltip and screen-reader text.
+  - Search is a small icon in the header (`#head-search`); the same form opens under it.
+- **Famous targets** (`static/js/home.js` `renderFamous`, `describe.js` `famousLine`). 8 cards: the five challenge
+  targets, Pluto, Makemake and 3I/ATLAS. Each card has a still thumbnail, the name and one line from the data files:
+  - Stars: kind and light-years ("fast-moving star · 6 ly").
+  - Pluto and Makemake: "dwarf planet · our blind forecast", from `open_forecast_ids` in `index.json` (now read
+    by `targets.js`).
+  - 3I/ATLAS: "interstellar comet · pictures only" (See only).
+  - Each card's accessible name also carries the data status and the prediction status.
+- **Choosing a card** (or a target's 3D label):
+  - The camera flies there, the card is pressed and the 3D label is highlighted.
+  - A popup shows the same line, the status ("Images ready · Hit: inside the preregistered region") and "See the
+    pictures", which opens Investigate on See with Blink playing.
+  - Esc, the × button or a click on empty space closes it; the camera returns to the whole view.
+  - Back from Investigate also closes it and returns the camera home.
+- **Motion with no input** (`space-ui.js` `watchAuto`, pure `shouldTurn`):
+  - The camera turns once in about 2 minutes (OrbitControls speed 0.5, timed in seconds). Time runs at 1 day/s.
+  - A drag, wheel or touch on the scene takes over; the turn resumes 5 s after the last one.
+  - It stops while a target is chosen, on another page, with Investigate open (the scene also pauses, B27a), with
+    the scene off screen or in a hidden tab.
+  - b. The **Auto rotate** switch (`role="switch"`) replaces the visible Pause/Play. Off stops both the turn and the
+    time; on resumes both. It is on by default and off under reduced motion (a still frame).
+- **Decluttered controls:**
+  - One compact time bar bottom-centre: LIVE, Auto rotate, date, speed.
+  - Reset view, Top view, Fly to and 2D/3D as an icon toolbar bottom-left, with tooltips and accessible names.
+  - The colour key and "About this map" are behind a small "Key" button, which also holds the "Planets on …
+    (JPL approximate elements)" line and the camera's target.
+  - "Schematic · not to scale" stays on screen as a chip.
+  - The dataset credit line moved into "About this map".
+- **Additions:**
+  - a. A hint over the scene: "8 targets · tap a card or label · drag to rotate" (phones: "8 targets · tap a
+    card"); the count comes from the data. It fades on the first pointer, touch, wheel or key on Home and returns on
+    reload.
+  - c. Filter chips above the rail: All, Stars, Brown dwarfs, Variable stars, Solar System (kinds from the data
+    files). A chip dims the other cards and their 3D labels to 35% and outlines the matching labels; nothing is
+    hidden. The choice is announced ("Brown dwarfs: 2 of 8 targets highlighted.") in a polite live region.
+  - d. Layer switches in the Key (Orbits, Labels, Kuiper Belt, Planet Nine range), all on, applied at once without
+    reloading (`space3d.js` `setLayer`). A hidden Planet Nine range no longer takes clicks.
+  - e. Key line: "Sizes and distances are not to scale; label colour shows the kind of object."
+- **Phones:**
+  - The Solar System fills the first screen, the title on top and a swipe row (filter chips and cards) at the bottom.
+    The Key and the chip sit just above the row.
+  - The scene takes no touch, so dragging scrolls the page (no trap). "Explore in 3D" opens it full screen as before;
+    the popup sits over the row.
+- **Guided tour.** It no longer starts by itself on a first visit; the hint does that job and the tour stays under
+  More. This was needed for Lighthouse: the tour's late text was the largest paint.
+- **Checks** (headless Chrome on the GPU; `node --test`):
+  - 1280×800 and 390×844, no input:
+    - The scene is on screen 0.65 s and 0.58 s after navigation.
+    - Over 1 s the picture changed and the date ran about 1 day.
+    - Auto rotate is on, rate "1 day/s".
+  - All 8 cards are visible without scrolling at 1280. At 390 a touch swipe reaches the last card
+    (`scrollLeft` 1370 of 1370).
+  - Barnard's Star card:
+    - It flies, highlights the label "Barnard's Star · 1.83 pc (6 ly)" and opens the popup with focus on "See the
+      pictures".
+    - Esc closes it and focus returns to the card; Enter reopens it.
+    - "See the pictures" opens Investigate (Barnard's Star, Blink pressed, playing).
+    - Back returns Home with the popup closed and the scene moving.
+  - Filter "Brown dwarfs" and the Orbits and Kuiper Belt layers off: both states are unchanged after flying to
+    WISE 0855 and back. The Labels switch hides and shows the labels.
+  - Auto rotate off: the date and the picture hold. On: the date runs again.
+  - 360×740: nothing overflows sideways, also with the Key, a popup or the search box open.
+  - Reduced motion:
+    - The 2D map, pixel-identical 1.5 s apart.
+    - With 3D switched on, still (Auto rotate off).
+    - The popup works.
+  - No WebGL (`--disable-webgl`): the 2D map with its 7 markers, the note, all 8 cards; the popup opens WISE 0855 in
+    Investigate. The only console messages are three.js's own "could not create a WebGL context", as before B29.
+  - Header search: the icon opens the box with focus in it; "Epsilon Indi B" opens that target.
+  - No console errors in any other run.
+  - Lighthouse mobile on Home (uvicorn, two runs): performance 81 and 82, accessibility 100, best practices 100,
+    SEO 100, CLS 0 (before the fixes: 73 and 74, LCP the tour text, CLS 0.094).
+  - `node --test`: 270 pass. New: `tests/home-b29.test.mjs` (`shouldTurn`, turn and time rates, card lines from
+    `index.json`, Home wiring). `tests/focus.test.mjs` was updated for the icon Fly to button.
+- **Screenshots** (`docs/screens/`):
+  - Before and after: `b29-home-1280-before.png` and `b29-home-1280-after.png`; `b29-home-390-before.png` and
+    `b29-home-390-after.png`.
+  - Chip selected: `b29-chip-1280.png`, `b29-chip-390.png`.
+  - Key open: `b29-key-1280.png`, `b29-key-390.png`.
+  - Popup: `b29-popup-1280.png`, `b29-popup-390.png`.
+  - Other states: `b29-home-360.png`, `b29-explore-390.png`, `b29-home-1280-reduced.png`,
+    `b29-home-1280-nowebgl.png`, `b29-search-1280.png`.
+- **Limits:**
+  - Checked in headless Chrome with touch emulation, not on a real phone.
+  - The 2D map has no fly-to (the popup still opens).
+  - The demo video (B28) still shows the previous Home.
+

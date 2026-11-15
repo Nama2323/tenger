@@ -52,6 +52,45 @@ const TEXT = {
     'hero.small': 'Planet X is a planet that may hide far beyond Neptune. Nobody has seen it yet.',
     'hero.watch': 'Watch Barnard’s Star move',
     'hero.planetxTitle': 'Could SPHEREx see Planet X? We measured it.',
+    // Task B29: Home is the Solar System, with a compact title block and the Famous targets rail.
+    'hero.lineShort': 'Real NASA SPHEREx pictures of stars and worlds that move.',
+    'hero.planetxChip': 'Could SPHEREx see Planet X?',
+    'chip.newColon': 'New:',
+    'famous.title': 'Famous targets',
+    'famous.see': 'See the pictures',
+    'famous.close': 'Close and return to the whole view',
+    'famous.card': '{name}: {line}. {status}. {prediction}.',
+    'famous.kind.faststar': 'fast-moving star',
+    'famous.kind.star': 'star',
+    'famous.kind.browndwarf': 'brown dwarf',
+    'famous.kind.variable': 'variable star',
+    'famous.kind.dwarfplanet': 'dwarf planet',
+    'famous.kind.comet': 'interstellar comet',
+    'famous.kind.other': 'object',
+    'famous.ly': '{ly} ly',
+    'famous.forecast': 'our blind forecast',
+    'famous.seeOnly': 'pictures only',
+    'famous.solar': 'in our Solar System',
+    'famous.notReady': 'Its pictures are not ready yet.',
+    'search.open': 'Search targets or coordinates',
+    'map.keyButton': 'Key',
+    'auto.label': 'Auto rotate',
+    'hint.wide': '{n} targets · tap a card or label · drag to rotate',
+    'hint.phone': '{n} targets · tap a card',
+    'filter.label': 'Show targets by type',
+    'filter.all': 'All',
+    'filter.stars': 'Stars',
+    'filter.browndwarfs': 'Brown dwarfs',
+    'filter.variables': 'Variable stars',
+    'filter.solar': 'Solar System',
+    'filter.status': '{filter}: {count} of {total} targets highlighted.',
+    'filter.statusAll': 'All {total} targets shown.',
+    'layers.title': 'Show',
+    'layers.orbits': 'Orbits',
+    'layers.labels': 'Labels',
+    'layers.kuiper': 'Kuiper Belt',
+    'layers.nine': 'Planet Nine range',
+    'key.notToScale': 'Sizes and distances are not to scale; label colour shows the kind of object.',
     'hero.planetxLine': 'Not in one image: {low} to {high} magnitudes too faint.',
     'hero.planetxLineOne': 'Not in one image: {low} magnitudes too faint.',
     'chip.new': 'New',
@@ -534,6 +573,8 @@ const TEXT = {
     'space.top': 'Top view',
     'space.view2d': '2D view',
     'space.view3d': '3D view',
+    'space.view2dShort': '2D',
+    'space.view3dShort': '3D',
     'space.scaleNote': 'Distances not to scale: log scale · sizes exaggerated',
     'space.date': 'Planets on {date} UTC (JPL approximate elements)',
     // ---------- Time control for the 3D view (B10) ----------
@@ -2316,6 +2357,8 @@ export function applyTranslations(root = document) {
   for (const node of root.querySelectorAll('[data-t]')) node.textContent = t(node.dataset.t);
   for (const node of root.querySelectorAll('[data-t-placeholder]')) node.placeholder = t(node.dataset.tPlaceholder);
   for (const node of root.querySelectorAll('[data-t-label]')) node.setAttribute('aria-label', t(node.dataset.tLabel));
+  // Tooltips (task B29: the icon toolbar names each button on hover).
+  for (const node of root.querySelectorAll('[data-t-title]')) node.title = t(node.dataset.tTitle);
 }
 
 /** For tests: every English key. */

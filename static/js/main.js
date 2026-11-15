@@ -9,8 +9,8 @@ import { allowsDifference, comparisonReasons, epochCoverage, pairComparison } fr
 import { parseCoordinates, separationDeg } from './coords.js';
 import { $, chip, dataTable, el, formatNumber, formatUtc, prefersReducedMotion } from './dom.js';
 import {
-  buildFovOptions, drawStarfield, entryName, fillCoordinates, formatDistance, kindLabel, placeMapLabels, predictionLabel, renderHome, startBlinking,
-  statusLabel,
+  buildFovOptions, drawStarfield, entryName, famousEntries, famousLineOf, famousThumb, fillCoordinates, formatDistance, kindLabel, placeMapLabels, predictionLabel,
+  renderHome, startBlinking, statusLabel,
 } from './home.js';
 import { addMissingStrings, applyTranslations, has, t, tData } from './i18n.js';
 import { findByName, searchMatches } from './names.js';
@@ -30,13 +30,13 @@ import { loadReserved, reservedRegionNear } from './reserved.js';
 import { bandToParam, buildRoute, embedCode, PAGES, parseRoute, resolveRoute } from './route.js';
 import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometry } from './science.js';
 import { createSky } from './sky.js';
-import { flyThen, homeShown, initSpace } from './space-ui.js';
+import { flyThen, homeShown, initSpace, releaseTarget, selectTarget, setFilter, setLayer } from './space-ui.js';
 import { showLoopPage } from './loop-ui.js';
 import { loadPlanetX, renderHiddenRound } from './planetx-ui.js';
 import { DEPTH_PATH, glanceOf, readDepth } from './planetx.js';
 import { countUpShown, moonShare, plainLine } from './describe.js';
 import { loadBatch } from './batch-ui.js';
-import { isTourRunning, nextTourStep, runTour, shouldAutoStart, stopTour } from './tour.js';
+import { isTourRunning, nextTourStep, runTour, stopTour } from './tour.js';
 import {
   channelWavelength, CHANNELS, colourGroupsPresent, DETECTOR_RANGES, detectorOfChannel, mjdToDate, mjdToYear, pixelToSky, positionAt,
   selectBand, skyToPixel, visitsOf, wellCovered,
@@ -2065,7 +2065,9 @@ async function fillPlanetXCard() {
     const response = await fetch(url);
     const glance = response.ok ? glanceOf(readDepth(await response.json())) : null;
     if (glance) {
-      $('hero-planetx-line').textContent = t(glance.low === glance.high ? 'hero.planetxLineOne' : 'hero.planetxLine', { low: String(glance.low), high: String(glance.high) });
+      const line = t(glance.low === glance.high ? 'hero.planetxLineOne' : 'hero.planetxLine', { low: String(glance.low), high: String(glance.high) });
+      $('hero-planetx-line').textContent = line;
+      $('hero-planetx').title = line;
     }
   } catch {
     // The card still opens the Lab, which says what it can.
@@ -2219,10 +2221,7 @@ function bindControls() {
   $('tour-stop').addEventListener('click', stopTour);
   bindViewingTools();
   $('menu-toggle').addEventListener('click', () => setMenu($('menu-toggle').getAttribute('aria-expanded') !== 'true'));
-  $('rail-toggle').addEventListener('click', () => {
-    const open = $('rail-toggle').getAttribute('aria-expanded') !== 'true';
-    $('rail-toggle').setAttribute('aria-expanded', String(open));
-  });
+  bindFamous();
   // Real sky only where the local server runs: on github.io the button is removed and the map library never loads.
   if (api.liveAvailable()) {
     $('sky-open').addEventListener('click', () => {
@@ -2491,6 +2490,117 @@ function ensureBatch() {
   return batchLoad;
 }
 
+// ---------- Famous targets (task B29) ----------
+
+let famousOpen = null;
+
+/** A card (or a target's 3D label): the camera flies there, the card is highlighted and the popup opens. */
+function selectFamous(entry) {
+  famousOpen = entry;
+  for (const card of document.querySelectorAll('.famous-card')) card.setAttribute('aria-pressed', String(card.dataset.key === entry.key));
+  $('pop-thumb').replaceChildren(famousThumb(entry, thumbsOf(entry)));
+  $('pop-name').textContent = entryName(entry);
+  $('pop-line').textContent = famousLineOf(entry);
+  $('pop-status').textContent = `${statusLabel(entry)} · ${predictionLabel(entry)}`;
+  const see = $('pop-see');
+  see.disabled = !isOpenable(entry);
+  see.textContent = t(isOpenable(entry) ? 'famous.see' : 'famous.notReady');
+  $('target-pop').hidden = false;
+  selectTarget(entry.key);
+  (see.disabled ? $('pop-close') : see).focus({ preventScroll: true });
+}
+
+/** Closes the popup; the camera returns to the whole view and the motion resumes. quiet: no focus move. */
+function closeFamous({ quiet = false, home = true } = {}) {
+  if (!famousOpen) return;
+  const key = famousOpen.key;
+  const hadFocus = $('target-pop').contains(document.activeElement);
+  famousOpen = null;
+  $('target-pop').hidden = true;
+  for (const card of document.querySelectorAll('.famous-card')) card.setAttribute('aria-pressed', 'false');
+  if (home) releaseTarget();
+  if (hadFocus && !quiet) document.querySelector(`.famous-card[data-key="${CSS.escape(key)}"]`)?.focus({ preventScroll: true });
+}
+
+/** The type filter's groups (task B29), from each target's kind in the data files. */
+const FILTERS = [
+  ['all', () => true],
+  ['stars', (entry) => entry.kind === 'faststar' || entry.kind === 'star'],
+  ['browndwarfs', (entry) => entry.kind === 'browndwarf'],
+  ['variables', (entry) => entry.kind === 'variable'],
+  ['solar', (entry) => colourOf(entry.kind) === 'solar'],
+];
+
+/** The filter chips above the rail (only groups with members) and the hint over the scene; after the data load. */
+function renderFamousExtras() {
+  const famous = famousEntries(app.entries);
+  const targets = new Set(famous.map((entry) => entry.key));
+  const choose = (name, test) => {
+    const keys = name === 'all' ? null : new Set(famous.filter(test).map((entry) => entry.key));
+    for (const chipButton of $('famous-filters').children) chipButton.setAttribute('aria-pressed', String(chipButton.dataset.filter === name));
+    for (const card of document.querySelectorAll('.famous-card')) card.classList.toggle('is-dim', Boolean(keys) && !keys.has(card.dataset.key));
+    setFilter(keys, targets);
+    $('famous-filter-status').textContent = keys
+      ? t('filter.status', { filter: t(`filter.${name}`), count: String(keys.size), total: String(famous.length) })
+      : t('filter.statusAll', { total: String(famous.length) });
+  };
+  $('famous-filters').replaceChildren(...FILTERS.filter(([name, test]) => name === 'all' || famous.some(test)).map(([name, test]) => el('button', {
+    type: 'button', class: 'filter-chip', 'data-filter': name, 'aria-pressed': String(name === 'all'), text: t(`filter.${name}`),
+    onclick: () => choose(name, test),
+  })));
+  // The hint (task B29): the wide or the phone wording; it fades after the first interaction and returns on reload.
+  const hint = $('space-hint');
+  const wording = () => t(matchMedia('(max-width: 900px)').matches ? 'hint.phone' : 'hint.wide', { n: String(famous.length) });
+  hint.textContent = wording();
+  hint.hidden = false;
+  matchMedia('(max-width: 900px)').addEventListener('change', () => { hint.textContent = wording(); });
+  const fade = () => {
+    hint.classList.add('is-gone');
+    for (const name of ['pointerdown', 'wheel', 'touchstart', 'keydown']) $('home-map').removeEventListener(name, fade);
+  };
+  for (const name of ['pointerdown', 'wheel', 'touchstart', 'keydown']) $('home-map').addEventListener(name, fade, { passive: true });
+}
+
+function bindFamous() {
+  // The Key's layer switches (task B29): each shows or hides one layer of the 3D scene at once.
+  for (const button of document.querySelectorAll('#key-layers [data-layer]')) {
+    button.addEventListener('click', () => {
+      const on = button.getAttribute('aria-checked') !== 'true';
+      button.setAttribute('aria-checked', String(on));
+      setLayer(button.dataset.layer, on);
+    });
+  }
+  // Phones: the scene's chip and Key sit just above the target row, whose height this tracks.
+  new ResizeObserver(() => $('home-map').style.setProperty('--famous-h', `${$('famous').offsetHeight}px`)).observe($('famous'));
+  $('pop-close').addEventListener('click', () => closeFamous());
+  $('pop-see').addEventListener('click', () => {
+    const entry = famousOpen;
+    if (!entry || !isOpenable(entry)) return;
+    // Investigate opens over the scene (which pauses); Back returns to the whole view (space-ui onHome).
+    $('target-pop').hidden = true;
+    app.panel = 'see';
+    app.scrollToPanel = false;
+    setMode('blink');
+    openEntry(entry);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape' || !famousOpen || document.body.dataset.page !== 'home' || document.querySelector('dialog[open]')) return;
+    event.stopPropagation();
+    closeFamous();
+  }, true);
+  // The header search closes once a search runs or Esc is pressed inside it.
+  $('head-search').addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && $('head-search').open) {
+      event.stopPropagation();
+      $('head-search').open = false;
+      $('head-search').querySelector('summary').focus();
+    }
+  });
+  $('head-search').addEventListener('toggle', () => {
+    if ($('head-search').open) $('search-input').focus({ preventScroll: true });
+  });
+}
+
 /** From Home: in the 3D view the camera flies to the target first, then its investigation opens. */
 function openFromHome(entry) {
   flyThen(entry.key, () => {
@@ -2509,17 +2619,22 @@ function startSpace() {
     nameOf: (key) => (findEntry(key) ? entryName(findEntry(key)) : null),
     nameOfEntry: entryName,
     distanceOf: (star) => formatDistance({ value: star.distance_pc, unit: 'pc' }),
-    // On wide screens the search console covers the left of the scene; the Sun is centred in the rest.
+    // Wide screens (task B29): the Famous targets rail covers the right of the scene; the Sun is centred in the rest
+    // (a negative inset is a covered strip on the right).
     insetLeft: () => (matchMedia('(min-width: 901px)').matches
-      ? Math.max(0, document.querySelector('.console-left').getBoundingClientRect().right - $('space3d').getBoundingClientRect().left)
+      ? -Math.max(0, $('space3d').getBoundingClientRect().right - $('famous').getBoundingClientRect().left)
       : 0),
-    // A challenge target opens its investigation (after the flight); any other body is only flown to (true = handled).
+    // A target's label or body: the camera flies there and its popup opens (task B29); any other body is only flown to.
     onPick: (key) => {
       const entry = findEntry(key);
       if (!entry || !isOpenable(entry)) return false;
-      openFromHome(entry);
+      selectFamous(entry);
       return true;
     },
+    // A click on empty space closes the popup and returns the camera to the whole view.
+    onEmpty: () => closeFamous(),
+    // Back from an investigation: the popup is gone and the camera returns to the whole view.
+    onHome: () => closeFamous({ quiet: true }),
   });
 }
 
@@ -2544,10 +2659,8 @@ async function start() {
   buildArrays();
   buildFovOptions($('fov'));
   drawStarfield();
-  // The target list starts folded (task B12: the chips and the map already name every target); the colour key is
-  // open on wide screens only.
-  $('rail-toggle').setAttribute('aria-expanded', 'false');
-  $('map-key').open = matchMedia('(min-width: 1200px)').matches;
+  // The Key starts closed (task B29: a calmer first screen; the "Schematic · not to scale" chip stays on screen).
+  $('map-key').open = false;
   bindControls();
   setPressed($('modes'), 'mode', 'blink');
   $('composite').setAttribute('aria-pressed', 'true');
@@ -2560,16 +2673,17 @@ async function start() {
     indexLoaded: app.indexState?.state === 'ok',
     thumbsOf,
     onOpen: openFromHome,
+    onSelect: (entry) => selectFamous(entry),
   });
+  renderFamousExtras();
   delete $('page-home').dataset.loading;
   renderReserved((key) => (findEntry(key) ? entryName(findEntry(key)) : null));
   startSpace();
   startBlinking();
   applyLocation();
   if (app.page === 'home' || app.page === 'investigate') homeShown();
-  // The tour starts by itself once per browser, on a plain visit to Home.
-  const storage = browserStorage();
-  if (shouldAutoStart({ storage, route: parseRoute(location.search) })) runTour(tourActions, { storage });
+  // Task B29: the guided tour no longer starts by itself; the hint over the Solar System guides a first visit, and
+  // the tour stays under More ("Guided tour").
 }
 
 start().catch((error) => {

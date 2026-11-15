@@ -36,6 +36,21 @@ export function plainLine({ kind, distance } = {}) {
 }
 
 /**
+ * The short line on a Famous targets card (task B29), from the data files: "fast-moving star · 6 ly", "dwarf planet ·
+ * our blind forecast" (an open forecast not yet checked), "interstellar comet · pictures only" (See only).
+ */
+export function famousLine({ kind, distance, openForecasts = 0, seeOnly = false } = {}) {
+  const noun = t(has(`famous.kind.${kind}`) ? `famous.kind.${kind}` : 'famous.kind.other');
+  const ly = lightYears(distance);
+  let detail;
+  if (ly !== null && colourOf(kind) !== 'solar') detail = t('famous.ly', { ly: formatLightYears(ly) });
+  else if (seeOnly) detail = t('famous.seeOnly');
+  else if (openForecasts > 0) detail = t('famous.forecast');
+  else if (colourOf(kind) === 'solar') detail = t('famous.solar');
+  return detail ? `${noun} · ${detail}` : noun;
+}
+
+/**
  * The number a count-up shows after elapsedMs of durationMs (task B28): from 0 to value with an ease-out, never
  * below 0 or past the value (progress is clamped, so a frame time slightly before the start cannot go negative).
  */
