@@ -31,12 +31,81 @@ export function formatRaDec(ra, dec) {
 }
 
 async function reachable(url) {
+  return (await surveyProperties(url)) !== null;
+}
+
+/** A survey's HiPS "properties" file as text, or null if it cannot be reached within a few seconds. */
+export async function surveyProperties(url = SPHEREX_HIPS) {
   try {
     const response = await fetch(`${url}/properties`, { signal: AbortSignal.timeout(PROBE_MS) });
-    return response.ok;
+    return response.ok ? await response.text() : null;
   } catch {
-    return false;
+    return null;
   }
+}
+
+/** "key = value" lines of a HiPS properties file as a Map (comment lines skipped). Pure. */
+export function parseProperties(text) {
+  const values = new Map();
+  for (const line of String(text ?? '').split('\n')) {
+    const match = line.match(/^\s*([A-Za-z_][\w.]*)\s*=\s*(.*?)\s*$/);
+    if (match) values.set(match[1], match[2]);
+  }
+  return values;
+}
+
+/** Aladin Lite, loaded once and shared by the Sky map and the game's sky panel. */
+let aladin = null;
+export function loadAladin() {
+  aladin ??= import(ALADIN_URL).then(async (module) => {
+    await module.default.init;
+    return module.default;
+  });
+  aladin.catch(() => {
+    aladin = null;
+  });
+  return aladin;
+}
+
+/** The constellation data (d3-celestial, BSD-3): stick figures and name positions, each fetched once. */
+const fetched = new Map();
+const fetchJson = (url) => {
+  if (!fetched.has(url)) fetched.set(url, fetch(url).then((response) => (response.ok ? response.json() : null)).catch(() => null));
+  return fetched.get(url);
+};
+
+/** Adds constellation lines (and, with names, their names) to an Aladin view as one overlay; null if unavailable. */
+export async function constellationOverlay(A, map, { names = false } = {}) {
+  const [lines, labels] = await Promise.all([fetchJson(LINES_URL), names ? fetchJson(NAMES_URL) : null]);
+  if (!lines?.features) return null;
+  const overlay = A.graphicOverlay({ color: 'rgba(200, 220, 255, 0.55)', lineWidth: 1 });
+  map.addOverlay(overlay);
+  for (const feature of lines.features) {
+    for (const line of feature.geometry?.coordinates ?? []) overlay.add(A.polyline(line.map(([lon, lat]) => [raOf(lon), lat])));
+  }
+  // Names are extra: if they fail, the lines stay.
+  try {
+    return { overlay, names: labels?.features ? nameCatalog(A, map, labels.features) : null };
+  } catch (error) {
+    console.warn('Constellation names could not load:', error);
+    return { overlay, names: null };
+  }
+}
+
+/** Each constellation's name as text where d3-celestial places it (a custom catalogue shape, so no dot under it). */
+function nameCatalog(A, map, features) {
+  const drawName = (source, context) => {
+    context.font = '600 11px sans-serif';
+    context.fillStyle = 'rgba(200, 220, 255, 0.8)';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(source.data.name, source.x, source.y);
+  };
+  const catalog = A.catalog({ name: 'constellations', shape: drawName, sourceSize: 8 });
+  map.addCatalog(catalog);
+  catalog.addSources(features.filter((feature) => feature.geometry?.type === 'Point')
+    .map((feature) => A.source(raOf(feature.geometry.coordinates[0]), feature.geometry.coordinates[1], { name: String(feature.properties?.name ?? '').toUpperCase() })));
+  return catalog;
 }
 
 let state = null;
@@ -76,8 +145,7 @@ export async function openSkyMap({ markers, onOpen, onClose, focus = 'barnard' }
     const probe = reachable(SPHEREX_HIPS);
     let A;
     try {
-      A = (await import(ALADIN_URL)).default;
-      await A.init;
+      A = await loadAladin();
     } catch (error) {
       console.warn('The sky map library could not load:', error);
       $('skymap-status').textContent = t('skymap.unavailable');
@@ -178,22 +246,12 @@ export async function setConstellationLines(on) {
   state.linesOn = on;
   if (on && !state.lines) {
     try {
-      const response = await fetch(LINES_URL);
-      const doc = response.ok ? await response.json() : null;
-      const overlay = state.A.graphicOverlay({ color: 'rgba(200, 220, 255, 0.55)', lineWidth: 1 });
-      state.map.addOverlay(overlay);
-      for (const feature of doc?.features ?? []) {
-        for (const line of feature.geometry?.coordinates ?? []) overlay.add(state.A.polyline(line.map(([lon, lat]) => [raOf(lon), lat])));
-      }
-      state.lines = overlay;
-      // Names at each constellation's label point, small and faint (task B40).
-      const names = await fetch(NAMES_URL).then((answer) => (answer.ok ? answer.json() : null)).catch(() => null);
-      if (names?.features?.length) {
-        const catalog = state.A.catalog({ name: 'constellations', color: 'rgba(0, 0, 0, 0)', sourceSize: 1, displayLabel: true, labelColumn: 'name', labelColor: 'rgba(200, 220, 255, 0.7)', labelFont: 'italic 12px sans-serif' });
-        state.map.addCatalog(catalog);
-        catalog.addSources(names.features.map((feature) => state.A.source(raOf(feature.geometry.coordinates[0]), feature.geometry.coordinates[1], { name: feature.properties.name })));
-        state.names = catalog;
-      }
+      // Lines, and names at each constellation's label point (task B40), through the shared helper (B37): a 1-pixel
+      // transparent catalogue made Aladin throw ("radius -1.5"), so the names are drawn as text instead.
+      const added = await constellationOverlay(state.A, state.map, { names: true });
+      if (!added) return false;
+      state.lines = added.overlay;
+      state.names = added.names;
     } catch (error) {
       console.warn('Constellation lines could not load:', error);
       return false;

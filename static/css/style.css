@@ -2417,3 +2417,32 @@ body.skymap-open { overflow: hidden; }
 .skymap-fly:empty { display: none; }
 .skymap-fly::-webkit-scrollbar { display: none; }
 .skymap-chip-fly { flex: none; background: rgba(5, 7, 13, 0.72); }
+/* Beat the physics: "Where is this in the sky?" (game-sky.js), the real SPHEREx sky around a position round. */
+.game-sky { margin-top: var(--s3); padding: var(--s3); border: 1px solid var(--border); border-radius: var(--radius); }
+.game-sky-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.game-sky-head h3 { margin: 0; }
+.game-sky-body { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--s3); align-items: start; margin-top: 12px; }
+.game-sky-dome { display: grid; justify-items: center; gap: 8px; }
+/* A round window onto the sky, like looking up through a dome. */
+.game-sky-frame { position: relative; width: min(100%, 560px); aspect-ratio: 1 / 1; border-radius: 50%; overflow: hidden; background: #000; border: 1px solid var(--border-strong); box-shadow: 0 0 0 6px rgba(var(--accent-rgb), 0.08), 0 0 40px rgba(var(--accent-rgb), 0.15); isolation: isolate; }
+.game-sky-dome-bar { display: flex; align-items: center; gap: 10px; }
+.game-sky-step { min-width: var(--tap); min-height: var(--tap); font-size: 20px; font-weight: 700; }
+.game-sky-fov { min-width: 9ch; text-align: center; color: var(--muted); font-size: 13px; }
+.game-sky-colour { display: grid; gap: 4px; font-weight: 600; font-size: 13.5px; }
+.game-sky-colour[hidden] { display: none; }
+.game-sky-colour select { min-height: var(--tap); }
+.game-sky-view { position: absolute !important; inset: 0; width: 100%; height: 100%; }
+.game-sky-status { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; padding: 16px; text-align: center; }
+.game-sky-controls { display: grid; gap: 10px; }
+.game-sky-controls .note { margin: 0; }
+.game-sky-zooms { display: flex; flex-wrap: wrap; gap: 6px; }
+.game-sky-zooms button { min-height: var(--tap); }
+.game-sky-band { display: grid; gap: 4px; font-weight: 600; font-size: 13.5px; }
+.game-sky-band[hidden] { display: none; }
+.game-sky-band input { width: 100%; min-height: var(--tap); accent-color: var(--accent); }
+.game-sky-band output { color: var(--accent); }
+.game-sky-band-ends { display: flex; justify-content: space-between; color: var(--muted); font-weight: 400; font-size: 12px; }
+@media (max-width: 900px) {
+  .game-sky { padding: 12px; }
+  .game-sky-body { grid-template-columns: minmax(0, 1fr); }
+}

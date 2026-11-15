@@ -2873,3 +2873,36 @@ No login, no server and no storage. Only the game page and its strings changed; 
 - **Screenshots:** `docs/screens/b40-skymap-1280.png`, `b40-skymap-390.png`, `b40-chip-pluto-1280.png`,
   `b40-chip-pluto-390.png`, `b40-popup-play-1280.png`.
 
+### Task B37, 15 Nov 2026: "Where is this in the sky?" in Beat the physics (branch `game-sky`, base `31091c0`)
+
+- **What.** Each position round (Barnard's Star, Epsilon Indi B, Pluto) gets a round sky window below the guessing
+  area. It shows IRSA's SPHEREx DR1 all-sky HiPS, live, in Aladin Lite (the same module as B36). It loads when it
+  scrolls into view, and one view is reused from round to round. Every earlier part of the round is unchanged: I
+  compared all 25 parts of the round area with the live site (`31091c0`) and played a full round with all four
+  reveal steps.
+- **View.** Stereographic, seen from inside the sky like a planetarium, with zoom-out capped at 120° so it never
+  becomes a globe. Presets are 60°, 2°, 10′ and "the chart". Our own −/+ buttons and an "N° across" readout sit
+  under the circle, because the circle hides Aladin's corner controls. Constellation lines and names (d3-celestial)
+  have a switch and are labelled as a guide drawing, not SPHEREx data.
+- **Wavelength.** A slider covers the cube's frames from its `properties` (`data_cube_crval3_arr`), 0.75–4.99 µm. It
+  skips frames 50 and 51, which IRSA documents as blank (dichroic) and which return 404. Aladin picks a cube frame on
+  an even frequency scale (`setSliceNumber(42)` fetched frame 17), so frames are requested by frequency. I checked
+  in the browser that the frame on the slider is the tile IRSA serves (0, 10, 42, 101).
+  - Found here: B36's Sky map "first slice" actually shows frame 95 (4.74 µm). It names no wavelength, so I left
+    it unchanged.
+- **Colour.** One wavelength drawn through a colour map (Magma by default, then Inferno, Viridis, Rainbow, and
+  Black and white), with a false-colour note. A blue/green/red composite of three frames did not work in Aladin
+  3.8.2: copies of the same survey shared one frequency, and additive blending did not combine them.
+- **Honesty.** The ring marks the last training measurement, and the square marks the pre-reveal chart area
+  (`guessView`). A test shows the panel is identical with baseline, model, actual and outcome removed. The notes
+  give the chart size against the picture's 12.9″ pixel ("too small to see" only when the chart spans under three
+  pixels; Pluto's 8.4° chart is visible). They also give the survey dates (2025-04-24 to 2026-05-14, not the guess
+  date).
+- **Files.** `static/js/game-sky.js` (new), `static/js/skymap.js` (shared Aladin loader, properties reader,
+  constellation lines and names; a names failure no longer removes the lines), `static/js/coords.js`
+  (`tangentToSky`), `static/js/game-ui.js`, `static/js/i18n.js`, `static/css/style.css`, `static/index.html`
+  (re-stamped import map), `tests/game-sky.test.mjs` (new, 8 tests).
+- **Tests.** `node --test tests/*.mjs`: 313 of 313 pass. pytest was not run (no `.venv` in this checkout; no Python
+  changed).
+- **Not verified:** phone widths. Chrome would not narrow below 1100 px, so the one-column layout under 900 px is
+  untested.
