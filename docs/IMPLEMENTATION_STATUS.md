@@ -2256,3 +2256,35 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - Screenshots: `docs/screens/b27-header-390-2x.png`, `b27-header-1280-2x.png` and `b27-print-header.png`.
   - The tab icon itself cannot be seen in headless Chrome, so that check is the icon files loading, not a look at
     a real tab.
+
+### Task B27, 15 Nov 2026: the demo video re-made with only the main screens
+
+- `docs/screens/demo/vestigium-demo-30s.mp4`: **30.000 s** (900 frames), **2,678,935 bytes**, 1280×720, H.264
+  High, yuv420p, 30 fps, no audio, captions burned in, with `.srt` and a contact sheet. B26's video is kept as
+  `vestigium-demo-30s-v3.mp4`.
+- **Recording.** Recorded once on `tenger-dev` with Session A's B27a fix and the team logo (fe69382), using the
+  B26 cursor (real mouse events, eased curved moves, click ripples, smooth wheel scrolling).
+- **Shots:**
+  1. the 3D first screen with the cursor drifting;
+  2. a scroll to the full 3D map, the time slider dragged 1 → 6 (planets orbiting), then LIVE;
+  3. a scroll back up, a hover on WISE 0855 with its tooltip, then a click on Barnard's Star;
+  4. the blink with Contrast dragged 1 → 2.4;
+  5. "What changed", then "Estimate motion", with the result and the brightness chart;
+  6. the title card with the new logo and "Also inside: blind forecasts and a Planet X test".
+- **Shot 5 caption.** It is the user's sentence, "We measure how it moves from the pictures and check it against
+  Gaia." On screen: the measured finding (10.4174 ± 0.3267″/yr, Gaia DR3 10.3933, from `investigation.json`) and
+  the browser quick look (9.94 ± 0.48″/yr, labelled "not validated").
+- **Tooltip.** The WISE 0855 tooltip is the chip's own `title` text, drawn by the recording overlay, because a
+  screen recording never captures the browser's native tooltip.
+- **Checks:**
+  - The contact sheet shows the five screens and the title card.
+  - Every click hit its target, with the expected state after: live time, Barnard's Star open, contrast up, the
+    motion result and the chart. The cursor's largest step was 95 px per frame.
+  - With Barnard's Star open, no 3D label or control is visible or under the pointer.
+  - The years (2010, 2026) and the 168″ are read from the page.
+  - No page in the take showed "TENGER", "SPHEREx Blink" or "pythonhack000".
+- **Script changes** (`make-video.mjs`):
+  - Wheel scrolling is now time-driven and lets each step settle.
+  - The scroll down is made over the left column and by the first screen's full height, because the colour key
+    keeps the wheel to itself and the first screen is taller than 720 px.
+  - "Estimate motion" is brought into view with `scrollIntoView` before the cursor moves (the user's step).
