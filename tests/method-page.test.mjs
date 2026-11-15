@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { has, t } from '../static/js/i18n.js';
+import { englishKeys, has, t } from '../static/js/i18n.js';
 import { LIMITS_DO } from '../static/js/help.js';
 import { limitsNumbers } from '../static/js/limits.js';
 import {
@@ -71,9 +71,12 @@ test('SPHEREx facts cite a mission document; the band strip is our pipeline tabl
   assert.equal(t('method.bands.note'), 'Colours are for display, not physical.');
 });
 
-test('catalogue checks and sources: SkyBoT is marked as not used; every link is https', () => {
-  assert.equal(FAMILIAR.find((item) => item.id === 'skybot').status, 'notUsed');
-  assert.equal(DATA_SOURCES.find((item) => item.id === 'skybot').status, 'notUsed');
+test('catalogue checks and sources: only services our code calls (no SkyBoT); every link is https', () => {
+  assert.deepEqual(FAMILIAR.map((item) => item.id), ['stars', 'asteroids']);
+  assert.deepEqual(DATA_SOURCES.map((item) => item.id), ['irsa', 'jpl', 'gaia', 'cds']);
+  const page = [readFileSync(fileURLToPath(new URL('../static/js/method.js', import.meta.url)), 'utf8'), readFileSync(fileURLToPath(new URL('../static/js/method-ui.js', import.meta.url)), 'utf8')].join('\n');
+  assert.ok(!/skybot|imcce/i.test(page), 'SkyBoT is not used, so the page does not list it');
+  assert.ok(!englishKeys().some((key) => /skybot/i.test(key) || /SkyBoT|IMCCE/.test(t(key))), 'no SkyBoT string');
   for (const item of [...FAMILIAR, ...DATA_SOURCES]) for (const [href] of item.links) assert.match(href, /^https:\/\//);
   assert.equal(t('method.familiar.noMatch'), 'No match means ‘not in these catalogues’, not ‘new’.');
   assert.deepEqual(CANNOT, LIMITS_DO, 'the four limits are the dialog\'s');

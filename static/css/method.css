@@ -35,7 +35,7 @@
 .method-status { font-size: 12.5px; }
 .method-status.is-done { color: var(--hit); border-color: color-mix(in srgb, var(--hit) 55%, transparent); background: color-mix(in srgb, var(--hit) 12%, transparent); }
 .method-status.is-pending { color: var(--miss); border-color: color-mix(in srgb, var(--miss) 55%, transparent); background: color-mix(in srgb, var(--miss) 10%, transparent); }
-.method-status.is-notUsed, .method-status.is-missing { color: var(--muted); }
+.method-status.is-missing { color: var(--muted); }
 .method-go a, .method-link a { font-weight: 600; }
 .method-go { margin: 0; }
 .method-links { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 14px; }

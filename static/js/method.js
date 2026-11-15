@@ -104,11 +104,10 @@ export function resultNumbers({ board = null, depth = null, postmortem = null } 
   };
 }
 
-/** How we check known stars and asteroids. SkyBoT is not called by our code (15 Nov 2026), and the page says so. */
+/** How we check known stars and asteroids: only the services our code calls (task B30b). */
 export const FAMILIAR = [
   { id: 'stars', status: 'done', links: [['https://www.cosmos.esa.int/web/gaia/dr3', 'ESA Gaia DR3'], ['https://simbad.cds.unistra.fr/', 'SIMBAD']] },
   { id: 'asteroids', status: 'done', links: [['https://ssd.jpl.nasa.gov/horizons/', 'JPL Horizons'], ['https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html', 'JPL Small-Body Database'], ['https://irsa.ipac.caltech.edu/applications/MOST/', 'IRSA MOST']] },
-  { id: 'skybot', status: 'notUsed', links: [['https://ssp.imcce.fr/webservices/skybot/', 'IMCCE SkyBoT']] },
 ];
 
 /** "Data sources": the services behind the data, with their links. */
@@ -117,7 +116,6 @@ export const DATA_SOURCES = [
   { id: 'jpl', links: [['https://ssd.jpl.nasa.gov/horizons/', 'Horizons'], ['https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html', 'Small-Body Database']] },
   { id: 'gaia', links: [['https://www.cosmos.esa.int/web/gaia/dr3', 'Gaia DR3']] },
   { id: 'cds', links: [['https://simbad.cds.unistra.fr/', 'SIMBAD'], ['https://vizier.cds.unistra.fr/', 'VizieR']] },
-  { id: 'skybot', status: 'notUsed', links: [['https://ssp.imcce.fr/webservices/skybot/', 'SkyBoT']] },
 ];
 
 /** The four limits of the "Can and can't do" dialog (help.js LIMITS_DO), in the same order. */

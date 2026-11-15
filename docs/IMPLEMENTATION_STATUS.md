@@ -2332,12 +2332,12 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - Planet X "4 to 7" magnitudes: `planetx/depth.json` through `readDepth` and `glanceOf` (`planetx.js`), the same numbers as the "Can and can't do" dialog (`limits.js`).
   - The 15″ in "What this cannot tell you": Barnard's `investigation.json` `pipeline.settings.core_radius_arcsec`, through the dialog's own code (`help.js` `renderLimits(host, { only: 'cannot' })`).
   - The Lock link: `trials/pluto-position-2026b/receipt.json` `commit` (b2df072…). The Model and Check links open the Pluto reveal at steps 2 and 6 through a new `?step=1–6` parameter, which is read once when the reveal opens and is not written back.
-- **Honest statuses:** all eight steps are "Done" because each step's result is visible on the site. Check reads "Done · team confirmation pending" from the scoreboard. "Ruling out the familiar": stars come from Gaia DR3 (`backend/investigation.py`, `scripts/build_investigation.py`), with SIMBAD for WISE 0855 and Epsilon Indi B. Asteroids come from JPL Horizons and the SBDB, through IRSA MOST (`scripts/asteroids.py`, including the Gaia DR3/AllWISE 15″ star check). **IMCCE SkyBoT is not called anywhere in our code**, so its card and source say "Not used yet".
+- **Honest statuses:** all eight steps are "Done" because each step's result is visible on the site. Check reads "Done · team confirmation pending" from the scoreboard. "Ruling out the familiar": stars come from Gaia DR3 (`backend/investigation.py`, `scripts/build_investigation.py`), with SIMBAD for WISE 0855 and Epsilon Indi B. Asteroids come from JPL Horizons and the SBDB, through IRSA MOST (`scripts/asteroids.py`, including the Gaia DR3/AllWISE 15″ star check). **IMCCE SkyBoT is not called anywhere in our code**; its two cards were removed in B30b.
 - **Download the data (JSON):** in Investigate's Evidence tab, a link to the target's published `investigation.json` (path from `index.json`, served from the source's own base). On every prediction card's Details (story cards, scoreboard cards and asteroid batch cards), links to that trial's published files that loaded (`trial`, `prediction`, `receipt`, `training`, `verification`). These are existing files only; no data file is new or changed.
 - **Links:** "How it works →" at the top of Predictions, under About's headline, and in the "Can and can't do" dialog (the link closes the dialog).
 - **Footer:** "Built for the NASA Space Apps Challenge 2026. Not affiliated with or endorsed by NASA." is added to the site footer. **Limit:** the footer is hidden on Home and Investigate by an existing rule (`style.css`: `body[data-page="home"] .site-footer, body[data-page="investigate"] .site-footer { display: none; }`). Both pages are Session B's and off limits during B29, so the line is not on those two pages yet. Session B has been told.
 - **Checks (real runs):**
-  - `node --test tests/`: 271 of 271 pass after rebasing onto `e1f1ab0` (270 before). This includes the new `tests/method-page.test.mjs` (5 tests): numbers equal the files' fields; eight steps in order; the Lock commit; the pending status; `?step=` parsing; facts with https mission sources; SkyBoT marked not used; the four limits equal the dialog's; every trial's files exist; the footer and the three links are in `index.html`.
+  - `node --test tests/`: 271 of 271 pass after rebasing onto `e1f1ab0` (270 before). This includes the new `tests/method-page.test.mjs` (5 tests): numbers equal the files' fields; eight steps in order; the Lock commit; the pending status; `?step=` parsing; facts with https mission sources; only services we call are listed (B30b); the four limits equal the dialog's; every trial's files exist; the footer and the three links are in `index.html`.
   - `python -m scripts.validate_release`: 120 contract files checked, 0 failures.
   - Headless Chrome (CDP, exact viewports):
     - At 360, 390 and 1280, `scrollWidth` equals the viewport width (no sideways scroll) and no element ends past the right edge.
@@ -2444,3 +2444,31 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - The 2D map has no fly-to (the popup still opens).
   - The demo video (B28) still shows the previous Home.
 
+
+### Task B30b, 15 Nov 2026 (done by Session A at the user's request): SkyBoT removed, logo checked, sources audited
+- **SkyBoT removed:** the "IMCCE SkyBoT" cards in "Ruling out the familiar" and "Data sources" are gone, with their four strings and the now unused `method.status.notUsed` (`static/js/method.js`, `static/js/i18n.js`, `static/css/method.css`). "No match means ‘not in these catalogues’, not ‘new’." stays. The test now requires the page to list only `stars`/`asteroids` and `irsa`/`jpl`/`gaia`/`cds`, with no SkyBoT or IMCCE text in the page code or any English string.
+- **Header logo:** new screenshots, each in a fresh temporary Chrome profile (no cache, no service worker; `navigator.serviceWorker.getRegistrations()` returns 0; the site registers none). At 1280 and 390 the header shows the new Vestigium logo: `img/vestigium-logo-white.png`, loaded at 712×176, shown at 121×30 (1280) and 105×26 (390). **Why the old icon showed:** the first B30 screenshots were taken before B30 was rebased, from a working tree that did not yet have the logo commit `fe69382`. It was not a cache problem, and nothing needed fixing. `docs/screens/b30-method-1280.png` and `-390.png` are replaced.
+- **Submission sources against the code and data** (report only; nothing changed). Every listed source is really used:
+  - SPHEREx DR1 and QR3: release fields and file names in `static/data/*/investigation.json`, `backend/`, `scripts/` (e.g. `pluto/verification/spherex_qr3_…webp`).
+  - AllWISE: `backend/context.py`, `static/data/barnard/wise.bin.gz`, the Real sky tiles, and the Gaia/AllWISE star check in `scripts/asteroids.py`.
+  - 2MASS catalogue: `backend/context.py` (2MASS PSC Ks from IRSA `fp_psc`), shown as context in the barnard, epsindib and wise0855 `investigation.json`.
+  - WISE Explanatory Supplement: the W1 limit in `scripts/planetx_build.py` → `planetx/depth.json`.
+  - IRSA MOST: `scripts/asteroids.py`.
+  - JPL Horizons: `scripts/` (trials, postmortem, build_body, build_scene3d) and 18 data files.
+  - JPL SBDB: `scripts/asteroids.py`, `scripts/build_scene3d.py`.
+  - JPL approximate planet positions (Standish): `static/js/orbits.js`, `static/js/time.js`.
+  - Gaia DR3: `backend/gaia.py`, `backend/investigation.py`, `scripts/`, 18 data files.
+  - SIMBAD and VizieR: `backend/catalogs.py`, `scripts/build_investigation.py`, `scripts/asteroids.py`.
+  - Aladin Lite 3.8.2: `static/js/sky.js`, loaded on demand from jsDelivr. Note that the Real sky panel is offered only where the local server runs.
+  - SPHEREx Blink: the base code (LICENSE, git history).
+  - Planet Nine papers:
+    - Linder & Mordasini 2016, Fortney et al. 2016 and Meisner et al. 2018: `scripts/planetx_build.py` → `planetx/depth.json`.
+    - Batygin & Brown 2016, Brown & Batygin 2016, Batygin et al. 2019, Brown & Batygin 2021 and Brown, Holman & Batygin 2024: `scripts/build_scene3d.py` → `scene3d.json`.
+  - Blanton & Roweis 2007: the I-band Vega→AB offset 0.45 in `scripts/planetx_build.py` → `planetx/depth.json`.
+  - Astropy: `backend/` and `scripts/`.
+  - three.js: `static/vendor/three`.
+  - Fonts: the three woff2 files and OFL licences in `static/fonts/`.
+  - GitHub Pages: the repository is public, and `.github/workflows/pages.yml` on `main` uploads `static/`. The last run succeeded at 10:53 UTC. The pages API reports the site at https://nama2323.github.io/tenger/ with `status` null.
+  - **Not used: none of the listed sources.** The only service the page had listed without using it was SkyBoT, now removed.
+  - **Count:** the eight Planet Nine papers are the three in `depth.json` (Linder & Mordasini 2016, Fortney et al. 2016, Meisner et al. 2018, a WISE/NEOWISE Planet Nine search) and the five in `scene3d.json`; all eight are used.
+- **Checks:** `node --test tests/` 275 of 275 pass after rebasing onto B29 (`f32e27e`). On top of B29, `?page=method` at 1280 and 390 still shows the new logo, 2 catalogue cards, 4 source cards, no SkyBoT text and no sideways scroll. The header menu item for "How it works" is still Session B's to add.
