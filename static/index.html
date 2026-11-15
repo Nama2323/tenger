@@ -405,10 +405,15 @@
     <!-- ======================= Beat the physics ======================= -->
     <section id="page-game" class="page page-game" hidden aria-labelledby="game-title">
       <header class="page-head">
-        <p class="eyebrow" data-t="game.eyebrow"></p>
-        <h1 id="game-title" tabindex="-1" data-t="game.title"></h1>
-        <p class="lead" data-t="game.lead"></p>
-        <p class="note" data-t="game.scoring"></p>
+        <p class="eyebrow" data-t="game.title"></p>
+        <h1 id="game-title" tabindex="-1" data-t="game.headline"></h1>
+        <p class="lead" data-t="game.leadShort"></p>
+        <details class="more-info">
+          <summary data-t="ui.details"></summary>
+          <p class="eyebrow" data-t="game.eyebrow"></p>
+          <p class="note" data-t="game.lead"></p>
+          <p class="note" data-t="game.scoring"></p>
+        </details>
       </header>
       <div id="game-rounds" class="game-rounds"></div>
       <section id="hidden-round" class="hidden-round glass" hidden aria-labelledby="hidden-title"></section>

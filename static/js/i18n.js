@@ -301,6 +301,7 @@ const TEXT = {
     'hidden.title': 'Bonus round: Find the hidden planet',
     'hidden.chip': 'Artificial planet added for this game',
     'hidden.label': 'Artificial planet added for this game',
+    'hidden.leadShort': 'One artificial planet moves between two real SPHEREx pictures. Can you find it first?',
     'hidden.lead': 'These are two real SPHEREx pictures of the same patch of sky, taken at different times. We added one artificial planet that moves between them. Can you find it before our pipeline tells you?',
     'hidden.leadExample': 'Example round: two synthetic pictures invented to build this page, with one artificial planet that moves between them. The real round uses two real SPHEREx pictures once they are published.',
     'hidden.frameAltExample': 'Frame {frame}: synthetic example picture with an artificial planet',
@@ -871,6 +872,10 @@ const TEXT = {
     // ---------- Beat the physics ----------
     'game.eyebrow': 'Prediction game',
     'game.title': 'Beat the physics',
+    'game.headline': 'Can your guess beat the physics model?',
+    'game.leadShort': 'Guess first, then see a straight line, the frozen model and the real observation. Physics may lose.',
+    'game.taskPositionShort': 'Tap where {name} will be on {date}, or use the arrow keys.',
+    'game.taskScalarShort': 'Tap the dashed line at the brightness you expect for {date}.',
     'game.lead': 'Guess where a target will be, or how bright it will get. Then see, in this order, your guess, a simple straight-line baseline, the frozen physics model and the real observation. The physics model is allowed to lose.',
     'game.scoring': 'Raw errors come first. A round’s score is 100 × e^(−error ÷ scale), with the scale fixed before the reveal; a perfect guess scores 100 and nothing is divided by the baseline error.',
     'game.waiting': 'No rounds are published yet. Rounds are made from frozen prediction trials, so they appear once the first trials are checked.',

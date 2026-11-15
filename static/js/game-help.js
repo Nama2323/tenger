@@ -37,21 +37,12 @@ export function angleText(arcsec, unit = 'arcsec') {
 
 // ---------- How to predict ----------
 
-const HOWTO_KEY = 'tenger.game.howto.v1';
 let howtoOpen = null;
 
-/** Open on the first visit; afterwards it remembers whether the player closed it (best effort). */
+/** Closed until the player opens it (task B12: longer explanations sit behind a disclosure); then it stays open for
+ *  the other rounds of this visit. */
 function howtoStartsOpen() {
-  if (howtoOpen !== null) return howtoOpen;
-  let seen = false;
-  try {
-    seen = globalThis.localStorage?.getItem(HOWTO_KEY) === '1';
-    globalThis.localStorage?.setItem(HOWTO_KEY, '1');
-  } catch {
-    // Storage blocked: open every time, which is harmless.
-  }
-  howtoOpen = !seen;
-  return howtoOpen;
+  return howtoOpen === true;
 }
 
 /** type: 'star', 'solar' or 'brightness' (game.js roundType); name: the target's name. */

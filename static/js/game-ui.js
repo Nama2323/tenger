@@ -2,7 +2,7 @@
 // The player places a guess (tap, arrow keys or numbers), then the page reveals, in this order,
 // the straight-line baseline, the frozen model with its region, and the real observation.
 import { covarianceEllipse } from './coords.js';
-import { $, chip, dataTable, el, formatNumber, formatUtc, withUnit } from './dom.js';
+import { $, chip, dataTable, details, el, formatNumber, formatUtc, withUnit } from './dom.js';
 import {
   checkRound, dateClusters, errorUnit, fromOffset, isMagnitude, lastMeasurement, physicsLost, readBest, revealView, roundKind, roundType, saveBest,
   scalarView, scoreRound, ticks, toOffset,
@@ -420,22 +420,26 @@ function showResults() {
   const official = verification?.state === 'ok'
     ? el('p', { class: 'stamps' }, [el('span', { text: t('game.official') }), trialStatusChip(verification.doc.status)])
     : el('p', { class: 'panel-note', text: t('game.noVerification') });
+  // At a glance (task B12): the verdict, the raw errors and the official result; the explanation and the score
+  // rule under Details.
   $('round-results').replaceChildren(...[
     el('h3', { text: t('game.resultsTitle') }),
     el('p', { class: 'verdict', text: verdict(result) }),
-    explainResult(round, play.type, play.name, result),
-    physicsLost(result) ? el('p', { class: 'note', text: t('game.physicsMayLose') }) : null,
     el('div', { class: 'table-scroll' }, el('table', { class: 'results-table' }, [
       el('caption', { text: t('game.tableCaption') }),
       el('thead', {}, el('tr', {}, [t('game.colWho'), t('game.colError'), t('game.colScore'), ''].map((text) => el('th', { scope: 'col', text })))),
       el('tbody', {}, ['player', 'baseline', 'model'].map((who) => resultRow(who, result, unit))),
     ])),
-    el('p', { class: 'note', text: result.scored
-      ? t('game.scoreRule', { scale: withUnit(round.scoring.scale, unit, 2) })
-      : t('game.noScore') }),
-    play.regionShown === false ? el('p', { class: 'note', text: t('game.noRegion') }) : null,
     official,
-    best !== null ? el('p', { class: 'note', text: t('game.best', { best: String(best) }) }) : null,
+    details([
+      explainResult(round, play.type, play.name, result),
+      physicsLost(result) ? el('p', { class: 'note', text: t('game.physicsMayLose') }) : null,
+      el('p', { class: 'note', text: result.scored
+        ? t('game.scoreRule', { scale: withUnit(round.scoring.scale, unit, 2) })
+        : t('game.noScore') }),
+      play.regionShown === false ? el('p', { class: 'note', text: t('game.noRegion') }) : null,
+      best !== null ? el('p', { class: 'note', text: t('game.best', { best: String(best) }) }) : null,
+    ]),
     actualImage(),
   ].filter(Boolean));
 }
@@ -516,8 +520,12 @@ function renderRound() {
     el('header', { class: 'round-head' }, [
       el('h2', { id: 'round-title', text: t(play.kind === 'position' ? 'game.titlePosition' : 'game.titleScalar', { name, date }) }),
       el('p', { class: 'stamps' }, [exampleChip(round), categoryChip(round.category), prospectiveChip(row)]),
-      el('p', { class: 'note', text: categoryNote(round.category) }),
-      el('p', { id: 'round-task', text: t(play.kind === 'position' ? 'game.taskPosition' : 'game.taskScalar', { name, date, count }) }),
+      // At a glance (task B12): the task in one line; the full task and what the trial type means under Details.
+      el('p', { id: 'round-task', class: 'round-task', text: t(play.kind === 'position' ? 'game.taskPositionShort' : 'game.taskScalarShort', { name, date }) }),
+      details([
+        el('p', { text: t(play.kind === 'position' ? 'game.taskPosition' : 'game.taskScalar', { name, date, count }) }),
+        el('p', { class: 'note', text: categoryNote(round.category) }),
+      ]),
     ]),
     howToBox(play.type, name),
     el('div', { class: 'round-grid' }, [

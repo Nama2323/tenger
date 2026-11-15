@@ -459,9 +459,14 @@ export function renderHiddenRound(host, data) {
   const example = hidden.example;
   host.replaceChildren(...[
     el('h2', { id: 'hidden-title', text: t('hidden.title') }),
-    el('p', { class: 'chip-line' }, [chip(t('hidden.chip'), 'chip-artificial'), example ? chip(t('example.tag'), 'chip-example') : null]),
-    el('p', { class: 'lead', text: t(example ? 'hidden.leadExample' : 'hidden.lead') }),
-    el('p', { class: 'note', text: t('hidden.how') }),
+    // At a glance (task B12): an "Artificial" chip and one line; the full wording and how to play under Details.
+    el('p', { class: 'chip-line' }, [chip(t('chip.artificial'), 'chip-artificial'), example ? chip(t('example.tag'), 'chip-example') : null]),
+    example ? el('p', { class: 'lead', text: t('hidden.leadExample') }) : el('p', { class: 'lead', text: t('hidden.leadShort') }),
+    details([
+      el('p', { class: 'note', text: t('hidden.chip') }),
+      example ? null : el('p', { text: t('hidden.lead') }),
+      el('p', { class: 'note', text: t('hidden.how') }),
+    ]),
     hidden.pairs.length > 1 ? el('div', { class: 'segment', role: 'group', 'aria-label': t('hidden.pairs') }, hidden.pairs.map((pair, index) => el('button', {
       type: 'button', text: t('hidden.pair', { n: String(index + 1) }), onclick: () => startPair(index),
     }))) : null,

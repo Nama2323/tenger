@@ -1309,6 +1309,7 @@ body[data-lesson]:not([data-lesson=""]) .page-learn > .page-head { display: none
 .lab-play { display: grid; gap: var(--s1); }
 .planetx-count { font-weight: 600; max-width: 62ch; }
 .chip-line { display: flex; flex-wrap: wrap; gap: 6px; }
+.round-task { font-weight: 600; max-width: 62ch; }
 .lesson-part { display: grid; gap: 12px; }
 .lesson-part h3 { font-size: 18px; }
 .lesson-part ul { display: grid; gap: 6px; }
