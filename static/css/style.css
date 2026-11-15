@@ -2381,3 +2381,26 @@ body[data-page="investigate"] .page-home .explore-more { visibility: hidden; }
   .explore-list .famous-card { width: 264px; min-height: 66px; }
   body[data-page="home"] .page-home { padding-bottom: 0; }
 }
+
+/* ---------- Sky map (task B36): the whole sky over Home, Close returns ---------- */
+.skymap { position: fixed; inset: var(--chrome) 0 0 0; z-index: 45; display: flex; flex-direction: column; background: var(--bg); }
+.skymap[hidden] { display: none; }
+.skymap-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 6px 16px; border-bottom: 1px solid var(--border); }
+.skymap-bar h2 { margin: 0 6px 0 0; font: 700 18px var(--font-head); }
+.skymap-chip { margin: 0; font-size: 12.5px; }
+.skymap-close { margin-left: auto; }
+.skymap-status { margin: 0; padding: 6px 16px; }
+.skymap-status:empty { display: none; }
+.skymap-view { position: relative; flex: 1 1 auto; min-height: 0; }
+.skymap-note { position: absolute; z-index: 6; left: 50%; bottom: 16px; transform: translateX(-50%); width: max-content; max-width: min(560px, calc(100% - 32px)); margin: 0; padding: 10px 14px; font-size: 14px; }
+.skymap-note[hidden] { display: none; }
+body.skymap-open { overflow: hidden; }
+.hero-skymap { display: none; }
+/* Phones only: "Explore in 3D" and "Sky map" side by side (both hidden on wide screens). */
+.hero-actions { display: none; }
+@media (max-width: 900px) { .hero-actions { display: flex; flex-wrap: wrap; gap: 8px; } }
+@media (max-width: 900px) {
+  .hero-skymap { display: inline-flex; align-items: center; justify-content: center; min-height: var(--tap); padding: 0 16px; border: 1px solid var(--border-strong); border-radius: var(--radius); background: rgba(5, 7, 13, 0.6); color: var(--text); font-weight: 600; }
+  .skymap-bar { padding: 6px 8px; }
+  .skymap-bar h2 { font-size: 16px; }
+}

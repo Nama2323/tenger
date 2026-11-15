@@ -2729,3 +2729,48 @@ No login, no server and no storage. Only the game page and its strings changed; 
 - **Screenshots:** `docs/screens/b35-home-1280.png`, `b35-home-390.png`, `b35-explore-390.png`,
   `b35-popup-1280.png`.
 
+### Task B36, 15 Nov 2026: the all-sky Sky map (Aladin Lite with IRSA's SPHEREx survey)
+
+- **Opening.** A "Sky map" button (icon in Home's toolbar; on phones a button beside "Explore in 3D") opens a
+  full-width map over Home; Close or Esc returns, and the 3D scene pauses meanwhile.
+  - `static/js/skymap.js` and Aladin Lite (CDS, 3.8.2, from jsDelivr) load only when the map is opened, so Home's
+    speed is unchanged: Lighthouse mobile 81, CLS 0.002.
+- **Survey.** IRSA's official SPHEREx DR1 all-sky HiPS, `hips/SPHEREx/spherex_allsky_cube` ("SPHEREx DR1 all-sky
+  data cube", 102 wavelengths, PNG tiles, cross-origin allowed), live, labelled "SPHEREx survey tiles, live from
+  NASA/IPAC IRSA".
+  - Aladin asks for the cube's middle slice, which IRSA does not serve (404), so the layer is set to its first
+    slice before it is drawn; tiles then load with 200.
+  - If IRSA's survey does not answer within 3 s (checked while the library loads), the map uses 2MASS, labelled
+    "2MASS, not SPHEREx". That happened once in testing, with a slow IRSA response, and the label was right.
+  - Aladin's start-up logger is off (`log: false`).
+- **Markers.**
+  - The 8 Famous targets in their colours, and the 17 "More to explore" objects in white.
+  - Fixed targets sit at their `index.json` footprint centre.
+  - Pluto, Makemake and 3I/ATLAS have no fixed place, so each is marked at the centre of our latest SPHEREx picture
+    of it (its JPL Horizons position in the investigation file), with that date in the label, e.g. "Pluto
+    (2026-05-12)".
+  - Clicking a marker opens Investigate (See, Blink).
+- **Empty sky.** Clicking shows "RA …°, Dec …°. Pictures for any position need our server; on this site, pick a
+  marked object." There is no request to our server.
+- **Constellation lines.** A switch, off by default. The d3-celestial line data (Olaf Frohn, BSD-3-Clause) is
+  fetched from jsDelivr the first time it is turned on, with the label "Constellation lines are a guide, not SPHEREx
+  data".
+- **About.** It credits Aladin Lite (CDS) for the Sky map and the Real sky panel, and adds d3-celestial as a
+  source. The SPHEREx source now says the all-sky cube is the Sky map's backdrop, for display only (it said Vestigium
+  does not use it).
+- **Checks** (github.io build: static files served as `https://nama2323.github.io/tenger/` in headless Chrome, with
+  live IRSA and jsDelivr):
+  - 1280 and 390: the map opens in 1.5 s and 1.2 s with the SPHEREx survey.
+  - Barnard's Star: zoomed to its footprint centre (269.44648, +4.768669), a click on that exact pixel hits its
+    marker and opens Investigate.
+  - Pluto: zoomed to its latest observation centre (308.553874, −22.941289), the same.
+  - An empty-sky click shows the note; constellation lines load; Close returns to Home.
+  - No requests to our server, no sideways scroll, no console errors.
+  - `node --test` 298 pass (new `tests/skymap-b36.test.mjs`; the import map now lists 58 modules).
+- **Limits:**
+  - Zoomed in to 3°, the SPHEREx tiles had not arrived 1.5 s later in the test. The whole-sky view draws fully.
+  - At 390 the whole-sky labels crowd each other; zoom (+/−) separates them.
+  - The survey shows one SPHEREx wavelength slice (Aladin's mapping of the first frame); no wavelength is labelled.
+- **Screenshots:** `docs/screens/b36-skymap-1280.png`, `b36-skymap-390.png`, `b36-lines-1280.png`,
+  `b36-empty-1280.png`, `b36-empty-390.png`, `b36-barnard-1280.png`, `b36-pluto-1280.png`, `b36-home-390.png`.
+

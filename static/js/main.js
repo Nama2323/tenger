@@ -31,7 +31,7 @@ import { loadReserved, reservedRegionNear } from './reserved.js';
 import { bandToParam, buildRoute, embedCode, PAGES, parseRoute, resolveRoute } from './route.js';
 import { isSaturated, measureMotion as trackMotion, measureSpectrum as photometry } from './science.js';
 import { createSky } from './sky.js';
-import { flyThen, homeShown, initSpace, releaseTarget, selectTarget, setFilter, setLayer } from './space-ui.js';
+import { flyThen, homeShown, initSpace, releaseTarget, selectTarget, setFilter, setLayer, setScenePaused } from './space-ui.js';
 import { showLoopPage } from './loop-ui.js';
 import { loadPlanetX, renderHiddenRound } from './planetx-ui.js';
 import { DEPTH_PATH, glanceOf, readDepth } from './planetx.js';
@@ -2634,8 +2634,54 @@ function placeExplore() {
   } else if (section.parentElement !== $('famous')) $('famous').insertBefore(section, document.querySelector('.famous-foot'));
 }
 
+/** Task B36: the all-sky Sky map, loaded on first use; markers open Investigate; Close returns to Home. */
+let skymapOpener = null;
+async function showSkyMap(event) {
+  const opener = event?.currentTarget ?? $('skymap-open');
+  skymapOpener = opener;
+  setScenePaused(true);
+  const { openSkyMap } = await import('./skymap.js');
+  const famous = famousEntries(app.entries);
+  const places = app.allTargets.filter((entry) => entry.role === 'place');
+  const fixed = [...famous, ...places].filter((entry) => Number.isFinite(entry.centre?.ra) && Number.isFinite(entry.centre?.dec))
+    .map((entry) => ({ key: entry.key, name: entryName(entry), ra: entry.centre.ra, dec: entry.centre.dec, colour: famous.includes(entry) ? entry.colour : 'other' }));
+  // Moving targets (Pluto, Makemake, 3I/ATLAS) have no fixed place: they are marked where our latest SPHEREx picture
+  // of them was centred (its JPL Horizons position, from the investigation file), with that date in the label.
+  const moving = await Promise.all(famous.filter((entry) => !fixed.some((marker) => marker.key === entry.key) && entry.investigationPath).map(async (entry) => {
+    const doc = await fetch(`data/${entry.investigationPath}`).then((response) => (response.ok ? response.json() : null)).catch(() => null);
+    const last = (doc?.observations ?? []).filter((item) => Number.isFinite(item.centre?.ra_deg) && Number.isFinite(item.centre?.dec_deg)).sort((a, b) => a.t_start_mjd - b.t_start_mjd).at(-1);
+    if (!last) return null;
+    const date = formatUtc(new Date((last.t_start_mjd - 40587) * 86400000), { time: false });
+    return { key: entry.key, name: t('skymap.movingLabel', { name: entryName(entry), date }), ra: last.centre.ra_deg, dec: last.centre.dec_deg, colour: entry.colour };
+  }));
+  const markers = [...fixed, ...moving.filter(Boolean)];
+  await openSkyMap({
+    markers,
+    onOpen: (key) => {
+      const entry = findEntry(key);
+      setScenePaused(false);
+      if (!entry) return;
+      app.panel = 'see';
+      app.scrollToPanel = false;
+      setMode('blink');
+      openEntry(entry);
+    },
+    onClose: () => {
+      setScenePaused(false);
+      if (document.body.dataset.page === 'home') skymapOpener?.focus({ preventScroll: true });
+    },
+  });
+}
+
 function bindFamous() {
   matchMedia(PHONE_LAYOUT).addEventListener('change', placeExplore);
+  $('skymap-open').addEventListener('click', showSkyMap);
+  $('skymap-open-phone').addEventListener('click', showSkyMap);
+  $('skymap-lines').addEventListener('click', async () => {
+    const on = $('skymap-lines').getAttribute('aria-checked') !== 'true';
+    const { setConstellationLines } = await import('./skymap.js');
+    if (await setConstellationLines(on)) $('skymap-lines').setAttribute('aria-checked', String(on));
+  });
   // The Key's layer switches (task B29): each shows or hides one layer of the 3D scene at once.
   for (const button of document.querySelectorAll('#key-layers [data-layer]')) {
     button.addEventListener('click', () => {

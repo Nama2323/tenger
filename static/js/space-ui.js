@@ -396,3 +396,8 @@ export function flyThen(key, then) {
 }
 
 export const spaceMode = () => state.mode;
+
+/** Task B36: the scene draws nothing while the Sky map covers Home (or an investigation does). */
+export function setScenePaused(on) {
+  state.controller?.setPaused(Boolean(on) || document.body.dataset.page === 'investigate');
+}
