@@ -5,7 +5,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { has, t } from '../static/js/i18n.js';
 import {
-  bandModels, bandWavelengthCheck, depthAt, gapRows, headline, injectedPerPoint, DEPTH_PATH, HIDDEN_PATH, judgeTap, magExtent, magRange, NATIVE_PIXEL_ARCSEC, oneIn, PUBLISHED_BAND_UM,
+  bandModels, bandWavelengthCheck, depthAt, gapRows, glanceOf, headline, injectedPerPoint, DEPTH_PATH, HIDDEN_PATH, judgeTap, magExtent, magRange, NATIVE_PIXEL_ARCSEC, oneIn, PUBLISHED_BAND_UM,
   reachOf, readDepth, readHiddenPlanet, recoveredAt, tapReport, TOO_FAINT_BELOW, wilson,
 } from '../static/js/planetx.js';
 
@@ -337,4 +337,20 @@ test('Session A\'s headline and the page\'s own headline say the same once the f
   const built = headline(depth);
   assert.equal(t(built.key, { ...built.values, reach: t(built.reach.key, built.reach.values) }), t(depth.verdictSummary.key, depth.verdictSummary.values));
   assert.equal(built.reach.values.odds, doc.verdict_summary.values.one_in);
+});
+
+// Task B12: the Lab's headline ("Not in one image: 4 to 7 magnitudes too faint") and its two tiles come from the
+// measured gap rows of the nominal Planet Nine, never from typed-in numbers; an example file gives no headline.
+test('the Planet X Lab headline is counted from the nominal Planet Nine gap rows', () => {
+  const depth = readDepth(JSON.parse(readFileSync(new URL('../static/data/planetx/depth.json', import.meta.url), 'utf8')));
+  const glance = glanceOf(depth);
+  const nominal = gapRows(depth).rows.filter((row) => row.model?.scenarioKey === 'planetx.scenario.lm16-nominal');
+  assert.ok(nominal.length > 0 && nominal.every((row) => row.reach === 'faint'));
+  assert.equal(glance.low, Math.round(Math.min(...nominal.map((row) => row.gap))));
+  assert.equal(glance.high, Math.round(Math.max(...nominal.map((row) => row.gap))));
+  const w1 = nominal.find((row) => row.bandId === 'w1');
+  assert.equal(glance.pair.depth, w1.depth);
+  assert.equal(glance.pair.predicted, w1.predicted);
+  assert.equal(glanceOf({ ...depth, example: true }), null);
+  assert.equal(glanceOf(null), null);
 });

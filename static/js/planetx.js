@@ -357,6 +357,24 @@ export function headline(depth) {
   return { key: 'planetx.headline', values: { ...values }, reach };
 }
 
+/**
+ * The Lab at a glance (task B12), from the gap rows: how many magnitudes too faint for one exposure the nominal
+ * Planet Nine of Linder & Mordasini (2016) is across the measured bands (rounded to whole magnitudes), and the
+ * 3.4 µm pair the tiles show: our measured 50% depth and that model's AB magnitude. null for an example file, or
+ * when the nominal case is missing or not too faint in every band (then the page says nothing it cannot back).
+ */
+export function glanceOf(depth) {
+  if (!depth || depth.example) return null;
+  const nominal = gapRows(depth).rows.filter((row) => row.model?.scenarioKey === 'planetx.scenario.lm16-nominal');
+  if (!nominal.length || !nominal.every((row) => row.reach === 'faint')) return null;
+  const gaps = nominal.map((row) => row.gap);
+  const pair = nominal.find((row) => row.bandId === 'w1' && row.depth !== null && row.predicted !== null) ?? nominal.find((row) => row.depth !== null && row.predicted !== null) ?? null;
+  return {
+    low: Math.round(Math.min(...gaps)), high: Math.round(Math.max(...gaps)), bands: nominal.length,
+    pair: pair ? { bandId: pair.bandId, um: PUBLISHED_BAND_UM[pair.bandId] ?? null, depth: pair.depth, predicted: pair.predicted } : null,
+  };
+}
+
 /** How many artificial planets each point of the pooled curves holds: the method's number, else [min, max] counted from the curves. */
 export function injectedPerPoint(depth) {
   if (finite(depth?.method?.injections_per_point)) return [depth.method.injections_per_point, depth.method.injections_per_point];

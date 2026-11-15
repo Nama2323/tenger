@@ -1,12 +1,12 @@
 // Learn: three printable lessons and the Planet X Lab. Numbers come from lessons.js (tested); text, formulas
 // (MathML) and labels come from the English resource. Lesson records (DATA-CONTRACT §12) replace the
 // synthetic practice values automatically once Session A publishes them.
-import { $, chip, el, formatNumber, prefersReducedMotion, unitSuffix, withUnit } from './dom.js';
+import { $, chip, details, el, formatNumber, prefersReducedMotion, unitSuffix, withUnit } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { categoryLabel } from './labels.js';
 import { LESSONS, planetModel, readLessonRecord, scoreboardSummary, syntheticLesson } from './lessons.js';
 import { correlatedInflation } from './postmortem.js';
-import { measuredPanel } from './planetx-ui.js';
+import { labGlance, labHeadline, measuredPanel } from './planetx-ui.js';
 import { lessonBatchSection } from './batch-ui.js';
 
 const LAB = 'lab';
@@ -282,12 +282,20 @@ function slider(id, key, labelKey) {
 function renderLab() {
   $('lab-view').replaceChildren(
     el('nav', { class: 'lesson-actions' }, [el('button', { type: 'button', class: 'quiet', text: t('lab.back'), onclick: () => showLearn(null) })]),
-    el('header', { class: 'lesson-head' }, [
+    // At a glance (task B12): the measured finding is the headline, our depth and the nominal Planet Nine are the
+    // key numbers; that Planet Nine is hypothetical stays as a chip, the full sentence under Details.
+    el('header', { class: 'lesson-head lab-head' }, [
+      el('p', { class: 'eyebrow', text: t('lab.title') }),
+      el('h2', { id: 'lab-view-title', tabindex: '-1', text: labHeadline(context.planetx) ?? t('lab.title') }),
+      el('p', { class: 'chip-line' }, [chip(t('lab.hypotheticalTag'), 'chip-hypothetical')]),
+      labGlance(context.planetx),
+      details(el('p', { class: 'note', text: t('lab.hypothetical') })),
+    ]),
+    measuredPanel(context.planetx),
+    el('section', { class: 'lesson-part lab-play', 'aria-labelledby': 'lab-play-title' }, [
       el('p', { class: 'eyebrow', text: t('lab.eyebrow') }),
-      el('h2', { id: 'lab-view-title', tabindex: '-1', text: t('lab.title') }),
-      el('p', { class: 'chip-line' }, chip(t('lab.hypotheticalTag'), 'chip-hypothetical')),
-      el('p', { class: 'panel-note', text: t('lab.hypothetical') }),
-      el('p', { text: t('lab.intro') }),
+      el('h3', { id: 'lab-play-title', text: t('lab.playTitle') }),
+      details(el('p', { class: 'note', text: t('lab.intro') })),
     ]),
     el('div', { class: 'lab-grid' }, [
       el('form', { class: 'lab-controls', onsubmit: (event) => event.preventDefault(), 'aria-label': t('lab.controls') }, [
@@ -304,8 +312,7 @@ function renderLab() {
         el('div', { id: 'lab-results', 'aria-live': 'polite' }),
       ]),
     ]),
-    el('section', { class: 'lesson-part' }, [el('h3', { text: t('lab.detectTitle') }), el('p', { text: t('lab.detectText') })]),
-    measuredPanel(context.planetx),
+    el('section', { class: 'lesson-part' }, [el('h3', { text: t('lab.detectTitle') }), details(el('p', { text: t('lab.detectText') }))]),
   );
   renderLabResults();
   // Links from Home, Predictions and Lesson 2 land on the measured panel.
@@ -364,6 +371,9 @@ export function setPlanetX(data) {
   const panel = $('measured');
   if (panel) {
     panel.replaceWith(measuredPanel(data));
+    $('lab-glance')?.replaceWith(labGlance(data));
+    const title = labHeadline(data);
+    if (title && $('lab-view-title')) $('lab-view-title').textContent = title;
     if (location.hash === '#measured') $('measured')?.scrollIntoView({ block: 'start' });
   }
 }

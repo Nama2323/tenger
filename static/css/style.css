@@ -1300,6 +1300,15 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 .lesson-actions { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s1); }
 .lesson-head { display: grid; gap: var(--s1); }
 .lesson-head h2 { font-size: clamp(24px, 3vw, 32px); }
+/* Task B12: with a lesson or the Lab open, its own header leads; the Learn page heading steps aside. */
+body[data-lesson]:not([data-lesson=""]) .page-learn > .page-head { display: none; }
+.lab-head h2 { max-width: 28ch; line-height: 1.2; }
+.lab-glance { display: grid; gap: var(--s2); }
+.lab-glance:empty { display: none; }
+.lab-glance .stat-tiles { margin: var(--s1) 0 0; }
+.lab-play { display: grid; gap: var(--s1); }
+.planetx-count { font-weight: 600; max-width: 62ch; }
+.chip-line { display: flex; flex-wrap: wrap; gap: 6px; }
 .lesson-part { display: grid; gap: 12px; }
 .lesson-part h3 { font-size: 18px; }
 .lesson-part ul { display: grid; gap: 6px; }

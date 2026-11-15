@@ -2,9 +2,9 @@
 // physics). Data from planetx.js readers: Session A's static/data/planetx/ files, or until they exist the
 // labelled examples in static/dev-fixtures/planetx/. The game's planets are artificial: labelled so before and
 // after the reveal, never shown as a detection, never counted outside the game.
-import { $, chip, el, formatNumber, prefersReducedMotion } from './dom.js';
+import { $, chip, details, el, formatNumber, prefersReducedMotion, statTile } from './dom.js';
 import { has, t, tData } from './i18n.js';
-import { bandModels, DEPTH_PATH, gapRows, headline, injectedPerPoint, HIDDEN_PATH, judgeTap, magExtent, NATIVE_PIXEL_ARCSEC, readDepth, readHiddenPlanet, tapReport, TOO_FAINT_BELOW } from './planetx.js';
+import { bandModels, DEPTH_PATH, gapRows, glanceOf, headline, injectedPerPoint, HIDDEN_PATH, judgeTap, magExtent, NATIVE_PIXEL_ARCSEC, readDepth, readHiddenPlanet, tapReport, TOO_FAINT_BELOW } from './planetx.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const svg = (name, attributes = {}, children = []) => {
@@ -118,11 +118,15 @@ function gapSection(depth) {
   const fileMeanings = [...new Set(rows.filter((row) => row.reach === null).map((row) => row.verdictKey))]
     .filter((key) => key && key !== depth.verdictKey && key !== depth.verdictSummary?.key);
   const sigmas = [...new Set(rows.map((row) => row.sigma).filter((value) => value !== null))].sort((a, b) => a - b);
+  const [first, ...rest] = sentences;
   return el('div', { class: 'planetx-gaps' }, [
-    el('p', { text: sentences.join(' ') }),
-    sigmas.length ? el('p', { class: 'note planetx-sigma', text: t('planetx.sigmaNote', { sigma: sigmas.map((value) => `± ${formatNumber(value, 2)}`).join(t('planetx.or')) }) }) : null,
-    el('p', { class: 'note', text: t('planetx.reach.rule', { limit }) }),
-    ...fileMeanings.map((key) => el('p', { class: 'note', text: text(key) })),
+    el('p', { class: 'planetx-count', text: first }),
+    details([
+      rest.length ? el('p', { text: rest.join(' ') }) : null,
+      sigmas.length ? el('p', { class: 'note planetx-sigma', text: t('planetx.sigmaNote', { sigma: sigmas.map((value) => `± ${formatNumber(value, 2)}`).join(t('planetx.or')) }) }) : null,
+      el('p', { class: 'note', text: t('planetx.reach.rule', { limit }) }),
+      ...fileMeanings.map((key) => el('p', { class: 'note', text: text(key) })),
+    ], { label: t('planetx.gapDetails') }),
     el('details', { class: 'data-table' }, [
       el('summary', { text: t('planetx.gapTableShow', { n: String(rows.length) }) }),
       el('div', { class: 'table-scroll' }, el('table', {}, [
@@ -269,28 +273,34 @@ export function measuredPanel(data) {
   const depth = data?.depth;
   if (!depth) return el('section', { id: 'measured', class: 'lesson-part planetx-measured' }, [el('h3', { text: t('planetx.title') }), el('p', { class: 'panel-note', text: t('planetx.missing') })]);
   const qualitative = depth.models.filter((model) => !model.range);
+  // At a glance (task B12): the Lab's header carries the finding (labGlance); this section leads with the count of
+  // published values too faint for one exposure, then the curves. The method, the full verdict, every note, the
+  // assumptions and the references sit under closed Details.
   return el('section', { id: 'measured', class: 'lesson-part planetx-measured', 'aria-labelledby': 'planetx-title' }, [
-    el('h3', { id: 'planetx-title', text: t('planetx.title') }),
+    el('h3', { id: 'planetx-title', text: t('planetx.measuredTitle') }),
     el('p', { class: 'chip-line' }, [
-      depth.example ? chip(t('example.tag'), 'chip-example') : chip(t('planetx.measuredChip'), 'chip-measured'),
-      chip(t('planetx.injectedChip'), 'chip-artificial'),
+      depth.example ? chip(t('example.tag'), 'chip-example') : chip(t('chip.measured'), 'chip-measured'),
+      chip(t('chip.artificial'), 'chip-artificial'),
     ]),
     depth.example ? el('p', { class: 'panel-note warn', text: t('planetx.exampleNote') }) : null,
-    el('p', { text: t('planetx.lead') }),
-    verdictLine(depth),
     gapSection(depth),
+    details([
+      el('p', { text: t('planetx.lead') }),
+      el('p', { class: 'note', text: `${t('planetx.measuredChip')}; ${t('planetx.injectedChip')}.` }),
+      verdictLine(depth),
+    ]),
     el('div', { class: 'planetx-grid' }, [
       el('div', { class: 'planetx-bands' }, depth.bands.map((band) => el('figure', { class: 'planetx-band' }, [
-        el('figcaption', {}, [el('strong', { text: bandTitle(band) }), el('span', { class: 'note', text: depthLine(band) })]),
+        el('figcaption', {}, [el('strong', { text: bandTitle(band) })]),
         band.check?.ok === false ? el('p', { class: 'panel-note warn', text: t('planetx.bandMismatch', {
           band: band.publishedBand ?? band.id, um: formatNumber(band.check.published, 2), detector: band.detector ? `D${band.detector}` : '—',
           low: band.check.array ? formatNumber(band.check.array[0], 2) : '—', high: band.check.array ? formatNumber(band.check.array[1], 2) : '—',
         }) }) : null,
         bandChart(band, depth),
-        modelKey(band, depth),
+        details([el('p', { class: 'note', text: depthLine(band) }), modelKey(band, depth)]),
         bandTable(band),
       ]))),
-      el('aside', { class: 'planetx-side' }, [
+      el('aside', { class: 'planetx-side' }, details([
         el('h4', { text: t('planetx.assumeTitle') }),
         assumptions(depth),
         depth.models.length ? el('h4', { text: t('planetx.modelsTitle') }) : null,
@@ -303,9 +313,31 @@ export function measuredPanel(data) {
         qualitative.length ? el('p', { class: 'note', text: t('planetx.qualitativeNote') }) : null,
         depth.wise ? el('p', { class: 'note', text: t('planetx.wiseNote', { mag: mag(depth.wise.mag), band: depth.wise.bandId ?? '—', reference: depth.wise.reference ?? '—' }) }) : null,
         depth.missionKey ? el('p', { class: 'note', text: text(depth.missionKey) }) : null,
-      ]),
+      ], { label: t('planetx.sideDetails') })),
     ]),
   ]);
+}
+
+/** The Lab's headline (task B12): "Could SPHEREx see Planet X? Not in one image: 4 to 7 magnitudes too faint." */
+export function labHeadline(data) {
+  const glance = data?.depth ? glanceOf(data.depth) : null;
+  if (!glance) return null;
+  return t(glance.low === glance.high ? 'planetx.glanceOne' : 'planetx.glance', { low: String(glance.low), high: String(glance.high) });
+}
+
+/** The Lab's key numbers: our measured depth beside the nominal Planet Nine, and one line on the closest case. */
+export function labGlance(data) {
+  const depth = data?.depth;
+  const glance = depth ? glanceOf(depth) : null;
+  const built = depth ? headline(depth) : null;
+  const um = glance?.pair?.um === null || glance?.pair?.um === undefined ? '—' : formatNumber(glance.pair.um, 1);
+  return el('div', { id: 'lab-glance', class: 'lab-glance' }, glance ? [
+    glance.pair ? el('div', { class: 'stat-tiles' }, [
+      statTile({ value: t('planetx.tileValue', { mag: mag(glance.pair.depth) }), label: t('planetx.tileDepth', { um }), badge: chip(t('chip.measured'), 'chip-measured'), tone: 'is-hit' }),
+      statTile({ value: t('planetx.tileValue', { mag: mag(glance.pair.predicted) }), label: t('planetx.tileModel', { um }), badge: chip(t('lab.hypotheticalTag'), 'chip-hypothetical'), tone: 'is-miss' }),
+    ]) : null,
+    built?.reach ? el('p', { class: 'lead', text: t(built.reach.key, built.reach.values) }) : null,
+  ] : []);
 }
 
 // ---------- Find the hidden planet ----------
