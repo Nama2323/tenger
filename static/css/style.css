@@ -1791,6 +1791,15 @@ kbd {
 .limits-group.can h3 { color: var(--hit); }
 .limits-group.cannot h3 { color: var(--miss); }
 .limits-group li { font-size: 14.5px; }
+/* "What Vestigium can and can't do" (task B19): two columns on wide screens, "It can" first on phones; each limit
+   is followed by what we do about it, on its own line starting with "→", in a muted colour. */
+#limits.sheet { width: min(1220px, calc(100vw - 32px)); }
+#limits .limits-body { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: var(--s2) var(--s3); }
+#limits .limits-group li { font-size: 14px; }
+#limits .limits-group ul { padding-left: 16px; }
+.limits-group ul { display: grid; gap: 10px; padding-left: 18px; margin: 0; }
+.limits-list li p { margin: 0; }
+.limits-do { color: var(--muted); font-size: 14px; margin-top: 2px !important; }
 
 @media (max-width: 980px) {
   .menu-toggle { display: inline-flex; align-items: center; }

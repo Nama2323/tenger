@@ -2,6 +2,8 @@
 // and "What TENGER can and can't see". Native <dialog>: focus stays inside, Escape closes, focus returns.
 import { $, el } from './dom.js';
 import { t } from './i18n.js';
+import { limitsNumbers } from './limits.js';
+import { readDepth } from './planetx.js';
 
 /** Shortcut groups: [title key, [[keys key, action key], ...]]. Every row is a real handler in the app. */
 export const SHORTCUTS = [
@@ -15,11 +17,61 @@ export const SHORTCUTS = [
   ]],
 ];
 
-export const CAN_SEE = ['limits.can.images', 'limits.can.changes', 'limits.can.positions', 'limits.can.anywhere'];
-export const CANNOT_SEE = [
-  'limits.cannot.pixel', 'limits.cannot.saturated', 'limits.cannot.crossBand', 'limits.cannot.planetNine',
-  'limits.cannot.comet', 'limits.cannot.future', 'limits.cannot.proof',
-];
+/** "It can" (task B19): the dialog and the About page show the same list. */
+export const CAN_DO = ['pictures', 'moved', 'positions', 'predict', 'detect', 'forecasts', 'teach', 'search'];
+/** "Its limits, and what we do about them": each limit and, on a line starting with "→", what we do about it. */
+export const LIMITS_DO = ['planetNine', 'blend', 'saturated', 'proof'];
+
+// Numbers from the data files (limits.js), loaded the first time the list is drawn; until then each sentence is
+// shown without its number, never with an invented one.
+let numbers = {};
+let loading = null;
+const hosts = new Set();
+const json = (path) => fetch(path).then((response) => (response.ok ? response.json() : null)).catch(() => null);
+const count = (value) => new Intl.NumberFormat('en').format(value);
+
+function canText(id) {
+  if (id === 'positions' && numbers.gaiaPct !== null && numbers.gaiaPct !== undefined) return t('limits.can.positions', { pct: String(numbers.gaiaPct) });
+  if (id === 'positions') return t('limits.can.positionsPlain');
+  if (id === 'detect' && numbers.injected) return t('limits.can.detect', { n: count(numbers.injected) });
+  if (id === 'detect') return t('limits.can.detectPlain');
+  return t(`limits.can.${id}`);
+}
+
+function limitText(id) {
+  if (id === 'blend' && numbers.blendArcsec) return t('limits.limit.blend', { arcsec: String(numbers.blendArcsec) });
+  if (id === 'blend') return t('limits.limit.blendPlain');
+  return t(`limits.limit.${id}`);
+}
+
+function doText(id) {
+  if (id === 'planetNine' && Number.isFinite(numbers.low) && Number.isFinite(numbers.high)) {
+    return t(numbers.low === numbers.high ? 'limits.do.planetNineOne' : 'limits.do.planetNine', { low: String(numbers.low), high: String(numbers.high) });
+  }
+  if (id === 'planetNine') return t('limits.do.planetNinePlain');
+  return t(`limits.do.${id}`);
+}
+
+function fill(host) {
+  host.replaceChildren(
+    el('section', { class: 'limits-group can' }, [el('h3', { text: t('limits.canTitle') }), el('ul', {}, CAN_DO.map((id) => el('li', { text: canText(id) })))]),
+    el('section', { class: 'limits-group cannot' }, [
+      el('h3', { text: t('limits.cannotTitle') }),
+      el('ul', { class: 'limits-list' }, LIMITS_DO.map((id) => el('li', {}, [el('p', { text: limitText(id) }), el('p', { class: 'limits-do', text: doText(id) })]))),
+    ]),
+  );
+}
+
+/** Draws the two lists into host (the dialog's body or the About card) and fills in the numbers once loaded. */
+export function renderLimits(host) {
+  if (!host) return;
+  hosts.add(host);
+  fill(host);
+  loading ??= Promise.all([json('data/barnard/investigation.json'), json('data/planetx/depth.json')]).then(([barnard, depth]) => {
+    numbers = limitsNumbers({ barnard, depth: readDepth(depth) });
+    for (const each of hosts) fill(each);
+  });
+}
 
 function keyCaps(text) {
   return el('span', { class: 'keycaps' }, text.split(' ').map((part) => (part === '/' || part === '+' ? el('span', { class: 'key-sep', text: part }) : el('kbd', { text: part }))));
@@ -35,10 +87,7 @@ function fillShortcuts() {
 }
 
 function fillLimits() {
-  $('limits-body').replaceChildren(
-    el('section', { class: 'limits-group can' }, [el('h3', { text: t('limits.canTitle') }), el('ul', {}, CAN_SEE.map((key) => el('li', { text: t(key) })))]),
-    el('section', { class: 'limits-group cannot' }, [el('h3', { text: t('limits.cannotTitle') }), el('ul', {}, CANNOT_SEE.map((key) => el('li', { text: t(key) })))]),
-  );
+  renderLimits($('limits-body'));
 }
 
 export function openDialog(id) {

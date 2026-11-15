@@ -12,7 +12,7 @@ import {
   predictedOf, residualCheck, revealModel, scoreboardTable, sortByStatus, trialIdFromPath, trialLabels, trialStatus,
 } from '../static/js/ledger.js';
 import { buildRoute, parseRoute } from '../static/js/route.js';
-import { CANNOT_SEE, CAN_SEE, SHORTCUTS } from '../static/js/help.js';
+import { CAN_DO, LIMITS_DO, SHORTCUTS } from '../static/js/help.js';
 import { STEPS } from '../static/js/reveal.js';
 
 // fileURLToPath, not URL.pathname: a checkout path may contain spaces ("Hackathon Astrolemma").
@@ -262,7 +262,8 @@ test('every reveal step, status, shortcut and limit has English text', () => {
     assert.ok(has(title), title);
     for (const [keys, action] of rows) assert.ok(has(keys) && has(action), `${keys} ${action}`);
   }
-  for (const key of [...CAN_SEE, ...CANNOT_SEE]) assert.ok(has(key), key);
+  for (const id of CAN_DO) assert.ok(has(`limits.can.${id}`) || has(`limits.can.${id}Plain`), id);
+  for (const id of LIMITS_DO) assert.ok((has(`limits.limit.${id}`) || has(`limits.limit.${id}Plain`)) && has(`limits.do.${id}`), id);
 });
 
 // Task B12: the Predictions page leads with the blind forecast's result and three key numbers, all counted from

@@ -1839,3 +1839,42 @@ Session B was told before the work started (B14 rename and B16 Home are rebased 
   - Screenshots: `docs/screens/b17-watch-<390|1280>-<before|after>.png`, `b17-share-menu-390`,
     `b17-about-open-390`, `b17-target-<pluto|rwaur|wise0855|3i-atlas>-390`.
   - Not checked on a real phone.
+
+### Task B19, 15 Nov 2026: "What Vestigium can and can't do"
+
+- **The dialog** (top bar button "Can and can’t do"; the same lists on the About page) is rewritten.
+  - Title "What Vestigium can and can’t do" and the new subtitle.
+  - "It can" (green, 8 items) and "Its limits, and what we do about them" (amber, 4 items). Each limit is
+    followed by a muted line starting with "→" saying what we do about it.
+  - Two columns on wide screens (dialog up to 1220 px); on phones "It can" comes first, then the limits.
+  - `js/help.js` `renderLimits`, `CAN_DO`, `LIMITS_DO`.
+- **Numbers from the files** (`js/limits.js` `limitsNumbers`, tested), fetched the first time the list is drawn.
+  Until they arrive, a sentence is shown without its number, never with an invented one. All four numbers match
+  the brief:
+  - "within 0.3%": `barnard/investigation.json` gives 10.4174″/yr measured against Gaia's 10.3933″/yr, a 0.23%
+    difference, rounded up to 0.1 so "within" stays true.
+  - "40,066 artificial planets": the sum of `injected` over the three bands' pooled curves in
+    `planetx/depth.json`.
+  - "4 to 7 magnitudes": the nominal Planet Nine's gap rows (`glanceOf`, as on the Lab).
+  - "about 15″": `core_radius_arcsec` in the pipeline settings, which is also the detection fit radius.
+- **Checked against the files, typed in the strings:** DR1 and QR3 (`index.json` releases); 0.75 to 5 µm (the
+  composite range); grades 8 to 11 (`gradeBand` of the three lesson records); 2027 forecasts (the open forecasts'
+  check dates); saturated targets (RW Aurigae 318 of 335 pictures flagged, R Draconis 299 of 299, Barnard's Star
+  with the saturated-core limit).
+- **The old Planet Nine claim is gone.** "… cannot say whether SPHEREx could detect it" was in the dialog and in
+  the Lab's "Could SPHEREx see it?" text. The Lab now says the visible-light number alone does not tell, and that
+  the measured depth above answers it for the published predictions (one image is too shallow).
+- **Moved to About, Limits** (nothing deleted): "Pixel size", which now reads as one pixel being 6.2″ with
+  positions measured to a fraction of it, so it no longer contradicts the "can" list; "Brightness across
+  wavelengths" (with WISE and 2MASS); "Comet 3I/ATLAS"; "The future". The old "saturated" and "proof" items are
+  covered by the new limits 3 and 4 and by About's "Saturation" entry.
+- **Checks.**
+  - 251 tests pass. New `tests/limits.test.mjs` (4): the numbers against the files; every item and "→" line
+    present; the old sentence in no site file or the README; the moved items in About's Limits.
+    `tests/ledger.test.mjs` now checks the new lists.
+  - 390×844: opened from the header button via the menu; the dialog scrolls inside itself (1430 px of content
+    in 794 px); focus stays inside after 6 Tabs; Esc and Close both close it.
+  - 1280×800: two columns; every item at most 2 lines; focus stays inside; Esc and Close both close it. No
+    console errors.
+  - Screenshots: `docs/screens/b19-limits-<390|1280>-<before|after>.png` and `b19-limits-390-after-end.png`.
+  - Not checked on a real phone.

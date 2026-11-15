@@ -4,11 +4,12 @@
 // only proper names, licence identifiers and URLs live here.
 import { $, details, el } from './dom.js';
 import { t } from './i18n.js';
-import { CAN_SEE, CANNOT_SEE } from './help.js';
+import { renderLimits } from './help.js';
 import { reservedRegions, reservedSource } from './reserved.js';
 
 export const METHODS = ['seasons', 'quality', 'matching', 'holdout', 'receipts', 'recovery', 'scoring'];
-export const LIMITS = ['saturation', 'contaminated', 'parallax', 'trials', 'approx'];
+// pixel, crossBand, comet and future moved here from the "can and can't" dialog (task B19).
+export const LIMITS = ['saturation', 'contaminated', 'pixel', 'crossBand', 'parallax', 'trials', 'comet', 'future', 'approx'];
 
 /** Data sources and services the code or the published data use. `ack` is a required acknowledgement. */
 export const SOURCES = [
@@ -129,10 +130,8 @@ function softwareItem(item) {
 export function renderAbout() {
   $('about-methods').replaceChildren(...definitions('about.m', METHODS));
   $('about-limits').replaceChildren(...definitions('about.l', LIMITS));
-  $('about-see').replaceChildren(
-    el('section', { class: 'limits-group can' }, [el('h3', { text: t('limits.canTitle') }), el('ul', {}, CAN_SEE.map((key) => el('li', { text: t(key) })))]),
-    el('section', { class: 'limits-group cannot' }, [el('h3', { text: t('limits.cannotTitle') }), el('ul', {}, CANNOT_SEE.map((key) => el('li', { text: t(key) })))]),
-  );
+  // The same "can and can't do" lists as the dialog in the top bar (task B19).
+  renderLimits($('about-see'));
   $('about-data').replaceChildren(...SOURCES.map(sourceItem));
   $('about-refs').replaceChildren(...REFERENCES.map((ref) => el('li', { class: 'source' }, [
     el('h3', { text: ref.cite }),
