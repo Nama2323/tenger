@@ -1,16 +1,35 @@
 # Demo clips for the 30-second video
 
-## The 30-second video, Vestigium (task B21, current build)
+## The 30-second video, Vestigium (tasks B21, B26: a person using the site)
 
-`vestigium-demo-30s.mp4`: **30.000 s** (900 frames), **2,501,831 bytes** (re-made after B25), 1280×720, H.264 High, yuv420p, 30 fps, no
-audio track.
-- English captions are burned in (34 px, bottom, dark box, at most 2 lines), with the same text and line breaks in
-  `vestigium-demo-30s.srt`. `vestigium-demo-30s-contact.png` has one frame per shot.
-- Made with `make-video.mjs` from this checkout's `static/` folder, which the script serves itself on a free local
-  port. That is the current build, `tenger-dev` after B19 and B18, with the Vestigium name and the B12–B19 design.
-- Real screen recordings of the site only: no generated images, video, voice or music. The captions and the title
-  card are text drawn by Chrome in the site's own font and stylesheet. The title card shows the logo file
-  `static/img/logo.svg`.
+`vestigium-demo-30s.mp4`: **30.000 s** (900 frames), **3,426,294 bytes**, 1280×720, H.264 High, yuv420p, 30 fps, no
+audio track. The previous version (B25, no cursor) is kept as `vestigium-demo-30s-v2.mp4` with
+`vestigium-demo-30s-v2-contact.png`.
+- **One continuous take (B26).** Shots 1–6 are a single 27-second screencast of the current build, driven like a
+  person would use it: real mouse events (move, hover, click, a drag of the Contrast slider, wheel scrolling).
+- **The cursor.** A visible arrow (24 px, white with a dark outline and a soft shadow) is drawn by the page at
+  the mouse position in every frame, with a short ring ripple on each click.
+  - Moves follow slightly curved, eased (ease-in-out) paths of 400 to 700 ms, so the cursor moves at most 115 px
+    between two video frames.
+  - Scrolling is a wheel in 24 small steps over 700 to 820 ms.
+  - The cursor stays above y = 600, clear of the captions. Shot 2's caption sits at the top, because the Contrast
+    slider is near the bottom.
+  - The title card has no cursor.
+- **Captions.** English captions are burned in; `vestigium-demo-30s.srt` has the same text and line breaks, and
+  `vestigium-demo-30s-contact.png` has one frame per shot.
+- **Real recordings only.** No generated images, video, voice or music. The captions and the title card are text
+  drawn by Chrome in the site's font and stylesheet, and the title card shows the logo file `static/img/logo.svg`.
+- **Recorded clicks**, with the times of the last run:
+  - 3.4 s "Watch Barnard's Star move" (Investigate opens, Blink playing);
+  - 5.7 s Contrast dragged right (1 → 2.4);
+  - 8.6 s "Predictions" in the menu, then a scroll past the four steps and back;
+  - 12.1 s "See how it works with Pluto" (the reveal opens), then "Next" five times to "Verdict" (15.5 s);
+  - 19.7 s "Close", a scroll to "Why we missed";
+  - 22.0 s "Why we missed" (open, the 2027 card right under it), a scroll to that card;
+  - 24.3 s "Planet X" in the menu (the Lab's top).
+
+  Before each click the script checks that the element under the pointer is the target, and after it that the
+  expected page or step appeared.
 
 | Time | Shot | Caption | Number checked against |
 |---|---|---|---|

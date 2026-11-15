@@ -18,7 +18,10 @@
 <body>
   <p id="box"></p>
   <script>
-    const words = new URLSearchParams(location.search).get('t').split(' ');
+    const params = new URLSearchParams(location.search);
+    // pos=top (task B26): the caption at the top, where a shot's cursor works near the bottom of the picture.
+    if (params.get('pos') === 'top') { document.body.style.alignItems = 'start'; document.getElementById('box').style.margin = '70px 0 0'; }
+    const words = params.get('t').split(' ');
     const box = document.getElementById('box');
     words.forEach((word, index) => {
       const span = document.createElement('span');

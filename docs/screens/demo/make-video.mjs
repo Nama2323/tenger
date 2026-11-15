@@ -187,164 +187,249 @@ async function screenshotFile(url, file, transparent = false) {
   if (transparent) await send('Emulation.setDefaultBackgroundColorOverride', {});
 }
 
-// ---------- The shots ----------
+// ---------- The take: one continuous recording with a visible cursor (task B26) ----------
 
 const facts = {};
-/** Scrolls an element that scrolls itself (Home on wide screens) smoothly to a child. */
-const smoothScrollIn = (scroller, selector, ms) => evaluate(`new Promise((resolve) => {
-  const box = document.querySelector(${JSON.stringify(scroller)});
-  const node = document.querySelector(${JSON.stringify(selector)});
-  const from = box.scrollTop; const to = from + node.getBoundingClientRect().top - box.getBoundingClientRect().top;
-  const t0 = performance.now();
-  const step = (now) => { const k = Math.min(1, (now - t0) / ${ms}); const ease = k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2;
-    box.scrollTop = from + (to - from) * ease; if (k < 1) requestAnimationFrame(step); else resolve(); };
-  requestAnimationFrame(step);
-})`);
-/** Home with its 3D map already running (woken by a pointer move), scrolled back to the first screen. */
-async function openHome() {
-  await open('/', "document.getElementById('hero-watch') && !document.getElementById('page-home').hasAttribute('data-loading')");
-  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 900, y: 300 });
-  for (let attempt = 0; attempt < 80; attempt += 1) { await sleep(200); if (await evaluate("!document.getElementById('space-time').hidden")) break; }
-  await evaluate("document.getElementById('map-key') && (document.getElementById('map-key').open = false); document.getElementById('page-home').scrollTop = 0");
-  await sleep(1500);
-}
-const clickAt = async (selector) => {
-  const box = await evaluate(`(() => { const r = document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; })()`);
-  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: box[0], y: box[1] });
-  await sleep(120);
-  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: box[0], y: box[1], button: 'left', clickCount: 1 });
-  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: box[0], y: box[1], button: 'left', clickCount: 1 });
-};
+const clicks = [];
+const path = []; // every mouse position sent, with its time: [ms, x, y]
+const mouse = { x: 980, y: 300 };
+let takeStart = 0;
 
+/** A cursor drawn by the page itself (so the screencast shows it), following the real mouse events. */
+const CURSOR_SCRIPT = `(() => {
+  if (window.__demoCursor) return; window.__demoCursor = true;
+  const cursor = document.createElement('div');
+  cursor.id = 'demo-cursor'; cursor.setAttribute('aria-hidden', 'true');
+  cursor.style.cssText = 'position:fixed;left:0;top:0;width:24px;height:24px;z-index:2147483647;pointer-events:none;will-change:transform;filter:drop-shadow(0 2px 3px rgba(0,0,0,0.6));transform:translate(977px,298px)';
+  cursor.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24"><path d="M3 2 L3 20 L8 15.5 L11.5 22.5 L14.6 21 L11.1 14 L18 14 Z" fill="#fff" stroke="#05070d" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+  const style = document.createElement('style');
+  style.textContent = '@keyframes demo-ripple{from{transform:translate(-50%,-50%) scale(0.3);opacity:0.95}to{transform:translate(-50%,-50%) scale(1.7);opacity:0}}.demo-ripple{position:fixed;width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px rgba(5,7,13,0.55);pointer-events:none;z-index:2147483647;animation:demo-ripple 0.45s ease-out forwards}';
+  const host = () => [...document.querySelectorAll('dialog[open]')].at(-1) ?? document.body;
+  const place = () => { if (cursor.parentElement !== host()) host().append(cursor); };
+  const start = () => { document.head.append(style); place(); new MutationObserver(place).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] }); };
+  if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
+  addEventListener('pointermove', (event) => { cursor.style.transform = 'translate(' + (event.clientX - 3) + 'px,' + (event.clientY - 2) + 'px)'; }, true);
+  addEventListener('pointerdown', (event) => {
+    const ring = document.createElement('div'); ring.className = 'demo-ripple';
+    ring.style.left = event.clientX + 'px'; ring.style.top = event.clientY + 'px';
+    host().append(ring); setTimeout(() => ring.remove(), 500);
+  }, true);
+})()`;
+
+const mouseAt = async (x, y, buttons = 0) => {
+  mouse.x = x; mouse.y = y;
+  path.push([Date.now(), x, y]);
+  await send('Input.dispatchMouseEvent', { type: 'mouseMoved', x, y, buttons, button: buttons ? 'left' : 'none' });
+};
+/**
+ * An eased (ease-in-out), slightly curved move. 400 to 700 ms; a move that could not stay under about 115 px per
+ * video frame in 700 ms goes in two hops. The cursor never goes below y = 600, where the captions are.
+ */
+async function moveTo(x, y, { ms = null, buttons = 0 } = {}) {
+  y = Math.min(y, 600);
+  const from = { ...mouse };
+  const dx = x - from.x; const dy = y - from.y; const dist = Math.hypot(dx, dy);
+  if (dist < 1) return;
+  if (dist > 720 && ms === null) {
+    await moveTo(from.x + dx * 0.5 + dy * 0.04, from.y + dy * 0.5 - dx * 0.04, { ms: 560, buttons });
+    await moveTo(x, y, { ms: 560, buttons });
+    return;
+  }
+  const duration = ms ?? Math.min(700, Math.max(400, dist * 0.95));
+  const bend = 0.1 * dist;
+  const cx = (from.x + x) / 2 - (dy / dist) * bend;
+  const cy = (from.y + y) / 2 + (dx / dist) * bend;
+  const t0 = Date.now();
+  for (;;) {
+    const k = Math.min(1, (Date.now() - t0) / duration);
+    const e = k < 0.5 ? 4 * k * k * k : 1 - (-2 * k + 2) ** 3 / 2;
+    await mouseAt((1 - e) ** 2 * from.x + 2 * (1 - e) * e * cx + e * e * x, (1 - e) ** 2 * from.y + 2 * (1 - e) * e * cy + e * e * y, buttons);
+    if (k >= 1) break;
+    await sleep(12);
+  }
+}
+const centre = (selector) => evaluate(`(() => { const n = document.querySelector(${JSON.stringify(selector)}); if (!n) return null; const r = n.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; })()`);
+/** Moves to an element, hovers a moment, checks that the pointer is on it, then presses and releases. */
+async function click(selector, { dx = 0, dy = 0, expect = null } = {}) {
+  const point = await centre(selector);
+  if (!point) { problems.push(`click target missing: ${selector}`); return; }
+  await moveTo(point[0] + dx, point[1] + dy);
+  await sleep(180);
+  const hit = await evaluate(`(() => { const n = document.elementFromPoint(${mouse.x}, ${mouse.y}); const t = document.querySelector(${JSON.stringify(selector)}); return Boolean(n && t && (t === n || t.contains(n))); })()`);
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: mouse.x, y: mouse.y, button: 'left', buttons: 1, clickCount: 1 });
+  await sleep(70);
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: mouse.x, y: mouse.y, button: 'left', buttons: 0, clickCount: 1 });
+  clicks.push({ selector, at: ((Date.now() - takeStart) / 1000).toFixed(2), hit, expect });
+  if (!hit) problems.push(`click missed ${selector}`);
+}
+/** Smooth wheel scrolling: many small steps over 600 to 900 ms at the pointer. */
+async function wheel(total, ms = 760) {
+  const steps = 24;
+  for (let index = 0; index < steps; index += 1) {
+    await send('Input.dispatchMouseEvent', { type: 'mouseWheel', x: mouse.x, y: mouse.y, deltaX: 0, deltaY: total / steps });
+    await sleep(ms / steps);
+  }
+}
+const waitFor = async (expression, ms = 4000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await evaluate(`Boolean(${expression})`)) return true; await sleep(60); } return false; };
+
+/** The shots: their captions and lengths (for the captions, the .srt and the contact sheet). */
 const SHOTS = [
-  {
-    id: 's1-home', seconds: 4, caption: 'Vestigium: watch the sky move in real NASA SPHEREx pictures.',
-    /** The first screen over the live, slowly turning 3D scene (B25), then its text slides off the full 3D section. */
-    async record() {
-      await openHome();
-      return screencast(async () => {
-        await sleep(1700);
-        await smoothScrollIn('#page-home', '.home-spacer', 1300);
-        await sleep(1300);
-      });
-    },
-  },
-  {
-    id: 's2-barnard', seconds: 4, caption: () => `Real pictures, ${facts.yearA} and ${facts.yearB}: Barnard's Star moved about ${facts.shift}″.`,
-    /** A tap on "Watch Barnard's Star move", then Barnard's Star blinking; years and shift read from the page. */
-    async record() {
-      await openHome();
-      const shots = { frames: [], start: Date.now() / 1000 };
-      const grab = async () => { const shot = await send('Page.captureScreenshot', { format: 'png' }); shots.frames.push({ data: shot.result.data, t: Date.now() / 1000 }); };
-      await grab(); await sleep(250); await grab();
-      await clickAt('#hero-watch');
-      const loop = await screenshotLoop(4.0);
-      shots.frames.push(...loop.frames);
-      shots.end = loop.end;
-      const finding = await evaluate("document.getElementById('finding').textContent");
-      facts.finding = finding;
-      facts.shift = (finding.match(/about ([\d,]+)″/) ?? [])[1];
-      const labels = await evaluate(`new Promise((resolve) => {
-        const seen = {}; const t0 = performance.now();
-        const look = () => { const text = document.getElementById('plate-date')?.textContent ?? '';
-          if (/^A\\b/.test(text)) seen.a = text; if (/^B\\b/.test(text)) seen.b = text;
-          if ((seen.a && seen.b) || performance.now() - t0 > 6000) resolve(seen); else setTimeout(look, 50); };
-        look(); })`);
-      facts.labels = labels;
-      facts.yearA = (String(labels.a ?? '').match(/(19|20)\d\d/) ?? [])[0];
-      facts.yearB = (String(labels.b ?? '').match(/(19|20)\d\d/) ?? [])[0];
-      if (!facts.yearA || !facts.yearB || !facts.shift) problems.push(`Barnard facts missing: ${JSON.stringify(facts)}`);
-      await checkNames('Barnard blink');
-      return shots;
-    },
-  },
-  {
-    id: 's3-s4-reveal', seconds: 12, captions: [
-      { at: 0, seconds: 6, text: 'We locked a Pluto forecast on GitHub before opening the newest pictures.' },
-      { at: 6, seconds: 6, text: () => `${facts.plutoOff}″ off: 3,000× closer than a straight line, but just outside our 95% oval. A published miss.` },
-    ],
-    /** Predictions: the four steps; then the Pluto reveal from its first step to the verdict with the zoomed inset. */
-    async record() {
-      await open('/?page=predictions', "!document.getElementById('page-predictions').hasAttribute('data-loading') && !document.getElementById('story-pluto').disabled");
-      // The caption's numbers from the trial's own verification file.
-      const check = await evaluate("fetch('data/trials/pluto-position-2026b/verification.json').then((r) => r.json())");
-      const model = check?.residuals?.model?.error_arcsec; const line = check?.residuals?.baseline?.error_arcsec;
-      facts.plutoOff = Number.isFinite(model) ? model.toFixed(1) : null;
-      facts.plutoRatio = Number.isFinite(model) && Number.isFinite(line) ? line / model : null;
-      facts.plutoStatus = check?.status;
-      if (!facts.plutoOff || !(facts.plutoRatio >= 3000) || check?.status !== 'miss') problems.push(`Pluto facts: ${JSON.stringify({ model, line, status: check?.status })}`);
-      return screencast(async (t0) => {
-        const at = async (seconds) => { const wait = t0 * 1000 + seconds * 1000 - Date.now(); if (wait > 0) await sleep(wait); };
-        await at(0.5); await smoothScroll('#story-how-title', 900, -80);
-        await at(2.7); await evaluate("document.getElementById('story-pluto').click()");
-        await at(4.3); await key('ArrowRight');
-        await at(5.5); await key('ArrowRight');
-        await at(6.4); await key('ArrowRight');
-        await at(7.4); await key('ArrowRight');
-        await at(8.3); await key('ArrowRight');
-        await at(12.3);
-        facts.revealStep = await evaluate("document.querySelector('#reveal-steps [aria-current]')?.textContent ?? ''");
-        await checkNames('Pluto reveal');
-      });
-    },
-  },
-  {
-    id: 's5-why-2027', seconds: 4, caption: 'We found why, and locked new forecasts for 2027.',
-    /** "Why we missed" opened on the Pluto card (full width), then the "Check us in 2027" card right under it. */
-    async record() {
-      await open('/?page=predictions', "!document.getElementById('page-predictions').hasAttribute('data-loading') && document.querySelector('#trial-pluto-position-2026b .why-missed')");
-      await evaluate("document.querySelector('#trial-pluto-position-2026b .why-missed').open = true");
-      await sleep(500);
-      await scrollTo('#trial-pluto-position-2026b .why-missed', -110);
-      await sleep(1200);
-      await scrollTo('#trial-pluto-position-2026b .why-missed', -110);
-      await sleep(400);
-      // Since B22 the Pluto card is full width and "Check us in 2027" sits right under it while "Why we missed" is open:
-      // read the reasons, then scroll until the end of "Why we missed" and the 2027 card are on screen together.
-      return screencast(async () => {
-        await sleep(1700);
-        await smoothScroll('#story-check', 1000, -400);
-        await sleep(1600);
-      });
-    },
-  },
-  {
-    id: 's6-planetx', seconds: 3, caption: 'Could SPHEREx see Planet X? We measured it: not in one image.',
-    /** The Planet X card on Home, a tap, and the top of the Planet X Lab. */
-    async record() {
-      await openHome();
-      for (let attempt = 0; attempt < 30; attempt += 1) { await sleep(150); if (await evaluate("document.getElementById('hero-planetx-line').textContent.length > 0")) break; }
-      return screencast(async () => {
-        await sleep(1100);
-        await clickAt('#hero-planetx');
-        await sleep(2000);
-        facts.labTitle = await evaluate("document.getElementById('lab-view-title')?.textContent ?? ''");
-        await checkNames('Planet X Lab');
-      });
-    },
-  },
+  { id: 's1-home', seconds: 4, caption: 'Vestigium: watch the sky move in real NASA SPHEREx pictures.' },
+  { id: 's2-barnard', seconds: 4, top: true, caption: () => `Real pictures, ${facts.yearA} and ${facts.yearB}: Barnard's Star moved about ${facts.shift}″.` },
+  { id: 's3-s4-reveal', seconds: 12, captions: [
+    { at: 0, seconds: 6, text: 'We locked a Pluto forecast on GitHub before opening the newest pictures.' },
+    { at: 6, seconds: 6, text: () => `${facts.plutoOff}″ off: 3,000× closer than a straight line, but just outside our 95% oval. A published miss.` },
+  ] },
+  { id: 's5-why-2027', seconds: 4, caption: 'We found why, and locked new forecasts for 2027.' },
+  { id: 's6-planetx', seconds: 3, caption: 'Could SPHEREx see Planet X? We measured it: not in one image.' },
 ];
+const TAKE_SECONDS = SHOTS.reduce((sum, shot) => sum + shot.seconds, 0);
+
+/** The whole story in one screencast, written to disk frame by frame (JPEG) with arrival times. */
+async function recordTake() {
+  // The numbers the captions need, from the trial's own file.
+  await open('/?page=predictions', "!document.getElementById('page-predictions').hasAttribute('data-loading')");
+  const check = await evaluate("fetch('data/trials/pluto-position-2026b/verification.json').then((r) => r.json())");
+  const model = check?.residuals?.model?.error_arcsec; const line = check?.residuals?.baseline?.error_arcsec;
+  facts.plutoOff = Number.isFinite(model) ? model.toFixed(1) : null;
+  facts.plutoRatio = Number.isFinite(model) && Number.isFinite(line) ? line / model : null;
+  if (!facts.plutoOff || !(facts.plutoRatio >= 3000) || check?.status !== 'miss') problems.push(`Pluto facts: ${JSON.stringify({ model, line, status: check?.status })}`);
+
+  // Home with the 3D first screen running, the cursor over the scene.
+  await open('/', "document.getElementById('hero-watch') && !document.getElementById('page-home').hasAttribute('data-loading')");
+  await mouseAt(mouse.x, mouse.y);
+  await waitFor("document.getElementById('page-home').classList.contains('hero-mode')", 8000);
+  await sleep(1500);
+
+  const dir = join(WORK, 'take');
+  mkdirSync(dir, { recursive: true });
+  const frames = [];
+  const onFrame = (message) => {
+    if (message.method !== 'Page.screencastFrame') return;
+    const file = join(dir, `f${String(frames.length).padStart(5, '0')}.jpg`);
+    writeFileSync(file, Buffer.from(message.params.data, 'base64'));
+    frames.push({ file, t: Date.now() });
+    send('Page.screencastFrameAck', { sessionId: message.params.sessionId });
+  };
+  listeners.push(onFrame);
+  await send('Page.startScreencast', { format: 'jpeg', quality: 92, maxWidth: 1280, maxHeight: 720, everyNthFrame: 1 });
+  takeStart = Date.now();
+  const at = async (seconds) => { const wait = takeStart + seconds * 1000 - Date.now(); if (wait > 0) await sleep(wait); };
+
+  // 0–4 s: the 3D first screen; the cursor glides to "Watch Barnard's Star move" and clicks.
+  await at(0.5); await moveTo(860, 380, { ms: 650 });
+  await at(2.5); await click('#hero-watch', { expect: 'investigate' });
+  // 4–8 s: Barnard's Star blinking; a small drag of Contrast to the right.
+  await waitFor("document.body.dataset.page === 'investigate' && document.getElementById('play').getAttribute('aria-pressed') === 'true'");
+  await at(4.4);
+  const thumb = await evaluate("(() => { const s = document.getElementById('contrast'); const r = s.getBoundingClientRect(); const k = (Number(s.value) - Number(s.min)) / (Number(s.max) - Number(s.min)); return [r.left + 8 + k * (r.width - 16), r.top + r.height / 2]; })()");
+  await moveTo(thumb[0], thumb[1]);
+  await sleep(150);
+  const before = await evaluate("document.getElementById('contrast').value");
+  await send('Input.dispatchMouseEvent', { type: 'mousePressed', x: mouse.x, y: mouse.y, button: 'left', buttons: 1, clickCount: 1 });
+  await moveTo(thumb[0] + 64, thumb[1], { ms: 700, buttons: 1 });
+  await send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: mouse.x, y: mouse.y, button: 'left', buttons: 0, clickCount: 1 });
+  facts.contrast = [before, await evaluate("document.getElementById('contrast').value")];
+  clicks.push({ selector: '#contrast (drag)', at: ((Date.now() - takeStart) / 1000).toFixed(2), hit: Number(facts.contrast[1]) > Number(facts.contrast[0]), expect: 'contrast up' });
+  facts.finding = await evaluate("document.getElementById('finding').textContent");
+  facts.shift = (facts.finding.match(/about ([\d,]+)″/) ?? [])[1];
+  const labels = await evaluate(`new Promise((resolve) => { const seen = {}; const t0 = performance.now();
+    const look = () => { const text = document.getElementById('plate-date')?.textContent ?? '';
+      if (/^A\\b/.test(text)) seen.a = text; if (/^B\\b/.test(text)) seen.b = text;
+      if ((seen.a && seen.b) || performance.now() - t0 > 2500) resolve(seen); else setTimeout(look, 40); };
+    look(); })`);
+  facts.yearA = (String(labels.a ?? '').match(/(19|20)\d\d/) ?? [])[0];
+  facts.yearB = (String(labels.b ?? '').match(/(19|20)\d\d/) ?? [])[0];
+  if (!facts.yearA || !facts.yearB || !facts.shift) problems.push(`Barnard facts: ${JSON.stringify({ labels, finding: facts.finding })}`);
+  await checkNames('Barnard');
+  await at(7.0); await moveTo(mouse.x - 40, mouse.y - 120, { ms: 600 });
+  // 8–14 s: "Predictions" in the menu, a smooth scroll past the four steps and back, "See how it works with Pluto", "Next".
+  await at(7.9); await click('#site-nav [data-page-link="predictions"]', { expect: 'predictions' });
+  await waitFor("document.body.dataset.page === 'predictions' && !document.getElementById('story-pluto').disabled");
+  await moveTo(700, 420, { ms: 450 });
+  await at(9.3); await wheel(420, 780);
+  await at(10.4); await wheel(-420, 760);
+  await at(11.1); await click('#story-pluto', { expect: 'reveal' });
+  await waitFor("document.getElementById('reveal').open");
+  await checkNames('Pluto reveal');
+  await at(12.4); await click('#reveal-forward');
+  await at(13.2); await click('#reveal-forward');
+  // 14–20 s: on to the verdict with the zoomed inset; the cursor rests near the inset.
+  await at(14.0); await click('#reveal-forward');
+  await at(14.6); await click('#reveal-forward');
+  await at(15.2); await click('#reveal-forward', { expect: 'verdict' });
+  await at(16.2);
+  const inset = await centre('#reveal-stage .rv-inset');
+  const stage = await centre('#reveal-stage');
+  const rest = inset ?? stage;
+  await moveTo(rest[0] - 140, rest[1] + 40, { ms: 650 });
+  facts.revealStep = await evaluate("document.querySelector('#reveal-steps [aria-current]')?.textContent ?? ''");
+  if (facts.revealStep !== 'Verdict') problems.push(`reveal step ${facts.revealStep}`);
+  // 20–24 s: close the reveal, scroll to "Why we missed", open it, then on to the 2027 card under it.
+  await at(18.3); await click('#reveal-close', { expect: 'reveal closed' });
+  await waitFor("!document.getElementById('reveal').open");
+  await moveTo(640, 360);
+  const toWhy = await evaluate("document.querySelector('#trial-pluto-position-2026b .why-missed').getBoundingClientRect().top - 140");
+  await wheel(toWhy, 700);
+  await sleep(150);
+  await click('#trial-pluto-position-2026b .why-missed > summary', { dx: -40, expect: 'why open' });
+  await waitFor("document.querySelector('#trial-pluto-position-2026b .why-missed').open && document.getElementById('story-check').classList.contains('is-under-why')", 1500);
+  await moveTo(640, 420);
+  const toCheck = await evaluate("(() => { const k = document.getElementById('story-check').getBoundingClientRect(); return k.bottom - 560; })()");
+  await wheel(toCheck, 820);
+  // 24–27 s: "Planet X" in the menu; the Lab's top.
+  await at(23.3); await click('#nav-planetx', { expect: 'lab' });
+  await waitFor("!document.getElementById('lab-view').hidden");
+  facts.labTitle = await evaluate("document.getElementById('lab-view-title')?.textContent ?? ''");
+  await checkNames('Planet X Lab');
+  await moveTo(520, 260, { ms: 600 });
+  await at(TAKE_SECONDS + 0.3);
+  const end = Date.now();
+  await send('Page.stopScreencast');
+  listeners.splice(listeners.indexOf(onFrame), 1);
+  facts.pages = { lab: Boolean(facts.labTitle) };
+  return { frames, start: takeStart, end };
+}
+
+/** Writes the take's frames as one exact-length 30 fps clip. */
+function encodeTake({ frames, start, end }, count) {
+  const dir = join(WORK, 'take');
+  const lines = [];
+  frames.forEach((frame, index) => {
+    const next = ((frames[index + 1]?.t ?? end) - (index === 0 ? start : Math.max(frame.t, start))) / 1000;
+    lines.push(`file '${frame.file}'`, `duration ${Math.max(0.001, next).toFixed(4)}`);
+  });
+  lines.push(`file '${frames.at(-1).file}'`);
+  writeFileSync(join(dir, 'list.txt'), lines.join('\n'));
+  const output = join(WORK, 'take.mp4');
+  run(['-f', 'concat', '-safe', '0', '-i', join(dir, 'list.txt'),
+    '-vf', `fps=${FPS},tpad=stop_mode=clone:stop_duration=3,scale=1280:720:flags=lanczos,format=yuv420p`,
+    '-frames:v', String(count), '-c:v', 'libx264', '-preset', 'medium', '-crf', '12', '-an', output]);
+  return output;
+}
+
+/** The largest step of the cursor between two video frames (30 fps), from the positions sent. */
+function maxStepPerFrame(start) {
+  const position = (ms) => { let last = path[0]; for (const point of path) { if (point[0] > ms) break; last = point; } return last; };
+  let worst = 0;
+  for (let frame = 1; frame < TAKE_SECONDS * FPS; frame += 1) {
+    const a = position(start + ((frame - 1) * 1000) / FPS); const b = position(start + (frame * 1000) / FPS);
+    worst = Math.max(worst, Math.hypot(b[1] - a[1], b[2] - a[2]));
+  }
+  return Math.round(worst);
+}
 
 // ---------- Record, caption, assemble ----------
 
-// ONLY=<shot id> records that shot alone and prints its frame timing (for checking a recipe), then stops.
-if (process.env.ONLY) {
-  const shot = SHOTS.find((item) => item.id === process.env.ONLY);
-  const captured = await shot.record();
-  const times = captured.frames.map((frame) => (frame.t ? (frame.t - captured.start).toFixed(2) : '-'));
-  console.log(JSON.stringify({ id: shot.id, frames: captured.frames.length, times: times.slice(0, 40), facts, problems }));
-  socket.close();
-  chrome.kill();
-  server?.close();
-  process.exit(0);
-}
-
-const clips = [];
-for (const shot of SHOTS) {
-  const captured = await shot.record();
-  clips.push({ id: shot.id, file: encodeShot(shot.id, captured, shot.seconds * FPS) });
-  console.log('recorded', shot.id, captured.frames.length, 'frames');
-}
+const cursorScript = await send('Page.addScriptToEvaluateOnNewDocument', { source: CURSOR_SCRIPT });
+const taken = await recordTake();
+// The captions and the title card are drawn without the cursor (the title card has none, task B26).
+await send('Page.removeScriptToEvaluateOnNewDocument', { identifier: cursorScript.result.identifier });
+const clips = [{ id: 'take', file: encodeTake(taken, TAKE_SECONDS * FPS) }];
+facts.frames = taken.frames.length;
+facts.maxCursorStepPx = maxStepPerFrame(taken.start);
+if (facts.maxCursorStepPx > 120) problems.push(`cursor moved ${facts.maxCursorStepPx} px in one frame`);
+console.log('recorded the take', taken.frames.length, 'frames');
 const title = join(WORK, 'title.png');
 await screenshotFile(pathToFileURL(join(HERE, 'video', 'title-card.html')).href, title);
 const titleClip = join(WORK, 's7-title.mp4');
@@ -356,7 +441,7 @@ const cues = [];
 let clock = 0;
 for (const shot of SHOTS) {
   if (shot.captions) shot.captions.forEach((cue) => cues.push({ start: clock + cue.at, end: clock + cue.at + cue.seconds, text: typeof cue.text === 'function' ? cue.text() : cue.text }));
-  else cues.push({ start: clock, end: clock + shot.seconds, text: typeof shot.caption === 'function' ? shot.caption() : shot.caption });
+  else cues.push({ start: clock, end: clock + shot.seconds, top: shot.top === true, text: typeof shot.caption === 'function' ? shot.caption() : shot.caption });
   clock += shot.seconds;
 }
 const total = clock + 3;
@@ -364,7 +449,7 @@ const total = clock + 3;
 // Each caption drawn by Chrome on a transparent page; its lines read back so the .srt breaks where the video does.
 for (const [index, cue] of cues.entries()) {
   cue.png = join(WORK, `caption-${index + 1}.png`);
-  await screenshotFile(`${pathToFileURL(join(HERE, 'video', 'caption.html')).href}?t=${encodeURIComponent(cue.text)}`, cue.png, true);
+  await screenshotFile(`${pathToFileURL(join(HERE, 'video', 'caption.html')).href}?t=${encodeURIComponent(cue.text)}${cue.top ? '&pos=top' : ''}`, cue.png, true);
   cue.lines = await evaluate(`(() => {
     const rows = new Map();
     for (const span of document.querySelectorAll('#box span')) { const top = Math.round(span.offsetTop); rows.set(top, [...(rows.get(top) ?? []), span.textContent]); }
@@ -401,7 +486,7 @@ run(['-i', `${OUT}.mp4`, '-vf', `select='${select}',scale=640:360,tile=4x2:paddi
 
 const probe = JSON.parse(spawnSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0', '-count_frames', '-show_entries',
   'stream=codec_name,profile,width,height,pix_fmt,r_frame_rate,nb_read_frames:format=duration,size', '-of', 'json', `${OUT}.mp4`]).stdout.toString());
-console.log(JSON.stringify({ facts, cues: cues.map(({ start, end, lines }) => ({ start, end, lines })), probe, bytes: statSync(`${OUT}.mp4`).size, problems }, null, 2));
+console.log(JSON.stringify({ facts, clicks, cues: cues.map(({ start, end, lines }) => ({ start, end, lines })), probe, bytes: statSync(`${OUT}.mp4`).size, problems }, null, 2));
 rmSync(WORK, { recursive: true, force: true });
 socket.close();
 chrome.kill();

@@ -2172,3 +2172,32 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - Screenshots: `docs/screens/b25-home-<1280|390>-<before|after>.png`, `b25-home-1280-full3d.png`,
     `b25-explore-390.png`, `b25-home-1280-reduced.png` and `b25-reveal-step6.png`.
   - Not checked on a real phone.
+
+### Task B26, 15 Nov 2026: the demo video as a person using the site
+
+- `docs/screens/demo/vestigium-demo-30s.mp4`: **30.000 s** (900 frames), **3,426,294 bytes**, 1280×720, H.264
+  High, yuv420p, 30 fps, no audio. Captions and timings are as before (same .srt). The B25 version is kept as
+  `vestigium-demo-30s-v2.mp4`.
+- **How it is recorded.** Shots 1–6 are now one continuous take driven by real mouse events (move, hover, click,
+  drag, wheel), so hover styles and clicks happen as they would for a visitor.
+  - The page draws a 24 px white arrow cursor with a dark outline and a soft shadow at the mouse position, and a
+    ring ripple on each click. The script injects it only while recording and removes it before the captions and
+    the title card, so the title card has no cursor.
+  - Moves are eased (ease-in-out), slightly curved and 400 to 700 ms long; scrolling is 24 small wheel steps over
+    700 to 820 ms.
+  - The cursor stays clear of the captions (shot 2's caption moves to the top for the Contrast drag).
+- **The story as briefed:**
+  1. the 3D first screen, then a click on "Watch Barnard's Star move";
+  2. the blink, with Contrast dragged 1 → 2.4;
+  3. "Predictions", a scroll past the four steps and back, "See how it works with Pluto", then "Next";
+  4. to the verdict with the 6,000× inset, the cursor resting near it;
+  5. "Close", "Why we missed" and the 2027 card;
+  6. "Planet X" to the Lab's top;
+  7. the title card.
+- **Checks**, all from the recording run:
+  - All 12 clicks landed on their targets (the element under the pointer was the target), and the expected page
+    or step followed each time.
+  - The cursor's largest step between two video frames was 115 px.
+  - No page in the take showed "TENGER", "SPHEREx Blink" or "pythonhack000".
+  - The contact sheet and eight sampled frames show the cursor in shots 1–6 and none on the title card.
+- Re-make with `node docs/screens/demo/make-video.mjs` (about 1 minute). No page of the site was changed.
