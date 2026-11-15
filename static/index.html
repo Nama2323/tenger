@@ -432,9 +432,10 @@
     <!-- ======================= Learn ======================= -->
     <section id="page-learn" class="page page-learn" hidden data-loading aria-labelledby="learn-title">
       <header class="page-head">
-        <p class="eyebrow" data-t="learn.eyebrow"></p>
-        <h1 id="learn-title" tabindex="-1" data-t="learn.title"></h1>
-        <p class="lead" data-t="learn.lead"></p>
+        <p class="eyebrow" data-t="learn.title"></p>
+        <h1 id="learn-title" tabindex="-1" data-t="learn.headline"></h1>
+        <p class="lead" data-t="learn.lineShort"></p>
+        <details class="more-info"><summary data-t="ui.details"></summary><p class="eyebrow" data-t="learn.eyebrow"></p><p class="note" data-t="learn.lead"></p></details>
       </header>
       <div id="learn-index" class="learn-index">
       <ul id="lesson-list" class="cards-list lessons"></ul>
@@ -446,7 +447,9 @@
         </svg>
         <div class="lab-words">
           <h2 id="lab-title" data-t="lab.title"></h2>
-          <p data-t="lab.text"></p>
+          <p data-t="lab.textShort"></p>
+          <p class="chip-line"><span class="chip chip-hypothetical" data-t="lab.hypotheticalTag"></span></p>
+          <details class="more-info"><summary data-t="ui.details"></summary><p class="note" data-t="lab.text"></p></details>
           <p><button id="lab-open" type="button" class="primary" data-t="lab.open"></button></p>
         </div>
       </article>
@@ -514,53 +517,63 @@
     <!-- ======================= About ======================= -->
     <section id="page-about" class="page page-about" hidden aria-labelledby="about-title">
       <header class="page-head">
-        <p class="eyebrow" data-t="about.eyebrow"></p>
-        <h1 id="about-title" tabindex="-1" data-t="about.title"></h1>
-        <p class="lead" data-t="about.what"></p>
-        <p class="about-story" data-t="about.story"></p>
+        <p class="eyebrow" data-t="about.title"></p>
+        <h1 id="about-title" tabindex="-1" data-t="about.headline"></h1>
+        <p class="lead" data-t="about.lineShort"></p>
+        <details class="more-info">
+          <summary data-t="ui.details"></summary>
+          <p class="eyebrow" data-t="about.eyebrow"></p>
+          <p class="note" data-t="about.what"></p>
+          <p class="note about-story" data-t="about.story"></p>
+        </details>
       </header>
       <div class="about-grid">
         <section class="about-card glass about-full" aria-labelledby="about-methods-title">
           <h2 id="about-methods-title" data-t="about.methodsTitle"></h2>
-          <dl id="about-methods" class="about-dl"></dl>
+          <div id="about-methods" class="about-dl about-terms"></div>
         </section>
         <section class="about-card glass" aria-labelledby="about-limits-title">
           <h2 id="about-limits-title" data-t="about.limitsTitle"></h2>
-          <dl id="about-limits" class="about-dl"></dl>
+          <div id="about-limits" class="about-dl about-terms"></div>
         </section>
         <section class="about-card glass" aria-labelledby="about-reserved-title">
           <h2 id="about-reserved-title" data-t="about.reservedTitle"></h2>
-          <p class="note" data-t="about.reservedLead"></p>
-          <ul id="about-reserved" class="reserved-list"></ul>
+          <details class="more-info">
+            <summary data-t="about.showReserved"></summary>
+            <p class="note" data-t="about.reservedLead"></p>
+            <ul id="about-reserved" class="reserved-list"></ul>
+          </details>
           <p id="about-reserved-source" class="note warn"></p>
         </section>
         <section class="about-card glass" aria-labelledby="about-see-title">
           <h2 id="about-see-title" data-t="about.seeTitle"></h2>
-          <div id="about-see" class="limits-body"></div>
+          <details class="more-info"><summary data-t="about.showSee"></summary><div id="about-see" class="limits-body"></div></details>
         </section>
         <section class="about-card glass about-full" aria-labelledby="about-data-title">
           <h2 id="about-data-title" data-t="about.dataTitle"></h2>
           <p class="note" data-t="about.dataLead"></p>
-          <ul id="about-data" class="source-list"></ul>
+          <details class="more-info"><summary data-t="about.showSources"></summary><ul id="about-data" class="source-list"></ul></details>
         </section>
         <section class="about-card glass about-full" aria-labelledby="about-refs-title">
           <h2 id="about-refs-title" data-t="about.refsTitle"></h2>
-          <p class="note" data-t="about.refsLead"></p>
-          <ul id="about-refs" class="source-list"></ul>
+          <details class="more-info"><summary data-t="about.showRefs"></summary><p class="note" data-t="about.refsLead"></p><ul id="about-refs" class="source-list"></ul></details>
         </section>
         <section class="about-card glass" aria-labelledby="about-software-title">
           <h2 id="about-software-title" data-t="about.softwareTitle"></h2>
-          <ul id="about-software" class="software-list"></ul>
-          <details class="data-table">
-            <summary data-t="about.allPackages"></summary>
-            <div class="table-scroll"><table id="about-packages"></table></div>
-          </details>
           <p class="note" data-t="about.license"></p>
+          <details class="more-info">
+            <summary data-t="about.showSoftware"></summary>
+            <ul id="about-software" class="software-list"></ul>
+            <details class="data-table">
+              <summary data-t="about.allPackages"></summary>
+              <div class="table-scroll"><table id="about-packages"></table></div>
+            </details>
+          </details>
         </section>
         <section class="about-card glass" aria-labelledby="about-fonts-title">
           <h2 id="about-fonts-title" data-t="about.fontsTitle"></h2>
-          <ul id="about-fonts" class="font-list"></ul>
           <p class="note" data-t="font.selfHosted"></p>
+          <details class="more-info"><summary data-t="about.showFonts"></summary><ul id="about-fonts" class="font-list"></ul></details>
         </section>
         <section class="about-card glass about-full" aria-labelledby="about-team-title">
           <h2 id="about-team-title" data-t="about.teamTitle"></h2>

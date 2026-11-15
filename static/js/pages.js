@@ -2,7 +2,7 @@
 // software and font licences, the base project, the team and the AI disclosure.
 // (The game is in game-ui.js, lessons in learn-ui.js.) Every sentence comes from the English resource;
 // only proper names, licence identifiers and URLs live here.
-import { $, el } from './dom.js';
+import { $, details, el } from './dom.js';
 import { t } from './i18n.js';
 import { CAN_SEE, CANNOT_SEE } from './help.js';
 import { reservedRegions, reservedSource } from './reserved.js';
@@ -105,11 +105,8 @@ export const AI_DISCLOSURE = ['about.ai.planning', 'about.ai.code', 'about.ai.re
 
 const external = (href, text) => el('a', { href, text, rel: 'noopener' });
 
-/** One <div> per term (allowed inside <dl>) so a term and its text stay together in the grid. */
-const definitions = (prefix, ids) => ids.map((id) => el('div', {}, [
-  el('dt', { text: t(`${prefix}.${id}.title`) }),
-  el('dd', { text: t(`${prefix}.${id}`) }),
-]));
+/** One closed disclosure per term (task B12): its title in view, its text one click (or Enter) away. */
+const definitions = (prefix, ids) => ids.map((id) => details(el('p', { text: t(`${prefix}.${id}`) }), { label: t(`${prefix}.${id}.title`), className: 'about-term' }));
 
 function sourceItem(source) {
   return el('li', { class: 'source' }, [

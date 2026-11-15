@@ -1274,6 +1274,10 @@ body.negative #plate, body.negative #plate-b, body.negative .arrays canvas, body
 .about-full .about-dl { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); align-items: start; }
 .about-dl > div { display: grid; gap: 4px; }
 .about-dl dt { font-weight: 600; color: var(--text); }
+/* Task B12: methods and limits as a list of titles, each opening its text. */
+.about-terms { gap: 0 var(--s3); }
+.about-term > summary { color: var(--text); }
+.about-term > p { color: var(--muted); font-size: 14.5px; }
 .about-dl dd { margin: 0; color: var(--muted); font-size: 14.5px; }
 .about-card .source-list { list-style: none; padding-left: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: var(--s2); }
 .source { display: grid; gap: 6px; align-content: start; padding: var(--s2); border: 1px solid var(--edge); border-radius: 10px; }

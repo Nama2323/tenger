@@ -328,7 +328,9 @@ function renderIndex() {
       el('span', { class: 'lesson-number', 'aria-hidden': 'true', text: String(index + 1).padStart(2, '0') }),
       el('h2', { class: 'card-title', text: t(`lesson.${lesson.id}.title`) }),
       el('p', { text: t(`lesson.${lesson.id}.text`) }),
-      el('p', { class: 'note', text: t(content.source === 'synthetic' ? 'learn.statusSynthetic' : 'learn.statusRecord') }),
+      // A chip says whether the lesson uses the published record or synthetic practice values (task B12).
+      el('p', { class: 'chip-line' }, chip(t(content.source === 'synthetic' ? 'learn.chipSynthetic' : 'learn.chipRecord'), content.source === 'synthetic' ? 'chip-example' : 'chip-measured')),
+      el('p', { class: 'sr-only', text: t(content.source === 'synthetic' ? 'learn.statusSynthetic' : 'learn.statusRecord') }),
       el('button', { type: 'button', class: 'primary', text: t('learn.open'), 'aria-label': `${t('learn.open')}: ${t(`lesson.${lesson.id}.title`)}`, onclick: () => showLearn(lesson.id) }),
     ]);
   }));
