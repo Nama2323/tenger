@@ -2774,3 +2774,12 @@ No login, no server and no storage. Only the game page and its strings changed; 
 - **Screenshots:** `docs/screens/b36-skymap-1280.png`, `b36-skymap-390.png`, `b36-lines-1280.png`,
   `b36-empty-1280.png`, `b36-empty-390.png`, `b36-barnard-1280.png`, `b36-pluto-1280.png`, `b36-home-390.png`.
 
+### Task B32b, 15 Nov 2026: the build-stamp script runs from paths with spaces
+
+- `.github/scripts/stamp-build.mjs` did nothing, and printed nothing, when the checkout path had a space (Session A's
+  "Hackathon Astrolemma" folder). Its "run as a script" check compared the percent-encoded `import.meta.url` with
+  the raw `process.argv[1]`. It now compares `pathToFileURL(process.argv[1]).href` (Session A's suggestion). CI was
+  not affected.
+- New test in `tests/build-stamp.test.mjs`: runs the script on a tiny site in a folder named "site with space" and
+  checks the stamp. `node --test` 299 pass.
+

@@ -56,3 +56,20 @@ test('a key with no text shows nothing, never the key itself', () => {
   assert.equal(t('no.such.key.b32'), '');
   assert.equal(t('nav.method'), 'How it works');
 });
+
+test('the stamp script also runs from a folder whose path has a space (Session A\'s report)', async () => {
+  const { mkdtempSync, mkdirSync, writeFileSync: write, readFileSync: readText } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const { spawnSync } = await import('node:child_process');
+  const root = join(mkdtempSync(join(tmpdir(), 'stamp test ')), 'site with space');
+  mkdirSync(join(root, 'js'), { recursive: true });
+  mkdirSync(join(root, 'vendor'), { recursive: true });
+  write(join(root, 'js', 'main.js'), '');
+  write(join(root, 'index.html'), '<meta name="build" content="dev"><script type="importmap" id="build-map">{}</script><script type="module" src="js/main.js?v=dev"></script>');
+  const script = fileURLToPath(new URL('../.github/scripts/stamp-build.mjs', import.meta.url));
+  const run = spawnSync(process.execPath, [script, root, 'spaced1'], { encoding: 'utf8' });
+  assert.equal(run.status, 0, run.stderr);
+  assert.match(run.stdout, /stamped .* with spaced1: 1 modules/);
+  assert.match(readText(join(root, 'index.html'), 'utf8'), /js\/main\.js\?v=spaced1/);
+});

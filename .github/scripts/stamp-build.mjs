@@ -9,6 +9,7 @@
 //   The Publish site workflow runs it with the commit before uploading; the committed index.html carries "dev".
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 export function modulesUnder(root, folders = ['js', 'vendor']) {
   const found = [];
@@ -37,7 +38,8 @@ export function stamp(html, modules, version) {
   return out;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run as a script (not imported): compare URLs, since import.meta.url is percent-encoded (a space is %20).
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [root, version] = process.argv.slice(2);
   if (!root || !version) {
     console.error('usage: node .github/scripts/stamp-build.mjs <static dir> <version>');
