@@ -275,7 +275,10 @@ function render() {
   document.body.dataset.layout = mode === 'side' ? 'compare' : 'one';
   describeStep(left);
   renderCaption(left, aStep, bStep);
-  $('explain').textContent = [explainNow(), mode !== 'blink' || state.playing ? rangeNote() : ''].filter(Boolean).join(' ');
+  // Task B12: the expected shift is the key number in view; how to read the picture sits under "How to look".
+  $('explain').textContent = explainNow();
+  const key = mode !== 'blink' || state.playing ? rangeNote() : '';
+  if ($('explain-key').textContent !== key) $('explain-key').textContent = key;
   markFilm();
   paintAmbient();
 }
@@ -458,6 +461,14 @@ function wavelengthText(picture) {
   return t(w.present ? 'caption.channel' : 'caption.channelNone', values);
 }
 
+/** The wavelength in a few words for the caption (task B12); the full wording stays one click away. */
+function wavelengthShort(picture) {
+  if (picture.compositeVisit !== null && picture.compositeVisit !== undefined) return t('caption.compositePreviewShort');
+  const w = picture.wavelength;
+  if (w.kind === 'composite') return t(picture.colour ? 'caption.compositeColourShort' : 'caption.compositeShort', { low: String(w.low), high: String(w.high) });
+  return wavelengthText(picture);
+}
+
 function timeText(picture) {
   if (picture.status === 'context') return t('caption.timeAllwise', { year: String(Math.floor(picture.year)) });
   if (!picture.start) return '—';
@@ -505,14 +516,17 @@ function captionColumn(letter, picture, side) {
       el('span', { class: 'ab-letter', text: letter }),
       chip(t(`status.${picture.status}`), `chip-status-${picture.status}`),
     ]),
+    // At a glance (task B12): when and in what light; the release, status, source and IDs one click away.
     el('dl', { class: 'facts' }, [
       el('dt', { text: t('caption.time') }), el('dd', { text: timeText(picture) }),
-      el('dt', { text: t('caption.wavelength') }), el('dd', { text: wavelengthText(picture) }),
-      el('dt', { text: t('caption.release') }), el('dd', { text: releaseText(picture.releases) }),
+      el('dt', { text: t('caption.wavelength') }), el('dd', { text: wavelengthShort(picture) }),
     ]),
     el('details', { class: 'caption-more' }, [
       el('summary', { text: t('caption.more') }),
       el('dl', { class: 'facts' }, [
+        wavelengthShort(picture) !== wavelengthText(picture) ? el('dt', { text: t('caption.wavelengthFull') }) : null,
+        wavelengthShort(picture) !== wavelengthText(picture) ? el('dd', { text: wavelengthText(picture) }) : null,
+        el('dt', { text: t('caption.release') }), el('dd', { text: releaseText(picture.releases) }),
         el('dt', { text: t('caption.status') }), el('dd', { text: statusNote(picture) }),
         el('dt', { text: t('caption.source') }), el('dd', {}, el('a', { href: source, target: '_blank', rel: 'noopener', text: t('caption.sourceIrsa') })),
         el('dt', { text: t('caption.ids') }), el('dd', {}, idsBlock(picture)),

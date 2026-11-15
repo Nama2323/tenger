@@ -2,7 +2,7 @@
 // Evidence and the Spectrum note. Missing files give honest "not published" states, example files are
 // stamped, and nothing here computes a success number of its own.
 import { addCovariance, covarianceEllipse, tangentOffsetArcsec } from './coords.js';
-import { chip, dataTable, el, factList, formatNumber, formatUtc, withUnit } from './dom.js';
+import { chip, dataTable, details, el, factList, formatNumber, formatUtc, withUnit } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { comparisonReasons } from './epochs.js';
 import { categoryChip, categoryNote, exampleChip, trialStatusChip } from './labels.js';
@@ -64,13 +64,15 @@ export function renderChanged(host, { investigation, custom }) {
   const limitations = [...new Set([...(doc.limitation_keys ?? []), ...measurements.flatMap((item) => item.limitation_keys ?? [])])];
   host.replaceChildren(...[
     exampleStamp(doc),
-    ...(doc.explanation ?? []).map((item) => el('p', { text: explanationText(item) })),
+    // At a glance (task B12): the first explanation is the finding; the checks and caveats after it sit under Details.
+    ...(doc.explanation ?? []).slice(0, 1).map((item) => el('p', { class: 'changed-finding', text: explanationText(item) })),
+    (doc.explanation ?? []).length > 1 ? details((doc.explanation ?? []).slice(1).map((item) => el('p', { class: 'note', text: explanationText(item) }))) : null,
     valued.length ? el('ul', { class: 'measurements' }, valued.map(measurementItem)) : note(t('changed.waiting')),
     missingList,
-    limitations.length ? el('div', {}, [
+    limitations.length ? details([
       el('h4', { text: t('pred.limitations') }),
       el('ul', {}, limitations.map((key) => el('li', { text: tData(key, 'limit.unknown') }))),
-    ]) : null,
+    ], { label: t('pred.limitations') }) : null,
   ].filter(Boolean));
 }
 
@@ -264,20 +266,31 @@ function trialCard(bundle) {
     ? positionPlot(prediction.doc, verification?.state === 'ok' ? verification.doc : null, doc)
     : null;
   const limitations = [...new Set([...(prediction?.doc?.limitation_keys ?? [])])];
+  // At a glance (task B12): the trial's type and result as chips, the errors as the key number and the plot as the
+  // picture; the category note, the frozen facts, the predicted values, the test and the limitations under Details.
+  const checked = verification?.state === 'ok' ? verification.doc : null;
+  const errorOf = (residual) => withUnit(residual?.error_arcsec ?? residual?.error, Number.isFinite(checked?.residuals?.model?.error_arcsec) ? 'arcsec' : checked?.observed?.unit);
   return el('article', { class: 'trial' }, [
     header,
-    el('p', { class: 'stamps' }, [exampleStamp(doc), doc.exploratory ? chip(t('pred.exploratory', { id: doc.revises ?? '—' })) : null]),
-    el('p', { class: 'panel-note', text: categoryNote(category) }),
-    doc.confirmation_pending === true ? el('p', { class: 'panel-note warn', text: t('ledger.confirmationPendingNote') }) : null,
-    facts,
-    predicted,
+    el('p', { class: 'stamps' }, [
+      ...trialLabels(doc).map(categoryChip), checked ? trialStatusChip(checked.status) : null, exampleStamp(doc),
+      doc.exploratory ? chip(t('chip.exploratory'), 'chip-pending') : null, doc.confirmation_pending === true ? chip(t('chip.pending'), 'chip-pending') : null,
+    ]),
+    checked ? el('p', { class: 'card-key' }, el('strong', { text: t('pred.errorsValue', { model: errorOf(checked.residuals?.model), baseline: errorOf(checked.residuals?.baseline) }) })) : null,
     plot,
-    verificationBlock(verification, doc),
+    details([
+      el('p', { class: 'panel-note', text: categoryNote(category) }),
+      doc.exploratory ? el('p', { class: 'note', text: t('pred.exploratory', { id: doc.revises ?? '—' }) }) : null,
+      doc.confirmation_pending === true ? el('p', { class: 'panel-note warn', text: t('ledger.confirmationPendingNote') }) : null,
+      facts,
+      predicted,
+      verificationBlock(verification, doc),
+      limitations.length ? el('div', {}, [
+        el('h4', { text: t('pred.limitations') }),
+        el('ul', {}, limitations.map((key) => el('li', { text: tData(key, 'limit.unknown') }))),
+      ]) : null,
+    ]),
     el('p', {}, el('a', { class: 'button-link', href: `?page=predictions${doc.example ? '&fixtures=1' : ''}${verification?.state === 'ok' && doc.quantity === 'position' ? `&trial=${bundle.id}` : ''}`, text: t('pred.toLedger') })),
-    limitations.length ? el('div', {}, [
-      el('h4', { text: t('pred.limitations') }),
-      el('ul', {}, limitations.map((key) => el('li', { text: tData(key, 'limit.unknown') }))),
-    ]) : null,
   ]);
 }
 

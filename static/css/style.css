@@ -1124,6 +1124,12 @@ body[data-layout="compare"] .plate-frame { width: min(50cqw - 6px, 100cqh); }
 .segment button[aria-pressed="true"] { background: rgba(var(--accent-rgb), 0.16); color: var(--accent); }
 .segment button[aria-disabled="true"] { border: 0; text-decoration: line-through; text-decoration-color: rgba(141, 155, 176, 0.6); }
 .explain { flex: 1 1 260px; min-width: 0; color: var(--muted); font-size: 13.5px; line-height: 1.4; }
+.explain-key { color: var(--text); font-weight: 600; }
+.changed-finding { font-weight: 600; }
+.explain-key:empty { display: none; }
+.explain-more { flex: 1 1 220px; min-width: 0; }
+.explain-more > summary { font-size: 13.5px; }
+.explain-more .explain { margin-top: 2px; }
 
 .caption-strip { display: grid; gap: var(--s1); }
 .caption-strip h3 { font-size: 14px; }
