@@ -2834,3 +2834,42 @@ No login, no server and no storage. Only the game page and its strings changed; 
 - **Screenshots:** `docs/screens/b34-{barnard,epsindib,pluto}-{1280,390}.png` (3D, reduced motion, final build) and `docs/screens/b34-{barnard,epsindib,pluto}-nowebgl-360.png` (2D fallback).
 - **Found while checking:** `stamp-build.mjs` did nothing when the repository path contained a space. Session A reported it, and Session B fixed it in `1b5a189`.
 - **Not verified:** touch pinch on a real phone, screen-reader speech, and real-GPU timing on the final rebased build.
+
+### Task B40, 15 Nov 2026: play from the targets; the Sky map opens like a planetarium
+
+- **Game from the targets.**
+  - Home's popup and Investigate → What changed show "Play: guess where it goes next" for the targets that have a
+    Beat the physics round: Barnard's Star, Epsilon Indi B and Pluto, matched by trial ID (`barnard-position`,
+    `epsindib-position`, `pluto-position`). No other target shows the button.
+  - It opens that round in Easy mode; the browser's Back returns to Home (popup) or to the investigation.
+  - Home's title block has a "Play Beat the physics" link.
+- **Sky map.**
+  - It opens on the chosen target (the popup's target, else the open investigation, else Barnard's Star) with a
+    60° field in a SIN view.
+  - Constellation lines and names are on by default; the names come from d3-celestial `constellations.json`, the
+    same BSD-3 source.
+  - Drag pans. The bottom-left readout shows "RA …°, Dec …° · field …°".
+  - A row of Fly to chips (Barnard's Star, Epsilon Indi B, WISE 0855, RW Aurigae, R Draconis, Pluto with its
+    picture date) pans smoothly (1.5 s).
+  - The markers and the empty-sky note are unchanged.
+- **D1–D6 layers: skipped.** IRSA's HiPS list has one SPHEREx all-sky layer (the DR1 cube), no separate per-band
+  layers.
+- **Home speed.** With B40, Home measured 80 and 79 (the tree before B40 measured 79–81 tonight).
+  - Preloading the 51 start modules made it worse (74, 74: the first paint was delayed), so it was reverted.
+  - The fix: a small module, `js/early.js`, fills Home's title block as soon as `i18n.js` arrives, on a plain Home
+    address only, so Home's largest text paints before the rest of the code. LCP went from about 5 s to 3.3–4.4 s.
+  - Lighthouse mobile: 90, 82, 86; CLS 0.014.
+  - The stamp script now versions every module script tag, not only `main.js`.
+- **Checks** (github.io build in headless Chrome, at 1280 and 390):
+  - The three popup buttons open the right rounds in Easy mode, and Back returns to Home; WISE 0855 has none.
+  - What changed → Barnard's round (Easy), and Back returns to Barnard's investigation. The title link opens the
+    game.
+  - The Sky map opens in 1.2 s and 1.3 s on Barnard's Star ("RA 269.4465°, Dec +4.7687° · field 60°"), with lines
+    and names fetched.
+  - The Pluto chip pans to RA 308.5539°, Dec −22.9413°, and the Epsilon Indi B chip to RA 331.0964°, Dec −56.8011°.
+  - A click on Epsilon Indi B's marker opens it in Investigate.
+  - No console errors.
+  - `node --test` 308 pass (new `tests/play-skymap-b40.test.mjs`).
+- **Screenshots:** `docs/screens/b40-skymap-1280.png`, `b40-skymap-390.png`, `b40-chip-pluto-1280.png`,
+  `b40-chip-pluto-390.png`, `b40-popup-play-1280.png`.
+

@@ -31,7 +31,7 @@ export function stamp(html, modules, version) {
   let out = html.replace(/<meta name="build" content="[^"]*">/, `<meta name="build" content="${version}">`);
   out = out.replace(/<script type="importmap" id="build-map">[\s\S]*?<\/script>/, block);
   out = out.replace(/(<link rel="stylesheet" href="css\/[\w.-]+\.css)(\?v=[^"]*)?"/g, `$1?v=${version}"`);
-  out = out.replace(/(<script type="module" src="js\/main\.js)(\?v=[^"]*)?"/, `$1?v=${version}"`);
+  out = out.replace(/(<script type="module" src="js\/[\w-]+\.js)(\?v=[^"]*)?"/g, `$1?v=${version}"`);
   for (const [name, test] of [['build meta', `content="${version}"`], ['import map', 'id="build-map"'], ['main script', `js/main.js?v=${version}`]]) {
     if (!out.includes(test)) throw new Error(`index.html: no ${name} to stamp`);
   }

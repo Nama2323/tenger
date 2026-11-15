@@ -2404,3 +2404,16 @@ body.skymap-open { overflow: hidden; }
   .skymap-bar { padding: 6px 8px; }
   .skymap-bar h2 { font-size: 16px; }
 }
+
+
+/* ---------- Task B40: Play buttons, a planetarium-like Sky map ---------- */
+.hero-game { display: inline-flex; align-items: center; min-height: var(--tap); color: var(--accent); font-weight: 600; font-size: 14.5px; }
+.pop-play { width: 100%; }
+.pop-play[hidden], .changed-play[hidden] { display: none; }
+.changed-play { margin: 8px 0; }
+.skymap-readout { position: absolute; z-index: 6; left: 12px; bottom: 56px; margin: 0; padding: 4px 10px; border-radius: var(--radius-sm); background: rgba(5, 7, 13, 0.72); color: #c3cddb; font: 500 12.5px var(--font-mono); pointer-events: none; }
+.skymap-readout:empty { display: none; }
+.skymap-fly { flex: none; display: flex; align-items: center; gap: 6px; padding: 6px 12px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--border); }
+.skymap-fly:empty { display: none; }
+.skymap-fly::-webkit-scrollbar { display: none; }
+.skymap-chip-fly { flex: none; background: rgba(5, 7, 13, 0.72); }

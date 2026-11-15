@@ -69,6 +69,11 @@ const TEXT = {
     'skymap.linesNote': 'Constellation lines are a guide, not SPHEREx data',
     'skymap.lines': 'Constellation lines',
     'skymap.close': 'Close',
+    // Task B40.
+    'skymap.flyLabel': 'Fly to',
+    'skymap.readout': 'RA {ra}°, Dec {dec}° · field {fov}°',
+    'play.guess': 'Play: guess where it goes next',
+    'hero.playGame': 'Play Beat the physics',
     'skymap.movingLabel': '{name} ({date})',
     'skymap.loading': 'Loading the sky map…',
     'skymap.unavailable': 'The sky map could not load in this browser.',

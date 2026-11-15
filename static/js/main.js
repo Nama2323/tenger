@@ -1521,6 +1521,7 @@ async function refreshPanels() {
   const custom = !entry;
   await ensureInvestigation();
   renderChanged($('changed-validated'), { investigation: app.investigation, custom });
+  syncPlayButtons();
   // Path through time (3D) (task B34): our measured positions from the published investigation file only.
   if ($('changed-path').dataset.key !== `${entry?.key ?? ''}|${app.investigation?.path ?? ''}`) {
     $('changed-path').dataset.key = `${entry?.key ?? ''}|${app.investigation?.path ?? ''}`;
@@ -2439,6 +2440,8 @@ async function loadData() {
   ]);
   app.scoreboard = scoreboard.state === 'ok' ? scoreboard.doc : null;
   const playable = rounds.filter((round) => round.state === 'ok');
+  // Task B40: which round belongs to which trial, for the "Play" buttons.
+  app.roundIds = playable.map((round) => ({ id: round.doc.round_id, trial: round.doc.trial_id }));
   const bundles = await Promise.all(playable.map((round) => app.source.trial(round.doc.trial_id)));
   renderGamePage({
     rounds: playable.map((round, index) => ({ doc: round.doc, bundle: bundles[index] })),
@@ -2576,6 +2579,7 @@ function selectFamous(entry) {
   see.disabled = !isOpenable(entry);
   see.textContent = t(isOpenable(entry) ? 'famous.see' : 'famous.notReady');
   $('target-pop').hidden = false;
+  syncPlayButtons();
   selectTarget(entry.key);
   (see.disabled ? $('pop-close') : see).focus({ preventScroll: true });
 }
@@ -2640,6 +2644,29 @@ function placeExplore() {
   } else if (section.parentElement !== $('famous')) $('famous').insertBefore(section, document.querySelector('.famous-foot'));
 }
 
+/** Task B40: the game round whose trial is this target's (barnard-position, epsindib-position, pluto-position). */
+function roundFor(entry) {
+  if (!entry) return null;
+  return app.roundIds?.find((round) => entry.prediction?.trialIds?.includes(round.trial)) ?? null;
+}
+
+/** Opens that round in Easy mode; the browser's Back returns to where the visitor was. */
+function playRoundFor(entry) {
+  const round = roundFor(entry);
+  if (!round) return;
+  showPage('game');
+  selectRound(round.id);
+  const easy = document.getElementById('mode-easy');
+  if (easy && easy.getAttribute('aria-pressed') !== 'true' && !easy.disabled) easy.click();
+}
+
+/** Shows or hides the "Play" buttons for the current popup target and the open investigation. */
+function syncPlayButtons() {
+  $('pop-play').hidden = !roundFor(famousOpen);
+  const changed = roundFor(app.entry);
+  document.querySelector('.changed-play').hidden = !changed;
+}
+
 /** Task B36: the all-sky Sky map, loaded on first use; markers open Investigate; Close returns to Home. */
 let skymapOpener = null;
 async function showSkyMap(event) {
@@ -2663,6 +2690,7 @@ async function showSkyMap(event) {
   const markers = [...fixed, ...moving.filter(Boolean)];
   await openSkyMap({
     markers,
+    focus: famousOpen?.key ?? app.entry?.key ?? 'barnard',
     onOpen: (key) => {
       const entry = findEntry(key);
       setScenePaused(false);
@@ -2683,6 +2711,9 @@ function bindFamous() {
   matchMedia(PHONE_LAYOUT).addEventListener('change', placeExplore);
   $('skymap-open').addEventListener('click', showSkyMap);
   $('skymap-open-phone').addEventListener('click', showSkyMap);
+  // Task B40: the target's round of Beat the physics, in Easy mode, from the popup and from What changed.
+  $('pop-play').addEventListener('click', () => playRoundFor(famousOpen));
+  $('changed-play').addEventListener('click', () => playRoundFor(app.entry));
   $('skymap-lines').addEventListener('click', async () => {
     const on = $('skymap-lines').getAttribute('aria-checked') !== 'true';
     const { setConstellationLines } = await import('./skymap.js');

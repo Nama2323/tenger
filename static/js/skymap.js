@@ -11,6 +11,12 @@ export const SPHEREX_HIPS = 'https://irsa.ipac.caltech.edu/data/hips/SPHEREx/sph
 /** The CDS 2MASS colour survey as mirrored by IRSA: the fallback, labelled "2MASS, not SPHEREx". */
 export const TWOMASS_HIPS = 'https://irsa.ipac.caltech.edu/data/hips/CDS/2MASS/Color';
 const LINES_URL = 'https://cdn.jsdelivr.net/npm/d3-celestial@0.7.35/data/constellations.lines.json';
+const NAMES_URL = 'https://cdn.jsdelivr.net/npm/d3-celestial@0.7.35/data/constellations.json';
+/** Task B40: the map opens on the chosen target with about a 60° field, like a planetarium. */
+export const OPEN_FOV = 60;
+const FLY_SECONDS = 1.5;
+/** The Fly to chips, in this order (the 3D-less targets that have a sky position). */
+export const FLY_KEYS = ['barnard', 'epsindib', 'wise0855', 'rwaur', 'rdra', 'pluto'];
 const PROBE_MS = 3000;
 const FIRST_SLICE = 1;
 const COLOURS = { star: '#ffe08a', variable: '#c9a0ff', solar: '#5cc8ff', hypothetical: '#ffa94d', other: '#e6edf7' };
@@ -39,9 +45,14 @@ let state = null;
  * Opens the map. markers: [{ key, name, ra, dec, colour }]; onOpen(key) opens Investigate for a marker; onClose()
  * when the map closes. Returns once the map is drawn (or says why it cannot be).
  */
-export async function openSkyMap({ markers, onOpen, onClose }) {
+export async function openSkyMap({ markers, onOpen, onClose, focus = 'barnard' }) {
   const panel = $('skymap');
   panel.hidden = false;
+  const centreOf = (key) => markers.find((marker) => marker.key === key) ?? markers.find((marker) => marker.key === 'barnard') ?? markers[0];
+  if (state?.map) {
+    const at = centreOf(focus);
+    if (at) { state.map.gotoRaDec(at.ra, at.dec); state.map.setFoV(OPEN_FOV); }
+  }
   document.body.classList.add('skymap-open');
   $('skymap-close').focus({ preventScroll: true });
   if (state) return state.ready;
@@ -79,7 +90,7 @@ export async function openSkyMap({ markers, onOpen, onClose }) {
     const base = A.imageHiPS(spherex ? SPHEREX_HIPS : TWOMASS_HIPS, { name: spherex ? 'SPHEREx DR1' : '2MASS' });
     if (spherex) base.setSliceNumber?.(FIRST_SLICE);
     const map = A.aladin('#skymap-view', {
-      survey: base, fov: 360, projection: 'AIT', cooFrame: 'ICRSd', target: '0 0', log: false,
+      survey: base, fov: OPEN_FOV, projection: 'SIN', cooFrame: 'ICRSd', target: `${centreOf(focus)?.ra ?? 0} ${centreOf(focus)?.dec ?? 0}`, log: false,
       showReticle: false, showCooLocation: false, showFov: false, showContextMenu: false, showStatusBar: false,
       showCooGrid: false, showFullscreenControl: false, showLayersControl: false, showGotoControl: false,
       showSimbadPointerControl: false, showShareControl: false, showProjectionControl: false, showFrame: false,
@@ -119,6 +130,30 @@ export async function openSkyMap({ markers, onOpen, onClose }) {
     });
     $('skymap-status').textContent = '';
     state.A = A;
+    // Where the view points and how wide, bottom-left (task B40).
+    const readout = () => {
+      const [ra, dec] = map.getRaDec();
+      const where = formatRaDec(ra, dec);
+      $('skymap-readout').textContent = t('skymap.readout', { ...where, fov: String(Math.round(map.getFov()[0])) });
+    };
+    map.on('positionChanged', readout);
+    map.on('zoomChanged', readout);
+    readout();
+    // Fly to chips: a smooth pan to each target.
+    $('skymap-fly').replaceChildren(...FLY_KEYS.map((key) => markers.find((marker) => marker.key === key)).filter(Boolean).map((marker) => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'filter-chip skymap-chip-fly';
+      chip.dataset.key = marker.key;
+      chip.textContent = marker.name;
+      chip.addEventListener('click', () => {
+        map.animateToRaDec(marker.ra, marker.dec, FLY_SECONDS);
+        $('skymap-note').hidden = true;
+      });
+      return chip;
+    }));
+    // Constellation lines and names on by default (the switch turns both off and on).
+    await setConstellationLines(true);
   })();
   return state.ready;
 }
@@ -151,11 +186,20 @@ export async function setConstellationLines(on) {
         for (const line of feature.geometry?.coordinates ?? []) overlay.add(state.A.polyline(line.map(([lon, lat]) => [raOf(lon), lat])));
       }
       state.lines = overlay;
+      // Names at each constellation's label point, small and faint (task B40).
+      const names = await fetch(NAMES_URL).then((answer) => (answer.ok ? answer.json() : null)).catch(() => null);
+      if (names?.features?.length) {
+        const catalog = state.A.catalog({ name: 'constellations', color: 'rgba(0, 0, 0, 0)', sourceSize: 1, displayLabel: true, labelColumn: 'name', labelColor: 'rgba(200, 220, 255, 0.7)', labelFont: 'italic 12px sans-serif' });
+        state.map.addCatalog(catalog);
+        catalog.addSources(names.features.map((feature) => state.A.source(raOf(feature.geometry.coordinates[0]), feature.geometry.coordinates[1], { name: feature.properties.name })));
+        state.names = catalog;
+      }
     } catch (error) {
       console.warn('Constellation lines could not load:', error);
       return false;
     }
   }
   if (state.lines) (on ? state.lines.show() : state.lines.hide());
+  if (state.names) (on ? state.names.show() : state.names.hide());
   return true;
 }
