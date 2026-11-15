@@ -2515,3 +2515,23 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - At 360×780 on Barnard's Star, Pluto, RW Aurigae and WISE 0855, `scrollWidth` is 360 (no sideways scroll), and the control ends at x = 335. It is disabled, with the sentence, on Barnard's Star (A = AllWISE), WISE 0855 (A = AllWISE) and Pluto (previews), and enabled on RW Aurigae.
 - **Screenshots:** `docs/screens/b31-barnard-1280.png`, `b31-barnard-390.png`, `b31-rwaur-1280.png`, `b31-rwaur-390.png` (all on D3), `b31-rwaur-360.png`, and `b31-{barnard,pluto,wise0855}-360-disabled-check.png`.
 - **Not verified:** a real phone or touch dragging (only keys and input events were driven), and screen-reader speech.
+
+### Task B33, 15 Nov 2026 (done by Session A at the user's request): header menu labels never wrap
+- **Problem:** at 1280 px the full menu was squeezed and labels wrapped onto two lines ("How it / works", "Planet / X", "Beat the / physics"). With every label on one line at the old 16 px button sides, the full header needs 1288 px, so it cannot fit at 1280. Collapsing there would have hidden "Can and can't do" inside "Menu".
+- **Change (header CSS only, `static/css/style.css`):**
+  - `.nav button, .nav-more > summary { white-space: nowrap; }` and `.nav > * { flex: none; }`, so no label can wrap or be squeezed.
+  - In the one-line state, button sides go from 16 px to 11 px (summary 10 px).
+  - The full menu shows from **1240 px**, and at 1239 px and below it collapses into "Menu" (it was 1101/1100).
+  - The `.reveal-body` rules that shared the old 1100 px block stay at 1100 px, unchanged.
+- **How 1240 was chosen (measured):** at 1240 px the free space between the logo and the menu is 33 px, so the one-line header needs 1207 px. The extra 33 px covers a classic Windows scrollbar (about 17 px; media widths include it, but the fixed top bar does not get that space) plus rounding.
+- **Checks (real runs):**
+  - CDP sweep, resizing 1 px at a time from **1101 to 1920 px (820 widths) on About, Home and Barnard's Star in Investigate: 0 failures on each.** At every width:
+    - no label is taller than one line and every item sits on one row;
+    - no item overlaps the next, and neither the top bar nor the page scrolls sideways;
+    - the logo, the search icon and "?" are fully on screen;
+    - from 1240 up, "Can and can't do" is on screen; from 1239 down, "Menu" is.
+  - Free space at 1280 / 1366 / 1440 / 1920: 73 / 159 / 233 / 713 px.
+  - The opened "Menu" at 360, 768 and 1239 px: every item fits inside the drop-down, nothing is clipped, and there is no sideways scroll.
+  - `node --test tests/`: 279 of 279 pass.
+- **Screenshots (header strip):** `docs/screens/b33-header-{1239,1240,1280,1366,1440,1920}.png`, and the opened menu at `docs/screens/b33-menu-open-{360,768,1239}.png`.
+- **Not verified:** Windows with classic scrollbars, which is covered by the 33 px margin but not run, and a real 1280 laptop screen.

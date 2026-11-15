@@ -276,6 +276,10 @@ details.more-info > p, details.more-info > ul, details.more-info > div { margin-
 .nav button:hover { color: var(--text); border-color: transparent; }
 .nav button[aria-current="page"] { background: transparent; border-color: transparent; color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); border-radius: 0; }
 .menu-toggle { display: none; margin-left: auto; }
+/* Task B33: no menu label ever wraps. The full menu shows only from the width where it fits on one line (measured with
+   a 1-px sweep; see docs/IMPLEMENTATION_STATUS.md, B33), with 11 px button sides; below that it collapses into "Menu". */
+.nav button, .nav-more > summary { white-space: nowrap; }
+.nav > * { flex: none; }
 
 .example-banner {
   position: fixed;
@@ -389,9 +393,11 @@ body[data-page="investigate"] .home-hero { display: none; }
 .nav-planetx { display: inline-flex; align-items: center; }
 .nav .new-dot { display: inline-block; flex: none; width: 8px; height: 8px; min-width: 0; padding: 0; margin: 0 0 0 7px; border: 0; border-radius: 50%; background: var(--hypothetical); box-shadow: 0 0 0 3px rgba(255, 169, 77, 0.22); }
 .more-short { display: none; }
-@media (min-width: 1101px) {
+@media (min-width: 1240px) {
   /* The full menu fits on one line: "More" stands for "Guided tour and more" (still its accessible name). */
   .more-short { display: inline; }
+  .nav button { padding: 0 11px; }
+  .nav-more > summary { padding: 0 10px; }
   .more-long { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
 .hero-explore { display: none; }
@@ -1797,7 +1803,7 @@ kbd {
 .limits-list li p { margin: 0; }
 .limits-do { color: var(--muted); font-size: 14px; margin-top: 2px !important; }
 
-@media (max-width: 1100px) {
+@media (max-width: 1239px) {
   .menu-toggle { display: inline-flex; align-items: center; }
   .nav {
     position: fixed;
@@ -1817,6 +1823,8 @@ kbd {
   .nav button { justify-content: flex-start; text-align: left; }
   .nav button[aria-current="page"] { box-shadow: inset 3px 0 0 var(--accent); }
   .nav .nav-extra { margin: var(--s1) 0 0; }
+}
+@media (max-width: 1100px) {
   .reveal-body { grid-template-columns: minmax(0, 1fr); }
   .reveal-stage { width: min(100%, calc(100dvh - 120px)); margin: 0 auto; }
 }
