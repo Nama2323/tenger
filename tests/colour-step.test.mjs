@@ -20,7 +20,7 @@ test('the line and the step labels come from our array table', () => {
   assert.equal(label(2), 'D2 · 1.10–1.62 µm');
   assert.equal(label(6), 'D6 · 4.42–5.00 µm');
   assert.equal(t('colourStep.allValue', { low: '0.75', high: '5.00' }), 'All · 0.75–5.00 µm');
-  assert.equal(t('colourStep.single'), 'Only one colour is available for this picture.');
+  assert.equal(t('colourStep.single'), 'Only one colour is available for this picture. Pick two SPHEREx dates as A and B to see each colour.');
 });
 
 test('each step is a band the URL already carries, and back', () => {

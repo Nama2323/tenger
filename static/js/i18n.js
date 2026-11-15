@@ -1148,7 +1148,7 @@ const TEXT = {
     'colourStep.allValue': 'All · {low}–{high} µm',
     'colourStep.arrayValue': 'D{n} · {low}–{high} µm',
     'colourStep.channelValue': 'D{n} · one channel, ≈{um} µm',
-    'colourStep.single': 'Only one colour is available for this picture.',
+    'colourStep.single': 'Only one colour is available for this picture. Pick two SPHEREx dates as A and B to see each colour.',
     'game.leadShort': 'The dots show where it was on each date. Tap where you think it will be on the next date.',
     'game.taskPositionShort': 'Tap your guess on the chart, or use the arrow keys.',
     'game.taskScalarShort': 'Tap your guess on the dashed line, or use the arrow keys.',
