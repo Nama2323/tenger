@@ -18,6 +18,8 @@ const targetName = (trial) => (typeof trial?.target_name === 'string' && trial.b
 // Task B15: one plain sentence per step, in the order a first-time visitor follows it; the evaluation image stays
 // behind every step, and the earlier, longer text of each step sits in its closed "More detail".
 export const STEPS = ['track', 'region', 'lock', 'observed', 'baseline', 'verdict'];
+/** Where the reveal was when the visitor went to the 3D loop view (task B25). */
+const RESUME_KEY = 'vestigium.reveal.resume';
 /** A miss whose distance is at most this many times the 95% limit is "just outside" the oval. */
 const JUST_OUTSIDE = 1.5;
 const ZOOM_MS = 1100;
@@ -527,6 +529,8 @@ function updateText() {
     more.length ? details(more, { label: t('reveal.more'), className: 'rv-more' }) : null,
   );
   $('reveal-legend').replaceChildren(legend());
+  // Pluto, on its first and last step: the 3D loop view (task B25).
+  $('reveal-loop').hidden = !(current.bundle?.trial?.doc?.target_key === 'pluto' && (step === 0 || step === STEPS.length - 1));
   $('reveal-numbers').replaceChildren();
   $('reveal-steps').replaceChildren(...STEPS.map((name, index) => el('li', {
     class: index < step ? 'done' : index === step ? 'now' : '',
@@ -634,6 +638,10 @@ export function initReveal(options) {
   $('reveal-forward').addEventListener('click', forward);
   $('reveal-back').addEventListener('click', back);
   $('reveal-close').addEventListener('click', () => closeReveal());
+  // Going to the 3D loop view remembers this step, so Back opens the reveal where it was (best effort).
+  $('reveal-loop').addEventListener('click', () => {
+    try { sessionStorage.setItem(RESUME_KEY, JSON.stringify({ trial: current?.bundle?.id, step: current?.step })); } catch { /* storage off: Back opens at step 1 */ }
+  });
   $('reveal-stage').addEventListener('click', () => {
     if (current && current.step < STEPS.length - 1) forward();
   });
@@ -686,6 +694,10 @@ export async function openReveal(bundle, { example = false } = {}) {
   buildStage();
   updateText();
   draw();
+  // Back from the 3D loop view: the step the visitor left (task B25).
+  let resume = null;
+  try { resume = JSON.parse(sessionStorage.getItem(RESUME_KEY) ?? 'null'); sessionStorage.removeItem(RESUME_KEY); } catch { resume = null; }
+  if (resume?.trial === bundle.id && Number.isInteger(resume.step) && resume.step > 0) goToStep(resume.step, { animate: false });
   $('reveal-forward').focus({ preventScroll: true });
   return true;
 }

@@ -2078,3 +2078,48 @@ No login, no server and no storage. Only the game page and its strings changed; 
 - **Limits**:
   - The share sheet was only seen offered in phone emulation; it was not opened on a real phone.
   - Stars in a link are self-reported: the round's Details says so.
+### Task B25, 15 Nov 2026: the live 3D Solar System behind the first screen
+
+- **Desktop.** The same 3D scene (one WebGL view, not a second one) is the background of Home's first screen.
+  - The 3D stage sticks to the top of Home. The headline, the two lines, "Watch Barnard's Star move" and the Planet
+    X card lie over its left side on a dark wash (0.86–0.88 opaque behind the text column, fading out to the right).
+  - Scrolling slides the text off and fades in the full 3D section: target list, tools, Fly to, time control,
+    colour key and caption.
+  - Over the first screen, dragging on the scene outside the text turns it, and the wheel scrolls the page, since
+    the scene does not zoom while the first screen shows.
+- **Phones.** The scene lies behind the first screen (0.78 opaque wash) and takes no touch, so dragging over it
+  scrolls the page. "Explore in 3D", under the links, opens the scene full screen with Fly to and the time
+  control; "Close" (or Esc) returns, and focus moves to Close and back.
+- **Motion.** While at least half of the first screen is in view, the scene turns slowly and time drifts forward
+  at one day per second; the visitor's speed comes back afterwards. With reduced motion it is a still frame (the 2D
+  map, as `chooseView` already picks). Off screen or in a hidden tab nothing moves: the time control waits, and
+  without turning the scene draws no frames.
+- **Loading.** The text paints first. The 3D view still loads after the page, now 1.2 s after load instead of 4 s
+  (`IDLE_START_MS`). The 2D fallback is unchanged when WebGL is unavailable. Labels in the scene stay out from
+  behind the text, which counts as a label blocker.
+- **Contrast.** The muted lines on the first screen are #c3cddb, so even over the brightest pixel (the Sun) they
+  keep at least 6.8:1 on phones and 8.8:1 on desktop, and the links at least 5.8:1. This is computed from the
+  wash's opacity, not measured from pixels.
+- **Pluto reveal.** On steps 1 and 6, a link "See it in 3D: why Pluto loops" opens the existing 3D loop view
+  (`?page=loop`, which takes no date). The step is remembered (sessionStorage, best effort), so Back reopens the
+  reveal on the same step. Every chart stays flat.
+- **Checks** (headless Chrome on the GPU):
+  - Text painted at 0.12 s at 1280 and 0.11 s at 390. The 3D scene was turning behind it from 1.48 s and 1.46 s:
+    two frames 0.7 s apart differ, and the time step is "day".
+  - At 390×844 the Planet X card ends at 574 px, so the button and card fit without scrolling. No horizontal
+    scroll at either width.
+  - 1280: a drag point on the scene lands on the scene. Six wheel steps over it scrolled Home by 480 px. Scrolled
+    to the full section, the tools and the time bar are visible and the speed is back to real time.
+  - 390: of 95 points across the first screen, none lands on the scene, no element there has a touch-action that
+    blocks scrolling, and the canvas has `pointer-events: none`. A real touch drag could not be simulated in
+    headless Chrome (not even on the old build), so scrolling by finger is not checked on a device.
+  - "Explore in 3D" opens: the scene is 593 px tall under the tools, with Fly to, the time control and Close, and
+    focus on Close. Close returns, with focus back on "Explore in 3D".
+  - Reduced motion: two frames 1.5 s apart are identical (the 2D map).
+  - Reveal: the link shows on step 1, is hidden on step 2 and shows on step 6 ("Verdict"). It opens the loop view
+    with its 3D canvas, and Back returns to the reveal on "Verdict".
+  - Lighthouse mobile Home: 84 and 84 (TBT 20 ms, CLS 0.013; accessibility, best practices and SEO 100).
+  - 260 tests pass.
+  - Screenshots: `docs/screens/b25-home-<1280|390>-<before|after>.png`, `b25-home-1280-full3d.png`,
+    `b25-explore-390.png`, `b25-home-1280-reduced.png` and `b25-reveal-step6.png`.
+  - Not checked on a real phone.

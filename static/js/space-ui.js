@@ -75,12 +75,95 @@ function setMode(mode, { shown = mode === '2d' } = {}) {
 }
 
 function stop3d() {
+  state.hero?.dispose();
+  state.hero = null;
   state.time?.dispose();
   state.time = null;
   state.focus?.dispose();
   state.focus = null;
   state.controller?.dispose();
   state.controller = null;
+}
+
+// ---------- Home's first screen over the live scene (task B25) ----------
+
+/** The speed step the first screen runs at: one day per second, a gentle forward drift. */
+const HERO_STEP = 4;
+
+/**
+ * While at least half of the first screen is in view (and the visitor is not exploring), the scene turns slowly and
+ * time drifts forward; reduced motion keeps a still frame. Off screen or in a hidden tab nothing moves (the time
+ * control already waits, and without turning the scene draws no frames). Phones: "Explore in 3D" opens the scene
+ * full screen with the time control and Fly to; Close (or Esc) returns.
+ */
+function watchHero(controller, time) {
+  const hero = $('home-hero');
+  const home = $('page-home');
+  const reduced = prefersReducedMotion();
+  let on = false;
+  let saved = null;
+  let ratio = 0;
+  const apply = () => {
+    const wanted = ratio >= 0.5 && document.body.dataset.page === 'home' && !document.body.classList.contains('exploring');
+    if (wanted === on) return;
+    on = wanted;
+    home.classList.toggle('hero-mode', on);
+    controller.heroMode(on, { rotate: !reduced });
+    if (!reduced && on) {
+      saved = time.step();
+      time.setStep(HERO_STEP);
+    } else if (!reduced && saved !== null) {
+      time.setStep(saved);
+      saved = null;
+    }
+    controller.relayout();
+  };
+  const observer = new IntersectionObserver((entries) => {
+    ratio = entries[entries.length - 1].intersectionRatio;
+    apply();
+  }, { threshold: [0, 0.25, 0.5, 0.75, 1] });
+  observer.observe(hero);
+  const pageWatch = new MutationObserver(apply);
+  pageWatch.observe(document.body, { attributes: true, attributeFilter: ['data-page', 'class'] });
+
+  const explore = $('hero-explore');
+  const close = $('space-close');
+  explore.hidden = false;
+  const setExploring = (value) => {
+    document.body.classList.toggle('exploring', value);
+    requestAnimationFrame(() => {
+      controller.resize();
+      controller.relayout();
+      (value ? close : explore).focus({ preventScroll: true });
+    });
+  };
+  const onExplore = () => setExploring(true);
+  const onClose = () => setExploring(false);
+  const onKey = (event) => {
+    if (event.key === 'Escape' && document.body.classList.contains('exploring') && !document.querySelector('dialog[open]')) {
+      event.stopPropagation();
+      setExploring(false);
+    }
+  };
+  explore.addEventListener('click', onExplore);
+  close.addEventListener('click', onClose);
+  document.addEventListener('keydown', onKey, true);
+  // Phones: the first screen's height places the scene behind it.
+  const sizeObserver = new ResizeObserver(() => home.style.setProperty('--hero-h', `${hero.offsetHeight}px`));
+  sizeObserver.observe(hero);
+  return {
+    dispose() {
+      observer.disconnect();
+      pageWatch.disconnect();
+      sizeObserver.disconnect();
+      explore.removeEventListener('click', onExplore);
+      close.removeEventListener('click', onClose);
+      document.removeEventListener('keydown', onKey, true);
+      explore.hidden = true;
+      document.body.classList.remove('exploring');
+      home.classList.remove('hero-mode');
+    },
+  };
 }
 
 async function start3d() {
@@ -111,6 +194,8 @@ async function start3d() {
         blockers: () => [
           document.querySelector('.console-left'), $('space-tools'), $('space-fly-list'), $('space-hud'), $('space-time'),
           $('map-key'), document.querySelector('.map-caption.space-3d-only'),
+          // The first screen's text (task B25): no label behind it.
+          document.querySelector('.page-home.hero-mode .hero-inner'),
         ],
         onPick: (key) => hooks.onPick(key),
         onNine: (kind) => state.focus?.nine(kind),
@@ -134,6 +219,7 @@ async function start3d() {
       controller.resize();
       state.time = createTimeControl({ controller, host: $('space3d'), reducedMotion: prefersReducedMotion() });
       state.focus = createFocusControl({ controller });
+      state.hero = watchHero(controller, state.time);
       const unplaced = hooks.entries().filter((entry) => entry.key && !controller.has(entry.key)).map(hooks.nameOfEntry);
       showNote(scene ? (unplaced.length ? 'space.unplaced' : null) : 'space.noSceneFile', { names: unplaced.join(', ') });
     } catch (error) {
@@ -184,7 +270,7 @@ export function initSpace(hooks) {
 }
 
 /** After the page has loaded and stayed idle this long, the 3D view starts even without an interaction. */
-export const IDLE_START_MS = 4000;
+export const IDLE_START_MS = 1200;
 const WAKE_EVENTS = ['pointerdown', 'pointermove', 'keydown', 'wheel', 'touchstart'];
 
 /**

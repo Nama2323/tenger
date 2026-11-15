@@ -95,6 +95,8 @@
             <span id="hero-planetx-line" class="hero-planetx-line"></span>
           </a>
           <p class="hero-links"><a href="?page=game" data-page-link="game" data-t="hero.game"></a><a href="?page=predictions" data-page-link="predictions" data-t="hero.predictions"></a></p>
+          <!-- Phones (task B25): the scene behind this text opens full screen, with the time control and Fly to. -->
+          <button id="hero-explore" type="button" class="hero-explore" data-t="hero.explore" hidden></button>
           <section class="hero-pick shortcuts" aria-labelledby="shortcuts-title">
             <h2 id="shortcuts-title" class="eyebrow" data-t="hero.pick"></h2>
             <ul id="shortcut-list" class="chips"></ul>
@@ -132,6 +134,7 @@
               <div id="space-fly-list" class="space-fly-list glass" role="group" data-t-label="space.flyLabel"></div>
             </details>
             <button id="space-toggle" type="button" class="quiet"></button>
+            <button id="space-close" type="button" class="quiet space-close" data-t="hero.closeExplore"></button>
           </div>
           <!-- Time control for the 3D view (task B10); shown once the 3D scene runs. -->
           <div id="space-time" class="space-time glass space-3d-only" role="group" data-t-label="time.label" hidden>
@@ -201,6 +204,8 @@
           <p class="note" data-t="sky.credit"></p>
         </section>
       </div>
+      <!-- Wide screens (task B25): the scroll room that lets the first screen's text slide off the 3D scene. -->
+      <div class="home-spacer" aria-hidden="true"></div>
     </section>
 
     <!-- ======================= Investigation ======================= -->
@@ -679,6 +684,8 @@
             <button id="reveal-forward" type="button" class="primary"></button>
             <p class="hint" data-t="reveal.keys"></p>
           </div>
+          <!-- Pluto, steps 1 and 6 (task B25): the 3D loop view; Back returns to this step. -->
+          <p class="reveal-loop-wrap"><a id="reveal-loop" class="reveal-loop" href="?page=loop" hidden data-t="reveal.loop3d"></a></p>
           <div id="reveal-text" class="reveal-text" aria-live="polite"></div>
           <div id="reveal-numbers" class="reveal-numbers"></div>
           <div id="reveal-legend"></div>

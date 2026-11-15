@@ -429,6 +429,57 @@ body[data-page="investigate"] .home-hero { display: none; }
 .hero-down { position: absolute; left: 50%; bottom: var(--s2); transform: translateX(-50%); display: grid; place-items: center; width: var(--tap); height: var(--tap); color: var(--muted); }
 .hero-down span { width: 12px; height: 12px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-3px, -3px); }
 .hero-down:hover { color: var(--text); }
+/* ---------- The first screen over the live 3D scene (task B25) ---------- */
+/* Text over the scene sits on a dark wash (at least 0.78 opaque behind every line), so even over the Sun the muted
+   lines keep about 6.8:1 and the links 5.8:1; labels in the scene stay out from behind the text (a label blocker). */
+.home-hero .hero-small, .home-hero .eyebrow { color: #c3cddb; }
+.hero-explore { display: none; }
+.reveal-loop-wrap { margin: 0; }
+.reveal-loop { display: inline-flex; align-items: center; min-height: var(--tap); color: var(--accent); font-weight: 600; }
+.reveal-loop[hidden] { display: none; }
+.space-close { display: none; }
+@media (min-width: 901px) {
+  /* Wide screens: the 3D stage sticks to the top of Home; the first screen's text lies over its left side and
+     scrolls off it, uncovering the full 3D section (time control, Fly to, colour key, target list). */
+  body[data-page="home"] .home-hero {
+    z-index: 5; justify-items: start; pointer-events: none; padding-left: max(5vw, 40px);
+    background: linear-gradient(90deg, rgba(5, 7, 13, 0.88) 0, rgba(5, 7, 13, 0.86) min(720px, 58%), rgba(5, 7, 13, 0) min(1060px, 85%));
+  }
+  body[data-page="home"] .home-hero .hero-inner { width: min(620px, 52vw); margin: 0; pointer-events: auto; }
+  body[data-page="home"] .hero-down { pointer-events: auto; left: max(5vw, 40px); transform: none; }
+  body[data-page="home"] .home-stage { position: sticky; top: 0; margin-top: calc(var(--chrome) - 100vh); }
+  body[data-page="home"] .home-spacer { height: 100%; }
+  body:not([data-page="home"]) .home-spacer { display: none; }
+  .page-home.hero-mode .home-stage :is(.console-left, .space-tools, .space-hud, .space-time, .map-key, .map-caption) {
+    opacity: 0; visibility: hidden; pointer-events: none;
+  }
+  .home-stage :is(.console-left, .space-tools, .space-hud, .space-time, .map-key, .map-caption) { transition: opacity 0.35s ease, visibility 0.35s; }
+}
+@media (max-width: 900px) {
+  /* Phones: the scene lies behind the first screen and never takes a touch, so dragging scrolls the page;
+     "Explore in 3D" opens it full screen with the time control and Fly to. */
+  .page-home { position: relative; }
+  .home-hero { position: relative; z-index: 2; background: rgba(5, 7, 13, 0.78); }
+  .hero-explore { display: inline-flex; align-items: center; justify-content: center; min-height: var(--tap); padding: 0 18px; border: 1px solid var(--border-strong); border-radius: var(--radius); background: rgba(5, 7, 13, 0.6); color: var(--text); font-weight: 600; }
+  .hero-explore[hidden] { display: none; }
+  body:not(.exploring) .page-home .scene { position: static; }
+  body:not(.exploring) .page-home .space3d { position: absolute; top: 0; left: 0; right: 0; height: var(--hero-h, 100vh); z-index: 1; border-radius: 0; pointer-events: none; }
+  body:not(.exploring) .page-home .space3d * { pointer-events: none !important; }
+  body:not(.exploring) .page-home :is(.space-tools, .space-hud, .space-time, .map-caption.space-3d-only) { display: none !important; }
+  body.exploring .page-home .scene {
+    position: fixed; inset: var(--chrome) 0 0 0; z-index: 36; display: flex; flex-direction: column; gap: 8px;
+    padding: 8px; background: var(--bg); overflow-y: auto;
+  }
+  body.exploring .page-home .space3d { position: relative; flex: 1 1 auto; min-height: 320px; height: auto; order: 2; }
+  body.exploring .page-home .space-tools { order: 1; }
+  body.exploring .page-home .space-time { order: 3; }
+  body.exploring .page-home :is(.space-hud, .map-caption, .map-key, .map-stage) { display: none; }
+  body.exploring .space-close { display: inline-flex; }
+  body.exploring { overflow: hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-stage :is(.console-left, .space-tools, .space-hud, .space-time, .map-key, .map-caption) { transition: none; }
+}
 /* "Guided tour and more" in the menu. */
 .nav-more { position: relative; }
 .nav-more > summary { min-height: var(--tap); display: inline-flex; align-items: center; padding: 0 12px; border-radius: var(--radius-sm); cursor: pointer; color: var(--muted); font-weight: 500; list-style: none; }

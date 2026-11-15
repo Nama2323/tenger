@@ -680,6 +680,16 @@ export function createSpace(host, options) {
   return {
     setTime,
     fixedBodies,
+    /**
+     * Home's first screen (task B25): the scene slowly turns (unless rotate is false, for reduced motion) and the
+     * wheel scrolls the page instead of zooming; off, the scene behaves as before.
+     */
+    heroMode(on, { rotate = true } = {}) {
+      controls.autoRotate = Boolean(on && rotate);
+      controls.autoRotateSpeed = 0.35;
+      controls.enableZoom = !on;
+      requestRender();
+    },
     has: (key) => places.has(key),
     nameOf: (key) => places.get(key)?.name ?? key,
     /** The bodies of the "Fly to" list that this scene has. */
