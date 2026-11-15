@@ -1878,3 +1878,31 @@ Session B was told before the work started (B14 rename and B16 Home are rebased 
     console errors.
   - Screenshots: `docs/screens/b19-limits-<390|1280>-<before|after>.png` and `b19-limits-390-after-end.png`.
   - Not checked on a real phone.
+
+### Task B18, 15 Nov 2026 (done by Session A at the user's request; reveal inset)
+
+- **Problem**: the Pluto verdict map spans degrees (2° scale bar) because the straight-line guess is 5.5° away. At that scale the 5.9″ miss and the oval sit under one mark.
+- **Change** (`static/js/reveal.js`, CSS at the end of `static/css/style.css`, one string `reveal.inset.title`):
+  - Steps 4–6 add an inset in the top-right corner of the map: 40% of the map's width, 44% on phones.
+  - The inset is titled "Zoomed in N×", where N is the real magnification (main span ÷ inset span) to two significant figures; the inset is drawn at exactly that factor.
+  - It shows only the forecast centre, the oval, the real position, a thin line labelled with the file's model error ("5.9″") and a scale bar in arcseconds. The oval is the frozen 95% oval on steps 4–5 and the verdict's 95% test oval on step 6, as on the main map.
+  - The main map marks the zoomed area with a small square joined to the inset by a thin line. The compass moves beside the scale bar while the inset is shown.
+  - A miss just outside the oval (D between 1 and 1.5 times the limit) is framed on the line from forecast to observation. Otherwise the whole oval is framed around the forecast centre.
+  - No "just outside by" line is shown: no trial file records that distance.
+- **When**: the inset appears only where the main map hides the oval or the miss under one mark: an oval under 14 px (semi-major axis) or a miss under 12 px.
+  - Pluto: steps 4–5 at 2,600×, step 6 at 6,000×.
+  - Asteroid 345: 3,100×.
+  - Epsilon Indi B: 8.8× and 8.7×.
+  - Barnard's Star: none, because its oval and its 1.52″ miss are already visible on the map.
+- **Test** `tests/reveal-inset.test.mjs` (4 tests), using the real trial files:
+  - The factor has two significant figures, and the inset is drawn at exactly that factor.
+  - Pluto's forecast centre and real position are inside the inset. Its real position lies 0.28″ outside the test oval, which is at least 6 px on a 390 px phone and at least 9 px on desktop; the inset's cross reaches 3 px on a phone and 5 px on desktop.
+  - The label equals the scoreboard's 5.8991″, shown as 5.9″.
+  - The inset appears for Pluto, 345 and Epsilon Indi B, and not for Barnard's Star.
+  - The trial files hold no "outside by" value.
+- **Checks**:
+  - In headless Chrome at 390×844 and 1280×800 on step 6, the dashed oval and the real-position cross are two separate marks, and "5.9″" is readable.
+  - Steps 1–3 have no inset; steps 4–6 have it for Pluto, 345 and Epsilon Indi B.
+  - `node --test tests/*.mjs`: 248 pass before the rebase onto B17 (`0133e4d`) and 255 after the rebase onto B19 (`5fecc0e`); the step check passed again after the rebase.
+- **Screenshots**: `docs/screens/b18-pluto-step6-{390,1280}.png`, `b18-asteroid-345-step6-390.png`, `b18-epsindib-step6-390.png`.
+- **Limits**: on phones the inset covers part of the main map's track and one date label on steps 4–6; step 1 shows the full track. Not checked on a real phone.

@@ -1399,6 +1399,7 @@ const TEXT = {
     'reveal.plain.miss': '{error} from our forecast, outside the oval: a miss.',
     'reveal.plain.missJust': '{error} from our forecast, just outside the oval: a miss.',
     'reveal.plain.fixed': 'Our oval was too small; the 2027 forecasts use the fixed method.',
+    'reveal.inset.title': 'Zoomed in {factor}×',
     'reveal.next.track': 'Show the training track',
     'reveal.next.region': 'Next: show the prediction',
     'reveal.next.baseline': 'Next: show the straight-line guess',

@@ -2119,3 +2119,20 @@ body.embed .panel-title { top: 0; }
 .story-step { grid-template-columns: 30px minmax(0, 1fr); column-gap: 10px; align-items: center; }
 .story-step > :not(.story-num):not(h3) { grid-column: 1 / -1; }
 .story-card .card-head h4 { color: var(--text); }
+
+/* Task B18: the zoomed inset of the reveal (steps 4–6). */
+.rv-inset-bg { fill: #05070d; }
+.rv-inset-frame { fill: none; stroke: var(--text); stroke-width: 1.5; }
+.rv-inset-band { fill: rgba(5, 7, 13, 0.85); }
+.rv-inset-title { fill: var(--text); font: 600 13px var(--font-text); }
+.rv-inset-residual { stroke: var(--hit); stroke-width: 1.5; }
+.rv-inset-model { fill: var(--star); stroke: #000; stroke-width: 1; }
+.rv-inset-observed { stroke: var(--hit); stroke-width: 1.75; stroke-linecap: round; fill: none; }
+.rv-inset-observed-halo { stroke: #000; stroke-width: 3.5; stroke-linecap: round; fill: none; }
+.rv-inset-label { fill: var(--text); font: 700 14px var(--font-mono); paint-order: stroke; stroke: #000; stroke-width: 4px; }
+.rv-inset-scale { stroke: var(--text); stroke-width: 2.5; }
+.rv-inset-scale-text { fill: var(--text); font: 600 12px var(--font-mono); paint-order: stroke; stroke: #000; stroke-width: 3px; }
+.rv-inset-pane .rv-region, .rv-inset-pane .rv-test-region { stroke-width: 1.25; }
+.rv-inset-pane .rv-test-region { stroke-dasharray: 5 4; }
+.rv-zoom-mark { fill: none; stroke: var(--text); stroke-width: 1.5; }
+.rv-zoom-link { stroke: var(--text); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.8; }

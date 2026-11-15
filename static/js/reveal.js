@@ -121,10 +121,10 @@ function scaleBar(layer, frame, size, span) {
   layer.append(group);
 }
 
-function compass(layer, size) {
+function compass(layer, size, at = null) {
   const group = svg('g', { class: 'rv-compass' });
-  const x = size - 26;
-  const y = 30;
+  const x = at ? at.x : size - 26;
+  const y = at ? at.y : 30;
   group.append(svg('line', { x1: x, y1: y + 18, x2: x, y2: y - 6 }), svg('line', { x1: x, y1: y + 18, x2: x - 24, y2: y + 18 }));
   group.append(svg('text', { x, y: y - 10, 'text-anchor': 'middle' }, t('reveal.lab.north')));
   group.append(svg('text', { x: x - 36, y: y + 23, 'text-anchor': 'middle' }, t('reveal.lab.east')));
@@ -154,6 +154,94 @@ function buildStage() {
   current.layers = layers;
   const verdict = el('div', { id: 'reveal-verdict', class: 'verdict-banner', hidden: true });
   host.replaceChildren(root, verdict);
+}
+
+/**
+ * The main map's markers reach about 11 px from their centre, so an oval narrower than this (semi-major axis, px) or a
+ * miss shorter than this (px) hides under one mark: steps 4–6 then add a zoomed inset. Otherwise the main map shows both.
+ */
+const INSET_MIN_OVAL_PX = 14;
+const INSET_MIN_RESIDUAL_PX = 12;
+
+/** The factor to two significant figures (4,987 → 5,000; 1,234 → 1,200); the inset is then drawn at exactly it. */
+export function roundZoom(factor) {
+  if (!(factor > 1)) return 1;
+  const power = 10 ** (Math.floor(Math.log10(factor)) - 1);
+  return Number((Math.round(factor / power) * power).toPrecision(2));
+}
+
+/**
+ * The zoomed view of the forecast centre, the 95% oval and the real position, or null when the main map already
+ * shows them apart. oval: the oval drawn in the inset (the verdict's test oval on step 6, the frozen oval before).
+ * A miss close to the oval's edge is framed on the gap (centre between forecast and observation); otherwise the whole
+ * oval is framed around the forecast centre. span: arcsec across the inset; factor: main span / inset span.
+ */
+export function insetView({ model, observed, oval, mainSpan, mainScale, distance = null, limit = null }) {
+  if (!model || !observed || !(mainSpan > 0) || !(mainScale > 0)) return null;
+  const residual = Math.hypot(observed.east - model.east, observed.north - model.north);
+  const ovalPx = (oval?.major ?? 0) * mainScale;
+  if (ovalPx >= INSET_MIN_OVAL_PX && residual * mainScale >= INSET_MIN_RESIDUAL_PX) return null;
+  const nearEdge = Number.isFinite(distance) && Number.isFinite(limit) && distance > limit && distance <= limit * 1.5;
+  const centre = nearEdge
+    ? { east: (model.east + observed.east) / 2, north: (model.north + observed.north) / 2 }
+    : { east: model.east, north: model.north };
+  // Near the edge: just wide enough for the line from forecast to observation (its larger side, plus a margin).
+  const wanted = nearEdge
+    ? 1.15 * Math.max(Math.abs(observed.east - model.east), Math.abs(observed.north - model.north))
+    : 2.4 * Math.max(oval?.major ?? 0, residual);
+  if (!(wanted > 0)) return null;
+  const factor = roundZoom(mainSpan / wanted);
+  if (factor < 2) return null;
+  return { centre, span: mainSpan / factor, factor, residual };
+}
+
+/** The inset: its own frame, clipped to a box in the top-right corner, about 40% of the map's width. */
+function drawInset(overlay, frame, size, view, oval, ovalClass) {
+  const { model } = current;
+  const width = Math.round(size * (size < 420 ? 0.44 : 0.4));
+  const left = size - width - 8;
+  const top = 8;
+  const titleHeight = size < 420 ? 20 : 24;
+  const box = { x: left, y: top, w: width, h: width };
+  const local = frameOf({ east: view.centre.east, north: view.centre.north, span: view.span }, width);
+  const group = svg('g', { class: 'rv-inset' });
+  // On the main map: a small square around the zoomed area, joined to the inset by a thin line.
+  const mark = frame.at(view.centre);
+  const half = Math.max(6, (view.span / 2) * frame.scale);
+  overlay.append(svg('rect', { x: mark.x - half, y: mark.y - half, width: half * 2, height: half * 2, class: 'rv-zoom-mark' }));
+  overlay.append(svg('line', { x1: mark.x + half, y1: mark.y - half, x2: left, y2: top + box.h, class: 'rv-zoom-link' }));
+  group.append(svg('rect', { x: left, y: top, width, height: box.h, rx: 8, class: 'rv-inset-bg' }));
+  const pane = svg('svg', { x: left, y: top, width, height: width, viewBox: `0 0 ${width} ${width}`, class: 'rv-inset-pane' });
+  if (oval) pane.append(ellipseNode(model.model, oval, local, ovalClass));
+  const from = local.at(model.model);
+  const to = local.at(model.observed);
+  pane.append(svg('line', { x1: from.x, y1: from.y, x2: to.x, y2: to.y, class: 'rv-inset-residual' }));
+  // Marks grow with the inset (3 px on a phone, 5 px on a desktop), staying small next to a gap of a few tenths of ″.
+  const r = Math.max(3, Math.min(5, width / 50));
+  pane.append(svg('path', { d: `M${from.x} ${from.y - r - 2}L${from.x + r + 2} ${from.y}L${from.x} ${from.y + r + 2}L${from.x - r - 2} ${from.y}Z`, class: 'rv-inset-model' }));
+  const cross = `M${to.x - r} ${to.y - r}L${to.x + r} ${to.y + r}M${to.x + r} ${to.y - r}L${to.x - r} ${to.y + r}`;
+  pane.append(svg('path', { d: cross, class: 'rv-inset-observed-halo' }), svg('path', { d: cross, class: 'rv-inset-observed' }));
+  // "5.9″" beside the middle of the line, on the side away from the oval's centre.
+  const mid = { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
+  const along = Math.atan2(to.y - from.y, to.x - from.x);
+  const normal = { x: -Math.sin(along), y: Math.cos(along) };
+  const offset = 14;
+  const label = { x: mid.x + normal.x * offset, y: mid.y + normal.y * offset };
+  pane.append(svg('text', { x: Math.min(Math.max(label.x, 22), width - 22), y: Math.min(Math.max(label.y + 5, 16), width - 30), 'text-anchor': 'middle', class: 'rv-inset-label' },
+    shortAngle(model.modelResidual?.error_arcsec ?? view.residual)));
+  // A scale bar in arcseconds.
+  const length = niceLength(view.span);
+  const pixels = length * local.scale;
+  pane.append(svg('line', { x1: 10, x2: 10 + pixels, y1: width - 10, y2: width - 10, class: 'rv-inset-scale' }));
+  pane.append(svg('text', { x: 10, y: width - 16, class: 'rv-inset-scale-text' }, formatArcsec(length)));
+  // The title on a band across the top of the inset.
+  pane.append(svg('rect', { x: 0, y: 0, width, height: titleHeight, class: 'rv-inset-band' }));
+  pane.append(svg('text', { x: width / 2, y: titleHeight - 6, 'text-anchor': 'middle', class: 'rv-inset-title' },
+    t('reveal.inset.title', { factor: new Intl.NumberFormat('en').format(view.factor) })));
+  group.append(pane);
+  group.append(svg('rect', { x: left, y: top, width, height: box.h, rx: 8, class: 'rv-inset-frame' }));
+  overlay.append(group);
+  return box;
 }
 
 /** Draws the current step. entering: the name of the step whose elements animate in (null = none). */
@@ -235,22 +323,34 @@ function draw(entering = null) {
     overlay.append(marker('observed', point, entering === 'observed'));
   }
 
-  // One label for what this step added, away from everything else (and from the verdict banner).
+  // Task B18: steps 4–6 add a zoomed inset when the miss or the oval is too small to see on the main map.
+  let insetBox = null;
+  if (shown('observed') && model.observed && !current.zooming) {
+    const oval = shown('verdict') && model.testRegion ? model.testRegion : model.region;
+    const view = insetView({
+      model: model.model, observed: model.observed, oval, mainSpan: current.camera.span, mainScale: frame.scale,
+      distance: shown('verdict') ? model.distance : null, limit: shown('verdict') ? model.limit : null,
+    });
+    if (view) insetBox = drawInset(overlay, frame, size, view, oval, shown('verdict') && model.testRegion ? 'rv-test-region' : 'rv-region');
+  }
+
+  // One label for what this step added, away from everything else (and from the verdict banner and the inset).
   const step = STEPS[current.step];
   const banner = $('reveal-verdict');
-  const avoid = banner && !banner.hidden
-    ? [{ x: banner.offsetLeft - 8, y: banner.offsetTop - 8, w: banner.offsetWidth + 16, h: banner.offsetHeight + 16 }]
-    : [];
+  const avoid = [
+    ...(banner && !banner.hidden ? [{ x: banner.offsetLeft - 8, y: banner.offsetTop - 8, w: banner.offsetWidth + 16, h: banner.offsetHeight + 16 }] : []),
+    ...(insetBox ? [{ x: insetBox.x - 6, y: insetBox.y - 6, w: insetBox.w + 12, h: insetBox.h + 12 }] : []),
+  ];
   if (!current.zooming) {
-    if (step === 'track' && model.training.length) callout(overlay, obstacles[Math.floor(model.training.length / 2)] ?? obstacles[0], t('reveal.lab.track'), obstacles, size, { entering: entering === 'track' });
-    if (step === 'region' && model.region) callout(overlay, modelPoint, t('reveal.lab.region'), obstacles, size, { reach: model.region.major * frame.scale, entering: entering === 'region' });
-    if (step === 'lock' && model.region) callout(overlay, modelPoint, t('reveal.lab.lock'), obstacles, size, { reach: model.region.major * frame.scale, entering: entering === 'lock' });
-    if (step === 'baseline' && model.baseline) callout(overlay, frame.at(model.baseline), t('reveal.lab.baseline'), obstacles, size, { entering: entering === 'baseline' });
-    if (step === 'observed' && model.observed) callout(overlay, frame.at(model.observed), t('reveal.lab.observed'), obstacles, size, { entering: entering === 'observed' });
+    if (step === 'track' && model.training.length) callout(overlay, obstacles[Math.floor(model.training.length / 2)] ?? obstacles[0], t('reveal.lab.track'), obstacles, size, { entering: entering === 'track', avoid });
+    if (step === 'region' && model.region) callout(overlay, modelPoint, t('reveal.lab.region'), obstacles, size, { reach: model.region.major * frame.scale, entering: entering === 'region', avoid });
+    if (step === 'lock' && model.region) callout(overlay, modelPoint, t('reveal.lab.lock'), obstacles, size, { reach: model.region.major * frame.scale, entering: entering === 'lock', avoid });
+    if (step === 'baseline' && model.baseline) callout(overlay, frame.at(model.baseline), t('reveal.lab.baseline'), obstacles, size, { entering: entering === 'baseline', avoid });
+    if (step === 'observed' && model.observed) callout(overlay, frame.at(model.observed), t('reveal.lab.observed'), obstacles, size, { entering: entering === 'observed', avoid });
     if (step === 'verdict' && model.testRegion) callout(overlay, modelPoint, t('reveal.lab.test'), obstacles, size, { reach: model.testRegion.major * frame.scale, entering: entering === 'verdict', avoid });
   }
   scaleBar(overlay, frame, size, current.camera.span);
-  compass(overlay, size);
+  compass(overlay, size, insetBox ? { x: 10 + Math.max(niceLength(current.camera.span) * frame.scale, 60) + 20 + 60, y: size - 46 } : null);
 }
 
 function drawVerdictBanner(entering) {
