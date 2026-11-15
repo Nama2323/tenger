@@ -2051,3 +2051,51 @@ body.embed .panel-title { top: 0; }
   /* The time control's date stays compact on the narrowest phones (one row with LIVE, play and the slider). */
   .time-date { font-size: 12.5px; }
 }
+
+/* ---------- Task B15: the Predictions page as a story ---------- */
+.story-head h1 { max-width: 22ch; }
+.story-head .lead { max-width: 60ch; }
+.story-cta { margin: var(--s2) 0 0; }
+.story-cta .primary { min-height: var(--tap); padding: 0 var(--s3); font-size: 16px; }
+.story-steps { list-style: none; counter-reset: story-step; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.story-step { counter-increment: story-step; position: relative; padding: var(--s2); display: grid; gap: 6px; align-content: start; min-width: 0; }
+.story-step h3 { font-size: 17px; margin: 0; }
+.story-step p { margin: 0; font-size: 15px; line-height: 1.45; }
+.story-num {
+  display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent); color: var(--on-accent); font: 700 15px/1 var(--font-head);
+}
+.story-num::before { content: counter(story-step); }
+.story-arcsec { margin: 0; }
+.story-group { display: grid; gap: 12px; margin: 0 0 var(--s3); }
+.story-group h3 { font-size: 18px; margin: 0; }
+.story-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: var(--s2); align-items: start; }
+.story-card .card-head h4 { font-size: 19px; margin: 0 0 4px; }
+.story-card .stamps { margin: 0; }
+.story-sentence { margin: 0; font-size: 16px; line-height: 1.45; }
+.story-pending { margin: 0; color: var(--muted); font-size: 13px; }
+.text-link { display: inline-flex; align-items: center; min-height: var(--tap); font-size: 14px; color: var(--accent); }
+.story-card .card-actions { align-items: center; gap: var(--s1) var(--s2); }
+.story-untested { margin: 0; color: var(--muted); }
+.story-untested-list { margin: var(--s1) 0 0; padding-left: 1.2em; color: var(--muted); font-size: 14px; }
+.story-check { padding: var(--s2) var(--s3); border-left: 3px solid var(--accent); max-width: 560px; }
+.story-check h2 { font-size: 20px; margin: 0; }
+.story-check p { margin: 0; }
+.page-predictions details.more-info > .ledger-list,
+.page-predictions details.more-info > #ledger-batch-host,
+.page-predictions details.more-info > .ledger-board,
+.page-predictions details.more-info > section { max-width: 100%; }
+.page-predictions > details.board-details { margin-top: var(--s2); }
+.reveal-text .rv-plain { font-size: 17px; line-height: 1.5; }
+.reveal-text .rv-more { margin-top: var(--s1); }
+@media (max-width: 1000px) { .story-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .story-steps { grid-template-columns: minmax(0, 1fr); gap: var(--s1); }
+  .story-step { padding: 12px var(--s2); }
+  .story-check { padding: var(--s2); }
+}
+
+.story-steps > .story-step { margin: 0; }
+.story-step { grid-template-columns: 30px minmax(0, 1fr); column-gap: 10px; align-items: center; }
+.story-step > :not(.story-num):not(h3) { grid-column: 1 / -1; }
+.story-card .card-head h4 { color: var(--text); }

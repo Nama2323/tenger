@@ -3,13 +3,23 @@
 // observed position, and the verdict with its Mahalanobis distance. Made to be screen-recorded at 1280×720:
 // large type, every state reachable by keyboard or click (nothing on hover), and no motion under
 // prefers-reduced-motion. Numbers and verdicts come from the trial files; the page only draws them.
-import { $, el, formatNumber, prefersReducedMotion } from './dom.js';
+import { $, chip, details, el, formatNumber, prefersReducedMotion } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { categoryNote, exampleChip } from './labels.js';
 import { blendView, easeInOut, formatArcsec, niceLength, revealModel, trialLabels } from './ledger.js';
 import { dateOfMjd, labelChips, receiptLine, residualTable, statusChip } from './ledger-parts.js';
+import { asteroidName, longDate, shortAngle, storyChipKey } from './predict-story.js';
 
-export const STEPS = ['image', 'track', 'region', 'baseline', 'observed', 'verdict'];
+/** The display name of a trial's target: an asteroid by its catalogue name ("Asteroid 345 Tercidina"). */
+const targetName = (trial) => (typeof trial?.target_name === 'string' && trial.batch_id
+  ? t('story.asteroidName', { name: asteroidName(trial.target_name) })
+  : context.nameOf(trial.target_key));
+
+// Task B15: one plain sentence per step, in the order a first-time visitor follows it; the evaluation image stays
+// behind every step, and the earlier, longer text of each step sits in its closed "More detail".
+export const STEPS = ['track', 'region', 'lock', 'observed', 'baseline', 'verdict'];
+/** A miss whose distance is at most this many times the 95% limit is "just outside" the oval. */
+const JUST_OUTSIDE = 1.5;
 const ZOOM_MS = 1100;
 const CALLOUT_GAP = 54;
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -28,7 +38,7 @@ function svg(name, attributes = {}, text) {
 
 const stepIndex = (name) => STEPS.indexOf(name);
 const shown = (name) => current.step >= stepIndex(name);
-const viewFor = (step) => (step === 0 ? current.model.views.full : current.model.views.focus);
+const viewFor = () => current.model.views.focus;
 
 // ---------- Drawing ----------
 
@@ -170,13 +180,12 @@ function draw(entering = null) {
     return point;
   };
 
-  // Step 0: the area the prediction is about, while the picture still shows the whole image.
-  if (current.step === 0 || current.zooming) {
+  // While zooming in: the area the prediction is about.
+  if (current.zooming) {
     const focus = model.views.focus;
     const half = (focus.span / 2) * frame.scale;
     const centre = frame.at(focus);
     overlay.append(svg('rect', { x: centre.x - half, y: centre.y - half, width: half * 2, height: half * 2, class: `rv-focus${current.zooming ? ' fading' : ''}` }));
-    if (current.step === 0 && !current.zooming) callout(overlay, { x: centre.x + half, y: centre.y - half }, t('reveal.lab.focus'), [centre], size, { reach: 0 });
   }
 
   if (shown('track') && model.training.length && !current.zooming) {
@@ -235,6 +244,7 @@ function draw(entering = null) {
   if (!current.zooming) {
     if (step === 'track' && model.training.length) callout(overlay, obstacles[Math.floor(model.training.length / 2)] ?? obstacles[0], t('reveal.lab.track'), obstacles, size, { entering: entering === 'track' });
     if (step === 'region' && model.region) callout(overlay, modelPoint, t('reveal.lab.region'), obstacles, size, { reach: model.region.major * frame.scale, entering: entering === 'region' });
+    if (step === 'lock' && model.region) callout(overlay, modelPoint, t('reveal.lab.lock'), obstacles, size, { reach: model.region.major * frame.scale, entering: entering === 'lock' });
     if (step === 'baseline' && model.baseline) callout(overlay, frame.at(model.baseline), t('reveal.lab.baseline'), obstacles, size, { entering: entering === 'baseline' });
     if (step === 'observed' && model.observed) callout(overlay, frame.at(model.observed), t('reveal.lab.observed'), obstacles, size, { entering: entering === 'observed' });
     if (step === 'verdict' && model.testRegion) callout(overlay, modelPoint, t('reveal.lab.test'), obstacles, size, { reach: model.testRegion.major * frame.scale, entering: entering === 'verdict', avoid });
@@ -254,10 +264,8 @@ function drawVerdictBanner(entering) {
   const verdict = has(`reveal.verdict.${status}`) ? t(`reveal.verdict.${status}`) : (status ?? '—');
   const known = Number.isFinite(model.distance) && Number.isFinite(model.limit);
   const inside = known && model.distance <= model.limit;
-  const values = { d: formatNumber(model.distance, 2), limit: formatNumber(model.limit, 2) };
   banner.replaceChildren(...[
     el('strong', { text: verdict }),
-    known ? el('span', { class: 'd-value', text: t(inside ? 'reveal.dInside' : 'reveal.dOutside', values) }) : null,
     known ? el('span', { class: 'd-words', text: t(inside ? 'reveal.dInsideWords' : 'reveal.dOutsideWords') }) : null,
   ].filter(Boolean));
 }
@@ -295,24 +303,67 @@ function imageText() {
   return [t(`reveal.t.image.${model.imageReason ?? 'none'}`), t('reveal.t.imageFocus')];
 }
 
+/** The one plain sentence of the current step (task B15), from the trial files. */
+function plainContent() {
+  const { model, bundle } = current;
+  const trial = bundle.trial.doc;
+  const name = targetName(trial);
+  const step = STEPS[current.step];
+  const lines = [];
+  const extra = [];
+  if (step === 'track') {
+    lines.push(model.training.length ? t('reveal.plain.track', { name }) : t(model.trainingState === 'missing' ? 'reveal.t.noTrack' : 'reveal.t.trackUnreadable'));
+  }
+  if (step === 'region') lines.push(model.region ? t('reveal.plain.region', { name, date: longDate(model.tMjd) }) : t('reveal.t.noRegion', { date: longDate(model.tMjd) }));
+  if (step === 'lock') {
+    lines.push(t(trial.category === 'prospective_unexposed' ? 'reveal.plain.lockReal' : 'reveal.plain.lockPractice'));
+    extra.push(receiptLine(bundle.receipt));
+  }
+  if (step === 'observed') {
+    lines.push(model.observed ? t('reveal.plain.observed', { name }) : t('reveal.t.noObserved'));
+    if (!model.observed && model.statusReasonKey) lines.push(tData(model.statusReasonKey, 'explain.unknown'));
+  }
+  if (step === 'baseline') {
+    const away = Number.isFinite(model.baselineResidual?.error_arcsec)
+      ? model.baselineResidual.error_arcsec
+      : (model.baseline ? Math.hypot(model.baseline.east, model.baseline.north) : null);
+    lines.push(model.baseline ? t('reveal.plain.baseline', { distance: shortAngle(away) }) : t('reveal.t.noBaseline'));
+  }
+  if (step === 'verdict') {
+    const error = shortAngle(model.modelResidual?.error_arcsec);
+    if (model.observed && Number.isFinite(model.distance) && (model.status === 'hit' || model.status === 'miss')) {
+      const just = Number.isFinite(model.limit) && model.distance <= model.limit * JUST_OUTSIDE;
+      const verdict = model.status === 'hit' ? t('reveal.plain.hit', { error }) : t(just ? 'reveal.plain.missJust' : 'reveal.plain.miss', { error });
+      // The Pluto post-mortem (published after the reveal) says what was fixed for the open forecasts.
+      const fixed = model.status === 'miss' && context?.afterVerdict?.(bundle) ? ` ${t('reveal.plain.fixed')}` : '';
+      lines.push(`${verdict}${fixed}`);
+    } else {
+      lines.push(t('reveal.t.verdictOther'));
+      if (model.statusReasonKey) lines.push(tData(model.statusReasonKey, 'explain.unknown'));
+    }
+  }
+  return { lines, extra };
+}
+
+/** The earlier, longer text of the current step: shown under "More detail". */
 function stepContent() {
   const { model, bundle } = current;
   const trial = bundle.trial.doc;
   const step = STEPS[current.step];
   const paragraphs = [];
   const extra = [];
-  if (step === 'image') paragraphs.push(...imageText());
   if (step === 'track') {
+    paragraphs.push(...imageText());
     if (model.training.length) {
       paragraphs.push(t('reveal.t.track', { count: String(model.training.length), first: dateOfMjd(model.training[0].tMjd), last: dateOfMjd(model.training.at(-1).tMjd) }));
-    } else {
-      paragraphs.push(t(model.trainingState === 'missing' ? 'reveal.t.noTrack' : 'reveal.t.trackUnreadable'));
     }
   }
   if (step === 'region') {
     paragraphs.push(t(model.region ? 'reveal.t.region' : 'reveal.t.noRegion', { date: dateOfMjd(model.tMjd) }));
     if (Number.isFinite(model.referenceShift)) paragraphs.push(t('reveal.t.reference', { shift: formatArcsec(model.referenceShift) }));
-    extra.push(receiptLine(bundle.receipt));
+  }
+  if (step === 'lock') {
+    extra.push(el('p', { class: 'stamps' }, labelChips(trialLabels(trial))));
     const note = categoryNote(trial.category);
     if (note) extra.push(el('p', { class: 'panel-note', text: note }));
     if (trial.confirmation_pending === true) extra.push(el('p', { class: 'note', text: t('ledger.confirmationPendingNote') }));
@@ -329,18 +380,10 @@ function stepContent() {
       }));
       const alternatives = model.identification?.alternatives;
       if (Number.isInteger(alternatives) && alternatives > 0) paragraphs.push(t('reveal.t.alternatives', { count: String(alternatives) }));
-    } else {
-      paragraphs.push(t('reveal.t.noObserved'));
-      if (model.statusReasonKey) paragraphs.push(tData(model.statusReasonKey, 'explain.unknown'));
     }
   }
   if (step === 'verdict') {
-    if (model.observed && Number.isFinite(model.distance)) {
-      paragraphs.push(t('reveal.t.verdict', { limit: formatNumber(model.limit, 2) }));
-    } else {
-      paragraphs.push(t('reveal.t.verdictOther'));
-      if (model.statusReasonKey) paragraphs.push(tData(model.statusReasonKey, 'explain.unknown'));
-    }
+    if (model.observed && Number.isFinite(model.distance)) paragraphs.push(t('reveal.t.verdict', { limit: formatNumber(model.limit, 2) }));
     // An exploratory explanation published after the reveal (the Pluto post-mortem), labelled as such.
     const after = context?.afterVerdict?.(bundle);
     if (after) extra.push(after);
@@ -374,21 +417,25 @@ function numbers() {
 function updateText() {
   if (!current) return;
   const step = current.step;
+  const plain = plainContent();
   const { paragraphs, extra } = stepContent();
+  const more = [...paragraphs.map((text) => el('p', { class: 'note', text })), ...extra, ...numbers()].filter(Boolean);
   $('reveal-text').replaceChildren(
     el('h3', { text: t('reveal.stepOf', { n: String(step + 1), total: String(STEPS.length), name: t(`reveal.s.${STEPS[step]}`) }) }),
-    ...paragraphs.map((text) => el('p', { text })),
-    ...extra,
+    ...plain.lines.map((text) => el('p', { class: 'rv-plain', text })),
+    ...plain.extra,
+    more.length ? details(more, { label: t('reveal.more'), className: 'rv-more' }) : null,
   );
   $('reveal-legend').replaceChildren(legend());
-  $('reveal-numbers').replaceChildren(...numbers().filter(Boolean));
+  $('reveal-numbers').replaceChildren();
   $('reveal-steps').replaceChildren(...STEPS.map((name, index) => el('li', {
     class: index < step ? 'done' : index === step ? 'now' : '',
     'aria-current': index === step ? 'step' : null,
     text: t(`reveal.s.${name}`),
   })));
   $('reveal-back').disabled = step === 0;
-  $('reveal-forward').textContent = step === STEPS.length - 1 ? t('reveal.again') : t(`reveal.next.${STEPS[step + 1]}`);
+  $('reveal-forward').textContent = step === STEPS.length - 1 ? t('reveal.again') : t('reveal.nextPlain');
+  $('reveal-forward').setAttribute('aria-label', step === STEPS.length - 1 ? t('reveal.again') : t(`reveal.next.${STEPS[step + 1]}`));
   $('reveal-stage').setAttribute('aria-label', t('reveal.stageLabel', { n: String(step + 1), total: String(STEPS.length), name: t(`reveal.s.${STEPS[step]}`) }));
   const caption = [];
   if (current.model.image && !current.imageFailed) {
@@ -526,9 +573,10 @@ export async function openReveal(bundle, { example = false } = {}) {
     imageFailed: false,
   };
   $('reveal-eyebrow').textContent = t('reveal.eyebrow');
-  $('reveal-title').textContent = t('reveal.title', { name: context.nameOf(trial.target_key), date: dateOfMjd(model.tMjd) });
+  $('reveal-title').textContent = t('reveal.title', { name: targetName(trial), date: longDate(model.tMjd) });
+  const chipKey = storyChipKey(trial.category);
   $('reveal-stamps').replaceChildren(...[
-    ...labelChips(trialLabels(trial)),
+    chipKey ? chip(t(chipKey), `chip-story chip-category-${trial.category}`) : null,
     trial.confirmation_pending === true ? el('span', { class: 'chip chip-pending', text: t('ledger.confirmationPending') }) : null,
     current.example ? exampleChip({ example: true }) : null,
   ].filter(Boolean));

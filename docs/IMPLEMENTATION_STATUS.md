@@ -1763,3 +1763,39 @@ Artificial, Pending, Measured, Hypothetical, Quick look, not validated. The full
   - Screenshots `docs/screens/b16-home-<360|390|768|1280>-<before|after>.png`, `b16-watch-barnard-*`,
     `b16-planetx-lab-390`, `b16-menu-390`, `b16-nav-1280`, `b16-githubio-menu-390`, `b16-time-row-390`.
   - Not checked on a real phone.
+
+### Task B15, 15 Nov 2026 (done by Session A at the user's request; Predictions page and Pluto reveal only)
+
+Session B was told before the work started (B14 rename and B16 Home are rebased in; the brand stays Vestigium).
+
+- **Page** (`static/index.html` Predictions section, `static/js/ledger-ui.js`, new `static/js/predict-story.js`, CSS appended to `static/css/style.css`):
+  - The top now has the eyebrow, the headline "Can we predict where things in space will be?", one line, and the button "See how it works with Pluto", which opens the Pluto reveal at step 1. The three stat tiles are gone; their numbers are in the results.
+  - "How a prediction works": four numbered steps (4 across from 1001 px, 2×2 from 601 to 1000 px, stacked below that), "What physics?" closed under step 2, and the arcsecond note.
+  - "What happened" has two groups. Real tests: Pluto (miss) and Asteroid 345 Tercidina (hit). Practice runs: Barnard's Star and Epsilon Indi B. Each card has the name, Hit/Miss, a "Real test" or "Practice run" chip, one sentence, a grey "confirmation pending" note while the files say pending, "Watch the reveal", and a small Investigate link. "Used Gaia's distance", the trial type, the receipt, the residuals and the old card text are in each card's closed Details.
+  - "Could not be tested: 4 targets and 7 asteroids …" has its list, with reasons, under "Which ones, and why"; the 4 old target cards are there too.
+  - "8 asteroids, predicted at once" has its one-line explanation; the whole batch section (D chart, table, 8 cards) is under the closed "All 8 asteroids".
+  - The "Check us in 2027" card puts the 4 open forecast cards under "All locked forecasts".
+  - "7 frozen predictions: 2 hits, 1 miss, 4 with too little data", the scoreboard table, the trial types and See-only are inside "Full scoreboard and trial types".
+  - Nothing was deleted, and every number is computed from `scoreboard.json`, the trial files and the batch block.
+- **Reveal** (`static/js/reveal.js`):
+  - Steps are now track → region → lock → observed → baseline → verdict, with one plain sentence each.
+  - Step 3 shows the commit line from `receipt.json`. Practice runs get an honest lock sentence instead ("we had already seen these pictures").
+  - The evaluation image stays behind every step. Each step's earlier text, the D values and the residual table are under "More detail". "Why we missed" starts closed.
+  - The forward button reads "Next" and its aria-label names the next step. Asteroid trials show their catalogue name.
+- **Strings**: 44 `story.*` keys and 15 `reveal.*` keys were added to `static/js/i18n.js`. Eight `reveal.s.*`/`reveal.lab.*` and four `reveal.next.*` were reworded in plain words.
+- **Test** `tests/predictions-page.test.mjs` (5 tests):
+  - The words D², retrospective, prospective, catalogue-assisted and trial type appear only inside `<details>` in the page markup and in the story text.
+  - The hosts of the full record sit inside a `<details>`.
+  - Every number outside Details matches `scoreboard.json`, the batch rows and the open-forecast trial files within display rounding (Pluto 5.8991″ → 5.9″, 19869.7″ → 5.5°, ratio 3368 → "over 3,000"; 345 6.5249″ → 6.5″; Barnard 1.5188″ → 1.52″; ε Indi B 0.0755″ → 0.08″; 4, 7, 8 and 1 from the rows; 2027 and April/September from the forecasts' `holdout.t_mjd`).
+  - The reveal has six steps, and Pluto's oval date and its "just outside" wording come from its files (D = 2.60 against a limit of 2.45).
+- **Checks** (real viewport sizes, set through Chrome DevTools `Emulation.setDeviceMetricsOverride`):
+  - At 360/390/768/1280 the page width equals the viewport width (`scrollWidth`) and nothing overflows.
+  - No restricted word appears in the DOM outside `<details>`.
+  - At 390×844 with no Details open, the headline, the line and the button end at 359 px, and the four steps fill 435 to 974 px, so one scroll shows them.
+  - The button opens step 1, five Next clicks reach "Step 6 of 6: Verdict", and Esc or Close returns focus to the opener at the same scroll position.
+  - Summary text counts as part of its Details: the user named one of them "Full scoreboard and trial types".
+- **Results**: `node --test tests/*.mjs`: 244 pass, 0 fail, both before and after the rebase onto B16 (`5806dbd`). The four-width DOM and reveal check passed again after the rebase.
+- **Screenshots** `docs/screens/b15-before-predictions-{360,390,768,1280}.png`, `b15-after-predictions-{360,390,768,1280}.png`, `b15-after-predictions-full-{390,1280}.png`, `b15-after-reveal-verdict-{390,1280}.png`.
+- **Limits**:
+  - The node test reads the markup and the story text, not a live DOM. The DOM check above was run in headless Chrome and is not part of `node --test`.
+  - The "too faint, too bright, or too few clean pictures" summary is the user's wording; the exact reason of each target is under "Which ones, and why".

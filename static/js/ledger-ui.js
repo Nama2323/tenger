@@ -2,11 +2,12 @@
 // See-only targets, built only from the trial files Session A publishes (DATA-CONTRACT V1 §6–10 and V5).
 // Until real trial files exist, main.js hands this page the labelled development fixtures instead.
 import { covarianceEllipse } from './coords.js';
-import { $, chip, dataTable, details, el, formatNumber, statTile } from './dom.js';
+import { $, chip, dataTable, details, el, formatNumber } from './dom.js';
 import { has, t, tData } from './i18n.js';
 import { categoryLabel, categoryNote, categoryTerm, exampleChip } from './labels.js';
+import { asteroidLines, checkLines, itemName, itemSentence, storyChipKey, storyModel, untestedLine } from './predict-story.js';
 import {
-  CATEGORIES, forecastModel, formatArcsec, glanceModel, isOpenForecast, ledgerTrialIds, niceLength, predictedOf, revealModel, scoreboardTable, sortByStatus,
+  CATEGORIES, forecastModel, formatArcsec, isOpenForecast, ledgerTrialIds, niceLength, predictedOf, revealModel, scoreboardTable, sortByStatus,
   trialLabels, trialStatus,
 } from './ledger.js';
 import { dateOfMjd, labelChips, receiptLine, residualTable, statusChip, utcText } from './ledger-parts.js';
@@ -112,9 +113,9 @@ function boardSection(data) {
     const key = bundle?.trial?.doc?.target_key;
     return key ? nameOf(key) : id;
   });
-  // The full table, its notes and the trial types sit under one closed "Details" (task B12); the stat tiles at the
-  // top of the page carry the key numbers.
-  host.replaceChildren(details([
+  // The full table, its notes and the trial types sit inside the closed "Full scoreboard and trial types" (task B15:
+  // a static <details> in index.html).
+  host.replaceChildren(...[
     el('p', { text: t('ledger.lead') }),
     el('div', { class: 'board-head' }, [
       el('h2', { id: 'ledger-board-title', text: t('ledger.boardTitle') }),
@@ -142,10 +143,10 @@ function boardSection(data) {
       el('dt', {}, [chip(categoryLabel(category), `chip-category-${category}`), el('span', { class: 'sr-only', text: ` ${categoryTerm(category)}` })]),
       el('dd', { text: `${categoryTerm(category)}: ${categoryNote(category)}` }),
     ])),
-  ], { label: t('ledger.boardDetails'), className: 'board-details' }));
+  ]);
 }
 
-// ---------- At a glance: the headline and the key numbers (task B12) ----------
+// ---------- Counts for the headline inside the full scoreboard ----------
 
 /** "2 hits", "1 miss", "4 with too little data". */
 const counted = (status, n) => (has(`ledger.count.${status}.one`) ? t(`ledger.count.${status}.${n === 1 ? 'one' : 'many'}`, { n: String(n) }) : t('ledger.count.other', { n: String(n) }));
@@ -157,42 +158,6 @@ function statusSummary(statuses) {
   for (const status of statuses) counts.set(status ?? 'other', (counts.get(status ?? 'other') ?? 0) + 1);
   const rank = (status) => (order.includes(status) ? order.indexOf(status) : order.length);
   return [...counts].sort((a, b) => rank(a[0]) - rank(b[0])).map(([status, n]) => counted(status, n)).join(', ');
-}
-
-function resultValue(tile) {
-  const parts = [tile.hit ? counted('hit', tile.hit) : null, tile.miss ? counted('miss', tile.miss) : null, tile.waiting ? counted('waiting', tile.waiting) : null].filter(Boolean);
-  return parts.length ? parts.join(t('ledger.tile.join')) : t('ledger.tile.none');
-}
-
-function glanceSection(data) {
-  const glance = glanceModel(data.boardDoc);
-  const host = $('ledger-glance');
-  if (!glance) {
-    host.hidden = true;
-    return;
-  }
-  const lead = glance.lead;
-  const leadName = lead ? nameOf(lead.targetKey) : null;
-  if (lead && Number.isFinite(lead.errorArcsec)) {
-    $('predictions-title').textContent = t(`ledger.headline.${lead.status}`, { name: leadName, error: `${formatNumber(lead.errorArcsec, 1)} ${t('unit.arcsecWord')}` });
-  }
-  const categoryBadge = (tile) => chip(categoryLabel(tile.category), `chip-category-${tile.category}`);
-  const tone = (tile) => (tile.hit && !tile.miss ? 'is-hit' : tile.miss && !tile.hit ? 'is-miss' : '');
-  host.replaceChildren(...glance.tiles.map((tile) => {
-    if (tile.id === 'batch') {
-      return statTile({
-        value: t('ledger.tile.kOfN', { k: String(tile.k), n: String(tile.n) }),
-        label: t('ledger.tile.batch', { unusable: String(tile.unusable) }),
-        badge: el('span', { class: 'stamps' }, [categoryBadge(tile), tile.pending ? chip(t('chip.pending'), 'chip-pending') : null]),
-        tone: tile.n && tile.k === tile.n ? 'is-hit' : '',
-      });
-    }
-    if (tile.id === 'blind') {
-      return statTile({ value: resultValue(tile), label: lead ? t('ledger.tile.blindOne', { name: leadName }) : t('ledger.tile.blind'), badge: categoryBadge(tile), tone: tone(tile) });
-    }
-    return statTile({ value: resultValue(tile), label: t('ledger.tile.retro', { unusable: String(tile.unusable) }), badge: categoryBadge(tile), tone: tone(tile) });
-  }), ...(glance.example ? [exampleChip({ example: true })] : []));
-  host.hidden = false;
 }
 
 // ---------- One card per trial ----------
@@ -296,6 +261,127 @@ function trialCard(card) {
       trial.target_key === 'pluto' ? el('a', { class: 'button-link', href: '?page=loop', text: t('loop.link') }) : null,
     ]),
   ]);
+}
+
+// ---------- The story: results for a first-time visitor (task B15) ----------
+
+const okDoc = (result) => (result?.state === 'ok' ? result.doc : null);
+const bundleById = (data, id) => data.bundles.find((item) => item.id === id) ?? data.batch?.bundles?.find((item) => item?.id === id) ?? null;
+const boardRow = (data, id) => (Array.isArray(data.boardDoc?.rows) ? data.boardDoc.rows.find((row) => row?.trial_id === id) ?? null : null);
+
+/** Everything a story card used to show at a glance, now under its closed "Details". */
+function storyDetails(entry, bundle, data) {
+  const trial = okDoc(bundle?.trial);
+  const row = entry.kind === 'trial' ? boardRow(data, entry.id) : null;
+  const parts = [
+    entry.gaia ? el('p', {}, el('strong', { text: t('story.gaia') })) : null,
+    entry.gaia ? el('p', { class: 'note', text: t('story.gaiaNote') }) : null,
+    el('p', { class: 'note', text: t('story.typeNote', { term: categoryTerm(entry.category) }) }),
+    trial ? stamps(trial, row) : null,
+    entry.pending ? el('p', { class: 'note', text: t('story.pendingNote') }) : null,
+  ];
+  if (entry.kind === 'asteroid') {
+    return [...parts, bundle ? receiptLine(bundle.receipt) : null, el('p', { class: 'note', text: t('story.asteroidMore') })];
+  }
+  if (!trial) return parts;
+  const prediction = okDoc(bundle.prediction);
+  const verification = okDoc(bundle.verification);
+  const threshold = trial.scoring?.threshold_d2;
+  const modelError = Number.isFinite(row?.model_error_arcsec) ? formatArcsec(row.model_error_arcsec) : null;
+  const baselineError = Number.isFinite(row?.baseline_error_arcsec) ? formatArcsec(row.baseline_error_arcsec) : null;
+  const status = trialStatus(bundle, row);
+  return [
+    ...parts,
+    modelError ? el('p', { class: 'card-key' }, el('strong', { text: baselineError ? t('ledger.cardOff', { model: modelError, baseline: baselineError }) : t('ledger.cardOffModel', { model: modelError }) })) : null,
+    predictedLine(trial, prediction, threshold),
+    receiptLine(bundle.receipt),
+    trial.exploratory === true ? el('p', { class: 'note', text: t('ledger.exploratory') }) : null,
+    verification ? residualTable(verification.residuals, {
+      position: trial.quantity === 'position', limit: Number.isFinite(threshold) ? Math.sqrt(threshold) : null, unit: verification.observed?.unit ?? '',
+    }) : null,
+    verification ? el('p', { class: 'note', text: t('ledger.checkedOn', { utc: utcText(verification.revealed_utc) }) }) : null,
+    status.conflict ? el('p', { class: 'panel-note warn', text: t('ledger.conflict', { board: row.status, file: status.status }) }) : null,
+  ];
+}
+
+/** One result: name, Hit/Miss, "Real test" or "Practice run", one sentence, the reveal and a small Investigate link. */
+function storyCard(entry, { practice }, data) {
+  const bundle = entry.bundle ?? bundleById(data, entry.id);
+  const trial = okDoc(bundle?.trial);
+  const name = itemName(entry, nameOf);
+  const chipKey = storyChipKey(entry.category);
+  const canReveal = Boolean(bundle && revealModel(bundle));
+  return el('article', { class: `ledger-card story-card glass status-${entry.status ?? 'none'}`, id: `trial-${entry.id}` }, [
+    el('div', { class: 'card-head' }, [
+      el('div', {}, [
+        el('h4', { text: name }),
+        el('p', { class: 'stamps' }, [chipKey ? chip(t(chipKey), `chip-story chip-category-${entry.category}`) : null, exampleChip(trial)]),
+      ]),
+      statusChip(entry.status),
+    ]),
+    el('p', { class: 'story-sentence', text: itemSentence(entry, { practice }) }),
+    entry.pending ? el('p', { class: 'story-pending', text: t('story.pending') }) : null,
+    el('div', { class: 'card-actions' }, [
+      canReveal ? el('button', {
+        type: 'button', class: 'primary', text: t('ledger.watchReveal'), dataset: { reveal: entry.id },
+        onclick: () => showReveal(entry.id),
+      }) : null,
+      entry.kind === 'trial' ? el('a', { class: 'text-link', href: context.investigateHref(entry.targetKey), text: t('story.investigate', { name }) }) : null,
+      entry.targetKey === 'pluto' ? el('a', { class: 'text-link', href: '?page=loop', text: t('loop.link') }) : null,
+    ]),
+    details(storyDetails(entry, bundle, data)),
+    entry.kind === 'trial' && okDoc(bundle?.verification) ? whyFor(entry.id) : null,
+  ]);
+}
+
+function storySection(data) {
+  const model = storyModel({ board: data.boardDoc, bundles: data.bundles });
+  const group = (titleKey, entries, practice) => (entries.length ? el('div', { class: 'story-group' }, [
+    el('h3', { text: t(titleKey) }),
+    el('div', { class: 'story-cards' }, entries.map((entry) => storyCard(entry, { practice }, data))),
+  ]) : null);
+  $('story-groups').replaceChildren(...[group('story.results.real', model.real, false), group('story.results.practice', model.practice, true)].filter(Boolean));
+
+  // Could not be tested: one line, then the list (and the old full cards of those targets) under "Details".
+  $('story-untested').textContent = untestedLine(model);
+  const reason = (item) => (item.reasonKey ? tData(item.reasonKey, 'explain.unknown') : (has(`ledger.status.${item.status}`) ? t(`ledger.status.${item.status}`) : String(item.status ?? '—')));
+  $('story-untested-list').replaceChildren(
+    ...model.untested.targets.map((item) => el('li', { text: t('story.untested.item', { name: nameOf(item.targetKey), reason: reason(item) }) })),
+    ...model.untested.asteroids.map((item) => el('li', { text: t('story.untested.item', { name: t('story.asteroidName', { name: item.name }), reason: reason(item) }) })),
+  );
+  const shownAbove = new Set([...model.real, ...model.practice].map((entry) => entry.id));
+  const rest = data.cards.filter((card) => !shownAbove.has(card.bundle.id));
+  $('ledger-list').replaceChildren(...(rest.length || data.cards.length
+    ? rest.map(trialCard)
+    : [el('p', { class: 'panel-note', text: data.index.state === 'ok' ? t('ledger.none') : t('ledger.indexMissing') })]));
+
+  // The asteroid batch: two lines, the full section under "All 8 asteroids".
+  const asteroids = $('story-asteroids');
+  asteroids.hidden = !model.asteroids;
+  if (model.asteroids) {
+    const [title, lead] = asteroidLines(model.asteroids);
+    $('story-asteroids-title').textContent = title;
+    $('story-asteroids-lead').textContent = lead;
+    $('story-asteroids-pending').hidden = !model.asteroids.pending;
+    $('story-asteroids-label').textContent = t('story.asteroids.details', { n: String(model.asteroids.n) });
+  }
+
+  // Check us in 2027.
+  const check = $('story-check');
+  check.hidden = !model.check2027;
+  if (model.check2027) {
+    const [title, text] = checkLines(model.check2027, nameOf);
+    $('story-check-title').textContent = title;
+    $('story-check-text').textContent = text;
+  }
+
+  // "See how it works with Pluto" opens the Pluto reveal at step 1.
+  const button = $('story-pluto');
+  const plutoBundle = model.plutoTrialId ? bundleById(data, model.plutoTrialId) : null;
+  button.disabled = !(plutoBundle && revealModel(plutoBundle));
+  button.dataset.reveal = model.plutoTrialId ?? '';
+  button.onclick = () => model.plutoTrialId && showReveal(model.plutoTrialId);
+  return model;
 }
 
 // ---------- Open forecasts ----------
@@ -443,18 +529,14 @@ function render(data) {
   const banner = $('ledger-source');
   banner.hidden = !(context.fallback || context.fixtures);
   banner.replaceChildren(el('p', { text: t(context.fallback ? 'ledger.fallback' : 'ledger.fixtures') }));
-  glanceSection(data);
   boardSection(data);
-  // Section headlines state what the section holds (task B12), counted from the cards on the page.
+  // The count of every frozen prediction heads the full scoreboard (task B15), counted from the cards.
   $('ledger-trials-title').textContent = data.cards.length ? t('ledger.trialsHeadline', { n: String(data.cards.length), counts: statusSummary(data.cards.map((card) => card.status?.status)) }) : t('ledger.trialsTitle');
   $('ledger-forecasts-title').textContent = data.forecasts.length === 1 ? t('ledger.forecastsHeadlineOne') : data.forecasts.length ? t('ledger.forecastsHeadline', { n: String(data.forecasts.length) }) : t('ledger.forecastsTitle');
   const batch = batchSection(data.batch);
   $('ledger-batch-host').replaceChildren(...(batch ? [batch] : []));
   $('ledger-batch-host').hidden = !batch;
-  const list = $('ledger-list');
-  list.replaceChildren(...(data.cards.length
-    ? data.cards.map(trialCard)
-    : [el('p', { class: 'panel-note', text: data.index.state === 'ok' ? t('ledger.none') : t('ledger.indexMissing') })]));
+  storySection(data);
   $('ledger-seeonly').replaceChildren(...data.seeOnly.map(seeOnlyCard));
   $('ledger-seeonly-wrap').hidden = !data.seeOnly.length;
   $('ledger-forecast-list').replaceChildren(...(data.forecasts.length
@@ -470,7 +552,7 @@ export function initLedger(options) {
   context = options;
   ledger = null;
   initReveal({
-    afterVerdict: (bundle) => whyFor(bundle.id, { open: true }),
+    afterVerdict: (bundle) => whyFor(bundle.id),
     imageUrl: (path) => context.source.url(path),
     nameOf,
     loadTraining: (id) => context.source.training(id),
@@ -503,7 +585,7 @@ export async function showLedger() {
 /** Opens the reveal of a trial (after the ledger has loaded). */
 export async function showReveal(id, { push = true } = {}) {
   const data = await ledger;
-  const bundle = data?.bundles.find((item) => item.id === id);
+  const bundle = data ? bundleById(data, id) : null;
   if (!bundle || !revealModel(bundle)) {
     context.onMissingTrial?.(id);
     return;
