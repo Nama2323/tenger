@@ -21,14 +21,14 @@ audio track. English captions are burned in; `vestigium-demo-30s.srt` has the sa
 | 5–10 s | A smooth scroll down to the full 3D Solar System; the time slider dragged right (1 → 6, a month per second: the planets orbit), then LIVE | A live 3D map: the planets follow JPL’s orbits through time. | The scene's JPL elements (B10) |
 | 10–13 s | A smooth scroll back up to "Or pick a target"; a hover on WISE 0855 (its tooltip shows), then a click on Barnard's Star | Pick one of the five NASA challenge targets. | — |
 | 13–20 s | Barnard's Star blinking AllWISE 2010 ↔ SPHEREx 2026; Contrast dragged right (1 → 2.4) | Real pictures, 2010 and 2026: Barnard's Star moved about 168″. | Years from the frames' own labels; 168″ from the page's finding |
-| 20–26 s | "What changed" (the measured finding: 10.4174 ± 0.3267″/yr, Gaia 10.3933), then "Estimate motion" (the browser quick look, labelled not validated, 9.94 ± 0.48″/yr) and the brightness-over-time chart | We measure how it moves from the pictures and check it against Gaia. | The user's caption, no numbers |
+| 20–26 s | "What changed" (opened at 17.9 s, under shot 4's caption; the measured finding: 10.4174 ± 0.3267″/yr, Gaia 10.3933), then "Estimate motion" (the browser quick look, labelled not validated): it tracks the star for about 1.3 s, counts up from 0 to 9.94 ± 0.48″/yr and holds that value with the "Catalogue 10.39″/yr" row above the caption from 21.6 to 24.3 s (B28); then the brightness-over-time chart | We measure how it moves from the pictures and check it against Gaia. | The user's caption, no numbers |
 | 26–30 s | Title card: the team logo, nama2323.github.io/tenger, the four names, "Data: NASA SPHEREx via NASA/IPAC IRSA", "Also inside: blind forecasts and a Planet X test" | (the card's own text) | — |
 
 The recorded clicks, from the last run:
 - 7.0–8.0 s the time slider drag; 8.8 s LIVE;
 - 12.2 s Barnard's Star (the target opens after the 3D flight, at 14.2 s);
 - 16.3 s the Contrast drag;
-- 20.3 s "What changed"; 22.0 s "Estimate motion".
+- 17.9 s "What changed"; 19.5 s "Estimate motion" (the final value shows at 21.6 s and holds until 24.3 s).
 
 Each click was checked on its target, and the expected state followed: live time, Barnard's Star open, contrast
 up, the motion result and the chart. While Barnard's Star is open, no 3D label or control is visible or under the

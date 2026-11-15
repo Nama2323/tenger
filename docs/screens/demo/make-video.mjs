@@ -425,23 +425,48 @@ async function recordTake() {
   if (!facts.yearA || !facts.yearB || !facts.shift) problems.push(`Barnard facts: ${JSON.stringify({ labels, finding: facts.findingShown })}`);
   facts.behind = await evaluate("(() => { const p = document.getElementById('page-investigate').getBoundingClientRect(); const seen = []; for (const sel of ['.space-label', '#space-tools', '#space-time', '#map-key', '.console-left']) for (const n of document.querySelectorAll(sel)) { if (!n.checkVisibility({ opacityProperty: true, visibilityProperty: true })) continue; const r = n.getBoundingClientRect(); if (r.width && r.right > p.left && r.left < p.right && r.bottom > p.top && r.top < p.bottom && document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) === n) seen.push(sel); } return [...new Set(seen)]; })()");
   await checkNames('Barnard');
-  await at(18.6); await moveTo(820, 300);
-  // 20–26 s: "What changed", then "Estimate motion": the motion result and the brightness-over-time chart.
-  await at(19.6); await click('.panel-nav [data-panel="changed"]', { expect: 'What changed' });
+  await at(16.7); await moveTo(820, 300);
+  // 17.5–26 s: "What changed", then "Estimate motion" (the quick look takes about 1.3 s to track the star, then the
+  // number counts up from 0). Task B28: the final value, with the "Catalogue" row clear of the caption, holds through
+  // 22–24 s; only then the brightness chart. The stage keeps blinking beside the panel meanwhile.
+  await at(17.2); await click('.panel-nav [data-panel="changed"]', { expect: 'What changed' });
   // The panel scrolls itself to "What changed"; once it stops, "Estimate motion" is brought to the middle
   // (scrollIntoView) and left to settle before the cursor moves (user, 15 Nov).
-  await evaluate(`new Promise((resolve) => { const p = document.getElementById('inv-panel'); let last = -1; const t0 = performance.now(); const look = () => { if (p.scrollTop === last || performance.now() - t0 > 2500) resolve(p.scrollTop); else { last = p.scrollTop; setTimeout(look, 120); } }; setTimeout(look, 200); })`);
+  const settle = `new Promise((resolve) => { const p = document.getElementById('inv-panel'); let last = -1; const t0 = performance.now(); const look = () => { if (p.scrollTop === last || performance.now() - t0 > 2500) resolve(p.scrollTop); else { last = p.scrollTop; setTimeout(look, 100); } }; setTimeout(look, 150); })`;
+  await evaluate(settle);
   await evaluate("document.getElementById('measure').scrollIntoView({ block: 'center' })");
-  await evaluate(`new Promise((resolve) => { const p = document.getElementById('inv-panel'); let last = -1; const t0 = performance.now(); const look = () => { if (p.scrollTop === last || performance.now() - t0 > 2500) resolve(p.scrollTop); else { last = p.scrollTop; setTimeout(look, 120); } }; setTimeout(look, 200); })`);
+  await evaluate(settle);
+  // Every value the big number shows, recorded as it is written (none may be below 0 or past the result).
+  await evaluate(`(() => { window.__shown = []; const box = document.getElementById('motion-result');
+    new MutationObserver(() => { const n = box.querySelector('.big-number'); const v = n?.firstChild?.textContent; if (v && v !== window.__shown.at(-1)) window.__shown.push(v); })
+      .observe(box, { subtree: true, childList: true, characterData: true }); })()`);
   await click('#measure', { expect: 'motion result' });
-  await waitFor("/″\\/yr/.test(document.getElementById('motion-result').textContent)", 4000);
-  await sleep(900); // the result counts up to its value
+  facts.measureAt = clicks.at(-1).at;
+  await waitFor("document.querySelectorAll('#motion-result tr').length >= 2", 4000);
+  // The cursor steps off the number; if the "Catalogue" row would sit under the caption, the panel is wheeled up.
+  const result = await evaluate("(() => { const r = document.querySelector('#motion-result').getBoundingClientRect(); return [r.right, r.top]; })()");
+  await moveTo(Math.min(1250, result[0] - 24), Math.max(140, result[1] - 30), { ms: 400 });
+  const rowBottom = await evaluate("[...document.querySelectorAll('#motion-result tr')].find((tr) => /Catalogue/.test(tr.textContent))?.getBoundingClientRect().bottom ?? 0");
+  if (rowBottom > 540) await wheel(Math.round(rowBottom - 500), 450);
+  await waitFor(`(() => { const big = document.querySelector('#motion-result .big-number'); const td = document.querySelector('#motion-result td');
+    return Boolean(big && td && td.textContent.startsWith(big.firstChild.textContent + ' ')); })()`, 4000);
+  facts.finalAt = ((Date.now() - takeStart) / 1000).toFixed(2);
   facts.estimate = await evaluate("document.getElementById('motion-result').innerText.split('\\n').slice(0, 3).join(' | ')");
   facts.quick = (String(facts.estimate).match(/Browser estimate\s+([\d.]+)/) ?? [])[1] ?? null;
+  facts.held = await evaluate(`(() => { const big = document.querySelector('#motion-result .big-number').getBoundingClientRect();
+    const row = [...document.querySelectorAll('#motion-result tr')].find((tr) => /Catalogue/.test(tr.textContent));
+    const r = row.getBoundingClientRect(); const hit = document.elementFromPoint(r.left + 20, r.top + r.height / 2);
+    return { big: [Math.round(big.top), Math.round(big.bottom)], catalogue: [Math.round(r.top), Math.round(r.bottom)], text: row.textContent.trim(), onTop: row.contains(hit) }; })()`);
+  if (Number(facts.finalAt) > 21.8) problems.push(`the motion result is final only at ${facts.finalAt} s`);
+  if (!facts.held?.onTop || facts.held.catalogue[1] > 560 || facts.held.big[0] < 60) problems.push(`the result is not clear of the caption: ${JSON.stringify(facts.held)}`);
+  await at(24.3); // the final value and the Catalogue row held through 22, 23 and 24 s
+  facts.shown = await evaluate('window.__shown');
+  const final = Number(facts.quick);
+  if (!facts.shown?.length || facts.shown.some((v) => !(Number(v) >= 0 && Number(v) <= final)) || Number(facts.shown.at(-1)) !== final) problems.push(`count-up values ${JSON.stringify(facts.shown)} (final ${final})`);
+  facts.heldUntil = await evaluate("document.querySelector('#motion-result .big-number')?.firstChild?.textContent");
   facts.chart = await evaluate("document.getElementById('curve-chart').childElementCount > 0");
-  await moveTo(1060, 330);
   const chartBottom = await evaluate("document.getElementById('curve-chart').getBoundingClientRect().bottom");
-  if (chartBottom > 560) await wheel(chartBottom - 540, 700);
+  if (chartBottom > 560) await wheel(chartBottom - 540, 650);
   await moveTo(1100, 260);
   await checkNames('What changed');
   await at(TAKE_SECONDS + 0.3);

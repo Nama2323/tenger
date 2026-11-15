@@ -2288,3 +2288,32 @@ No login, no server and no storage. Only the game page and its strings changed; 
   - The scroll down is made over the left column and by the first screen's full height, because the colour key
     keeps the wheel to itself and the first screen is taller than 720 px.
   - "Estimate motion" is brought into view with `scrollIntoView` before the cursor moves (the user's step).
+
+### Task B28, 15 Nov 2026: the motion count-up never goes below zero; the video holds the final value
+
+- **Site.** In "What changed" → "Estimate motion", the big number counted up from below zero (−0.49, −0.21). The
+  cause: the timer started from `performance.now()`, but a frame's own time can come slightly before that, so the
+  progress went negative and the ease-out turned it into a negative number.
+  - The count-up now uses `countUpShown(value, elapsedMs, durationMs)` in `static/js/describe.js`. It clamps the
+    progress to 0–1, so the number goes from 0 to the value and never below 0 or past it.
+  - The count-up now takes 0.8 s (was 0.9 s). With reduced motion the final value shows at once.
+  - Files: `static/js/main.js` (`countUp`), `static/js/describe.js`, `tests/describe.test.mjs` (new test: 0 at the
+    start and for a frame time before it, monotonic, never past the value, exactly the value at the end).
+- **Checks in Chrome** (Barnard's Star, 1280×720, the GPU):
+  - Reduced motion: the big number is written once, 9.94.
+  - No reduced motion: 46 steps from 0.00 to 9.94, final 0.82 s after the result (polled every 50 ms). The
+    lowest value shown was 0.00 and the highest 9.94.
+- **Video, shot 5** (`docs/screens/demo/make-video.mjs`). "What changed" is now clicked at 17.9 s, still under
+  shot 4's caption (the stage keeps blinking beside the panel). "Estimate motion" is clicked at 19.5 s; the quick
+  look tracks the star for about 1.3 s, then counts up.
+  - The final value, 9.94″/yr, shows from 21.6 s and is held, with the "Catalogue 10.39″/yr" row (y 474–500, the
+    caption starts at y 576), until 24.3 s; then the panel scrolls to the brightness chart.
+  - The script now fails the run if: the value is final after 21.8 s; the Catalogue row is covered or under the
+    caption; or any value the big number showed (all 45 recorded as they were written) is below 0 or past the
+    final value.
+  - `vestigium-demo-30s.mp4`: **30.000 s** (900 frames), **2,728,271 bytes**, 1280×720, H.264 High, yuv420p,
+    30 fps, no audio; `.srt` and contact sheet re-made.
+  - The frames at 22, 23 and 24 s (n = 660, 690, 720) were extracted and looked at: each shows 9.94″/yr and the
+    Catalogue 10.39″/yr row clear of the caption. Every click hit; the largest cursor step was 56 px per frame;
+    no problems were reported.
+- **Tests:** `node --test` 266 pass.

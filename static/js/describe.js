@@ -35,6 +35,16 @@ export function plainLine({ kind, distance } = {}) {
   return ly === null ? t('plain.noDistance', { noun }) : t('plain.far', { noun, ly: formatLightYears(ly) });
 }
 
+/**
+ * The number a count-up shows after elapsedMs of durationMs (task B28): from 0 to value with an ease-out, never
+ * below 0 or past the value (progress is clamped, so a frame time slightly before the start cannot go negative).
+ */
+export function countUpShown(value, elapsedMs, durationMs) {
+  if (!Number.isFinite(value)) return value;
+  const progress = durationMs > 0 ? Math.max(0, Math.min(1, elapsedMs / durationMs)) : 1;
+  return progress >= 1 ? value : value * (1 - (1 - progress) ** 3);
+}
+
 const FRACTIONS = [[2, 'half'], [3, 'third'], [4, 'quarter'], [5, 'fifth'], [10, 'tenth'], [20, 'twentieth'], [50, 'fiftieth'], [100, 'hundredth']];
 
 /**

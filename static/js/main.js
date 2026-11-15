@@ -33,7 +33,7 @@ import { flyThen, homeShown, initSpace } from './space-ui.js';
 import { showLoopPage } from './loop-ui.js';
 import { loadPlanetX, renderHiddenRound } from './planetx-ui.js';
 import { DEPTH_PATH, glanceOf, readDepth } from './planetx.js';
-import { moonShare, plainLine } from './describe.js';
+import { countUpShown, moonShare, plainLine } from './describe.js';
 import { loadBatch } from './batch-ui.js';
 import { isTourRunning, nextTourStep, runTour, shouldAutoStart, stopTour } from './tour.js';
 import {
@@ -55,7 +55,7 @@ const ALL_DATES = 'all';
 const MOTION_SIGNIFICANCE = 3;
 const AUTO_SPECTRUM_FRAMES = 12;
 const FULL_RANGE_LABEL = '0.75–5 μm';
-const COUNT_UP_MS = 900;
+const COUNT_UP_MS = 800;
 const DRAG_THRESHOLD_PX = 4;
 const FILM_TILE_DELAY_MS = 30;
 const FILM_FIRST_DELAY_MS = 120;
@@ -1398,11 +1398,13 @@ function countUp(node, value, unit) {
     write(value);
     return;
   }
+  // From 0 to the value in COUNT_UP_MS. A frame's time can be a little earlier than the start; countUpShown clamps
+  // that to 0, so the number never shows below 0 or past the value (task B28).
   const started = performance.now();
+  write(0);
   const step = (now) => {
-    const progress = Math.min(1, (now - started) / COUNT_UP_MS);
-    write(value * (1 - (1 - progress) ** 3));
-    if (progress < 1) requestAnimationFrame(step);
+    write(countUpShown(value, now - started, COUNT_UP_MS));
+    if (now - started < COUNT_UP_MS) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
 }
