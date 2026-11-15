@@ -1576,3 +1576,105 @@ Session A's verification: 345 Tercidina inside (D² 0.12); 4 ambiguous; 3 insuff
   - Captures `home-fly`, `home-flylist` (360/390/768/1280) and `home-nine-1280` in `docs/screens/`.
   - Lighthouse mobile Home: 83 and 83 (accessibility, best practices, SEO 100; CLS 0; TBT 0 ms), as after B10.
   - Not checked on a real phone.
+
+### Task B12, 15 Nov 2026: every page readable at a glance
+
+A judge found the site hard to scan. Each page and section now leads with one headline that states the finding,
+one key number or picture, and at most one short line; longer explanations, method notes, caveats and citations
+sit in a closed "Details" disclosure right under the part they explain. Nothing was deleted, no number changed,
+and every honesty label stays, as short chips: Blind, Retrospective demo, Catalogue-assisted, Exploratory,
+Artificial, Pending, Measured, Hypothetical, Quick look, not validated. The full trial-type names stay in the
+"what the trial types mean" lists. Published page by page to `tenger-dev` (cbfa67a, 37386b1, 109d84b, f83b322,
+431e565, eeea349, then a second pass).
+
+- **Shared pieces** (`js/dom.js`): `details()` (a native `<details class="more-info">`, keyboard-usable and announced
+  as expanded or collapsed, 44 px summary) and `statTile()`; `.headline`, `.stat-tiles` and the 70-character line
+  limits in `css/style.css`.
+- **Home.**
+  - The left panel keeps the pitch ("See the infrared sky change. Predict. Check."), the search and the challenge
+    target chips.
+  - How to search is read out with the search box (`aria-describedby`), shown at the top of the place list while
+    the box is empty, and listed in the "?" dialog (now "Help and keyboard shortcuts").
+  - Top places, Real sky, the guided tour and the Planet X link sit under "Guided tour and more". The target list
+    starts folded.
+  - The colour key keeps its items. Its long notes and the full scale caption are under "About this map". The
+    on-scene caption is a chip: "Schematic · not to scale" (3D) or "Schematic · not a sky map" (2D).
+- **Predictions.**
+  - The headline is "Pluto: blind forecast, missed by 5.9 arcsec, published". Three tiles: blind 1 miss; asteroid
+    batch 1 of 1 hit, 7 not scorable; demos 2 hits, 4 with too little data.
+  - All of these are counted from `scoreboard.json` by `glanceModel()` in `js/ledger.js` (tested). If there is not
+    exactly one blind result, the page keeps its plain title.
+  - The full scoreboard, its notes and the trial types sit under one disclosure. Section titles state what they
+    hold ("7 frozen predictions: 2 hits, 1 miss, 4 with too little data"; "4 open forecasts, checked when IRSA
+    releases the data").
+  - Each card shows its result, chips and error as the key number; position, receipt, residuals and notes are under
+    Details. The asteroid batch states "1 of 1 landed inside our 95% regions" and "7 of 8 could not be scored",
+    with the D chart in view; the interval, the caveats, the error chart and the eight asteroid cards are under
+    Details.
+- **Planet X Lab.**
+  - The headline is "Could SPHEREx see Planet X? Not in one image: 4 to 7 magnitudes too faint.", with two tiles:
+    our measured 3.4 µm 50% depth, AB 17.48 (Measured), and the nominal Planet Nine, AB 22.80 (Hypothetical).
+    One line covers the closest published case (about 1 time in 4).
+  - These come from the nominal case's gap rows (`glanceOf()` in `js/planetx.js`, tested); an example file gives no
+    headline.
+  - The measured section now comes before the model playground. The method, the full verdict, every published value,
+    the assumptions and the references are under Details. With a lesson or the Lab open, the Learn heading steps
+    aside.
+- **Beat the physics.**
+  - The headline is "Can your guess beat the physics model?", with one line; the full rules and the score formula
+    are under Details.
+  - Each round has a one-line task; "How to predict" starts closed. Results show the verdict, the raw-error table
+    and the official result first.
+  - The hidden-planet round keeps an "Artificial" chip and one line.
+- **Investigate.**
+  - The viewer keeps the expected shift in view ("Between A and B (16.1 years) the catalogue motion predicts a
+    shift of about 168″"). How to read the picture is under "How to look"; the zoom hint and keys are under the See
+    panel's Details.
+  - The A/B captions show the time and a short wavelength; the full wavelength, release, status, source and IDs are
+    one click away.
+  - Panel leads are under Details. What changed leads with its finding. A trial shows type and result chips, the
+    errors and the plot.
+- **Learn.** The headline is "Three printable lessons and a Planet X lab". Each lesson card carries a "Real record"
+  or "Synthetic practice values" chip. The lessons themselves are unchanged (printable worksheets).
+- **About.** The headline is "See, predict and check with real NASA SPHEREx data". Each method and limit is one
+  disclosure under its title; reserved paths, can and can't see, data sources, references, software and fonts are
+  under disclosures. Team and the AI disclosure stay in view.
+- **Visible words on the first screen** (headless Chrome, 390×844 and 1280×800, after the page and fonts load; Home
+  after its 3D view starts; every visible word of text, numbers included, inside the viewport). Before = 53dc6e4,
+  after = this task:
+
+| Page | 390 before | 390 after | change | 1280 before | 1280 after | change |
+|---|---:|---:|---:|---:|---:|---:|
+| Home | 77 | 51 | −34% | 299 | 140 | −53% |
+| Predictions | 105 | 84 | −20% | 136 | 110 | −19% |
+| Planet X Lab | 104 | 93 | −11% | 166 | 111 | −33% |
+| Beat the physics | 157 | 77 | −51% | 205 | 103 | −50% |
+| Investigate: See panel (Barnard's Star) | 73 | 60 | −18% | 214 | 182 | −15% |
+| Investigate: Prediction panel (Pluto) | 140 | 80 | −43% | 216 | 153 | −29% |
+| Investigate: What changed (Barnard's Star) | 142 | 121 | −15% | 237 | 175 | −26% |
+| Investigate: Evidence (RW Aurigae) | 111 | 115 | +4% | 202 | 140 | −31% |
+| Learn | 87 | 77 | −11% | 156 | 127 | −19% |
+| About | 174 | 53 | −70% | 401 | 76 | −81% |
+| All ten views | 1170 | 811 | −31% | 2232 | 1317 | −41% |
+
+  Home at 1280, Beat the physics and About were cut by half or more; the others were not. What is left is mostly
+  controls, chips, numbers, the 3D labels (Home at 390 shows more of the scene now, so its labels rose from 21 to
+  28 words; text outside the labels went from 56 to 23) and the start of the next section, which now fits on the
+  first screen. On a phone the RW Aurigae Evidence panel shows 4 more words, because more of the panel now fits on
+  the first screen.
+- **Checks.**
+  - 235 tests pass (`node --test`). New tests: the Predictions headline and tiles against `scoreboard.json`, and
+    the rule that there is no headline without exactly one blind result; the Lab headline against the gap rows.
+  - All eight views at 360/390/768/1280 with disclosures closed: no horizontal scroll, no console error, no Details
+    summary under 44 px. A Details opens with Tab and Enter on every page.
+  - With every disclosure open, Predictions, the Lab and Beat the physics overflow at 360 px by 14–17 px. They did
+    the same before B12 (a forecast chart, the Lab's charts, the game's training table).
+  - B11's 3D check at 360/390/768/1280: no label under a panel, no overlaps, "Fly to" works ("Camera on: Earth",
+    "Saturn", "Mars"), the Planet Nine note opens in the key, no errors.
+  - One round of Beat the physics was played to the end (verdict, table, official result, Details).
+  - Lighthouse mobile: Home 83 and 83 (accessibility, best practices and SEO 100), as after B11. Accessibility was
+    100 on Predictions, the Lab, Beat the physics, Learn, About and an investigation.
+  - Before and after screenshots: `docs/screens/b12-<page>-<390|1280>-<before|after>.png` for Home, Predictions, the
+    Lab, Beat the physics, Investigate (See, and the Prediction panel), Learn and About.
+  - Size: +7.9 KB gzip over the changed files, all loaded with the first page.
+  - Not checked on a real phone.
